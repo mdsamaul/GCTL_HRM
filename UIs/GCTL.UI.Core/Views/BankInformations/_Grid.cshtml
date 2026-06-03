@@ -1,0 +1,52 @@
+﻿@model List<GCTL.Core.ViewModels.BankInformations.BankInformationsSetupViewModel>
+
+
+<table id="BankInformations-grid" class="table table-striped  table-bordered table-sm table-hover table-common">
+
+        <thead class="row-border">
+            <tr class="table row-border">
+                <th class="text-center text-middle">
+                    Select <br /> <input type="checkbox" id="BankInformations-check-all" />
+                </th>
+                <th class="text-center text-middle"> ID</th>
+                <th class="text-center text-middle">Bank Name </th>
+                <th class="text-center text-middle">Short Name</th>
+               
+            </tr>
+        </thead>
+        <tbody>
+
+            @if (Model == null || !Model.Any())
+            {
+                <tr class="text-center text-middle">
+                    <td colspan="5">No  Employee Type   Available.</td>
+                </tr>
+            }
+            else
+            {
+                @foreach (var item in Model.OrderByDescending(x => x.BankId))
+                {
+                    <tr>
+                        <td class="text-center">
+                            <input type="checkbox" class="text-center text-middle checkBox" data-id="@item.BankId" value="@item.BankId" />
+                        </td>
+                        <td>
+                            <a href="#" class='btn js-BankInformations-edit'
+                               style="text-decoration: underline; color: rebeccapurple;"
+                               data-id="@item.BankId" title="Edit">
+                                @item.BankId
+                            </a>
+                        </td>
+
+                        <td class="text-center text-middle">@item.BankName</td>
+                        <td class="text-center text-middle">@item.ShortName</td>
+                      
+
+                    </tr>
+                }
+            }
+
+
+        </tbody>
+    </table>
+

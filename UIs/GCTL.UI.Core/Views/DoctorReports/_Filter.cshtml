@@ -1,0 +1,40 @@
+﻿@using GCTL.Core.ViewModels.Doctors
+@model DoctorFilterViewModel
+
+<div class="row js-filter">
+    <div class="col-md-12 mb-1 d-flex d-inline-flex">
+        <div class="filter-title">Filter By:</div>
+        <div class="filter-item">
+            <span class="text-danger"></span>
+            <select asp-for="DoctorTypeCode" class="form-control form-control-sm selectpicker doctortype"
+                    asp-items="@ViewBag.DoctorType as SelectList" data-placeholder="Select Doctor Type">
+                <option></option>
+            </select>
+            <span asp-validation-for="DoctorTypeCode" class="text-danger"></span>
+        </div>
+        <div class="filter-item">
+            <span class="text-danger"></span>
+            <select asp-for="DepartmentCode" class="form-control form-control-sm selectpicker department"
+                    asp-items="@ViewBag.Department as SelectList" data-placeholder="Select Department">
+                <option></option>
+            </select>
+            <span asp-validation-for="DepartmentCode" class="text-danger"></span>
+        </div>
+        <div class="filter-item">
+            <span class="text-danger"></span>
+            <select asp-for="SpecialityCode" class="form-control form-control-sm selectpicker speciality"
+                    asp-items="@ViewBag.Speciality as SelectList" data-placeholder="Select Speciality">
+                <option></option>
+            </select>
+            <span asp-validation-for="SpecialityCode" class="text-danger"></span>
+        </div>
+        <div class="filter-item">
+            <span class="text-danger"></span>
+            <select asp-for="QualificationCode" class="form-control form-control-sm selectpicker qualification"
+                    asp-items="@ViewBag.Qualification as SelectList" data-placeholder="Select Qualification">
+                <option></option>
+            </select>
+            <span asp-validation-for="QualificationCode" class="text-danger"></span>
+        </div>
+    </div>
+</div>

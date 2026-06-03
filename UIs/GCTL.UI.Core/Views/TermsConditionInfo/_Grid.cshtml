@@ -1,0 +1,45 @@
+﻿@model List<GCTL.Core.ViewModels.TermsConditionInfo.TermsConditionInfoSetupViewModel>
+
+<table id="TermsConditionInfo-grid" class="table table-striped  table-bordered table-sm table-hover table-common">
+    <thead class="row-border">
+        <tr class="table row-border">
+            <th class="text-center text-middle" style="width: 10%;">
+                Select <br /> <input type="checkbox" id="TermsConditionInfo-check-all" />
+            </th>
+            <th class="text-center text-middle" style="width: 10%;">ID</th>
+            <th class="text-center text-middle" style="width: 80%;"> Terms Condition Name</th>
+
+        </tr>
+    </thead>
+    <tbody>
+
+        @if (Model == null || !Model.Any())
+        {
+            <tr class="text-center text-middle">
+                <td colspan="8">No Data Available.</td>
+            </tr>
+        }
+        else
+        {
+            @foreach (var item in Model.OrderByDescending(x => x.TermsConditionId))
+            {
+                <tr>
+                    <td class="text-center">
+                        <input type="checkbox" class="text-center text-middle checkBox" data-id="@item.TermsConditionId" value="@item.TermsConditionId" />
+                    </td>
+                    <td>
+                        <a href="#" class='btn js-TermsConditionInfo-edit'
+                           style="text-decoration: underline; color: rebeccapurple;"
+                           data-id="@item.TermsConditionId" title="Edit">
+                            @item.TermsConditionId
+                        </a>
+                    </td>
+
+                    <td class="text-center text-middle">@item.TermsConditionName</td>
+
+                </tr>
+            }
+        }
+
+    </tbody>
+</table>

@@ -1,0 +1,94 @@
+﻿@model GCTL.UI.Core.ViewModels.SeparationInfos.SeparationInfosPageViewModel
+
+<!-- Content Header (Page header) -->
+@{
+
+    Model.PageTitle = ViewBag.Title;
+    ViewBag.Title = "Separation Entry";
+    Model.Breadcrumb = "Separation Entry";
+}
+
+
+<section class="content-header" style="padding-bottom: 0;">
+    <div class="container-fluid">
+        <div class="calloutx callout-info" style="height: 30px;">
+            <div class="row">
+                <div class="col-md-8 row">
+                    <ol class="breadcrumb float-sm-right">
+                    </ol>
+                </div>
+                <div class="col-md-4">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="/Dashboard">Home</a></li>
+                        <li class="breadcrumb-item"><a href="/SeparationInfos">Separation Info List</a></li>
+                        <li class="breadcrumb-item active"></li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+
+<section class="content">
+
+    <div class="container-fluid">
+        <div class="form-group row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header px-2">
+                        <partial name="_Toolbars" model="new ToobarModel() { Title = Model.Breadcrumb, Code = Model.Code, Name = Model.Setup.SeparationId}" />
+                    </div>
+                    
+                    <div class="card-body">
+                        <div style="padding-top: 5px;">
+                            <div class="row">
+
+                                <div class="col-lg-12">
+
+                                    <form asp-action="Setup" method="post" id="SeparationInfos-form" asp-controller="SeparationInfos">
+
+                                        <div class="js-SeparationInfos-form-container">
+
+                                            @await Html.PartialAsync("_Setup", Model.Setup)
+                                        </div>
+
+                                    </form>
+
+                                </div>
+                                
+                                <div class="col-lg-12" style="height:570px;overflow:auto;">
+
+                                    <div class="js-SeparationInfos-grid-container">
+                                                @await Html.PartialAsync("_Grid", Model.TableListData)
+                                            </div>
+                                       
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <partial name="_BottomNavigation" />
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<partial name="DeleteModal" />
+<partial name="QuickAddModal" />
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="~/js/pages/separationInfos.js"></script>
+    <script type="text/javascript">
+        var options = {
+            baseUrl: '@Url.Action("", "SeparationInfos")'
+        };
+        options.load = () => {
+        };
+
+        $.separationInfos(options);
+    </script>
+}

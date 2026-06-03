@@ -1,0 +1,58 @@
+﻿@model List<GCTL.Core.ViewModels.ExperianceInfos.ExperianceInfosSetupViewModel>
+
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive display table table-striped table-bordered">
+            <table id="ExperianceInfos-gridTT" class="table table-striped  table-bordered table-sm table-hover table-common">
+                <thead class="row-border">
+                    <tr class="table row-border">
+                        <th class="text-center text-middle" style="width: 5%;">
+                            Select <br /> <input type="checkbox" id="ExperianceInfos-check-all" />
+                        </th>
+                        <th class="text-center text-middle" style="width: 6%;"> Id</th>
+                        <th class="text-center text-middle" style="width: 20%;">Company</th>
+                        <th class="text-center text-middle" style="width: 20%;">Designation</th>
+                        <th class="text-center text-middle" style="width: 19%;">Responsibilities</th>
+                        <th class="text-center text-middle" style="width: 8%;">Salary</th>
+                        <th class="text-center text-middle" style="width: 7%;">Joining Date</th>
+                        <th class="text-center text-middle" style="width: 7%;">Resign Date</th>
+                        <th class="text-center text-middle" style="width: 8%;">Experience</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model == null || !Model.Any())
+                    {
+                        <tr class="text-center text-middle">
+                            <td colspan="13">No Data Available.</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        @foreach (var item in Model.OrderByDescending(x => x.EmpExpId))
+                        {
+                            <tr>
+                                <td class="text-center">
+                                    <input type="checkbox" data-id2="@item.EmployeeId" class="text-center text-middle checkBox" data-id="@item.EmpExpId" value="@item.EmpExpId" />
+                                </td>
+                                <td>
+                                    <a href="#" class='btn js-ExperianceInfos-edit'
+                                       style="text-decoration: underline; color: rebeccapurple;"
+                                       data-id="@item.EmpExpId" data-id2="@item.EmployeeId" title="Edit">
+                                        @item.EmpExpId
+                                    </a>
+                                </td>
+                                <td class="text-left">@item.CompanyName1</td>
+                                <td class="text-center text-middle">@item.DesignationName</td>
+                                <td class="text-center text-middle">@item.Responsibilities</td>
+                                <td class="text-center text-middle">@item.Salary</td>
+                                <td class="text-center text-middle">@item.FromDate</td>
+                                <td class="text-center text-middle">@item.ToDate</td>
+                                <td class="text-center text-middle">@item.Experience</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

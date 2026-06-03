@@ -1,0 +1,498 @@
+﻿@model GCTL.UI.Core.ViewModels.EmployeeLoanInformationReport.EmployeeLoanInformationReportSetupVM
+@{
+    Model.Breadcrumb = "EmployeeLoanInformationReport";
+    Model.PageTitle = "Employee Loan Information Report";
+}
+
+<style>
+    .multiselect-container {
+        position: relative;
+        width: 100%;
+    }
+
+    .multiselect-input {
+        cursor: pointer;
+        background-color: white;
+        border: 1px solid #ced4da;
+        border-radius: 0.375rem;
+        position: relative;
+        padding:5px;
+    }
+
+        .multiselect-input:focus {
+            border-color: #86b7fe;
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+        }
+
+    .multiselect-arrow {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        pointer-events: none;
+        transition: transform 0.2s;
+    }
+
+        .multiselect-arrow.open {
+            transform: translateY(-50%) rotate(180deg);
+        }
+
+    .multiselect-dropdown {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: white;
+        border: 1px solid #ced4da;
+        border-top: none;
+        border-radius: 0 0 0.375rem 0.375rem;
+        max-height: 250px;
+        overflow-y: auto;
+        z-index: 1000;
+        display: none;
+    }
+
+    .multiselect-search {
+        /* padding: 4px; */
+        border-bottom: 1px solid #e9ecef;
+    }
+
+        .multiselect-search input {
+            width: 100%;
+            border: 1px solid #ced4da;
+            border-radius: 0.25rem;
+            padding: 6px 10px;
+            font-size: 14px;
+        }
+
+    .multiselect-options {
+        max-height: 180px;
+        overflow-y: auto;
+    }
+
+    .multiselect-option {
+        padding: 8px 12px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 14px;
+    }
+
+        .multiselect-option:hover {
+            background-color: #f8f9fa;
+        }
+
+        .multiselect-option input[type="checkbox"] {
+            margin: 0;
+        }
+
+    .selected-items {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px;
+    }
+
+    .selected-item {
+        border: 1px solid #ccc;
+        padding: 4px 8px;
+        width: 100%;
+        border-radius: 0;
+        background-color: #f5f5f5;
+        font-size: 14px;
+    }
+
+        .selected-item .remove {
+            cursor: pointer;
+            font-weight: bold;
+            color: #666;
+        }
+
+            .selected-item .remove:hover {
+                color: #000;
+            }
+
+    .placeholder-text {
+        color: #6c757d;
+        font-size: 14px;
+        /* padding: 5px; */
+    }
+
+    .count-display {
+        color: #495057;
+        font-size: 14px;
+        font-weight: 500;
+        padding: 4px 8px;
+        border: 1px solid #eee;
+    }
+
+    @@media (min-width: 1400px) {
+        .SearchAndReportOption {
+            margin-left: 5vw;
+            font-weight: bold;
+        }
+    }
+
+    #btnPreview, #downloadReport {
+        transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        min-width: 120px;
+        min-height: 25px;
+        position: relative;
+        overflow: visible;
+    }
+
+        #btnPreview:hover,
+        #downloadReport:hover {
+            background-color: rgba(173, 255, 47, 0.2) !important;
+            color: #1e90ff !important;
+            border-color: #1e90ff !important;
+            box-shadow: 0 4px 10px rgba(30, 144, 255, 0.5) !important;
+        }
+
+
+        #btnPreview i,
+        #btnPreview span,
+        #downloadReport i,
+        #downloadReport span {
+            transition: transform 0.3s ease;
+            display: inline-block;
+            transform: scale(1);
+            margin-right: 2px;
+        }
+
+        #btnPreview:hover i,
+        #downloadReport:hover i {
+            transform: scale(1.3);
+        }
+
+    .multiselect-input {
+        position: relative;
+    }
+
+    .multiselect-arrow {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        transition: transform 0.3s ease;
+        pointer-events: none; /* so it doesn't interfere with click */
+        color: #555;
+    }
+
+        .multiselect-arrow.rotate {
+            transform: translateY(-50%) rotate(180deg);
+        }
+
+
+</style>
+<div class="container-fluid">
+    <partial name="_PageHeader" model="Model"></partial>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Pay Head Balance Report</h3>
+                </div>
+                <div class="card-body py-0">
+                    <div class="container-fluid card bg-gradient-light py-2 border mt-4">  
+                        <div class="row mb-1">                          
+                            <div class="col-12 col-md-6">
+                                <div class="d-flex justify-content-center">
+                                    <div class="col-md-3 d-flex justify-content-end align-items-center" style="padding-right:5px;">
+                                        <label for="companyId" class="form-label" style="white-space:nowrap;">
+                                            Company <span class="text-danger" style="font-size: 18px;">*</span>
+                                        </label>
+                                    </div>
+
+                                    <div class="multiselect-container col-md-6" data-field="companyId" data-multiselect="false">
+                                        <div class="multiselect-input" tabindex="0">
+                                            <div class="selected-items"></div>
+                                            <div class="placeholder-text">Select Company...</div>
+                                            <i class="fas fa-chevron-down multiselect-arrow"></i>
+                                        </div>
+                                        <div class="multiselect-dropdown">
+                                            <div class="multiselect-search">
+                                                <input type="text" placeholder="Search Company...">
+                                            </div>
+                                            <div class="multiselect-options"></div>
+                                        </div>
+                                        <input type="hidden" id="companyId" name="companyId" />
+                                    </div>
+                                </div>
+                            </div>                          
+                            <div class="col-12 col-md-6">
+                                <div class="d-flex justify-content-center">
+                                    <div class="col-md-3 d-flex justify-content-end align-items-center" style="padding-right:5px;">
+                                        <label for="loanType" class="form-label" style="white-space:nowrap;">Loan Type</label>
+                                    </div>
+                                    <div class="multiselect-container col-md-6" data-field="loanType" data-multiselect="false">
+                                        <div class="multiselect-input" tabindex="0">
+                                            <div class="selected-items"></div>
+                                            <div class="placeholder-text">Select Loan Type...</div>
+                                            <i class="fas fa-chevron-down multiselect-arrow"></i>
+                                        </div>
+                                        <div class="multiselect-dropdown">
+                                            <div class="multiselect-search">
+                                                <input type="text" placeholder="Search Loan type...">
+                                            </div>
+                                            <div class="multiselect-options"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div style="width:36.5vw;">
+                            <hr style="height:2px; color:#333; margin:4px;" />
+                        </div>
+                        <div class="row mb-1">                          
+                            <div class="col-12 col-md-6">
+                                <div class="d-flex justify-content-center">
+                                    <div class="col-md-3 d-flex justify-content-end align-items-center" style="padding-right:0px;">
+                                        <label for="employeeId" class="form-label" style="white-space:nowrap;">
+                                            Employee ID<span class="text-danger" style="font-size: 18px;">*</span>
+                                        </label>
+                                    </div>
+                                    <div class="multiselect-container col-md-6" data-field="employeeId">
+                                        <div class="multiselect-input" tabindex="0">
+                                            <div class="selected-items"></div>
+                                            <div class="placeholder-text">Select Employee...</div>
+                                            <i class="fas fa-chevron-down multiselect-arrow"></i>
+                                        </div>
+                                        <div class="multiselect-dropdown">
+                                            <div class="multiselect-search">
+                                                <input type="text" placeholder="Search Employee...">
+                                            </div>
+                                            <div class="multiselect-options"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-md-6 ">
+                                <div class="d-flex justify-content-center">
+                                    <div class="col-md-3 d-flex justify-content-end align-items-center" style="padding-right:0px;">
+                                        <label for="employeeName" class="form-label" style="white-space:nowrap;">Name:</label>
+                                    </div>
+                                    <div class="col-md-6" id="showEmployeeName"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-1">
+                            <div class="col-12 col-md-6 ">
+                                <div class="d-flex justify-content-center">
+                                    <div class="col-md-3  d-flex justify-content-end align-items-center " style="padding-right:0px;">
+                                        <label for="designationName" class="form-label" style="white-space:nowrap;">Designation:</label>
+                                    </div>
+                                    <div class="col-md-6" id="showDesignationName"></div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 ">
+                                <div class="d-flex justify-content-center">
+                                    <div class="col-md-3 d-flex justify-content-end align-items-center" style="padding-right:0px;">
+                                        <label for="departmentName" class="form-label" style="white-space:nowrap;">Department:</label>
+                                    </div>
+                                    <div class="col-md-6" id="showDepartmentName"> </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-1 pt-1" style="border-top:1px dotted #ddd">
+                            <div class="col-12 col-md-6 ">
+                                <div class="d-flex justify-content-center">
+                                    <div class="col-md-3  d-flex justify-content-end align-items-center " style="padding-right:0px;">
+                                        <label for="designationName" class="form-label" style="white-space:nowrap;"><b style="white-space:nowrap; color:#b8860b; font-weight:bold; font-size:16px;">Loan Info </b></label>
+                                    </div>
+                                    <div class="col-md-6"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-1 pt-1">                            
+                            <div class="col-12 col-md-6">
+                                <div class="d-flex justify-content-center">
+                                    <div class="col-md-3 d-flex justify-content-end align-items-center" style="padding-right:5px;">
+                                        <label for="loanTypeId" class="form-label" style="white-space:nowrap;">Loan Id</label>
+                                    </div>
+                                    <div class="multiselect-container col-md-6" data-field="loanTypeId" data-multiselect="false">
+                                        <div class="multiselect-input" tabindex="0">
+                                            <div class="selected-items"></div>
+                                            <div class="placeholder-text">Select Loan Type...</div>
+                                            <i class="fas fa-chevron-down multiselect-arrow"></i>
+                                        </div>
+                                        <div class="multiselect-dropdown">
+                                            <div class="multiselect-search">
+                                                <input type="text" placeholder="Search Loan type...">
+                                            </div>
+                                            <div class="multiselect-options"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 ">
+                                <div class="d-flex justify-content-center">
+                                    <div class="col-md-3 d-flex justify-content-end align-items-center" style="padding-right:0px;">
+                                        <label for="LoanDate" class="form-label" style="white-space:nowrap;">Loan Date:</label>
+                                    </div>
+                                    <div class="col-md-6" id="showLoanDate"> </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-1">
+                            <div class="col-12 col-md-6 ">
+                                <div class="d-flex justify-content-center">
+                                    <div class="col-md-3  d-flex justify-content-end align-items-center " style="padding-right:0px;">
+                                        <label for="loanTypeName" class="form-label" style="white-space:nowrap;">Loan Type:</label>
+                                    </div>
+                                    <div class="col-md-6" id="showloanTypeName"></div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 ">
+                                <div class="d-flex justify-content-center">
+                                    <div class="col-md-3 d-flex justify-content-end align-items-center" style="padding-right:0px;">
+                                        <label for="loanAmount" class="form-label" style="white-space:nowrap;">Loan Amount:</label>
+                                    </div>
+                                    <div class="col-md-6" id="showloanAmount"> </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-1">
+                            <div class="col-12 col-md-6 ">
+                                <div class="d-flex justify-content-center">
+                                    <div class="col-md-3  d-flex justify-content-end align-items-center " style="padding-right:0px;">
+                                        <label for="instStartEndDate" class="form-label" style="white-space:nowrap;">Inst. Start-End Date:</label>
+                                    </div>
+                                    <div class="col-md-6" id="showInstStartEndDate"></div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 ">
+                                <div class="d-flex justify-content-center">
+                                    <div class="col-md-3 d-flex justify-content-end align-items-center" style="padding-right:0px;">
+                                        <label for="noOfInstallment" class="form-label" style="white-space:nowrap;">No. Of Installment:</label>
+                                    </div>
+                                    <div class="col-md-6" id="showNoOfInstallment"> </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="container-fluid card py-2 border mt-4">
+                        <div class="row mb-1">
+                            <div class="col-12 col-md-6">
+                                <div class="d-flex justify-content-center">
+                                    <div class="col-md-3  d-flex justify-content-end align-items-center " style="padding-right:0px;">
+                                        <label for="dateFrom" class="form-label" style="white-space:nowrap;">Date From</label>
+                                    </div>
+                                    <div class="multiselect-container col-md-6" data-field="companyCodes" data-multiselect="false">
+                                        <input type="text" id="dateFrom" class="form-control flatpickr" placeholder="dd/mm/yyyy" disabled>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-md-6 ">
+                                <div class="d-flex justify-content-center">
+                                    <div class="col-md-3 d-flex justify-content-end align-items-center" style="padding-right:0px;">
+                                        <label for="toDate" class="form-label" style="white-space:nowrap;">To</label>
+                                    </div>
+                                    <div class="multiselect-container col-md-6" data-field="branchCodes">
+                                        <input type="text" id="toDate" class="form-control flatpickr" placeholder="dd/mm/yyyy" disabled>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 pt-2" style="padding-left:20px;">
+                            <h6 class="mb-1 SearchAndReportOption">Report Option:</h6>
+                            <div style="width:36.5vw;">
+                                <hr style="height:2px; color:#333; margin:0px;" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-12 mx-auto">
+                            <div class="row ">
+                                <div class="col-12 col-md-6 py-1">
+                                    <div class="row align-items-center">
+                                        <label class="col-3 col-md-4 text-right mb-0" style="padding-right: 0px;padding-left: 40px;margin-left: 20px;">Export Report Format</label>
+                                        <div class="col-9 col-md-6">
+                                            <select id="reportText" class="form-control form-control-sm">
+                                                <option value="downloadPdf">Pdf</option>
+                                                <option value="downloadExcel">Excel</option>
+                                                <option value="downloadWord">Word</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-2 col-0"></div> 
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6 py-1">
+                                    <div class="col-12 col-md-9 py-1 mx-auto">
+                                        <div class="row justify-content-end align-items-center">
+                                            <div class="col-auto px-1 d-grid">
+                                                <button id="downloadReport" class="btn btn-sm common-btn btn-outline-secondary">
+                                                    <i class="fas fa-file-export fa-export"></i> <span>Export Report</span>
+                                                </button>
+                                            </div>
+                                            <div class="col-auto px-1 d-grid">
+                                                <button id="btnPreview" class="btn btn-sm btn-outline-secondary common-btn px-4">
+                                                    <i class="fas fa-eye preview-icon" title="Preview"></i> <span>Preview</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card" id="pdfContainer" style="width:100%; height:90vh; border:1px solid #ccc;"></div>
+</div>
+
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Flatpickr CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
+
+    <!-- Flatpickr JS -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <!--word-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
+    <!-- docx library - -->
+    <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
+    <script src="https://unpkg.com/docx@8.5.0/build/index.js"></script>
+
+    <!--js pdf-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+
+    <!-- Load the js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <!-- Load the plugin -->
+    <script src="~/js/pages/EmployeeLoanInformationReport.js"></script>
+
+    <!-- Initialize the plugin -->
+    <script type="text/javascript">
+        $(function () {
+            $.patientTypes({
+                baseUrl: '@Url.Action("Index", "EmployeeLoanInformationReport")',
+                load: function () {
+                    console.log("Custom load logic called from Razor view");
+                }
+            });
+        });
+            if (typeof pdfjsLib !== 'undefined') {
+            pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
+        }
+    </script>
+}

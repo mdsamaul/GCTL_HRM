@@ -1,0 +1,112 @@
+﻿@* 
+<style>
+    /* Wrapper for tabs */
+    .tabwrap {
+        margin-bottom: 10px;
+    }
+
+    /* Basic styling for the tab container */
+    .MenuTab {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        border-bottom: 2px solid #ddd;
+        flex-wrap: wrap;
+    }
+
+        /* Styling for individual list items (tabs) */
+        .MenuTab li {
+            margin: 0 1px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* padding: 0.4vh; */
+            margin-right: 0.1rem;
+            text-decoration: none;
+            color: #4a4a4a;
+            font-weight: bold;
+            white-space: nowrap;
+            border: 1px solid lightgray;
+            border-bottom: none;
+            /* background: linear-gradient(to right, #d8f4f7, #fff); */
+            background: linear-gradient(to right, #E0E0E0, #ffffff);
+            border-radius: 10px 10px 0 0;
+            font-size: 14px;
+            text-align: center;
+            transition: background 0.3s, color 0.3s;
+        }
+
+            /* Styling for links in the tabs */
+            .MenuTab li a {
+                display: flex;
+                text-decoration: none;
+                color: #4a4a4a;
+                font-weight: bold;
+                white-space: nowrap;
+                border: none;
+                font-size: 14px;
+                text-align: center;
+                padding: 3%;
+            }
+
+            /* Active tab (selected) styling */
+            .MenuTab li.selected {
+                background: linear-gradient(to right, #ffffff, #ffffff);
+                color: #4a4a4a;
+                font-weight: bold;
+                border: 1px solid lightgray;
+                border-radius: 10px 10px 0 0;
+                background-color: white;
+                border-bottom: none;
+            }
+</style>
+
+<!-- First tab set -->
+<div class="tabwrap" style="z-index: 100; width: 100%;">
+    <ul class="MenuTab">
+        <li style="width: 16%;">
+            <a href="/HrmEmployee2/Setup?PageID=41">Personal Info</a>
+        </li>
+        <li style="width: 16%;">
+            <a href="/HrmEmployeeAdditionalInfos/Setup?PageID=41">Additional Info</a>
+        </li>
+        <li style="width: 16%;">
+            <a href="/EmployeeContactInfos/Setup?PageID=41">Contact Info</a>
+        </li>
+        <li style="width: 16%;">
+            <a href="/OfficialInfo/Setup?PageID=41">Official Info</a>
+        </li>
+        <li style="width: 16%;">
+            <a href="/EmployeeReferenceInfos/Index?PageID=41">Reference Info</a>
+        </li>
+        <li style="width: 16%;">
+            <a href="/HrmEmployeeFamilys/Index?PageID=41">Family Info</a>
+        </li>
+    </ul>
+</div>
+
+<!-- Second tab set -->
+<div class="tabwrap" style="z-index: 100; width: 100%;">
+    <ul class="MenuTab">
+        <li style="width: 16%;">
+            <a href="/HrmEmployeeEducations/Index?PageID=41">Education Info</a>
+        </li>
+        <li style="width: 16%;">
+            <a href="/HrmEmployeeQualifications/Index?PageID=41">Pro. Qualification</a>
+        </li>
+        <li style="width: 16%;">
+            <a href="/ExperianceInfos/Index?PageID=41">Experience Info</a>
+        </li>
+        <li style="width: 16%;">
+            <a href="/HrmDefBankAndNomineeInfos/Index?PageID=41">Nominee Info</a>
+        </li>
+        <li style="width: 16%;">
+            <a href="/HrmEmployeeDocumentInfos/Index?PageID=41">Document Info</a>
+        </li>
+        <li class="selected" style="width: 16%;">
+            <a href="/SeparationInfos/Index?PageID=41">Separation Info</a>
+        </li>
+    </ul>
+</div> *@

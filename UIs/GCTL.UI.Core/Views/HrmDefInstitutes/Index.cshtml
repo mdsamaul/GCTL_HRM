@@ -1,0 +1,74 @@
+﻿@model GCTL.UI.Core.ViewModels.HrmDefInstitutes.HrmDefInstitutesPageViewModel
+
+
+@{
+
+    Model.PageTitle = ViewBag.Title;
+    ViewBag.Title = "Institute Name";
+    Model.Breadcrumb = "Institute Name";
+}
+
+<!-- Content Header (Page header) -->
+<partial name="_PageHeader" model="Model" />
+
+<section class="content consistent-look">
+    <div class="container-fluid">
+        <div class="row">
+
+
+            <div class="col-md-6 pr-0">
+                <div class="card">
+                    <div class="card-header px-2">
+                        <partial name="_Toolbars" model="new ToobarModel() { Title = Model.Breadcrumb, Code = Model.Code, Name = Model.Setup.InstituteCode }" />
+                    </div>
+                    <div class="card-body px-2">
+
+                        <form asp-action="Setup" method="post" id="HrmDefInstitutes-form" asp-controller="HrmDefInstitutes">
+
+                            <div class="js-HrmDefInstitutes-form-container">
+                                <partial name="_Setup" model="Model.Setup" />
+                            </div>
+
+
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body p-2 pt-3">
+                        <div class="js-HrmDefInstitutes-grid-container">
+                            @await Html.PartialAsync("_Grid", Model.TableListData)
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+
+        <partial name="_BottomNavigation" />
+    </div>
+</section>
+<partial name="DeleteModal" />
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+        <script src="~/js/pages/hrmDefInstitutes.js"></script>
+        <script type="text/javascript">
+            var options = {
+                baseUrl: '@Url.Action("", "HrmDefInstitutes")'
+            };
+            options.load = () => {
+            };
+
+            $.hrmDefInstitutes(options);
+        </script>
+}
+

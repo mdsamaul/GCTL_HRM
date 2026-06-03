@@ -1,0 +1,55 @@
+﻿@model List<GCTL.Core.ViewModels.HrmDefDegrees.HrmDefDegreesSetupViewModel>
+
+    <table id="HrmDefDegrees-grid" class="table table-striped  table-bordered table-sm table-hover table-common">
+
+        <thead class="row-border">
+            <tr class="table row-border">
+                <th class="text-center text-middle">
+                    Select <br /> <input type="checkbox" id="HrmDefDegrees-check-all" />
+                </th>
+                <th class="text-center text-middle"> Id</th>
+                <th class="text-center text-middle"> Degree Name</th>
+                <th class="text-center text-middle">Short Name</th>
+
+            </tr>
+        </thead>
+        <tbody>
+
+            @if (Model == null || !Model.Any())
+            {
+                <tr class="text-center text-middle">
+                    <td colspan="8">No Data Available.</td>
+                </tr>
+            }
+            else
+            {
+                @foreach (var item in Model.OrderByDescending(x => x.DegreeCode))
+                {
+                    <tr>
+                        <td class="text-center">
+                            <input type="checkbox" class="text-center text-middle checkBox" data-id="@item.DegreeCode" value="@item.DegreeCode" />
+                        </td>
+                        <td>
+                            <a href="#" class='btn js-HrmDefDegrees-edit'
+                               style="text-decoration: underline; color: rebeccapurple;"
+                               data-id="@item.DegreeCode" title="Edit">
+                                @item.DegreeCode
+                            </a>
+                        </td>
+
+                        <td class="text-center text-middle">@item.DegreeName</td>
+                        <td class="text-center text-middle">@item.ShortName</td>
+
+
+                    </tr>
+                }
+            }
+
+
+        </tbody>
+    </table>
+
+@* 
+<div class="table-responsive  display table table-sm  table-striped table-bordered">
+
+    <table id="HrmDefDegrees-grid" class="table table-bordered  row-border border table-sm table-hover"> *@

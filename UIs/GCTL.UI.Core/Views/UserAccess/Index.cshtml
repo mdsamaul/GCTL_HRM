@@ -1,0 +1,75 @@
+﻿@model GCTL.UI.Core.ViewModels.UserAcesses.UserAccessPageViewModel
+@{
+    ViewBag.Title = "User Access";
+    Model.Breadcrumb = "User Access Info";
+    Model.PageTitle = ViewBag.Title;
+}
+
+<!-- Content Header (Page header) -->
+<partial name="_PageHeader" model="Model" />
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-7">
+                <div class="card card-primary">
+                    <div class="card-header" style="background-color: white; color: black; padding: 10px; font-weight: 600;">
+                        <partial name="_Toolbars" model="new ToobarModel() { Title = Model.Breadcrumb, Code = Model.Code, Name = Model.Setup.EmployeeName }" />
+                    </div>
+                    <div class="card-body" style="padding-left: 7px; padding-right: 8px;">
+                        <form asp-action="Setup" id="useraccess-form">
+                            <div class="js-useraccess-form-container">
+                                <partial name="_Setup" model="Model.Setup" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="card">
+                    <div class="card-header border-transparent">
+                        @*<h3 class="card-title">@ViewBag.Title</h3>*@
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body p-1">
+                        <div class="js-useraccess-grid-container">
+                            <partial name="_Grid" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <partial name="_BottomNavigation" />
+    </div>
+</section>
+<partial name="DeleteModal" />
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script src="~/js/pages/userAccesses.js"></script>
+    <script type="text/javascript">
+        var options = {
+            baseUrl: '@Url.Action("", "Useraccess")',
+            maxDecimalPlace: 5,
+            showNagativeFormat: true,
+        };
+        options.load = () => {
+        };
+
+        $.userAccesses(options);
+    </script>
+}
+
+
+

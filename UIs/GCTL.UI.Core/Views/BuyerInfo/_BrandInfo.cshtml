@@ -1,0 +1,147 @@
+﻿@model GCTL.UI.Core.ViewModels.BuyerInfos.BuyerInfoPageViewModel
+
+<form id="buyerBrandForm" method="post" enctype="multipart/form-data">
+    <input type="text" asp-for="Brand.Tc" hidden value=0 />
+    <div class="row col-md-12">
+        <div class="d-flex gap-3">
+            <div class="card col-md-10">
+                <!--Buyer-->
+                <div class="container-fluid mx-auto py-2">
+                    <div class="row align-items-center">
+                        <div class="col-md-6">
+                            <div class="row align-items-center">
+                                <div class="col-md-4 text-end">
+                                    Buyer
+                                </div>
+                                <div class="col-md-8">
+                                    <select asp-items="ViewBag.Buyer as SelectList" class="form-select form-select-sm brandSelect searchable-select" asp-for="Brand.BuyerId">
+                                        <option value="">--Select Buyer--</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                        </div>
+                    </div>
+                </div>
+
+                <!--Brand ID, Name-->
+                <div class="container-fluid mx-auto py-2">
+                    <div class="row align-items-center">
+                        <div class="col-md-6">
+                            <div class="row align-items-center">
+                                <div class="col-md-4 text-end">
+                                    Brand ID
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="input-group input-group-sm">
+                                        <div style="flex: 1; min-width: 0;">
+                                            <input type="text" asp-for="Brand.BrandId" class="form-control form-control-sm" aria-label="BrandId" placeholder="Enter @Html.DisplayNameFor(m => m.Brand.BrandId)" />
+                                        </div>
+                                        <button type="button" id="Buyer_BrandSearch" class="btn btn-outline-secondary btn-sm">
+                                            <i class="fas fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row align-items-center">
+                                <div class="col-md-4 text-end">
+                                    Brand Name<span class="text-danger">*</span>
+                                </div>
+                                <div class="col-md-8">
+                                    <input type="text" asp-for="Brand.Name" class="form-control form-control-sm" aria-label="Name" required placeholder="Enter @Html.DisplayNameFor(m => m.Brand.Name)" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--Logo/Monogram-->
+                <div class="container-fluid mx-auto py-2">
+                    <div class="row align-items-center">
+                        <div class="col-md-6">
+                            <div class="row align-items-center">
+                                <div class="col-md-4 text-end">
+                                    Logo/Monogram
+                                </div>
+                                <div class="col-md-8">
+                                    <input type="file" asp-for="Brand.logoPhoto" class="form-control form-control-sm" aria-label="Logo/Monogram" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                        </div>
+                    </div>
+                </div>
+
+                <!--Details-->
+                <div class="container-fluid mx-auto py-2">
+                    <div class="row align-items-center">
+                        <div class="col-md-12">
+                            <div class="row align-items-center">
+                                <div class="col-md-2 text-end">
+                                    Details
+                                </div>
+                                <div class="col-md-10">
+                                    <textarea asp-for="Brand.Detail" class="form-control form-control-sm" rows="1" placeholder="Enter @Html.DisplayNameFor(m => m.Brand.Detail)"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <partial name="_DateInfo" model='"Brand"' />
+
+            </div>
+
+
+            <div class="card col-md-2 shadow-sm p-0 border-0">
+                <div class="position-relative mx-auto rounded-3 border border-2"
+                     style="width: 100%; padding-bottom: 100%; overflow: hidden;">
+                    <img id="buyerBrandPhotoPreview"
+                         src=""
+                         alt="Buyer Photo"
+                         class="position-absolute top-0 start-0 w-100 h-100 rounded-3"
+                         style="object-fit: contain; object-position: center; display: none; transition: opacity 0.3s ease;">
+                    <div id="photoBrandPlaceholder"
+                         class="position-absolute top-50 start-50 translate-middle text-center text-muted w-100 px-3">
+                        <i class="fas fa-image mb-2" style="font-size: 2.5rem; opacity: 0.3; color: #adb5bd;"></i>
+                        <p class="mb-0 small fw-semibold" style="letter-spacing: 0.3px;">No Photo</p>
+                    </div>
+                    <button type="button"
+                            id="btnDeleteBrandPhoto"
+                            class="btn btn-light rounded-circle position-absolute photoRemove shadow"
+                            style="top: 10px; right: 10px; display: none; width: 32px; height: 32px; padding: 0; line-height: 1; transition: all 0.2s ease; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(8px); border: none;">
+                        <i class="fas fa-times text-danger" style="font-size: 14px; transition: color 0.2s ease;"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<div class="row col-md-12">
+    <div class="d-flex">
+        <div class="card col-md-10 py-2">
+            <table id="buyer-brand-grid" class="table table-bordered table-striped table-hover align-middle mb-0">
+
+                <thead>
+                    <tr class="text-center">
+                        <th class="text-center no-sort" style="width: 10%; padding-left: 0; padding-right: 0;">
+                            <label for="buyer-brand-check-all">Select</label><br />
+                            <input type="checkbox" id="buyer-brand-check-all">
+                        </th>
+                        <th class="text-center align-middle" style="width: 15%;">ID</th>
+                        <th class="text-center align-middle" style="width: 15%;">Buyer Name</th>
+                        <th class="text-center align-middle" style="width: 15%;">Brand Name</th>
+                        <th class="text-center align-middle" style="width: 15%;">Logo</th>
+                        <th class="text-center align-middle" style="width: 30%;">Details</th>
+                    </tr>
+                </thead>
+                <tbody id="buyer-brand-grid-body"></tbody>
+            </table>
+        </div>
+    </div>
+</div>

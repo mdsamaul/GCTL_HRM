@@ -1,0 +1,62 @@
+﻿@model GCTL.Core.ViewModels.DoctorTypes.DoctorTypeSetupViewModel
+
+<div style="padding-top: 10px;">
+    <div class="row">
+        <div class="col-lg-6">
+            <span id="message"></span>
+        </div>
+        <div class="col-lg-6">
+        </div>
+    </div>
+    <div class="form-group row">
+        <input type="hidden" id="lastCode" />
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="Ldate" />
+        <input type="hidden" asp-for="ModifyDate" />
+        <div class="col-lg-6">
+            <label asp-for="DoctorTypeCode">Doctor Type Id</label>
+            <div class="input-group input-group-sm">
+                <input asp-for="DoctorTypeCode" class="form-control form-control-sm js-doctortype-code" readonly="readonly" />
+            </div>
+        </div>       
+    </div>
+    <div class="form-group row">
+        <div class="col-lg-6">
+            <label asp-for="DoctorTypeName">Doctor Type</label>
+            <span class="text-danger">*</span>
+            <input asp-for="DoctorTypeName" class="form-control form-control-sm js-doctortype-check-availability" placeholder="Enter Doctor Type" />
+            <span asp-validation-for="DoctorTypeName" class="text-danger" />
+        </div>
+        <div class="col-lg-6">
+            <label asp-for="DoctorTypeShortName">Short Name</label>
+            <input asp-for="DoctorTypeShortName" class="form-control form-control-sm" placeholder="Enter Short Name" />
+        </div>
+    </div>
+    @if (Model.Id > 0)
+    {
+        <hr />
+        <div class="form-group row">
+            <div class="col-lg-6">
+                @if (Model.Ldate.HasValue)
+                {
+                    <label>Creation Date: </label>
+                    <label>@Model.Ldate.Value.ToString(ApplicationConstants.DateFormat)</label>
+                }
+            </div>
+            <div class="col-lg-6">
+                @if (Model.ModifyDate.HasValue)
+                {
+                    <label>Last Update Date: </label>
+                    <label>@Model.ModifyDate.Value.ToString(ApplicationConstants.DateFormat)</label>
+                }
+            </div>
+        </div>
+    }
+</div>
+<div class="row no-print" style="margin-top: 9px;">
+    <div class="col-12">
+        <button type="button" class="btn btn-default success-btn btn-common btn-circle float-right js-doctortype-save" data-id="@Model.DoctorTypeId">
+           <i class="fas fa-save"></i> Save
+        </button>
+    </div>
+</div>

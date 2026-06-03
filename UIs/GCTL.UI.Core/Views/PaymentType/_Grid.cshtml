@@ -1,0 +1,47 @@
+﻿@model List<GCTL.Core.ViewModels.PaymentType.PaymentTypeSetupViewModel>
+
+<table id="PaymentType-grid" class="table table-striped  table-bordered table-sm table-hover table-common">
+    <thead class="row-border">
+        <tr class="table row-border">
+            <th class="text-center text-middle" style="width: 10%;">
+                Select <br /> <input type="checkbox" id="PaymentType-check-all" />
+            </th>
+            <th class="text-center text-middle" style="width: 10%;">ID</th>
+            <th class="text-center text-middle" style="width: 50%;"> Payment Type</th>
+            <th class="text-center text-middle" style="width: 30%;"> Short Name</th>
+
+        </tr>
+    </thead>
+    <tbody>
+
+        @if (Model == null || !Model.Any())
+        {
+            <tr class="text-center text-middle">
+                <td colspan="8">No Data Available.</td>
+            </tr>
+        }
+        else
+        {
+            @foreach (var item in Model.OrderByDescending(x => x.PaymentTypeId))
+            {
+                <tr>
+                    <td class="text-center">
+                        <input type="checkbox" class="text-center text-middle checkBox" data-id="@item.PaymentTypeId" value="@item.PaymentTypeId" />
+                    </td>
+                    <td>
+                        <a href="#" class='btn js-PaymentType-edit'
+                           style="text-decoration: underline; color: rebeccapurple;"
+                           data-id="@item.PaymentTypeId" title="Edit">
+                            @item.PaymentTypeId
+                        </a>
+                    </td>
+
+                    <td class="text-center text-middle">@item.PaymentType</td>
+                    <td class="text-center text-middle">@item.ShortName</td>
+
+                </tr>
+            }
+        }
+
+    </tbody>
+</table>

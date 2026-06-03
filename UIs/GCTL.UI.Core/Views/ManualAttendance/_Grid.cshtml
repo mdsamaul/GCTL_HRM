@@ -1,0 +1,82 @@
+﻿@* @model List<GCTL.Core.ViewModels.ManualAttendance.ManualAttendanceSetupViewModel>
+
+
+<div class="row border-box" style="border: 1px solid; border-color: lightgray; padding:10px; border-radius:5px; position:relative; margin:8px;">
+	<div class="col-sm-12">
+		<div class="table-responsive">
+			<table class="table table-striped table-bordered table-hover table-sm table-common manualAttendanceTable">
+				<thead>
+					<tr>
+						<th class="text-center text-middle align-middle" style="width: 5%;">
+							Select<br />
+							<input type="checkbox" id="manualAttendance-check-all" />
+						</th>
+						<th class="text-center text-middle align-middle" style="width: 5%;">ID</th>
+						<th class="text-center text-middle align-middle">Employee ID</th>
+						<th class="text-center text-middle align-middle">Name</th>
+						<th class="text-center text-middle align-middle">Attendance Type</th>
+						<th class="text-center text-middle align-middle">Date</th>
+						<th class="text-center text-middle align-middle">Time</th>
+						<th class="text-center text-middle align-middle">Remarks</th>
+						<th class="text-center text-middle align-middle">Entry User</th>
+					</tr>
+				</thead>
+				<tbody>
+					@if (Model != null || Model.Any())
+					{
+						@foreach (var item in Model)
+						{
+							<tr class="text-center text-middle">
+								<td>
+									<input type="checkbox" class="text-center text-middle checkBox" data-id="@item.ManualCode" value="@item.ManualCode" />
+								</td>
+								<td>@item.ManualCode</td>
+								<td>@item.EmployeeId</td>
+								<td>@item.EmployeeFullName</td>
+								<td>@item.AttendanceTypeName</td>
+								<td>
+									@(DateTime.TryParse(item.DateFrom.ToString(), out var parsedDate) ? parsedDate.ToString("dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture) : "-")
+								</td>
+								<td>
+									@(DateTime.TryParse(item.EntryTime.ToString(), out var parsedTime) ? parsedTime.ToString("hh:mm:ss tt", System.Globalization.CultureInfo.InvariantCulture) : "-")
+								</td>
+								<td>@item.Remarks</td>
+								<td>@item.Luser</td>
+							</tr>
+						}
+					}
+					else
+					{
+						<tr>
+							<td colspan="9" class="text-middle text-center">No data available!</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div> *@
+
+@model object
+
+<div class="row border-box" style="border: 1px solid; border-color: lightgray; padding:10px; border-radius:5px; position:relative; margin:8px;">
+	<div class="col-sm-12">
+		<div class="table-responsive">
+			<table id="manualAttendanceTable" class="table table-striped table-bordered table-hover table-sm table-common">
+				<thead>
+					<tr>
+						<th class="text-center" style="width: 5%;">Select</th>
+						<th class="text-center" style="width: 5%;">ID</th>
+						<th class="text-center">Employee ID</th>
+						<th class="text-center">Name</th>
+						<th class="text-center">Attendance Type</th>
+						<th class="text-center">Date</th>
+						<th class="text-center">Time</th>
+						<th class="text-center">Remarks</th>
+						<th class="text-center">Entry User</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+	</div>
+</div>

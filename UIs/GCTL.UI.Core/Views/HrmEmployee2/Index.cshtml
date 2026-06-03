@@ -1,0 +1,82 @@
+﻿@model GCTL.UI.Core.ViewModels.HrmEmployees2.HrmEmployee2PageViewModel
+ @{
+    ViewBag.Title = "Employee Information List";
+    Model.PageTitle = ViewBag.Title;
+    Model.Breadcrumb = "Employee Information System";
+} 
+
+<!-- Content Header (Page header) -->
+<section class="content-header" style="padding-bottom: 0;">
+    <div class="container-fluid">
+        <div class="calloutx callout-info" style="height: 35px;">
+            <div class="row mb-2">
+                <div class="col-md-8 row">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class=""><a href="@Url.Action("Setup", "HrmEmployee2")" class="linkbutton1 btn btn-sm btn-success" style="font-size:13px; text-decoration: none;"> <i class="fa fa-plus"></i> Add Employee </a></li>
+                    </ol>
+                </div>
+                <div class="col-md-4">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="/Dashboard">Home</a></li>
+                        <li class="breadcrumb-item active">Employee Info</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                   @*  <div class="card-header px-2">
+                        @await Html.PartialAsync("_TabButton")
+                    </div> *@
+                    <div class="card-header border-transparent">
+                        <h3 class="card-title">@ViewBag.Title</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body p-2 pt-3">
+                       
+                        <div class="js-HrmEmployee2-grid-container">
+
+                            @await Html.PartialAsync("_Grid", Model.ListTableData)
+                          
+                        </div>
+                       
+                    </div>
+                </div>
+            </div>
+        </div>
+        <partial name="_BottomNavigation" />
+    </div>
+</section>
+<partial name="DeleteModal" />
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script src="~/js/pages/hrmEmployee2.js"></script>
+    <script type="text/javascript">
+        var options = {
+            baseUrl: '@Url.Action("", "HrmEmployee2")'
+        };
+        options.load = () => {
+        };
+
+        $.hrmEmployee2(options);
+    </script>
+}
+
+
+
+
+
+
+

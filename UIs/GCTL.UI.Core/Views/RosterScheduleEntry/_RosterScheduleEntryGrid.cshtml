@@ -1,0 +1,137 @@
+﻿
+<style>
+    /* Main table styling */
+    #rosterScheduleEntry-grid-show {
+        width: 100% !important;
+        table-layout: fixed;
+    }
+
+    /* Make sure header takes full width */
+    .dataTables_scrollHeadInner,
+    .dataTables_scrollHeadInner table {
+        width: 100% !important;
+    }
+
+    /* Common cell styling */
+    #rosterScheduleEntry-grid-show thead th,
+    #rosterScheduleEntry-grid-show tbody td {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        text-align: center;
+    }
+
+    /* Individual column widths */
+    #rosterScheduleEntry-grid-show th:nth-child(1),
+    #rosterScheduleEntry-grid-show td:nth-child(1) {
+        width: 60px !important;
+        min-width: 60px;
+    }
+
+    #rosterScheduleEntry-grid-show th:nth-child(2),
+    #rosterScheduleEntry-grid-show td:nth-child(2) {
+        width: 100px !important;
+        min-width: 100px;
+    }
+
+    #rosterScheduleEntry-grid-show th:nth-child(3),
+    #rosterScheduleEntry-grid-show td:nth-child(3) {
+        width: 150px !important;
+        min-width: 150px;
+    }
+
+    #rosterScheduleEntry-grid-show th:nth-child(4),
+    #rosterScheduleEntry-grid-show td:nth-child(4) {
+        width: 120px !important;
+        min-width: 120px;
+    }
+
+    /* Left align text in name and designation columns */
+    #rosterScheduleEntry-grid-show td:nth-child(3),
+    #rosterScheduleEntry-grid-show td:nth-child(4) {
+        text-align: left;
+    }
+
+    #rosterScheduleEntry-grid-show th:nth-child(5),
+    #rosterScheduleEntry-grid-show td:nth-child(5) {
+        width: 80px !important;
+        min-width: 80px;
+    }
+
+    #rosterScheduleEntry-grid-show th:nth-child(6),
+    #rosterScheduleEntry-grid-show td:nth-child(6) {
+        width: 80px !important;
+        min-width: 80px;
+    }
+
+    #rosterScheduleEntry-grid-show th:nth-child(7),
+    #rosterScheduleEntry-grid-show td:nth-child(7) {
+        width: 150px !important;
+        min-width: 150px;
+    }
+
+    #rosterScheduleEntry-grid-show th:nth-child(8),
+    #rosterScheduleEntry-grid-show td:nth-child(8) {
+        width: 120px !important;
+        min-width: 120px;
+    }
+
+    #rosterScheduleEntry-grid-show th:nth-child(9),
+    #rosterScheduleEntry-grid-show td:nth-child(9) {
+        width: 100px !important;
+        min-width: 100px;
+    }
+
+    /* Style for clickable roster IDs */
+    #rosterScheduleEntry-grid-body-show a[data-id] {
+        color: blue;
+        text-decoration: underline;
+        cursor: pointer;
+    }
+
+        #rosterScheduleEntry-grid-body-show a[data-id]:hover {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+    /* Responsive styling */
+    @@media screen and (max-width: 767px) {
+        .table-responsive
+
+    {
+        border: 0;
+        overflow-x: auto;
+    }
+
+    #rosterScheduleEntry-grid-show {
+        width: 100% !important;
+        margin-bottom: 15px;
+        overflow-y: hidden;
+    }
+
+    }
+</style>
+<div class="table-responsive">
+    <div class="py-2">
+        <h5>Roster Schedule Entry Data:</h5>
+    </div>
+    <table id="rosterScheduleEntry-grid-show" class="table table-striped table-bordered table-sm table-common" style="width:100%">
+        <thead>
+            <tr>
+                <th class="text-center text-middle">Roster ID</th>
+                <th class="text-center text-middle">Employee ID</th>
+                <th class="text-center text-middle">Name</th>
+                <th class="text-center text-middle">Designation</th>
+                <th class="text-center text-middle">Date</th>
+                <th class="text-center text-middle">Day</th>
+                <th class="text-center text-middle">Shift</th>
+                <th class="text-center text-middle">Remarks</th>
+                <th class="text-center text-middle">Entry User</th>
+            </tr>
+        </thead>
+        <tbody id="rosterScheduleEntry-grid-body-show" class="w-100">
+            <!-- Data will be injected here by DataTables -->
+        </tbody>
+    </table>
+</div>

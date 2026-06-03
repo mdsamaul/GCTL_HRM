@@ -1,0 +1,945 @@
+﻿@model GCTL.Core.ViewModels.SupplierInformation.SupplierInformationSetupViewModel
+
+<style>
+
+    .form-group-con label {
+        margin-right: .5rem;
+        min-width: 150px;
+    }
+
+    .form-group-con input {
+        flex: 1;
+        max-width: 100%;
+    }
+
+    .input-wrapper {
+        position: relative;
+        width: 100%;
+    }
+
+    .input-wrapper span {
+        width: 100%;
+    }
+
+    .required::after {
+        content: '*';
+        color: red;
+        margin-left: 5px;
+    }
+
+    .bank-fieldset {
+        border: 2px solid #ccc;
+        border-radius: 8px;
+        padding: 15px;
+        margin: 20px 0;
+        background: #fff;
+    }
+
+    .bank-fieldset legend {
+        font-weight: bold;
+        font-size: 1.1rem;
+        padding: 0 10px;
+    }
+
+    .bank-form-row {
+        display: flex;
+        align-items: flex-end;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+
+    .form-group-con {
+        display: flex;
+        flex-direction: column;
+        min-width: 24vw;
+    }
+
+    .form-group-con label {
+        font-size: 0.9rem;
+        margin-bottom: 4px;
+    }
+
+    .input-with-icon {
+        position: relative;
+    }
+
+    .input-with-icon select {
+        width: 100%;
+        padding-right: 30px;
+        padding-left: 8px;
+        height: 34px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    .input-with-icon .add-icon {
+        position: absolute;
+        right: 8px;
+        top: 6px;
+        font-size: 18px;
+        color: #007bff;
+        cursor: pointer;
+    }
+
+    #accountNo {
+        height: 34px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 0 8px;
+    }
+
+    .form-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin: auto;
+    }
+
+   .form-actions button {
+       border: none;
+       background: transparent;
+       cursor: pointer;
+       font-size: 18px;
+       color: #555;
+       transition: color 0.2s;
+   }
+
+   .form-actions button:hover {
+       color: #007bff;
+   }
+
+    /* Container for select and button */
+    .input-group {
+        display: flex;
+        align-items: center;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        overflow: hidden;
+    }
+
+     /* Dropdown styling */
+     .input-group select {
+         flex: 1;
+         border: none;
+         padding: 6px 8px;
+         height: 34px;
+         outline: none;
+     }
+
+     /* Button styling */
+     .input-group .add-btn {
+         background-color: #fff;
+         color: #333;
+         border: none;
+         padding: 0 12px;
+         height: 34px;
+         cursor: pointer;
+         font-size: 18px;
+         border: 1px solid #ddd;
+         transition: background 0.3s;
+     }
+
+     .input-group .add-btn:hover {
+         background-color: #333;
+         color: #fff;
+     }
+
+    .select2-selection--single {
+        border-top-width: 0px !important;
+        border-bottom-width: 0px !important;
+        border-right-width: 0px !important;
+        border-left-width: 0px !important;
+    }
+
+    .multi-select-dropdown {
+        position: relative;
+    }
+
+    .multi-select-button {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: white;
+        border: 1px solid #ced4da;
+        border-radius: 0.375rem;
+        padding: 0.375rem 0.75rem;
+        cursor: pointer;
+        min-height: 31px;
+    }
+
+    .multi-select-button:hover {
+        border-color: #86b7fe;
+    }
+
+    .multi-select-dropdown-menu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        z-index: 1000;
+        background: white;
+        border: 1px solid #ced4da;
+        border-radius: 0.375rem;
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        max-height: 300px;
+        overflow-y: auto;
+        overflow-x: auto;
+        min-width: 100%;
+        width: max-content;
+        max-width: 90vw;
+    }
+
+    .contact-table {
+        width: 100%;
+        margin: 0;
+        min-width: 700px;
+        table-layout: auto;
+    }
+
+     .contact-table th {
+         background-color: #f8f9fa;
+         font-weight: 600;
+         font-size: 12px;
+         padding: 8px 10px;
+         border-bottom: 2px solid #dee2e6;
+         position: sticky;
+         top: 0;
+         z-index: 10; 
+         white-space: nowrap;
+         text-align: left;
+     }
+
+     .contact-table td {
+         padding: 8px 10px;
+         font-size: 12px;
+         border-bottom: 1px solid #f0f0f0;
+         white-space: nowrap;
+         overflow: hidden;
+         text-overflow: ellipsis;
+         max-width: 0;
+     }
+
+    .contact-table td:first-child {
+        width: 40px;
+        max-width: 40px;
+        text-align: center;
+    }
+
+    .contact-table td:nth-child(2) {
+        min-width: 120px;
+        max-width: 200px;
+    }
+
+    .contact-table td:nth-child(3) {
+        min-width: 120px;
+        max-width: 200px;
+    }
+
+    .contact-table td:nth-child(4) {
+        min-width: 100px;
+        max-width: 120px;
+    }
+
+    .contact-table td:nth-child(5) {
+        min-width: 150px;
+        max-width: 200px;
+    }
+
+    .contact-table tbody tr:hover {
+        background-color: #f8f9fa;
+    }
+
+    .contact-checkbox {
+        margin: 0;
+    }
+
+    .selected-count {
+        color: #6c757d;
+        font-size: 14px;
+    }
+
+    .clear-selection {
+        background: none;
+        border: none;
+        color: #6c757d;
+        cursor: pointer;
+        padding: 2px;
+    }
+
+    .clear-selection:hover {
+        color: #dc3545;
+    }
+
+    .loading-spinner {
+        text-align: center;
+        padding: 20px;
+        color: #6c757d;
+    }
+
+    .multi-select-dropdown-menu.show-below {
+        top: 100%;
+        margin-top: 2px;
+    }
+
+    .multi-select-dropdown-menu.show-above {
+        bottom: 100%;
+        margin-bottom: 2px;
+        top: auto;
+    }
+
+    .multi-select-dropdown-menu.show-above .contact-table thead th {
+        position: sticky;
+        bottom: 0;
+        top: auto;
+    }
+
+    .contact-table thead th {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        background-color: #f8f9fa;
+        border-bottom: 2px solid #dee2e6;
+    }
+
+</style>
+
+<div style="padding-top:1px">
+    <div class="row">
+        <div class="col-lg-6">
+            <span id="message"></span>
+        </div>
+        <div class="col-lg-6">
+        </div>
+    </div>
+
+    <div style="padding-top:1px">
+        <div class="row">
+            <div class="col-lg-12">
+                <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="Ldate" />
+                <input type="hidden" asp-for="ModifyDate" />
+                <input type="hidden" asp-for="Tc" value="0" />
+
+                <div class="card">
+                    <div class="card-body">
+
+                        <div class="row pe-2 mb-2">
+                            <div class="col-12 col-md-6">
+                                <div class="row">
+                                    <div class="col-12 col-md-4 text-right p-0">
+                                        <label asp-for="SupplierId" class="form-label col-form-label-sm d-flex justify-content-end" style="white-space:nowrap;">Supplier Id</label>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="input-wrapper">
+                                            <input asp-for="SupplierId" type="text" class="form-control form-control-sm js-SupplierId-code" readonly />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="row">
+                                    <div class="col-12 col-md-4 text-right p-0">
+                                        <label asp-for="SupplierName" class="form-label col-form-label-sm d-flex justify-content-end " style="white-space:nowrap;">
+                                            Supplier Name
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="input-wrapper">
+                                            <input asp-for="SupplierName" class="form-control form-control-sm" type="text" autofocus placeholder="Enter Supplier Name" tabindex="1" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row pe-2 mb-2">
+                            <div class="col-12 col-md-6">
+                                <div class="row">
+                                    <div class="col-12 col-md-4 text-right p-0">
+                                        <label asp-for="SupplierCode" class="form-label col-form-label-sm d-flex justify-content-end " style="white-space:nowrap;">
+                                            Supplier Code
+                                        </label>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="input-wrapper">
+                                            <input asp-for="SupplierCode" class="form-control form-control-sm" type="text" placeholder="Enter Supplier Code" tabindex="2" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="row">
+                                    <div class="col-12 col-md-4 text-end p-0">
+                                        <label asp-for="SupplierCategoryId"
+                                               class="form-label col-form-label-sm d-flex justify-content-end hannan"
+                                               style="white-space: nowrap;">
+                                            Supplier Category
+                                        </label>
+                                    </div>
+
+                                    <div class="col-12 col-md-6">
+                                        <div class="input-group">
+                                            <!-- Dropdown -->
+                                            <select asp-for="SupplierCategoryId" data-placeholder="-- Select Supplier Category --"
+                                                    class="form-control form-control-sm selectpickerSup js-"
+                                                    tabindex="3"
+                                                    asp-items="@ViewBag.SupplierCatDD as SelectList">
+                                                <option value=""></option> <!-- Default option -->
+                                            </select>
+                                            <!-- Add Button -->
+                                            <button type="button"
+                                                    class="btn btn-outline-secondary ms-2 js-quick-add input-group-textc"
+                                                    data-url="@Url.Action("Index", "SupplierCategory")"
+                                                    data-target="#SupplierCategoryId"
+                                                    data-reload-url="@Url.Action("GetSupplierCata", "Cascading")"
+                                                    data-title="Supplier Category">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row pe-2 mb-2">
+                            <div class="col-12 col-md-6">
+                                <div class="row">
+                                    <div class="col-12 col-md-4 text-right p-0">
+                                        <label asp-for="SupplierOriginId" class="form-label col-form-label-sm d-flex justify-content-end hannan" style="white-space:nowrap;">Supplier Type/ Origin</label>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="input-group">
+                                            <!-- Dropdown -->
+                                            <select asp-for="SupplierOriginId" data-placeholder="-- Select Supplier Type/ Origin --"
+                                                    class="form-control form-control-sm selectpickerSup js-"
+                                                    tabindex="4"
+                                                    asp-items="@ViewBag.SupplierTypeDD as SelectList">
+                                                <option value=""></option> <!-- Default option -->
+                                            </select>
+                                            <!-- Add Button -->
+                                            <button type="button"
+                                                    class="btn btn-outline-secondary ms-2 js-quick-add input-group-textc"
+                                                    data-url="@Url.Action("Index", "SupplierOrigin")"
+                                                    data-target="#SupplierOriginId"
+                                                    data-reload-url="@Url.Action("GetSupplierOrgin", "Cascading")"
+                                                    data-title="Supplier Origin">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="row">
+                                    <div class="col-12 col-md-4 text-right p-0">
+                                        <label asp-for="CompanyId" class="form-label col-form-label-sm d-flex justify-content-end hannan" style="white-space:nowrap;">Supplier Comapny</label>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="input-group">
+                                            <!-- Dropdown -->
+                                            <select asp-for="CompanyId" data-placeholder="-- Select Supplier Company --"
+                                                    class="form-control form-control-sm selectpickerSup js-"
+                                                    tabindex="5"
+                                                    asp-items="@ViewBag.SupplierComDD as SelectList">
+                                                <option value=""></option> <!-- Default option -->
+                                            </select>
+                                            <!-- Add Button -->
+                                            <button type="button"
+                                                    class="btn btn-outline-secondary js-quick-add"
+                                                    data-url="@Url.Action("Index", "CompanyInfo")"
+                                                    data-target="#CompanyId"
+                                                    data-reload-url="@Url.Action("GetCompanyeee", "Cascading")"
+                                                    data-title="Supplier Company">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row pe-2 mb-2">
+                            <div class="col-12 ">
+                                <div class="row">
+                                    <div class="col-12 col-md-2 text-right p-0">
+                                        <label asp-for="Address" class="form-label col-form-label-sm d-flex justify-content-end hannan" style="white-space:nowrap;">Head Office Address </label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <div class="input-wrapper">
+                                            <textarea asp-for="Address" class="form-control form-control-sm" rows="1" placeholder="Enter Head Office Address" tabindex="6"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row pe-2 mb-2">
+                            <div class="col-12 ">
+                                <div class="row">
+                                    <div class="col-12 col-md-2 text-right p-0">
+                                        <label asp-for="LocalOfficeAddress" class="form-label col-form-label-sm d-flex justify-content-end hannan" style="white-space:nowrap;">Local Office Address </label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <div class="input-wrapper">
+                                            <textarea asp-for="LocalOfficeAddress" class="form-control form-control-sm" rows="1" placeholder="Enter Local Office Address" tabindex="7"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row pe-2 mb-2">
+                            <div class="col-12 col-md-6">
+                                <div class="row">
+                                    <div class="col-12 col-md-4 text-right p-0">
+                                        <label asp-for="CountryId" class="form-label col-form-label-sm d-flex justify-content-end hannan" style="white-space:nowrap;">Supplier Country</label>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="input-group">
+                                            <!-- Dropdown -->
+                                            <select asp-for="CountryId" data-placeholder="-- Select Supplier Country --"
+                                                    class="form-control form-control-sm selectpickerSup js-"
+                                                    tabindex="8"
+                                                    asp-items="@ViewBag.SCountryDD as SelectList">
+                                                <option value=""></option> <!-- Default option -->
+                                            </select>
+                                            <!-- Add Button -->
+                                            <button type="button"
+                                                    class="btn btn-outline-secondary js-quick-add"
+                                                    data-url="@Url.Action("Index", "Country")"
+                                                    data-target="#CountryId"
+                                                    data-reload-url="@Url.Action("GetCountrys", "Cascading")"
+                                                    data-title="Supplier Country">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="row">
+                                    <div class="col-12 col-md-4 text-right p-0">
+                                        <label asp-for="City" class="form-label col-form-label-sm d-flex justify-content-end " style="white-space:nowrap;">
+                                            City
+                                        </label>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="input-wrapper">
+                                            <input asp-for="City" class="form-control form-control-sm" type="text" placeholder="Enter City" tabindex="9" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row pe-2 mb-2">
+                            <div class="col-12 col-md-6">
+                                <div class="row">
+                                    <div class="col-12 col-md-4 text-right p-0">
+                                        <label asp-for="State" class="form-label col-form-label-sm d-flex justify-content-end hannan" style="white-space:nowrap;">
+                                            State/ province
+                                        </label>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="input-wrapper">
+                                            <input asp-for="State" class="form-control form-control-sm" type="text" placeholder="Enter State/ province" tabindex="10" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="row">
+                                    <div class="col-12 col-md-4 text-right p-0">
+                                        <label asp-for="ZipCode" class="form-label col-form-label-sm d-flex justify-content-end " style="white-space:nowrap;">
+                                            Zip/Postal Code
+                                        </label>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="input-wrapper">
+                                            <input asp-for="ZipCode" class="form-control form-control-sm" type="text" placeholder="Enter Zip/Postal Code" tabindex="11" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row pe-2 mb-2">
+                            <div class="col-12 col-md-6">
+                                <div class="row">
+                                    <div class="col-12 col-md-4 text-right p-0">
+                                        <label asp-for="Phone" class="form-label col-form-label-sm d-flex justify-content-end hannan" style="white-space:nowrap;">
+                                            Phone
+                                        </label>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="input-wrapper">
+                                            <input asp-for="Phone" class="form-control form-control-sm" type="text" placeholder="Enter Phone" tabindex="12" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="row">
+                                    <div class="col-12 col-md-4 text-right p-0">
+                                        <label asp-for="Fax" class="form-label col-form-label-sm d-flex justify-content-end " style="white-space:nowrap;">
+                                            Fax
+                                        </label>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="input-wrapper">
+                                            <input asp-for="Fax" class="form-control form-control-sm" type="text" placeholder="Enter Fax" tabindex="13" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row pe-2 mb-2">
+                            <div class="col-12 col-md-6">
+                                <div class="row">
+                                    <div class="col-12 col-md-4 text-right p-0">
+                                        <label asp-for="Email" class="form-label col-form-label-sm d-flex justify-content-end hannan" style="white-space:nowrap;">
+                                            Email
+                                        </label>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="input-wrapper">
+                                            <input asp-for="Email" class="form-control form-control-sm" type="text" placeholder="Enter Email" tabindex="14" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="row">
+                                    <div class="col-12 col-md-4 text-right p-0">
+                                        <label asp-for="Url" class="form-label col-form-label-sm d-flex justify-content-end " style="white-space:nowrap;">
+                                            Url
+                                        </label>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="input-wrapper">
+                                            <input asp-for="Url" class="form-control form-control-sm" type="text" placeholder="Enter Url" tabindex="15" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row pe-2 mb-2">
+                            <div class="col-12 col-md-6">
+                                <div class="row">
+                                    <div class="col-12 col-md-4 text-right p-0">
+                                        <label asp-for="Bin" class="form-label col-form-label-sm d-flex justify-content-end hannan" style="white-space:nowrap;">
+                                            Bin
+                                        </label>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="input-wrapper">
+                                            <input asp-for="Bin" class="form-control form-control-sm" type="text" placeholder="Enter Bin" tabindex="16" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="row">
+                                    <div class="col-12 col-md-4 text-right p-0">
+                                        <label asp-for="VatregNo" class="form-label col-form-label-sm d-flex justify-content-end " style="white-space:nowrap;">
+                                            Vat Reg No.
+                                        </label>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="input-wrapper">
+                                            <input asp-for="VatregNo" class="form-control form-control-sm" type="text" placeholder="Enter Vat Reg No." tabindex="17" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row pe-2 mb-2">
+                            <div class="col-12 col-md-6">
+                                <div class="row">
+                                    <div class="col-12 col-md-4 text-right p-0">
+                                        <label asp-for="SupplierTin" class="form-label col-form-label-sm d-flex justify-content-end hannan" style="white-space:nowrap;">
+                                            Supplier Tin
+                                        </label>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="input-wrapper">
+                                            <input asp-for="SupplierTin" class="form-control form-control-sm" type="text" placeholder="Enter SupplierTin" tabindex="18" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="row">
+                                    <div class="col-12 col-md-4 text-right p-0">
+                                        <label asp-for="ExportLicenceNo" class="form-label col-form-label-sm d-flex justify-content-end " style="white-space:nowrap;">
+                                            Export Licence No.
+                                        </label>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="input-wrapper">
+                                            <input asp-for="ExportLicenceNo" class="form-control form-control-sm" type="text" placeholder="Enter Export Licence No." tabindex="19" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row py-1 mb mb-2">
+                            <div class="col-12 col-md-6">
+                                <div class="row">
+                                    <div class="col-12 col-md-4 text-right p-0">
+                                        <label asp-for="ContatPerson1" class="form-label col-form-label-sm d-flex justify-content-end hannan" style="white-space:nowrap;">Contat Person</label>
+                                    </div>
+                                    <div class="col-12 col-md-6 d-flex">
+
+                                        <input type="hidden" asp-for="ContatPerson1">
+
+                                        <!-- Multi-select dropdown -->
+                                        <div class="multi-select-dropdown col-11 p-0" id="contactPersonDropdown">
+                                            <div class="multi-select-button" id="contactPersonButton">
+                                                <span class="selected-text">--Select Contact Person--</span>
+                                                <div class="d-flex align-items-center">
+                                                    <button type="button" class="clear-selection me-2" id="clearSelection" style="display: none;">
+                                                        <i class="fas fa-times"></i>
+                                                    </button>
+                                                    <i class="fas fa-chevron-down"></i>
+                                                </div>
+                                            </div>
+
+                                            <div class="multi-select-dropdown-menu" id="contactPersonMenu" style="display: none;">
+                                                <div class="p-2 border-bottom">
+                                                    <input type="text" id="cpSearch" class="form-control form-control-sm"
+                                                           placeholder="Search contacts...">
+                                                </div>
+                                                <table class="table table-bordered table-sm mb-0 ">
+                                                    <thead>
+                                                        <tr>
+                                                            <th style="width: 40px;" class="text-center text-middle">
+                                                                Select
+                                                                <input type="checkbox" class="text-center text-middle" id="selectAllCP" title="Select All">
+                                                            </th>
+                                                            <th class="text-center text-middle" style="width: 150px;">Name</th>
+                                                            <th class="text-center text-middle" style="width: 150px;">Designation</th>
+                                                            <th class="text-center text-middle" style="width: 120px;">Phone</th>
+                                                            <th class="text-center text-middle" style="width: 170px;">Email</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="contactPersonTableBody">
+                                                        <!-- Data loaded via JavaScript -->
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <!-- Add Button -->
+                                        <button type="button"
+                                                class="btn btn-outline-secondary col-1 js-quick-add"
+                                                data-url="@Url.Action("Index", "ContactPersonInfo")"
+                                                data-target="#ContatPerson1"
+                                                data-reload-url="@Url.Action("GetContactPersonInfo", "Cascading")"
+                                                data-title="Contact Person Info">
+                                            <i class="fa fa-plus"></i>
+                                        </button>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6"> </div>
+                        </div>
+
+                        <div class="bank-account-section">
+                            <fieldset class="bank-fieldset">
+                                <legend style="width: 167px;">Bank Account Info</legend>
+                                <input type="hidden" id="Sbaid" name="name" value="0" />
+                                <div class="bank-form-row">
+
+                                    <div class="form-group-con">
+                                        <label asp-for="SupplierBankId">Bank Name</label>
+                                        <div class="input-group">
+                                            <select asp-for="SupplierBankId" data-placeholder="--Select Supplier Bank--" asp-items="ViewBag.SupplierBankDD as SelectList" class="form-control form-select-sm selectpickerSup" tabindex="21">
+                                                <option value=""></option>
+                                            </select>
+                                            <button type="button" class="btn btn-outline-secondary ms-2 js-quick-add input-group-textc"
+                                                    data-url="@Url.Action("Index", "BankInformations")"
+                                                    data-target="#SupplierBankId"
+                                                    data-reload-url="@Url.Action("GetBank", "Cascading")"
+                                                    data-title="Supplier Bank">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group-con">
+                                        <label asp-for="SupplierBankBranchId">Branch</label>
+                                        <div class="input-group">
+                                            <select asp-for="SupplierBankBranchId" data-placeholder="--Select Supplier Branch--" asp-items="ViewBag.SupplierBankBranchDD as SelectList" class="form-control form-select-sm selectpickerSup" tabindex="22">
+                                                <option value="">--Select Branch--</option>
+                                            </select>
+                                            <button type="button" class="btn btn-outline-secondary ms-2 js-quick-add input-group-textc"
+                                                    data-url="@Url.Action("Index", "BankBranchInformations")"
+                                                    data-target="#SupplierBankBranchId"
+                                                    data-reload-url="@Url.Action("GetBankBranch", "Cascading")"
+                                                    data-title="Supplier Bank Branch">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group-con">
+                                        <label for="AccountNo">Account No.</label>
+                                        <input type="text" asp-for="AccountNo" class="form-control form-control-sm" tabindex="23" placeholder="Enter Bank Account Number">
+                                    </div>
+
+                                    <div class="form-actions pt-4">
+                                        <button type="button" id="BankAccountInfoSaveBtn" title="Save">
+                                            <i class="fa fa-save"></i>
+                                        </button>
+                                        <button type="button" id="BankAccountInfoDeleteBtn" title="Delete">
+                                            <i class="fas fa-trash" style="font-size: 17px;"></i>
+                                        </button>
+
+                                        <button type="button" id="BankAccountInfoRefreshBtn" title="Refresh">
+                                            <i class="fa fa-sync"></i>
+                                        </button>
+                                    </div>
+
+                                </div>
+
+                                <div class="SupplierBankAccountTemp-grid-container">
+                                    @await Html.PartialAsync("_GridBankAccountInfo", Model.bangkInfo)
+                                </div>
+
+                            </fieldset>
+                        </div>
+
+                        <div class="row py-2">
+                            <div class="col-12 col-md-6">
+                                <div class="row">
+                                    <div class="col-12 col-md-4 text-right p-0">
+                                        <label asp-for="OpeningBalance" class="form-label col-form-label-sm d-flex justify-content-end" style="white-space:nowrap;">Opening Balance</label>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="row">
+                                            <div class="col-12 col-md-6">
+                                                <input asp-for="OpeningBalance" class="form-control form-control-sm" type="number" placeholder="Enter Opening Balance" tabindex="24" />
+                                            </div>
+                                            <div class="col-12 col-md-6">
+                                                <div class="input-group">
+                                                    <!-- Dropdown -->
+                                                    <select asp-for="Optype" data-placeholder="-- Select Optype --"
+                                                            class="form-control form-control-sm selectpickerSup js-"
+                                                            tabindex="25"
+                                                            asp-items="@ViewBag.OptypeDD as SelectList">
+                                                        <option value=""></option> <!-- Default option -->
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="row">
+                                    <div class="col-12 col-md-4 text-right p-0">
+                                        <label asp-for="SalesPersonId" class="form-label col-form-label-sm d-flex justify-content-end hannan" style="white-space:nowrap;">Sales Person</label>
+                                    </div>
+
+                                    <div class="col-12 col-md-6">
+                                        <div class="input-group">
+                                            <!-- Dropdown -->
+                                            <select asp-for="SalesPersonId" data-placeholder="-- Select Sales Person --"
+                                                    class="form-control form-control-sm selectpickerSup js-"
+                                                    tabindex="26"
+                                                    asp-items="@ViewBag.SalesPersonDD as SelectList">
+                                                <option value=""></option> <!-- Default option -->
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row pe-2">
+                            <div class="col-12 ">
+                                <div class="row">
+                                    <div class="col-12 col-md-2 text-right p-0">
+                                        <label asp-for="Remarks" class="form-label col-form-label-sm d-flex justify-content-end hannan" style="white-space:nowrap;">Remarks </label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <div class="input-wrapper">
+                                            <textarea asp-for="Remarks" class="form-control form-control-sm" rows="1" placeholder="Enter Remarks" tabindex="27"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row py-2">
+                            <div class="col-12 col-md-6">
+                                <div class="row">
+                                    <div class="col-12 col-md-4 text-right p-0">
+                                        <label asp-for="Active" class="form-label col-form-label-sm d-flex justify-content-end hannan" style="white-space:nowrap;">Active</label>
+                                    </div>
+
+                                    <div class="col-12 col-md-6">
+                                        <div class="input-group">
+                                            <!-- Dropdown -->
+                                            <select asp-for="Active" data-placeholder="-- Select Sales Person --"
+                                                    class="form-control form-control-sm selectpickerSup js-"
+                                                    tabindex="28"
+                                                    asp-items="@ViewBag.ActiveDD as SelectList">
+                                                <option value=""></option> <!-- Default option -->
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                            </div>
+                        </div>
+
+                        <hr id="sectionBreak" />
+
+                        <div class=" row" id="LdateModifyHide">
+
+                            <div class="col-6 d-flex align-items-center justify-content-between">
+                                <label class="col-6 form-label col-form-label-sm d-flex justify-content-end">Creation Date:</label>
+                                <div class="col-6">
+                                    <span id="creationDateSpan">
+                                        @(Model.Ldate.HasValue? Model.Ldate?.ToString("dd/MM/yyyy hh:mm tt") : "")
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="col-6 d-flex align-items-center justify-content-between">
+                                <label class="col-6 form-label col-form-label-sm d-flex justify-content-end">Last Update Date:</label>
+                                <div class="col-6">
+                                    <span id="modifyDateSpan">
+                                        @(Model.ModifyDate.HasValue? Model.ModifyDate?.ToString("dd/MM/yyyy hh:mm tt") : "")
+                                    </span>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row no-print mt-3">
+                            <div class="col-12">
+                                <button type="button" class="btn btn-outline-success btn-common btn-circle float-right js-SupplierInformation-save" data-id="@Model.SupplierId">
+                                    <i class="fas fa-save"></i> Save
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

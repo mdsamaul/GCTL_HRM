@@ -1,0 +1,228 @@
+﻿@model GCTL.Core.ViewModels.HRMCompanyWeekEnds.HRMCompanyWeekEndSetupViewModel
+
+
+
+<style>
+    .checkbox-container {
+       /*  border: 2px solid #007bff;
+        border-radius: 5px;  */
+       padding-left:100px;
+    }
+
+</style>
+<div style="padding-top: 10px;padding-left:15px;">
+    <div class="row">
+        <div class="col-lg-6">
+            <span id="message"></span>
+        </div>
+        <div class="col-lg-6">
+        </div>
+    </div>
+    <div class="form-group row">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <input type="hidden" id="lastCode" />
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="Ldate" />
+        <input type="hidden" asp-for="ModifyDate" />
+        <input type="hidden" asp-for="AutoId" />
+
+    </div>
+
+    <div class="form-group row">
+        <div class="col-lg-6">
+     <label  asp-for="CompanyWeekEndCode">Weekend Id </label>
+   <input asp-for="CompanyWeekEndCode" type="text" class="form-control form-control-sm js-CompanyWeekEndCode-code" readonly="readonly" />
+        </div>
+        <div class="col-lg-6">
+        </div>
+    </div>
+
+
+
+    <div class="col-md-6">
+        <label asp-for="Weekend" class="control-label">Weekend Day(s) <span style="color: red">*</span></label>
+        <div class="input-wrapper checkbox-container">
+            <div class="form-group col-md-6" tabindex="1">
+                <div class="form-check">
+                    <input type="checkbox" name="Weekend" value="Friday" class="form-check-input" id="friday"
+                    @(Model.Weekend.Contains("Friday") == true ? "checked" : "") required>
+                    <label class="form-check-label" for="friday">Friday</label>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" name="Weekend" value="Saturday" class="form-check-input" id="saturday"
+                    @(Model.Weekend.Contains("Saturday") == true ? "checked" : "")>
+                    <label class="form-check-label" for="saturday">Saturday</label>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" name="Weekend" value="Sunday" class="form-check-input" id="sunday"
+                    @(Model.Weekend.Contains("Sunday") == true ? "checked" : "")>
+                    <label class="form-check-label" for="sunday">Sunday</label>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" name="Weekend" value="Monday" class="form-check-input" id="monday"
+                    @(Model.Weekend.Contains("Monday") == true ? "checked" : "")>
+                    <label class="form-check-label" for="monday">Monday</label>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" name="Weekend" value="Tuesday" class="form-check-input" id="tuesday"
+                    @(Model.Weekend.Contains("Tuesday") == true ? "checked" : "")>
+                    <label class="form-check-label" for="tuesday">Tuesday</label>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" name="Weekend" value="Wednesday" class="form-check-input" id="wednesday"
+                    @(Model.Weekend.Contains("Wednesday") == true ? "checked" : "")>
+                    <label class="form-check-label" for="wednesday">Wednesday</label>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" name="Weekend" value="Thursday" class="form-check-input" id="thursday"
+                    @(Model.Weekend.Contains("Thursday") == true ? "checked" : "")>
+                    <label class="form-check-label" for="thursday">Thursday</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="form-group row">
+        <div class="col-lg-6">
+          
+            <label asp-for="EffectiveDate">Effective Date <span style="color:red;">*</span></label>
+            <input type="hidden" id="EffectiveDateHidden" name="EffectiveDate" />
+            <input type="text" id="EffectiveDate" placeholder="dd/MM/yyyy" asp-for="EffectiveDate" class="form-control form-control-sm datepicker" required tabindex="7" />
+ 
+        </div>
+
+    </div>
+
+    @if (Model.AutoId > 0)
+    {
+        <hr />
+        <div class="form-group row" id="LdateModifyHide">
+            <div class="col-lg-6">
+                @if (Model.Ldate.HasValue)
+                {
+                    <label>Creation Date: </label>
+
+                    <label>@Model.Ldate?.ToString("dd/MM/yyyy")</label>
+                }
+            </div>
+            <div class="col-lg-6">
+                @if (Model.ModifyDate.HasValue)
+                {
+                    <label>Last Update Date: </label>
+
+                    <label>@Model.ModifyDate?.ToString("dd/MM/yyyy")</label>
+                }
+            </div>
+        </div>
+    }
+
+</div>
+<div class="row no-print" style="margin-top: 9px;">
+    <div class="col-12">
+        <button type="button" class="btn btn-default success-btn btn btn-outline-success btn-common btn-circle float-right js-companyWeekEnds-save" data-id="@Model.CompanyWeekEndCode ">
+            <i class="fas fa-save"></i> Save
+        </button>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@*     <div class="form-group row">
+        <div class="col-lg-8">
+
+            <div class="form-group d-flex align-items-center justify-content-between">
+                <label class="d-flex justify-content-end form-label col-form-label-sm text-lg-right" asp-for="CompanyWeekEndCode">Weekend Id </label>
+                <div class="input-wrapper">
+                    <input asp-for="CompanyWeekEndCode" type="text" class="form-control form-control-sm js-CompanyWeekEndCode-code" readonly="readonly" />
+
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+
+        </div>
+    </div>
+
+
+
+    <div class="col-md-6">
+        <div class="form-group d-flex align-items-center justify-content-between">
+            <label asp-for="Weekend" class="control-label">Weekend Day <span style="color: red">*</span></label>
+            <div class="input-wrapper  checkbox-container">
+                <div class="form-group col-md-6 p-3  " tabindex="1">
+                    <div class="form-check">
+                        <input type="checkbox" name="Weekend" value="Friday" class="form-check-input"  id="friday">
+                        <label class="form-check-label" for="friday">Friday</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="checkbox" name="Weekend" value="Saturday" class="form-check-input" id="saturday">
+                        <label class="form-check-label" for="saturday">Saturday</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="checkbox" name="Weekend" value="Sunday" class="form-check-input" id="sunday">
+                        <label class="form-check-label" for="sunday">Sunday</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="checkbox" name="Weekend" value="Monday" class="form-check-input" id="monday">
+                        <label class="form-check-label" for="monday">Monday</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="checkbox" name="Weekend" value="Tuesday" class="form-check-input" id="tuesday">
+                        <label class="form-check-label" for="tuesday">Tuesday</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="checkbox" name="Weekend" value="Wednesday" class="form-check-input" id="wednesday">
+                        <label class="form-check-label" for="wednesday">Wednesday</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="checkbox" name="Weekend" value="Thursday" class="form-check-input" id="thursday">
+                        <label class="form-check-label" for="thursday">Thursday</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+    <div class="form-group row">
+        <div class="col-lg-8">
+
+            <div class="form-group d-flex align-items-center justify-content-between">
+                <label class="d-flex justify-content-end form-label col-form-label-sm text-lg-right" asp-for="EffectiveDate">Effective Date </label>
+                <div class="input-wrapper">
+
+                    <input type="text" id="EffectiveDate" placeholder="dd/MM/yyyy" asp-for="EffectiveDate" style="width:40px;" class="form-control form-control-sm datepicker" tabindex="2" />
+                    <input type="hidden" id="EffectiveDateHidden" name="Wef" />
+                </div>
+            </div>
+        </div>
+
+    </div> *@

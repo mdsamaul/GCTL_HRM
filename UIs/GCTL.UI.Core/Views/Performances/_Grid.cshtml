@@ -1,0 +1,54 @@
+﻿@model List<GCTL.Core.ViewModels.HrmDefPerformance.HrmDefPerformanceSetupViewModel>
+
+<table id="Performances-grid" class="table table-striped  table-bordered table-sm table-hover table-common">
+        <thead class="row-border">
+            <tr class="table row-border">
+                <!-- Column for Select (15%) -->
+                <th class="text-center text-middle" style="width: 15%;">
+                    Select <br />
+                    <input type="checkbox" id="Performances-check-all" />
+                </th>
+
+                <!-- Column for Job Title Id (15%) -->
+                <th class="text-center text-middle" style="width: 15%;">Job Title Id</th>
+
+                <!-- Column for Job Title (70%) -->
+                <th class="text-center text-middle" style="width: 70%;">Job Title</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @if (Model == null || !Model.Any())
+            {
+                <tr class="text-center text-middle">
+                    <td colspan="8">No  HRM Job Title  Entry Available.</td>
+                </tr>
+            }
+            else
+            {
+                @foreach (var item in Model.OrderByDescending(x => x.JobTitleId))
+                {
+                    <tr>
+                        <td class="text-center">
+                            <input type="checkbox" class="text-center text-middle checkBox" data-id="@item.JobTitleId" value="@item.JobTitleId" />
+                        </td>
+                        <td>
+                            <a href="#" class='btn js-Performances-edit'
+                               style="text-decoration: underline; color: rebeccapurple;"
+                               data-id="@item.JobTitleId" title="Edit">
+                                @item.JobTitleId
+                            </a>
+                        </td>
+
+                        <td class="text-center text-middle">@item.JobTitle</td>
+
+
+
+                    </tr>
+                }
+            }
+
+
+        </tbody>
+    </table>
+</div>

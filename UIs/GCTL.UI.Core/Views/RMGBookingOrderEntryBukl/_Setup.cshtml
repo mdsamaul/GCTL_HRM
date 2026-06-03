@@ -1,0 +1,42 @@
+﻿<div class="card p-2 my-2">    
+    <partial name="_BookingInformation" model="@Model" />
+    <div class="py-2">
+        <partial name="_ShowingDate"></partial>
+    </div>
+    <div>
+
+        <div class="py-2">
+            <hr style="margin-bottom: 5px;">
+            <div class="toolbar-container mx-auto" style="margin-top: 5px;">
+                <div class="toolbar-section">
+                    <div class="toolbar-actions">
+                        <button class="toolbar-btn mail-send-btn" id="downloadReport">
+                            <i class="fas fa-envelope"></i> Mail Send
+                        </button>
+                        <select class="toolbar-select" style="min-width: 120px;">
+                            <option value="">Select</option>
+                        </select>
+                        <span class="toolbar-divider"></span>
+                        <button class="toolbar-btn" id="btnPreviewPdf">
+                            <i class="fas fa-print"></i> Preview
+                        </button>
+                        <select class="toolbar-select" style="min-width: 120px;">
+                            <option value="">Format</option>
+                        </select>
+                        <span class="toolbar-divider"></span>
+                        <button class="toolbar-btn icon-only" title="Settings">
+                            <i class="fas fa-cog"></i>
+                        </button>
+                        <button class="toolbar-btn icon-only" title="Download">
+                            <i class="fas fa-download"></i>
+                        </button>
+                        <button class="toolbar-btn icon-only" title="Share">
+                            <i class="fas fa-share-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <hr style="margin-top: 5px;">
+        </div>
+    </div>
+</div>

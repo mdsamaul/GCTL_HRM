@@ -1,0 +1,302 @@
+﻿@model GCTL.UI.Core.ViewModels.RosterScheduleApproval.RosterScheduleApprovalViewModel
+@{
+    Model.Breadcrumb = "RosterScheduleApproval";
+    Model.PageTitle = "Roster Schedule Approval";
+}
+
+<style>
+    .swal2-toast {
+        min-height: 40px !important;
+        padding: 0px 12px !important;
+        font-size: 14px !important;
+        width: auto !important;
+    }
+
+        .swal2-toast .swal2-title {
+            font-size: 14px !important;
+            text-align: left !important;
+            padding-top: 10px !important;
+        }
+
+        .swal2-toast .swal2-icon {
+            width: 20px !important;
+            height: 30px !important;
+            margin: 0 5px 0 0 !important;
+        }
+
+    .swal2-timer-progress-bar {
+        background: #FF5722 !important;
+    }
+
+    .sticky-scrolled {
+        background-color: #fff !important;
+        transition: background-color 0.3s ease-in-out;
+        opacity: 95%;
+    }
+
+    .d-flex.flex-wrap.gap-2 > * {
+        margin-right: 8px;
+        margin-bottom: 8px;
+    }
+
+    .page-item.active .page-link{
+        z-index: 3 !important;
+        color: #000000 !important;
+        background-color: #ffffff !important;
+        border-color: #007bff !important;
+    }
+
+    .filter-field {
+        width: 7vw;
+        min-width: 8vw; 
+    }
+    /* Button width */
+    .multiselect.dropdown-toggle.custom-select {
+        width: 8vw !important;
+        text-align: left;
+    }
+
+    /* Target the button generated after your select */
+    #activityStatusSelect + .btn-group > .multiselect.dropdown-toggle.custom-select {
+        width: 8vw !important;
+        text-align: left;
+    }
+
+    .multiselect-all{
+        height:30px !important;
+    }
+    .dropdown-wrapper .btn-group {
+        width: 100% !important;
+        display: block !important;
+    }
+
+    .dropdown-wrapper .multiselect {
+        width: 100% !important;
+        border: 1px solid #ced4da !important;
+        border-radius: 4px !important;
+        background-color: #fff !important;
+        padding: 6px 8px !important;
+        font-size: 13px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        cursor: pointer !important;
+    }
+
+        .dropdown-wrapper .multiselect .multiselect-selected-text {
+            flex: 1 1 auto;
+            text-align: left;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            padding-right: 6px;
+        }
+
+        .dropdown-wrapper .multiselect input.multiselect-inline-search {
+            user-select: text !important;
+            -webkit-user-select: text !important;
+            -moz-user-select: text !important;
+        }
+
+        .dropdown-wrapper .multiselect .multiselect-inline-search {
+            display: none;
+            width: 100%;
+            border: 0 !important;
+            outline: 0 !important;
+            background: #ffffff !important;
+            color: #212529 !important;
+            caret-color: #212529 !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            font-size: 13px !important;
+            line-height: 1.2 !important;
+            height: 18px !important;
+            cursor: text !important;
+        }
+
+    .multiselect-container.dropdown-menu {
+        border-radius: 4px !important;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        font-size: 13px;
+        margin-top: 1px !important;
+        max-height: 250px !important;
+        overflow-y: auto !important;
+    }
+
+    .multiselect-container .multiselect-filter {
+        position: absolute !important;
+        left: -9999px !important;
+        top: -9999px !important;
+        width: 1px !important;
+        height: 1px !important;
+        overflow: hidden !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+    }
+
+    .dropdown-wrapper .multiselect.is-inline-searching::after {
+        opacity: .35;
+    }
+
+
+    .dropdown-wrapper .multiselect .ms-right-clear {
+        display: none;
+        margin-left: 10px;
+        margin-right: 18px;
+        color: #dc3545;
+        cursor: pointer;
+        line-height: 1;
+        user-select: none;
+        align-items: center;
+    }
+
+    .dropdown-wrapper .multiselect.show-right-clear .ms-right-clear {
+        display: inline-flex;
+    }
+
+    .dropdown-wrapper .multiselect .ms-right-clear .fa + .ms-x {
+        display: none;
+    }
+
+    .dropdown-wrapper .multiselect .ms-right-clear .ms-x {
+        font-size: 16px;
+        font-weight: 800;
+    }
+
+    .multiselect-container .multiselect-clearall .ca-x {
+        font-weight: 800;
+        margin-left: 0;
+    }
+
+    .multiselect-container .multiselect-clearall .fa + .ca-x {
+        display: none;
+    }
+    .dataTables_filter {
+                margin-right: 0px;
+
+    }
+</style>
+
+
+
+
+<input type="hidden" id="hdnAccessCode" value="@(ViewBag.AccessCode ?? "")" />
+<!-- Content Header (Page header) -->
+<div class="container-fluid">
+    <partial name="_PageHeader" model="Model"></partial>
+</div>
+
+<section class="content consistent-look">
+    <div class="container-fluid">
+        <div class="row px-2 pr-3">
+            <!-- Left Side: Form -->
+            <div class="col-md-12 pr-0">
+                <div class="card">                   
+                    <div id="stickyHeader" class="card-header px-4 sticky-top" style="min-height: 50px; z-index: 1020;">
+                        <partial name="_Toolbars" model="new ToobarModel() { Title = Model.Breadcrumb, Code = Model.Code, Name = Model.Setup.RosterScheduleApprovalId }"></partial>
+                    </div>
+                    <div class="card-body px-2" style="padding-top:0px">
+                        <div class="container-fluid py-2" style="padding-top:0px">
+                            <div>
+                                <h5>Filter By:</h5>
+                            </div>
+                            <div class="d-flex flex-wrap gap-2 text-center dropdown-wrapper">
+                                <div class="filter-field">
+                                    <label for="companySelect">Company</label>
+                                    <select id="companySelect" class="form-control form-control-sm"></select>
+                                </div>
+                                <div class="filter-field">
+                                    <label for="branchSelect">Branch</label>
+                                    <select id="branchSelect" class="form-control form-control-sm gc-multiselect" data-placeholder="Select Branch" multiple="multiple"></select>
+                                </div>
+                                <div class="filter-field">
+                                    <label for="divisionSelect">Division</label>
+                                    <select id="divisionSelect" class="form-control form-control-sm gc-multiselect" data-placeholder="Select Division" multiple="multiple"></select>
+                                </div>
+                                <div class="filter-field">
+                                    <label for="departmentSelect">Department</label>
+                                    <select id="departmentSelect" class="form-control form-control-sm gc-multiselect" data-placeholder="Select BranchDepartment" multiple="multiple"></select>
+                                </div>
+                                <div class="filter-field">
+                                    <label for="designationSelect">Designation</label>
+                                    <select id="designationSelect" class="form-control form-control-sm gc-multiselect" data-placeholder="Select Designation" multiple="multiple"></select>
+                                </div>
+                                <div class="filter-field">
+                                    <label for="employeeSelect">Employee</label>
+                                    <select id="employeeSelect" class="form-control form-control-sm gc-multiselect" data-placeholder="Select Employee" multiple="multiple"></select>
+                                </div>
+                                <div class="filter-field">
+                                    <label for="FromDateFilter">Date From</label>
+                                    <input type="text" id="FromDateFilter" placeholder="Select From Date" class="form-control form-control-sm flatpickr" />
+                                </div>
+                                <div class="filter-field">
+                                    <label for="ToDateFilter">To</label>
+                                    <input type="text" id="ToDateFilter" placeholder="Select To Date" class="form-control form-control-sm flatpickr" />
+                                </div>
+                                <div class="filter-field">
+                                    <label for="activityStatusSelect">Activity Status</label>
+                                    <select id="activityStatusSelect" class="form-control form-control-sm">
+                                        <option value="01">Active</option>
+                                        <option value="02">Inactive</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                            <!-- table: Grid -->
+                            <div class="col-md-12 mt-2">
+                             <partial name="_Grid" />
+                          </div>
+                            <div>
+                            <partial name="_FromRosterApproval"></partial>
+                            </div>
+                          <div class="px-3">
+                            <partial name="_RosterApprovalGrid"></partial>
+                        </div>
+                            @* <div> *@
+                            @*     <partial name="_PFAssignEntryGrid"></partial> *@
+                            @* </div> *@
+                        </div>
+                    </div>
+
+                </div>
+            </div>           
+    </div>
+</section>
+ 
+<!-- Flatpickr CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+<!-- Optional: Theme -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/material_blue.css">
+
+<!-- Bootstrap (Optional, for layout) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"> 
+
+
+@* <h2>SweetAlert2 Toast Examples</h2> *@
+
+@* <button id="succ">Success</button> *@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+@section Scripts {
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap Multiselect CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/1.1.2/css/bootstrap-multiselect.min.css">
+    <!-- Bootstrap Multiselect JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/1.1.2/js/bootstrap-multiselect.min.js"></script>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script> 
+
+    <script src="~/js/pages/RosterScheduleApproval.js"></script>
+}

@@ -1,0 +1,70 @@
+﻿@model List<GCTL.Core.ViewModels.HrmEmployeeAdditionalInfos.HrmEmployeeAdditionalInfoSetupViewModel>
+
+<table id="HrmEmployeeAdditionalInfos-grid" class="table table-striped  table-bordered table-sm table-hover table-common">
+
+        <thead class="row-border">
+            <tr class="table row-border">
+
+            <th class="text-center text-middle" style="width: 5%;">
+                    Select <br /> <input type="checkbox" id="HrmEmployeeAdditionalInfos-check-all" />
+                </th>
+            <th class="text-center text-middle" style="width: 6%;">Employee ID</th>
+            <th class="text-center text-middle" style="width: 25%;"> Name</th>
+            <th class="text-center text-middle" style="width: 21%;">DBBL A/C Name</th>
+            <th class="text-center text-middle" style="width: 13%;">DBBL A/C No</th>
+            <th class="text-center text-middle" style="width: 11%;">Bank</th>
+            <th class="text-center text-middle" style="width: 11%;">Branch</th>
+            <th class="text-center text-middle" style="width: 6%;">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @if (Model == null || !Model.Any())
+            {
+                <tr class="text-center text-middle">
+                    <td colspan="8">No  Employee Additional Information Available.</td>
+                </tr>
+            }
+            else
+            {
+                @foreach (var item in Model.OrderByDescending(x=>x.EmployeAddInfoId))
+                {
+                    <tr>
+                        <td class="text-center text-middle">
+                            <input type="checkbox" class="text-center text-middle checkBox" data-id="@item.EmployeAddInfoId" value="@item.EmployeAddInfoId" />
+                        </td>
+                        <td class="text-center text-middle">
+                            <a title="Edit" style="text-decoration: underline;"
+                               href="@Url.Action("Setup", "HrmEmployeeAdditionalInfos", new { id = item.EmployeAddInfoId })">
+                                @item.EmployeAddInfoId
+                            </a> 
+                          
+                        </td>
+
+
+                      @*   <td class="text-center text-middle">@($"{item.FirstNameBangla} {item.FirstNameBangla}")</td> *@
+                        <td class="text-left">@item.EmployeeName</td>
+                        <td class="text-center text-middle">@item.BankAcname</td>
+                        <td class="text-center text-middle">@item.BankAcNo</td>
+                        <td class="text-center text-middle">@item.SalaryBankName</td>  
+                        <td class="text-center text-middle">@item.SalaryBranchName</td> 
+                        <td class="text-center text-middle">
+
+                            <a title="Edit"
+                               class="btn   btn-sm"
+                               href="@Url.Action("Setup", "HrmEmployeeAdditionalInfos", new { id = item.EmployeAddInfoId })">
+                                <i class="fas fa-pencil-alt"></i>
+                            </a>
+                            <button type="button" title="Delete" class="btn  btn-sm js-HrmEmployeeAdditionalInfos-delete-confirm">
+                                <i class="fas fa-trash fa-sm">&nbsp;</i>
+                            </button>
+
+                 
+                        </td>
+                    </tr>
+                }
+            }
+
+
+        </tbody>
+ </table>

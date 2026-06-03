@@ -1,0 +1,270 @@
+﻿@model GCTL.UI.Core.ViewModels.ProductStockHistoryReport.ProductStockHistoryReportViewModel
+
+@{
+    Model.Breadcrumb = "ProductIssueReport";
+    Model.PageTitle = "Product Issue Report";
+}<style>
+
+     .page-header {
+         color: black;
+         margin-bottom: 30px;
+         border-radius: 12px;
+         text-align: center;
+     }
+
+     #stickyHeader {
+         position: sticky;
+         top: 0;
+         z-index: 1050;
+         background: white;
+         padding: 10px 20px;
+         transition: all 0.3s ease-in-out;
+         box-shadow: none;
+     }
+
+         #stickyHeader.scrolled {
+             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+         }
+
+     #productTable th {
+         white-space: nowrap;
+         text-align: center;
+         font-weight: bold;
+     }
+
+     .searchable-dropdown {
+         position: relative;
+     }
+
+     .dropdown-input {
+         background: white;
+     }
+
+     .dropdown-menu {
+         width: auto !important;
+         max-height: 250px;
+         overflow-y: auto;
+         z-index: 1050;
+     }
+
+     .dropdown-item:hover {
+         background-color: #f8f9fa;
+     }
+
+     .dropdown-item.active {
+         background-color: #007bff;
+         color: white;
+     }
+
+     .table-responsive {
+         -webkit-overflow-scrolling: auto !important;
+         overflow-x: unset !important;
+         overflow: unset !important;
+     }
+
+     .no-results {
+         padding: 0.5rem 1rem;
+         color: #6c757d;
+         font-style: italic;
+     }
+
+     .search-icon {
+         position: absolute;
+         right: 30px;
+         top: 50%;
+         transform: translateY(-50%);
+         color: #6c757d;
+         pointer-events: none;
+     }
+
+     .dropdown-arrow {
+         position: absolute;
+         right: 10px;
+         top: 50%;
+         transform: translateY(-50%);
+         transition: transform 0.3s;
+     }
+
+         .dropdown-arrow.rotated {
+             transform: translateY(-50%) rotate(180deg);
+         }
+
+     .searchable-dropdown {
+         position: relative;
+     }
+
+         .searchable-dropdown.active {
+             z-index: 1051;
+         }
+
+     #btnPreviewPdf, #downloadReport {
+         transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+         min-height: 25px;
+         position: relative;
+         overflow: visible;
+         border: 1px solid #eee !important;
+         white-space: nowrap;
+     }
+
+     .dateInput {
+         width: 10vw !important;
+     }
+
+     #btnPreviewPdf:hover,
+     #downloadReport:hover {
+         background-color: rgba(173, 255, 47, 0.2) !important;
+         color: #1e90ff !important;
+         border-color: #1e90ff !important;
+         box-shadow: 0 4px 10px rgba(30, 144, 255, 0.5) !important;
+     }
+
+
+
+     #btnPreviewPdf i,
+     #btnPreviewPdf span,
+     #downloadReport i,
+     #downloadReport span {
+         transition: transform 0.3s ease;
+         display: inline-block;
+         transform: scale(1);
+         margin-right: 2px;
+     }
+
+     #btnPreviewPdf:hover i,
+     #downloadReport:hover i {
+         transform: scale(1.3);
+     }
+</style>
+
+<div class="container-fluid">
+    <partial name="_PageHeader" model="Model"></partial>
+</div>
+
+<div class="container-fluid">
+    <div id="stickyHeader" class="card-header px-2 sticky-top rounded"
+         style="min-height: 50px; z-index: 1020;">
+        <partial name="_Toolbars" model="new ToobarModel(){Title=Model.Breadcrumb, Code=Model.Code , Name=Model.Setup.ProductCode }" />
+    </div>
+    <div>
+        <div class="container-fluid mt-3">
+            <div class="card">
+                <div class="card-header ">
+
+                    <h5 class="mb-0">Filter By:</h5>
+                </div>
+                <div class="card-body">
+
+                    <div class="table-responsive">
+                        <table class="table table-bordered text-center" style="border:1px solid #eee !important;">
+                            <thead class="text-center ">
+                                <tr>
+                                    <th style="width: 25vw;">Category</th>
+                                    <th style="width: 25vw;">Product</th>
+                                    <th style="width: 25vw;">Brand</th>
+                                    <th style="width: 25vw;">Model</th>                                  
+                                    <th style="width: 25vw;">Date From</th>
+                                    <th style="width: 25vw;">To</th>
+                                    <th style="width:  5vw;"></th>
+                                    <th style="width: 20vw;">Format</th>
+                                    <th style="width:  5vw;"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+
+                                        <select class="form-select searchable-select form-control form-control-sm" id="categoryDropdown" name="category" style="width: 100%;">
+                                            <option value="">Category...</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select class="form-select searchable-select form-control form-control-sm" id="productDropdown" name="product" style="width: 100%;">
+                                            <option value="">Product...</option>
+
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select class="form-select searchable-select form-control form-control-sm" id="brandDropdown" name="brand" style="width: 100%;">
+                                            <option value="">Brand...</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select class="form-select searchable-select form-control form-control-sm" id="modelDropdown" name="model" style="width: 100%;">
+                                            <option value="">Model...</option>
+                                        </select>
+                                    </td>                                   
+                                    <td>
+                                        <input type="text" name="name" class="dateInput form-control form-control-sm" id="formDate" value="" />
+                                    </td>
+                                    <td>
+                                        <input type="text" name="name" class="dateInput form-control form-control-sm" id="toDate" value="" />
+                                    </td>
+                                    <td>
+                                        <button id="btnPreviewPdf" class="btn btn-sm btn-outline-secondary common-btn px-4  form-control form-control-sm">
+                                            <i class="fas fa-eye preview-icon" title="Preview"></i> <span>Preview</span>
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <select class="form-control form-control-sm form-select-sm form-select" id="formatDropdown" name="format" style="width: 100%;">
+                                            <option value="">Select </option>
+                                            <option value="pdf">PDF</option>
+                                            <option value="excel">Excel</option>
+                                        </select>
+                                    </td>
+                                    <td>
+
+                                        <button id="downloadReport" class="btn btn-sm common-btn btn-outline-secondary form-control form-control-sm">
+                                            <i class="fas fa-file-export fa-export"></i> <span>Export Report</span>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>    
+</div>
+<div class="container-fluid">
+    <div class="card mx-2">
+        <div class="card-body rounded">
+            <iframe id="pdfPreviewFrame" class="rounded" width="100%" height="800px" style="border: 1px solid #ccc;"></iframe>
+    </div>
+</div>
+</div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/material_blue.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+<!-- Bootstrap 5.3 CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- Font Awesome 6.4 -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<!-- Bootstrap Icons -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <!-- Bootstrap Bundle JS (with Popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom JS -->
+    <script src="~/js/pages/ProductStockHistoryReport.js"></script>
+
+    <script type="text/javascript">
+        // Optional PDF.js config
+        if (typeof pdfjsLib !== 'undefined') {
+            pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
+        }
+    </script>
+}
+

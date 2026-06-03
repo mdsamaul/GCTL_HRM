@@ -1,0 +1,80 @@
+﻿@model GCTL.Core.ViewModels.CompanyInfos.CompanyInfosSetupViewModel
+
+<div style="padding-top: 10px;">
+    <div class="row">
+        <div class="col-lg-6">
+            <span id="message"></span>
+        </div>
+        <div class="col-lg-6">
+        </div>
+    </div>
+    <div class="form-group row">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <input type="hidden" id="lastCode" />
+        <input type="hidden" id="AutoId" asp-for="AutoId" />
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="Ldate" />
+        <input type="hidden" asp-for="ModifyDate" />
+        <div class="col-lg-6">
+            <label asp-for="CompanyNameId">Company Id</label>
+            <div class="input-group input-group-sm">
+                <input asp-for="CompanyNameId" type="text" class="form-control form-control-sm js-CompanyNameId-code" readonly="readonly" />
+            </div>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-lg-6">
+            <label asp-for="CompanyName">Company Name<span style="color:red">*</span> </label>
+            <input type="text" asp-for="CompanyName" class="form-control form-control-sm  js-CompanyInfos-check-availability" autofocus required placeholder="Enter Company Name" tabindex="1" />
+
+        </div>
+        <div class="col-lg-6">
+            <label asp-for="ShortName">Short Name</label>
+            <input type="text" asp-for="ShortName" class="form-control form-control-sm" placeholder="Enter Short Name" tabindex="2" />
+        </div>
+    </div>
+
+
+
+
+
+
+    @if (Model.AutoId > 0)
+    {
+
+        <hr />
+        <div class="form-group row" id="LdateModifyHide">
+            <div class="col-lg-6">
+                @if (Model.Ldate.HasValue)
+                {
+                    <label>Creation Date: </label>
+
+                    <label>@Model.Ldate?.ToString("dd/MM/yyyy")</label>
+                }
+            </div>
+            <div class="col-lg-6">
+                @if (Model.ModifyDate.HasValue)
+                {
+                    <label>Last Update Date: </label>
+
+                    <label>@Model.ModifyDate?.ToString("dd/MM/yyyy")</label>
+                }
+            </div>
+        </div>
+
+    }
+
+</div>
+<div class="row no-print" style="margin-top: 9px;">
+    <div class="col-12">
+        <button type="button" class="btn btn-default success-btn btn btn-outline-success btn-common btn-circle float-right js-CompanyInfos-save" data-id="@Model.CompanyNameId">
+            <i class="fas fa-save"></i> Save
+        </button>
+    </div>
+</div>
+
+
+
+
+

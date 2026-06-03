@@ -1,0 +1,43 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Extensions\**" />
+    <EmbeddedResource Remove="Extensions\**" />
+    <None Remove="Extensions\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="C:\Users\siamm\.nuget\packages\tono.excel\1.0.7\contentFiles\any\netstandard2.0\TonoCoreIcon.png" />
+    <Content Remove="C:\Users\siamm\.nuget\packages\tono.excel\1.0.7\contentFiles\any\netstandard2.0\TonoExcel.snk" />
+    <Content Remove="C:\Users\siamm\.nuget\packages\tono.excel\1.0.7\contentFiles\any\netstandard2.0\TonoExcelIcon.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AspNetCore.Reporting" Version="2.1.0" />
+    <PackageReference Include="itext7" Version="9.0.0" />
+    <PackageReference Include="itext7.bouncy-castle-adapter" Version="9.0.0" />
+    <PackageReference Include="itext7.bouncy-castle-fips-adapter" Version="9.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.15" />
+    <PackageReference Include="NetBarcode" Version="1.7.0" />
+    <PackageReference Include="QRCoder" Version="1.4.3" />
+    <PackageReference Include="QuestPDF" Version="2025.1.2" />
+    <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
+    <PackageReference Include="Tono.Excel" Version="1.0.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="PXLib">
+      <HintPath>..\..\..\..\..\TBM\TBM(08-06)\MVCPosApp\BusinessLogic\bin\PXLib.dll</HintPath>
+    </Reference>
+    <Reference Include="PXLibrary">
+      <HintPath>..\..\..\..\..\TBM\TBM(08-06)\MVCPosApp\BusinessLogic\bin\PXLibrary.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,82 @@
+﻿@model GCTL.Core.ViewModels.Designations.DesignationSetupViewModel
+
+
+<div id="loadingIndicator" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-80%, -80%); z-index: 9999;">
+    <img src="/images/Spinner.gif" alt="Loading..." style="width: 80px; height: 80px;" />
+</div>
+
+
+<div style="padding-top: 10px;">
+    <div class="row">
+        <div class="col-lg-6">
+            <span id="message"></span>
+        </div>
+        <div class="col-lg-6">
+        </div>
+    </div>
+    <div class="form-group row">
+        <input type="hidden" id="lastCode" />
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="Ldate" />
+        <input type="hidden" asp-for="ModifyDate" />
+        <input type="hidden" asp-for="AutoId" />
+        <div class="col-lg-6">
+            <label asp-for="DesignationCode">Designation Id</label>
+            <div class="input-group input-group-sm">
+                <input asp-for="DesignationCode" class="form-control form-control-sm js-designation-code" readonly="readonly" />
+            </div>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-lg-6">
+            <label asp-for="DesignationName">Designaiton<span style="color:red">*</span></label>
+            <input asp-for="DesignationName" class="form-control form-control-sm js-designation-check-availability" placeholder="Enter Designation" />
+            <span asp-validation-for="DesignationName" class="text-danger" />
+        </div>
+        <div class="col-lg-6">
+            <label asp-for="DesignationShortName">Short Name</label>
+            <input asp-for="DesignationShortName" class="form-control form-control-sm" placeholder="Enter Short Name" />
+        </div>
+    </div>
+
+         <div class="form-group row">
+        <div class="col-lg-6">
+            <label asp-for="BanglaDesignation">Designaiton (বাংলা) </label>
+            <span class="text-danger"></span>
+            <input asp-for="BanglaDesignation" class="form-control form-control-sm" placeholder="Enter Designaiton (বাংলা)" />
+        </div>
+        <div class="col-lg-6">
+
+        </div>
+    </div>
+
+
+
+    @if (Model.Id > 0)
+    {
+        <hr />
+        <div class="form-group row">
+            <div class="col-lg-6">
+                @if (Model.Ldate.HasValue)
+                {
+                    <label>Creation Date: </label>
+                    <label>@Model.Ldate.Value.ToString(ApplicationConstants.DateFormat)</label>
+                }
+            </div>
+            <div class="col-lg-6">
+                @if (Model.ModifyDate.HasValue)
+                {
+                    <label>Last Update Date: </label>
+                    <label>@Model.ModifyDate.Value.ToString(ApplicationConstants.DateFormat)</label>
+                }
+            </div>
+        </div>
+    }
+</div>
+<div class="row no-print" style="margin-top: 9px;">
+    <div class="col-12">
+        <button type="button" class="btn btn-default succeess-btn btn-common btn-circle float-right js-designation-save" data-id="@Model.DesignationCode">
+            <i class="fas fa-save"></i> Save
+        </button>
+    </div>
+</div>

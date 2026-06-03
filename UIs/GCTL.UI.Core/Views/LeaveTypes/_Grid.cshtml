@@ -1,0 +1,52 @@
+﻿@model List<GCTL.Core.ViewModels.LeaveTypes.LeaveTypeSetupViewModel>
+
+<table id="leaveType-grid" class="table table-striped  table-bordered table-sm table-hover table-common">
+    <thead class="row-border">
+        <tr class="table row-border">
+            <th class="text-center text-middle">
+                Select <br /> <input type="checkbox" id="leaveType-check-all" />
+            </th>
+            <th class="text-center text-middle">ID</th>
+            <th class="text-center text-middle">Name</th>
+            <th class="text-center text-middle">Short Name</th>
+            <th class="text-center text-middle">Rule/Policy</th>
+            <th class="text-center text-middle">No. of Days</th>
+            <th class="text-center text-middle">For</th>
+            <th class="text-center text-middle">Year</th>
+            <th class="text-center text-middle">W.E.F</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model == null || !Model.Any())
+        {
+            <tr class="text-center text-middle">
+                <td colspan="9">No LeaveType Available.</td>
+            </tr>
+        }
+        else
+        {
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td class="text-center">
+                        <input type="checkbox" class="text-center text-middle checkBox" data-id="@item.LeaveTypeCode" value="@item.LeaveTypeCode" />
+                    </td>
+                    <td>
+                        <a href="#" class='btn js-leaveType-edit'
+                           style="text-decoration: underline; color: rebeccapurple;"
+                           data-id="@item.LeaveTypeCode" title="Edit">
+                            @item.LeaveTypeCode
+                        </a>
+                    </td>
+                    <td class="text-center text-middle">@item.Name</td>
+                    <td class="text-center text-middle">@item.ShortName</td>
+                    <td class="text-center text-middle">@item.RulePolicy</td>
+                    <td class="text-center text-middle">@item.NoOfDay</td>
+                    <td class="text-center text-middle">@item.For</td>
+                    <td class="text-center text-middle">@item.Ymwd</td>
+                    <td class="text-center text-middle">@item.Wef.ToString("dd/MM/yyyy")</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

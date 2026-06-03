@@ -1,0 +1,52 @@
+﻿@model List<GCTL.Core.ViewModels.ManualAttendanceBulk.ManualAttendanceBulkSetupViewModel>
+
+
+	<style>
+	.js-manualAttendanceEmployee-grid-container .dataTables_paginate {
+		margin-top: 30px !important;
+	}
+	</style>
+<div class="row border-box manualAttendanceEmpBorderValidate" style="border: 1px solid lightgray; border-radius:5px; position:relative;">
+	<div class="col-sm-12">
+		<div class="table-responsive">
+			<h5 class="p-1">Emp. List</h5>
+			<table class="table table-striped table-bordered table-hover table-sm table-common manualAttendanceEmployeeList">
+				<thead>
+					<tr>
+						<th class="text-center text-middle align-middle" style="width: 5%;">
+							Sel.<br />
+							<input type="checkbox" id="manualAttendanceEmployeeList-check-all" />
+						</th>
+						<th class="text-center text-middle align-middle" style="width: 23.75%;">Emp. ID</th>
+						<th class="text-center text-middle align-middle" style="width: 23.75%;">Sh.</th>
+						<th class="text-center text-middle align-middle" style="width: 23.75%;">In Time</th>
+						<th class="text-center text-middle align-middle" style="width: 23.75%;">Out Time</th>
+					</tr>
+				</thead>
+				<tbody>
+					@if (Model != null || Model.Any())
+					{
+						@foreach (var item in Model)
+						{
+							<tr class="text-center text-middle">
+								<td>
+									<input type="checkbox" class="text-center text-middle EmployeeListCheckBox" data-id="@item.EmployeeId" value="@item.EmployeeId" />
+								</td>
+								<td>@item.EmployeeId</td>
+								<td>-</td>
+								<td>-</td>
+								<td>-</td>
+							</tr>
+						}
+					}
+					else
+					{
+						<tr>
+							<td colspan="9" class="text-middle text-center">No data available!</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>

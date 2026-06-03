@@ -1,0 +1,550 @@
+﻿@model GCTL.Core.ViewModels.HrmEmployeeOfficialInfo.HrmEmployeeOfficialInfoSetupViewModel
+
+@{
+    ViewBag.Title = "Official Info";
+    Model.PageTitle = ViewBag.Title;
+    Model.Breadcrumb = "Official Info";
+}
+
+<div id="customLoadingOverlay" style="
+        display: flex;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 9999;
+        justify-content: center;
+        align-items: center;">
+    <div style="
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+            text-align: center;">
+        <div class="spinner-border text-primary" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+        <p style="margin-top: 10px; margin-bottom: 0;">Loading data...</p>
+    </div>
+</div>
+<section class="content-header" style="padding-bottom: 0;">
+    <div class="container-fluid">
+        <div class="calloutx callout-info" style="height: 35px;">
+            <div class="row mb-2">
+                <div class="col-md-8 row">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class=""><a href="@Url.Action("Index")" class="linkbutton1 btn btn-sm btn-success" style="font-size:13px; text-decoration: none;"> <i class="fas fa-arrow-alt-circle-left">&nbsp;</i> Back to List </a></li>
+                    </ol>
+                </div>
+                <div class="col-md-4">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="/Dashboard">Home</a></li>
+                        <li class="breadcrumb-item"><a href="/OfficialInfo">Official Info List</a></li>
+                        <li class="breadcrumb-item active">Official Info</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header border-transparent">
+                        <partial name="_Toolbars" model="new ToobarModel() { Title = Model.Breadcrumb, Code = Model.Code, Name = Model.EmployeeId }" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="content">
+    <form asp-action="Setup" asp-controller="OfficialInfo" method="post" id="officialInfo-form" enctype="multipart/form-data">
+        <div class="container-fluid">
+            <div class="form-group row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="card-header px-2">
+                                @await Html.PartialAsync("_TabButton")
+                            </div>
+                            <div class="row border border-5 p-2 rounded">
+                                <div class="col-sm-12 gc-inline-select2">
+                                    <div style="padding-top: 5px;">
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="row border-box p-4 rounded shadow-sm"
+                                                     style="
+                                                        border: 1px solid #ddd;
+                                                        background: linear-gradient(to right, #E0E0E0, #ffffff);
+                                                        position:relative;
+                                                        margin:0 8px 0 8px;
+                                                        padding: 0.5rem !important;
+                                                        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+                                                    @* background: linear-gradient(to right, rgba(0, 123, 255, 0.8), rgba(255, 255, 255, 0.8)); Custome *@
+                                                    @* background: linear-gradient(135deg, #ffffff, #f0f5f9); For Left*@
+                                                    <input type="hidden" asp-for="AutoId" />
+                                                    <div class="title">
+                                                        @* <h5 style="background-color: #fff; padding:0 10px; position:absolute; top:-10px; left:10px;"><strong>Choose Employee</strong></h5> *@
+                                                    </div>
+
+                                                    <div class="col-sm-3 text-end" style="text-align: right;">
+                                                        <div class="form-group">
+                                                            <label class="col-form-label-sm" asp-for="EmployeeId">Employee Id <span style="color: red">*</span></label><br />
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="col-form-label-sm" asp-for="DesignationCode">Designation: </label>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-sm-3">
+                                                        <div class="form-group">
+                                                            <div class="input-group input-group-sm flex-nowrap">
+                                                                <select asp-for="EmployeeId" class="form-control selectpickerOfficialInfo gc-select2" data-placeholder="---- Select Employee ----">
+                                                                    <option value=""></option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <input type="text" class="form-control form-control-sm border-0 bg-light" asp-for="DesignationName" readonly="readonly" />
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-sm-3 text-end" style="text-align: right;">
+                                                        <div class="form-group">
+                                                            <label class="col-form-label-sm" id="">Employee Name: </label>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="col-form-label-sm" id="">Department: </label>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-sm-3">
+                                                        <div class="form-group">
+                                                            <input type="text" class="form-control form-control-sm border-0 bg-light" asp-for="FullName" readonly="readonly" />
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <input type="text" class="form-control form-control-sm border-0 bg-light" asp-for="DepartmentName" readonly="readonly" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row border-box" style="border: 1px solid #ccc; padding:10px; border-radius:5px; position:relative; margin-top:20px;">
+                                                    <div class="title">
+                                                        <h5 style="background-color: #fff; padding:0 10px; position:absolute; top:-10px; left:10px;"><strong>Employee Information</strong></h5>
+                                                    </div>
+
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label class="col-form-label-sm" asp-for="OfficialInfoCompanyCode">Company <span style="color: red">*</span></label><br />
+                                                            <div class="input-group input-group-sm flex-nowrap">
+                                                                <select asp-for="OfficialInfoCompanyCode" class="form-control form-control-sm selectpickerOfficialInfo gc-select2" data-placeholder="---- Select Company ----">
+                                                                    <option value=""></option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="col-form-label-sm" asp-for="DepartmentCode">Department <span style="color: red">*</span></label><br />
+                                                            <div class="input-group input-group-sm flex-nowrap">
+                                                                <select asp-for="DepartmentCode" class="form-control selectpickerOfficialInfo gc-select2" data-placeholder="---- Select Department ----">
+                                                                    <option value=""></option>
+                                                                </select>
+                                                                <div class="input-group-append">
+                                                                    <button type="button" class="btn btn-default js-quick-add-officialInfo input-group-textc"
+                                                                            style="white-space: nowrap; flex-shrink: 0;"
+                                                                            data-url="@Url.Action("Index", "Departments")"
+                                                                            data-target="#DepartmentCode"
+                                                                            data-reload-url="@Url.Action("GetDepartments", "Cascading")"
+                                                                            data-title="Department">
+                                                                        +
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="col-form-label-sm" asp-for="EmploymentNatureId">Employment Nature</label><br />
+                                                            <div class="input-group input-group-sm flex-nowrap">
+                                                                <select asp-for="EmploymentNatureId" class="form-control form-control-sm selectpickerOfficialInfo gc-select2" data-placeholder="---- Select Nature ----" asp-items="@ViewBag.EmployeeNatureDD as SelectList">
+                                                                <option value=""></option>
+                                                            </select>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="col-form-label-sm" asp-for="ShiftCode">Shift </label><br />
+                                                            <div class="input-group input-group-sm flex-nowrap">
+                                                                <select asp-for="ShiftCode" class="form-control form-control-sm selectpickerOfficialInfo gc-select2" data-placeholder="---- Select Shift ----" asp-items="@ViewBag.ShiftDD as SelectList">
+                                                                <option value=""></option>
+                                                            </select>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="col-form-label-sm" asp-for="MobileNo">Official Phone</label><br />
+                                                            <input type="text" class="form-control form-control-sm" asp-for="MobileNo" placeholder="Enter Official Phone" />
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="col-form-label-sm" asp-for="EmployeeStatus">Employee Status</label>
+                                                            <div class="input-group input-group-sm flex-nowrap">
+                                                                <select asp-for="EmployeeStatus" class="form-control form-control-sm selectpickerOfficialInfo gc-select2" data-placeholder="---- Select Employee Status ----" asp-items="@ViewBag.EmployeeStatusDD as SelectList">
+                                                                <option value=""></option>
+                                                            </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label class="col-form-label-sm" asp-for="OfficialInfoBranchCode">Branch</label><br />
+                                                            <div class="input-group input-group-sm flex-nowrap">
+                                                                <select asp-for="OfficialInfoBranchCode" class="form-control selectpickerOfficialInfo gc-select2" data-placeholder="---- Select Branch ----">
+                                                                    <option value=""></option>
+                                                                </select>
+                                                                <div class="input-group-append">
+                                                                    <button type="button" class="btn btn-default js-quick-add-officialInfo input-group-textc"
+                                                                            style="white-space: nowrap; flex-shrink: 0;"
+                                                                            data-url="@Url.Action("Index", "BranchesTypeInfo")"
+                                                                            data-target="#OfficialInfoBranchCode"
+                                                                            data-reload-url="@Url.Action("GetCompanieBranchSelections", "Cascading")"
+                                                                            data-title="Branch">
+                                                                        +
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        <div class="form-group">
+                                                            <label class="col-form-label-sm" asp-for="DesignationCode">Designation <span style="color: red">*</span></label><br />
+                                                            <div class="input-group input-group-sm flex-nowrap">
+                                                                <select asp-for="DesignationCode" class="form-control selectpickerOfficialInfo gc-select2" data-placeholder="---- Select Designation ----">
+                                                                    <option value=""></option>
+                                                                </select>
+                                                                <div class="input-group-append">
+                                                                    <button type="button" class="btn btn-default js-quick-add-officialInfo input-group-textc"
+                                                                            style="white-space: nowrap; flex-shrink: 0;"
+                                                                            data-url="@Url.Action("Index", "Designations")"
+                                                                            data-target="#DesignationCode"
+                                                                            data-reload-url="@Url.Action("GetDesignations", "Cascading")"
+                                                                            data-title="Designation">
+                                                                        +
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="col-form-label-sm" asp-for="GradeCode">Grade No </label><br />
+                                                            <div class="input-group input-group-sm flex-nowrap">
+                                                                <select asp-for="GradeCode" class="form-control selectpickerOfficialInfo gc-select2" data-placeholder="---- Select Grade No ----" asp-items="@ViewBag.GradeDD as SelectList">
+                                                                    <option value=""></option>
+                                                                </select>
+                                                                <div class="input-group-append">
+                                                                    <button type="button" class="btn btn-default js-quick-add-officialInfo input-group-textc"
+                                                                            style="white-space: nowrap; flex-shrink: 0;"
+                                                                            data-url="@Url.Action("Index", "Grades")"
+                                                                            data-target="#GradeCode"
+                                                                            data-reload-url="@Url.Action("GetGradeDD", "Cascading")"
+                                                                            data-title="Grade">
+                                                                        +
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="col-form-label-sm" asp-for="ReportingTo">Immediate Supervisor</label>
+                                                            <div class="input-group input-group-sm flex-nowrap">
+                                                                <select asp-for="ReportingTo" class="form-control form-control-sm selectpickerOfficialInfo gc-select2" data-placeholder="---- Select Immediate Supervisor ----" asp-items="@ViewBag.SupervisorDD as SelectList">
+                                                                    <option value=""></option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="col-form-label-sm" asp-for="Email">Official Email</label>
+                                                            <input type="text" class="form-control form-control-sm" asp-for="Email" placeholder="Enter Official Email" />
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label class="col-form-label-sm" asp-for="DivisionCode">Division</label>
+                                                            <div class="input-group input-group-sm flex-nowrap">
+                                                                <select asp-for="DivisionCode" class="form-control form-control-sm selectpickerOfficialInfo gc-select2" data-placeholder="---- Select Division ----">
+                                                                    <option value=""></option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="col-form-label-sm" asp-for="EmpTypeCode">Employee Type</label><br />
+                                                            <div class="input-group input-group-sm flex-nowrap">
+                                                                <select asp-for="EmpTypeCode" class="form-control selectpickerOfficialInfo gc-select2" data-placeholder="---- Select Employee Type ----" asp-items="@ViewBag.EmployeeTypeDD as SelectList">
+                                                                    <option value=""></option>
+                                                                </select>
+                                                                <div class="input-group-append">
+                                                                    <button type="button" class="btn btn-default js-quick-add-officialInfo input-group-textc"
+                                                                            style="white-space: nowrap; flex-shrink: 0;"
+                                                                            data-url="@Url.Action("Index", "HrmDefEmpType")"
+                                                                            data-target="#EmpTypeCode"
+                                                                            data-reload-url="@Url.Action("GetEmployeeTypes", "Cascading")"
+                                                                            data-title="Employee Type">
+                                                                        +
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="col-form-label-sm" asp-for="PayId">Pay ID</label>
+                                                            <input type="text" class="form-control form-control-sm" asp-for="PayId" placeholder="Enter Pay ID" />
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="col-form-label-sm" asp-for="Hod">Head of Department</label><br />
+                                                            <div class="input-group input-group-sm flex-nowrap">
+                                                                <select asp-for="Hod" class="form-control selectpickerOfficialInfo gc-select2" data-placeholder="---- Select Head of Department ----" asp-items="@ViewBag.HeadOfDepartmentDD as SelectList">
+                                                                    <option value=""></option>
+                                                                </select>
+                                                                <div class="input-group-append">
+                                                                    <button type="button" class="btn btn-default js-quick-add-officialInfo input-group-textc"
+                                                                            style="white-space: nowrap; flex-shrink: 0;"
+                                                                            data-url="@Url.Action("Setup", "HrmEmployee2")"
+                                                                            data-target="#Hod"
+                                                                            data-reload-url="@Url.Action("GetEmployeeSummary", "Cascading")"
+                                                                            data-title="Head of Department">
+                                                                        +
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="col-form-label-sm" asp-for="AttendenceId">Attendence ID</label>
+                                                            <input type="text" class="form-control form-control-sm" asp-for="AttendenceId" placeholder="Enter Attendence ID" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="row border-box" style="border: 1px solid #ccc; padding:10px; border-radius:5px; position:relative; margin-top:20px;">
+                                                    <div class="title">
+                                                        <h5 style="background-color: #fff; padding:0 10px; position:absolute; top:-10px; left:10px;"><strong>Others Information</strong></h5>
+                                                    </div>
+
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label class="col-form-label-sm" asp-for="IsLunchBilEligible">Is Lunch Bill Eligible</label><br />
+                                                            <div class="input-group input-group-sm flex-nowrap">
+                                                                <select asp-for="IsLunchBilEligible" class="form-control form-control-sm selectpickerOfficialInfo gc-select2" data-placeholder="---- Select is Food Bill Eligible ----" asp-items="@ViewBag.LunchBillEligibleDD as SelectList">
+                                                                <option value=""></option>
+                                                            </select>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="col-form-label-sm" asp-for="IsGovtHolidayEligible">Is Gov't Holiday Eligible</label><br />
+                                                            <div class="input-group input-group-sm flex-nowrap">
+                                                                <select asp-for="IsGovtHolidayEligible" class="form-control form-control-sm selectpickerOfficialInfo gc-select2" data-placeholder="---- Select Is Gov't Holiday Eligible ----" asp-items="@ViewBag.GovtHolidayEligibleDD as SelectList">
+                                                                <option value=""></option>
+                                                            </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label class="col-form-label-sm" asp-for="IsOverTimeEligible">Is Over Time Eligible</label><br />
+                                                            <div class="input-group input-group-sm flex-nowrap">
+                                                            <select asp-for="IsOverTimeEligible" class="form-control form-control-sm selectpickerOfficialInfo gc-select2" asp-items="@ViewBag.OverTimeEligibleDD as SelectList">
+                                                                <option value=""> 0% </option>
+                                                            </select>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="col-form-label-sm" asp-for="IsAttendanceBonusEligible">Is Attendance Bonus Eligible</label><br />
+                                                            <div class="input-group input-group-sm flex-nowrap">
+                                                                <select asp-for="IsAttendanceBonusEligible" class="form-control form-control-sm selectpickerOfficialInfo gc-select2" data-placeholder="---- Select Is Attendance Bonus Eligible ----" asp-items="@ViewBag.AttendanceBonusEligibleDD as SelectList">
+                                                                <option value=""></option>
+                                                            </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label class="col-form-label-sm" asp-for="IsExtraDutyEligible">Is Extra Duty Eligible </label><br />
+                                                            <div class="input-group input-group-sm flex-nowrap">
+                                                                <select asp-for="IsExtraDutyEligible" class="form-control form-control-sm selectpickerOfficialInfo gc-select2" asp-items="@ViewBag.ExtraDutyEligibleDD as SelectList">
+                                                                    <option value=""> 0% </option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="row border-box" style="border: 1px solid #ccc; padding:10px; border-radius:5px; position:relative; margin-top:20px;">
+                                                    <div class="title">
+                                                        <h5 style="background-color: #fff; padding:0 10px; position:absolute; top:-10px; left:10px;"><strong>Joining Information</strong></h5>
+                                                    </div>
+
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label class="col-form-label-sm" asp-for="AppointmentLetterNo">AppointmentLetter No</label>
+                                                            <input type="text" class="form-control form-control-sm" asp-for="AppointmentLetterNo" placeholder="Enter AppointmentLetter No" />
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="col-form-label-sm" asp-for="JoiningSalary">Joining Salary</label>
+                                                            <input type="text" class="form-control form-control-sm" asp-for="JoiningSalary" placeholder="Enter Joining Salary" />
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="col-form-label-sm" asp-for="ConfirmationRefNo">Confirmation Ref/Letter No.</label>
+                                                            <input type="text" class="form-control form-control-sm" asp-for="ConfirmationRefNo" placeholder="Enter Confirmation Ref/Letter No" />
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-sm-4">
+                                                        <div class="row">
+                                                            <div class="col-sm-12">
+                                                                <div class="form-group">
+                                                                    <label class="col-form-label-sm" asp-for="AppointmentLetterDate">Appointment Letter Date</label>
+                                                                    <input type="text" class="form-control form-control-sm flatpickr" asp-for="AppointmentLetterDate" placeholder="Enter Appointment Letter Date" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row">
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <label class="col-form-label-sm" asp-for="ProbationPeriod">Probation Period</label>
+                                                                    <input type="text" class="form-control form-control-sm" asp-for="ProbationPeriod" placeholder="Enter Probation Period" />
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group" style="padding-top: 30px;">
+                                                                    <div class="input-group input-group-sm flex-nowrap">
+                                                                        <select asp-for="ProbationPeriodType" class="form-control form-control-sm selectpickerOfficialInfo gc-select2" data-placeholder="---- Select Probation Period ----" asp-items="@ViewBag.ProbationTimeDD as SelectList">
+                                                                            <option value=""></option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row">
+                                                            <div class="col-sm-12">
+                                                                <div class="form-group">
+                                                                    <label class="col-form-label-sm" asp-for="ContractEndDate">Contract End Date</label>
+                                                                    <input type="text" class="form-control form-control-sm flatpickr" asp-for="ContractEndDate" placeholder="Enter Contract End Date" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label class="col-form-label-sm" asp-for="JoiningDate">Joining Date</label>
+                                                            <input type="text" class="form-control form-control-sm flatpickr" asp-for="JoiningDate" placeholder="Enter Joining Date" />
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="col-form-label-sm" asp-for="ConfirmeDate">Confirmation Date</label>
+                                                            <input type="text" class="form-control form-control-sm flatpickr" asp-for="ConfirmeDate" placeholder="Enter Confirmation Date" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        @if(Model.AutoId > 0)
+                                        {
+                                            <hr />
+                                            <div class="form-group row" id="LdateModifyDate">
+                                                @if (Model.Ldate.HasValue)
+                                                {
+                                                    <div class="col-sm-8">
+                                                        <label>Entry Date: </label>
+                                                        <label>@Model.Ldate?.ToString("dd/MM/yyyy hh:mm tt")</label>
+                                                    </div>
+                                                }
+                                                @if (Model.ModifyDate.HasValue)
+                                                {
+                                                    <div class="col-sm-4">
+                                                        <label>Last Modify Date: </label>
+                                                        <label>@Model.ModifyDate?.ToString("dd/MM/yyyy hh:mm tt")</label>
+                                                    </div>
+                                                }
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group row mt-2">
+                                <div class="col-12">
+                                    <a href='@Url.Action("Index")' class="btn btn-default btn-common btn-circle"><i class="fas fa-arrow-alt-circle-left">&nbsp;</i>Back To List</a>
+                                    <button type="button" class="btn btn-default btn-common js-officialInfo-save btn-circle float-right">
+                                        <i class="fas fa-save"></i>
+                                        @if (@ViewBag.IsEditMode != null && (bool)@ViewBag.IsEditMode)
+                                        {
+                                            <text>Update</text>
+                                        }
+                                        else
+                                        {
+                                            <text>Save</text>
+                                        }
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <partial name="_BottomNavigation" />
+    </form>
+</section>
+<partial name="DeleteModal" />
+<partial name="_QuickAddModalOfficialInfo" />
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script src="~/js/pages/officialinfo.js"></script>
+    <script type="text/javascript">
+        var options = {
+            baseUrl: '@Url.Action("", "OfficialInfo")'
+        };
+        options.load = () => {
+        };
+
+        $.officialInfo(options);
+    </script>
+}

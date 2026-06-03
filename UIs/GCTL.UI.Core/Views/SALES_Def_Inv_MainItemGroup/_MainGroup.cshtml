@@ -1,0 +1,51 @@
+﻿@model GCTL.UI.Core.ViewModels.SalesDefInvMainItem.SalesDefInvMainItemDto
+
+<div class="card mx-3 w-75">
+   
+    <div class="mx-0 my-1">
+        <input type="hidden" asp-for="MainSetup.TC" class="form-control form-control-sm" value="0">
+        <div class="d-flex align-items-center container-fluid mx-auto g-3" style="padding-left: 0px;">
+            <!-- Item ID -->
+            <div style="width: 40vw;">
+                <div class="gap-1 d-flex jusify-content-center align-items-center input-group-container">
+                    <div class="p-0 text-right ml-3 input-group-container-label">Main Group Id<span class="text-danger ">*</span></div>
+                    <div class="p-0 input-group-container-input">
+                        <input type="text" asp-for="MainSetup.MainItemID" class="form-control form-control-sm" readonly placeholder="Enter Main Item ID" aria-label="MainItemID">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Item Name -->
+            <div style="width: 40vw;">
+                <div class="gap-1 d-flex jusify-content-center align-items-center input-group-container">
+                    <div class="p-0 text-right input-group-container-label">Name <span class="text-danger ">*</span></div>
+                    <div class="p-0 input-group-container-input">
+                        <input type="text" asp-for="MainSetup.MainItemName" class="form-control form-control-sm" placeholder="Enter Main Item Name" aria-label="MainItemName">
+                    </div>
+                </div>
+            </div>
+
+           
+        </div>
+    </div>
+
+    <!-- Decription Name -->
+    <div class="mx-0 w-100 mt-0">
+        <div class="m-0 mb-1">
+
+            <div class="input-group-container-sub">
+                <div class="text-right p-0 ml-2 input-group-container-label-Print-Name-main">
+                    <label for="floatingTextarea1">Description</label>
+                </div>
+                <div class="input-group-container-label-Print-Name-input-main">
+                    <textarea asp-for="MainSetup.Description" class="form-control form-control-sm" placeholder="Leave a description here" rows="1"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <partial name="_ShowingDate"></partial>
+</div>
+<div class="card mx-3 mb-2 py-2 w-75">
+    <partial name="_GridMainGroup"></partial>
+</div>

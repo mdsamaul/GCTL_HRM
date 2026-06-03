@@ -1,0 +1,57 @@
+﻿@using GCTL.Core.ViewModels.Loggers
+@model LogFilterRequest
+@{
+    ViewBag.Title = "Logs";
+}
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <table class="table fixed-table">
+                            <tr>
+                                <td style="vertical-align: middle !important; width:85px !important;">Filter By:</td>
+                                <td>
+                                    <label asp-for="LogLevel">Level</label>
+                                    <span class="text-danger"></span>
+                                    <select asp-for="LogLevel" class="form-control form-control-sm selectpicker" style="width:150px"
+                                            asp-items="@Html.GetEnumSelectList<ApplicationLogLevel>()">
+                                    </select>
+                                    <span asp-validation-for="LogLevel" class="text-danger"></span>
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="js-log-grid-container">
+                            <partial name="_Grid" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<partial name="DeleteModal" />
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script src="~/js/pages/logs.js"></script> 
+
+    <script type="text/javascript">
+        var options = {
+            baseUrl: '@Url.Action("", "Logs")'
+        };
+        options.load = () => {
+        };
+
+        $.logs(options);
+    </script>
+}
+
+
+

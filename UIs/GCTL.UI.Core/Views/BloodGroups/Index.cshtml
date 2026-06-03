@@ -1,0 +1,66 @@
+﻿@model GCTL.UI.Core.ViewModels.BloodGroups.BloodGroupPageViewModel
+@{
+    ViewBag.Title = "Blood Groups";
+    Model.Breadcrumb = "Blood Group";
+    Model.PageTitle = ViewBag.Title;
+}
+
+<style type="text/css">
+    .consistent-look .card {
+        min-height: 476px !important;
+    }
+</style>
+
+<!-- Content Header (Page header) -->
+<partial name="_PageHeader" model="Model" />
+
+<section class="content consistent-look">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6 pr-0">
+                <div class="card">
+                    <div class="card-header px-2">
+                        <partial name="_Toolbars" model="new ToobarModel() { Title = Model.Breadcrumb, Code = Model.Code, Name = Model.Setup.BloodGroup }" />
+                    </div>
+                    <div class="card-body px-2">
+                        <form asp-action="Setup" id="bloodgroup-form">
+                            <div class="js-bloodgroup-form-container">
+                                <partial name="_Setup" model="Model.Setup" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body p-2 pt-3">
+                        <div class="js-bloodgroup-grid-container">
+                            <partial name="_Grid" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <partial name="_BottomNavigation" />
+    </div>
+</section>
+<partial name="DeleteModal" />
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="~/js/pages/bloodGroups.js"></script>
+    <script type="text/javascript">
+        var options = {
+            baseUrl: '@Url.Action("", "BloodGroups")'
+        };
+        options.load = () => {
+        };
+
+        $.bloodGroups(options);
+    </script>
+}
+
+
+

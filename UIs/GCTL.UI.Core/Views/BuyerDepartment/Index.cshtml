@@ -1,0 +1,108 @@
+﻿@model GCTL.UI.Core.ViewModels.InvBuyerDepartment.BuyerDepartmentPageViewModel
+
+@{
+    Model.Breadcrumb = "Buyer Department";
+    Model.PageTitle = "BuyerDepartment";
+}
+
+<div class="container-fluid">
+    <partial name="_PageHeader" model="Model" />
+</div>
+<div class="container-fluid">
+
+    <div class="col-md-12">
+        <div class="d-flex gap-3">
+            <div class="card p-2 col-md-6">
+                <div id="stickyHeader" class="card-header p-1">
+                    <partial name="_Toolbars" model="new ToobarModel() { Title = Model.Breadcrumb, Code = Model.Code, Name = Model.Department.DepartmentName }" />
+                </div>
+                <div class="card-body">
+                    <form id="buyerDepForm" method="post">
+                        <input type="text" asp-for="Department.Tc" hidden value=0 />
+                        <input type="hidden" id="lastCode" />
+
+                        <div class="row mx-1">
+                            <div class="col-md-6">
+                                <div class="align-items-center">
+                                    <label for="Department_BuyerDepartmentId" class="form-label">Department ID</label>
+                                    <input type="text" asp-for="Department.BuyerDepartmentId" class="form-control form-control-sm" aria-label="BuyerId" readonly />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mx-1 pt-2">
+                            <div class="col-md-6">
+                                <div class="align-items-center">
+                                    <label for="Department_DepartmentName" class="form-label">Name</label>
+                                    <input type="text" asp-for="Department.DepartmentName" class="form-control form-control-sm" aria-label="DepartmentName" autofocus required />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="align-items-center">
+                                    <label for="Department_ShortName" class="form-label">Short Name</label>
+                                    <input type="text" asp-for="Department.ShortName" class="form-control form-control-sm" aria-label="ShortName" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 d-none dateInfo">
+                            <partial name="_DateInfo" />
+                        </div>
+                    </form>
+                        
+                </div>
+
+            </div>
+            <div class="card p-2 col-md-6">
+                <table id="buyer-dep-grid" class="table table-bordered table-striped table-hover align-middle mb-0">
+                    <thead>
+                        <tr class="text-center">
+                            <th class="text-center no-sort" style="width: 10%; padding-left: 0; padding-right: 0;">
+                                <label for="buyer-dep-check-all">Sel.</label>
+                                <input type="checkbox" id="buyer-dep-check-all">
+                            </th>
+                            <th class="text-center text-break">ID</th>
+                            <th class="text-center text-break">Department Name</th>
+                            <th class="text-center text-break">Short Name</th>
+                        </tr>
+                    </thead>
+                    <tbody id="buyer-dep-grid-body"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<partial name="_BottomNavigation" />
+
+
+<link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+
+
+    <link href="~/frontend/plugins/fontawesome-free/css/fontawesome.min.css" rel="stylesheet" />
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+    <link href="~/frontend/plugins/datatables-bs4/css/datatables.bootstrap4.min.css" rel="stylesheet" />
+
+    <script src="~/js/jquery.datatables.min.js"></script>
+    <script src="~/js/datatables.bootstrap4.min.js"></script>
+
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="~/js/pages/buyerDepartmentEntry.js"></script>
+
+    <!-- custom JS -->
+    @* <script src="~/js/pages/SALES_Def_Inv_MainItemGroup.js"></script>
+    <script type="text/javascript">
+        var options = {
+            baseUrl: '@Url.Action("", "SALES_Def_Inv_MainItemGroup")',
+        };
+        options.load = () => {
+        };
+
+        $.SALES_Def_Inv_MainItemGroup(options);
+    </script> *@
+}

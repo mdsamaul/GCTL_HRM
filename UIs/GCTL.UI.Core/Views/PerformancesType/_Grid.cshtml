@@ -1,0 +1,50 @@
+﻿@model List<GCTL.Core.ViewModels.HrmDefPerformance2.HrmDefPerformance2SetupViewModel>
+
+<table id="Performancess-grid" class="table table-striped  table-bordered table-sm table-hover table-common">
+
+        <thead class="row-border">
+            <tr class="table row-border">
+                <th class="text-center text-middle" style="width: 10%;">
+                    Select <br /> <input type="checkbox" id="Performancess-check-all" />
+                </th>
+                <th class="text-center text-middle" style="width: 10%;"> Id</th>
+                <th class="text-center text-middle" style="width: 60%;"> Performance</th>
+                <th class="text-center text-middle" style="width: 15%;"> JobTitle</th>
+
+            </tr>
+        </thead>
+        <tbody>
+
+            @if (Model == null || !Model.Any())
+            {
+                <tr class="text-center text-middle">
+                    <td colspan="8">No Data Available In Table.</td>
+                </tr>
+            }
+            else
+            {
+                @foreach (var item in Model.OrderByDescending(x => x.PerformanceCode))
+                {
+                    <tr>
+                        <td class="text-center">
+                            <input type="checkbox" class="text-center text-middle checkBox" data-id="@item.PerformanceCode" value="@item.PerformanceCode" />
+                        </td>
+                        <td>
+                            <a href="#" class='btn js-Performancess-edit'
+                               style="text-decoration: underline; color: rebeccapurple;"
+                               data-id="@item.PerformanceCode" title="Edit">
+                                @item.PerformanceCode
+                            </a>
+                        </td>
+
+                        <td class="text-center text-middle">@item.Performance</td>
+
+                        <td class="text-center text-middle">@item.JobTitle</td>
+
+                    </tr>
+                }
+            }
+
+
+        </tbody>
+    </table>

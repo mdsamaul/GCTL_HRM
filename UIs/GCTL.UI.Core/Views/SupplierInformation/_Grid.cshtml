@@ -1,0 +1,52 @@
+﻿@model List<GCTL.Core.ViewModels.SupplierInformation.SupplierInformationSetupViewModel>
+
+<div class="card">
+    <div class="card-body">
+        <table id="SupplierInformation-grid" class="table table-striped  table-bordered table-sm table-hover table-common">
+            <thead class="row-border">
+                <tr class="table row-border">
+                    <th class="text-center text-middle" style="width: 5%;">
+                        Select <br /> <input type="checkbox" id="SupplierInformation-check-all" />
+                    </th>
+                    <th class="text-center text-middle" style="width: 10%;">Supplier ID</th>
+                    <th class="text-center text-middle" style="width: 20%;">Supplier Name</th>
+                    <th class="text-center text-middle" style="width: 18%;">Supplier Category</th>
+                    <th class="text-center text-middle" style="width: 18%;">Supplier Origin</th>
+                    <th class="text-center text-middle" style="width: 14%;">CountryName</th>
+                    <th class="text-center text-middle" style="width: 15%;">Sales Person</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model == null || !Model.Any())
+                {
+                    <tr class="text-center text-middle">
+                        <td colspan="8">No Data Available.</td>
+                    </tr>
+                }
+                else
+                {
+                    @foreach (var item in Model.OrderByDescending(x => x.SupplierId))
+                    {
+                        <tr>
+                            <td class="text-center">
+                                <input type="checkbox" class="text-center text-middle checkBox" data-id="@item.SupplierId" value="@item.SupplierId" />
+                            </td>
+                            <td>
+                                <a href="#" class='btn js-SupplierInformation-edit'
+                                   style="text-decoration: underline; color: rebeccapurple;"
+                                   data-id="@item.SupplierId" title="Edit">
+                                    @item.SupplierId
+                                </a>
+                            </td>
+                            <td class="text-left text-middle">@item.SupplierName</td>
+                            <td class="text-center text-middle">@item.SupplierCategory</td>
+                            <td class="text-center text-middle">@item.SupplierOrigin</td>
+                            <td class="text-center text-middle">@item.CountryName</td>
+                            <td class="text-center text-middle">@item.SalesPersonName</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

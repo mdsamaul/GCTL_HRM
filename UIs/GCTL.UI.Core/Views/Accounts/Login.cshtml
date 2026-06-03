@@ -1,0 +1,449 @@
+﻿@* @model GCTL.UI.Core.ViewModels.LoginPageViewModel
+
+@{
+    ViewData["Title"] = "Login Page";
+    Layout = null;
+}
+
+<!doctype html>
+<html lang="en">
+<head>
+    <link rel="shortcut icon" href="~/images/CoIcon.ico" />
+    <title>Login</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link href="~/FrontEnd/Login/css/style.css" rel="stylesheet" />
+  
+</head>
+
+<body>
+    <div class="animated-bg">
+        <span class="floating-dot d1"></span>
+        <span class="floating-dot d2"></span>
+        <span class="floating-dot d3"></span>
+        <span class="floating-dot d4"></span>
+        <span class="floating-dot d5"></span>
+        <span class="floating-dot d6"></span>
+        <span class="floating-dot d7"></span>
+        <span class="floating-dot d8"></span>
+        <span class="floating-dot d9"></span>
+        <span class="floating-dot d10"></span>
+        <span class="floating-dot d11"></span>
+        <span class="floating-dot d12"></span>
+    </div>
+    <section class="ftco-section">
+        <div class="container">
+            <form asp-action="Login" asp-controller="Accounts">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="row justify-content-center">
+                    <div class="col-md-10 col-lg-8">
+                        <div class="wrap d-md-flex">
+                        <div class="wrap d-md-flex">
+                                <div class="img" style="background-image: url(images/hrm-login-img.png);">
+                            </div>
+                            <div class="login-wrap p-4 p-md-5">
+                                <div class="d-flex">
+                                    <div class="w-100">
+                                        <h3 class="mb-4">Sign In</h3>
+                                    </div>
+                                    <div class="w-100">
+                                        <p class="social-media d-flex justify-content-end">
+                                            <a href="#" class="social-icon d-flex align-items-center justify-content-center"><span class="fa fa-facebook"></span></a>
+                                            <a href="#" class="social-icon d-flex align-items-center justify-content-center"><span class="fa fa-twitter"></span></a>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label class="label" for="name">Username</label>
+                                    @Html.TextBoxFor(model => model.Username, new { @id = "txtusername", @class = "form-control", @placeholder = "Username" })
+
+                                    @Html.ValidationMessageFor(model => model.Username)
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label class="label" for="password">Password</label>
+                                    @Html.PasswordFor(model => model.Password, new { @id = "txtUserPassword", @class = "form-control", @placeholder = "Password" })
+                                    @Html.ValidationMessageFor(model => model.Password)
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="form-control btn btn-primary rounded submit px-3">Sign In</button>
+                                </div>
+                                <div class="form-group d-md-flex">
+                                    <div class="w-50 text-left">
+                                        <label class="checkbox-wrap checkbox-primary mb-0">
+                                            Remember Me
+                                            <input type="checkbox" checked>
+                                            <span class="checkmark"></span>
+                                        </label>
+                                    </div>
+                                    <div class="w-50 text-md-right">
+                                        <a href="#">Forgot Password</a>
+                                    </div>
+                                </div>
+                                <p class="text-center">Not a member? <a data-toggle="tab" href="#signup">Sign Up</a></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <script src="~/FrontEnd/Login/js/jquery.min.js"></script>
+    <script src="~/FrontEnd/Login/js/popper.js"></script>
+    <script src="~/FrontEnd/Login/js/bootstrap.min.js"></script>
+    <script src="~/FrontEnd/Login/js/main.js"></script>
+
+</body>
+</html>
+
+
+
+
+<style type="text/css">
+
+</style>
+
+@section Scripts {
+    @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
+} *@
+
+@model GCTL.UI.Core.ViewModels.LoginPageViewModel
+
+@{
+    ViewData["Title"] = "Login Page";
+    Layout = null;
+}
+
+<!doctype html>
+<html lang="en">
+<head>
+    <link rel="shortcut icon" href="~/images/CoIcon.ico" />
+    <title>Login</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="~/FrontEnd/Login/css/style.css" rel="stylesheet" />
+
+    <style>
+
+        /* ── Floating dots container ── */
+        .animated-bg {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .floating-dot {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0;
+            animation: dotRise linear infinite;
+        }
+
+        .d1 {
+            width: 10px;
+            height: 10px;
+            left: 4%;
+            background: rgba(100,183,238,0.55);
+            animation-duration: 9s;
+            animation-delay: 0s;
+        }
+
+        .d2 {
+            width: 14px;
+            height: 14px;
+            left: 11%;
+            background: rgba(77,208,225,0.50);
+            animation-duration: 11s;
+            animation-delay: 1.3s;
+        }
+
+        .d3 {
+            width: 8px;
+            height: 8px;
+            left: 20%;
+            background: rgba(247,189,69,0.55);
+            animation-duration: 8.5s;
+            animation-delay: 2.7s;
+        }
+
+        .d4 {
+            width: 16px;
+            height: 16px;
+            left: 30%;
+            background: rgba(129,196,132,0.50);
+            animation-duration: 12s;
+            animation-delay: 0.6s;
+        }
+
+        .d5 {
+            width: 9px;
+            height: 9px;
+            left: 41%;
+            background: rgba(100,183,238,0.55);
+            animation-duration: 9.5s;
+            animation-delay: 3.2s;
+        }
+
+        .d6 {
+            width: 12px;
+            height: 12px;
+            left: 52%;
+            background: rgba(206,147,216,0.50);
+            animation-duration: 10s;
+            animation-delay: 1.8s;
+        }
+
+        .d7 {
+            width: 7px;
+            height: 7px;
+            left: 62%;
+            background: rgba(77,208,225,0.55);
+            animation-duration: 8s;
+            animation-delay: 0.4s;
+        }
+
+        .d8 {
+            width: 15px;
+            height: 15px;
+            left: 72%;
+            background: rgba(247,189,69,0.50);
+            animation-duration: 13s;
+            animation-delay: 2.1s;
+        }
+
+        .d9 {
+            width: 10px;
+            height: 10px;
+            left: 81%;
+            background: rgba(100,183,238,0.55);
+            animation-duration: 9.2s;
+            animation-delay: 4.1s;
+        }
+
+        .d10 {
+            width: 11px;
+            height: 11px;
+            left: 89%;
+            background: rgba(129,196,132,0.50);
+            animation-duration: 10.5s;
+            animation-delay: 1.6s;
+        }
+
+        .d11 {
+            width: 8px;
+            height: 8px;
+            left: 7%;
+            background: rgba(206,147,216,0.50);
+            animation-duration: 7.8s;
+            animation-delay: 3.6s;
+        }
+
+        .d12 {
+            width: 13px;
+            height: 13px;
+            left: 95%;
+            background: rgba(77,208,225,0.55);
+            animation-duration: 11.5s;
+            animation-delay: 0.9s;
+        }
+
+        @@keyframes dotRise {
+            0% {
+                bottom: -20px;
+                opacity: 0;
+                transform: translateX(0px) scale(0.6);
+            }
+
+            8% {
+                opacity: 0.75;
+            }
+
+            40% {
+                transform: translateX(18px) scale(1);
+            }
+
+            70% {
+                transform: translateX(-14px) scale(1);
+                opacity: 0.5;
+            }
+
+            95% {
+                opacity: 0.15;
+            }
+
+            100% {
+                bottom: 105vh;
+                opacity: 0;
+                transform: translateX(8px) scale(0.5);
+            }
+        }
+
+        /* ── Sign In button soft animation ── */
+        .submit {
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.25s ease, box-shadow 0.25s ease !important;
+            animation: btnPulse 3s ease-in-out infinite;
+        }
+
+            .submit::after {
+                content: '';
+                position: absolute;
+                inset: 0;
+                background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.22) 50%, transparent 100%);
+                transform: translateX(-100%);
+                animation: btnSweep 3s ease-in-out infinite;
+            }
+
+        @@keyframes btnPulse {
+            0%, 100% {
+                box-shadow: 0 4px 14px rgba(26,107,191,0.25);
+            }
+
+            50% {
+                box-shadow: 0 8px 24px rgba(26,107,191,0.42);
+            }
+        }
+
+        @@keyframes btnSweep {
+            0%, 65% {
+                transform: translateX(-100%);
+            }
+
+            82% {
+                transform: translateX(100%);
+            }
+
+            100% {
+                transform: translateX(100%);
+            }
+        }
+
+        .submit:hover {
+            transform: translateY(-2px) !important;
+            box-shadow: 0 10px 28px rgba(26,107,191,0.38) !important;
+        }
+
+        .submit:active {
+            transform: translateY(0px) !important;
+        }
+
+        /* ── Horizontal & Vertical Center ── */
+        html, body {
+            height: 100%;
+        }
+
+        .ftco-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+            .ftco-section .container {
+                width: 100%;
+            }
+
+    </style>
+
+</head>
+
+<body>
+    <div class="animated-bg">
+        <span class="floating-dot d1"></span>
+        <span class="floating-dot d2"></span>
+        <span class="floating-dot d3"></span>
+        <span class="floating-dot d4"></span>
+        <span class="floating-dot d5"></span>
+        <span class="floating-dot d6"></span>
+        <span class="floating-dot d7"></span>
+        <span class="floating-dot d8"></span>
+        <span class="floating-dot d9"></span>
+        <span class="floating-dot d10"></span>
+        <span class="floating-dot d11"></span>
+        <span class="floating-dot d12"></span>
+    </div>
+
+    <section class="ftco-section">
+        <div class="container">
+            <form asp-action="Login" asp-controller="Accounts">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="row justify-content-center">
+                    <div class="col-md-10 col-lg-8">
+                        <div class="wrap d-md-flex">
+                            <div class="wrap d-md-flex">
+                                <div class="img" style="background-image: url(images/hrm-login-img.png);">
+                                </div>
+                                <div class="login-wrap p-4 p-md-5">
+                                    <div class="d-flex">
+                                        <div class="w-100">
+                                            <h3 class="mb-4">Sign In</h3>
+                                        </div>
+                                        <div class="w-100">
+                                            <p class="social-media d-flex justify-content-end">
+                                                <a href="#" class="social-icon d-flex align-items-center justify-content-center"><span class="fa fa-facebook"></span></a>
+                                                <a href="#" class="social-icon d-flex align-items-center justify-content-center"><span class="fa fa-twitter"></span></a>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label class="label" for="name">Username</label>
+                                        @Html.TextBoxFor(model => model.Username, new { @id = "txtusername", @class = "form-control", @placeholder = "Username" })
+                                        @Html.ValidationMessageFor(model => model.Username)
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label class="label" for="password">Password</label>
+                                        @Html.PasswordFor(model => model.Password, new { @id = "txtUserPassword", @class = "form-control", @placeholder = "Password" })
+                                        @Html.ValidationMessageFor(model => model.Password)
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="submit" class="form-control btn btn-primary rounded submit px-3">Sign In</button>
+                                    </div>
+                                    <div class="form-group d-md-flex">
+                                        <div class="w-50 text-left">
+                                            <label class="checkbox-wrap checkbox-primary mb-0">
+                                                Remember Me
+                                                <input type="checkbox" checked>
+                                                <span class="checkmark"></span>
+                                            </label>
+                                        </div>
+                                        <div class="w-50 text-md-right">
+                                            <a href="#">Forgot Password</a>
+                                        </div>
+                                    </div>
+                                    <p class="text-center">Not a member? <a data-toggle="tab" href="#signup">Sign Up</a></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <script src="~/FrontEnd/Login/js/jquery.min.js"></script>
+    <script src="~/FrontEnd/Login/js/popper.js"></script>
+    <script src="~/FrontEnd/Login/js/bootstrap.min.js"></script>
+    <script src="~/FrontEnd/Login/js/main.js"></script>
+
+</body>
+</html>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

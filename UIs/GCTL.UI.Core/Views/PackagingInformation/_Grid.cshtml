@@ -1,0 +1,61 @@
+﻿@model List<GCTL.Core.ViewModels.PackagingInformation.PackagingInformationSetupViewModel>
+
+<table id="PackagingInformation-grid" class="table table-striped  table-bordered table-sm table-hover table-common">
+    <thead class="row-border">
+        <tr class="table row-border">
+            <th class="text-center text-middle" style="width: 7%;">
+                Select <br /> <input type="checkbox" id="PackagingInformation-check-all" />
+            </th>
+            <th class="text-center text-middle" style="width: 7%;">ID</th>
+            <th class="text-center text-middle" style="width: 20%;">Package Name</th>
+            <th class="text-center text-middle" style="width: 12%;">Type</th>
+            <th class="text-center text-middle" style="width: 13%;">Volume</th>
+            <th class="text-center text-middle" style="width: 13%;">Max Capacity</th>
+            <th class="text-center text-middle" style="width: 12%;">Unit Typ</th>
+            <th class="text-center text-middle" style="width: 16%;">Remarks</th>
+
+        </tr>
+    </thead>
+    <tbody>
+
+        @if (Model == null || !Model.Any())
+        {
+            <tr class="text-center text-middle">
+                <td colspan="9">No Data Available.</td>
+            </tr>
+        }
+        else
+        {
+            @foreach (var item in Model.OrderByDescending(x => x.PackageId))
+            {
+                <tr>
+                    <td class="text-center">
+                        <input type="checkbox" class="text-center text-middle checkBox" data-id="@item.PackageId" value="@item.PackageId" />
+                    </td>
+                    <td>
+                        <a href="#" class='btn js-PackagingInformation-edit'
+                           style="text-decoration: underline; color: rebeccapurple;"
+                           data-id="@item.PackageId" title="Edit">
+                            @item.PackageId
+                        </a>
+                    </td>
+
+                    <td class="text-center text-middle">@item.PackageName</td>
+                    <td class="text-center text-middle">@item.PackageType</td>
+                    <td class="text-center text-middle">@item.Volume</td>
+                    @if (item.MaxCapacity != 0)
+                    {
+                        <td class="text-center text-middle">@item.MaxCapacity</td>
+                    }
+                    else
+                    {
+                        <td class="text-center text-middle"></td>
+                    }
+                    <td class="text-center text-middle">@item.UnitTypeName</td>
+                    <td class="text-center text-middle">@item.Remarks</td>
+                </tr>
+            }
+        }
+
+    </tbody>
+</table>

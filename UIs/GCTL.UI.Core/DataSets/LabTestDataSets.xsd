@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="LabTestDataSets" targetNamespace="http://tempuri.org/LabTestDataSets.xsd" xmlns:mstns="http://tempuri.org/LabTestDataSets.xsd" xmlns="http://tempuri.org/LabTestDataSets.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="1" FunctionsComponentName="QueriesTableAdapter" GeneratorFunctionsComponentClassName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" UserFunctionsComponentName="QueriesTableAdapter" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections>
+          <Connection AppSettingsObjectName="Settings" AppSettingsPropertyName="GCTL_ERP_DB_CoreConnectionString" IsAppSettingsProperty="true" Modifier="Assembly" Name="GCTL_ERP_DB_CoreConnectionString (Settings)" ParameterPrefix="@" PropertyReference="ApplicationSettings.WindowsFormsApp1.Properties.Settings.GlobalReference.Default.GCTL_ERP_DB_CoreConnectionString" Provider="System.Data.SqlClient" />
+          <Connection ConnectionStringObject="Data Source=.\GCTL;Initial Catalog=GCTL_ERP_DB_Core;Integrated Security=True" IsAppSettingsProperty="false" Modifier="Assembly" Name="GCTL_ERP_DB_CoreConnectionString" ParameterPrefix="@" Provider="System.Data.SqlClient" />
+        </Connections>
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="LabTestDataSets" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:Generator_UserDSName="LabTestDataSets" msprop:EnableTableAdapterManager="True" msprop:Generator_DataSetName="LabTestDataSets">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="LabTestResult" msprop:Generator_RowClassName="LabTestResultRow" msprop:Generator_RowEvHandlerName="LabTestResultRowChangeEventHandler" msprop:Generator_RowDeletedName="LabTestResultRowDeleted" msprop:Generator_RowDeletingName="LabTestResultRowDeleting" msprop:Generator_RowEvArgName="LabTestResultRowChangeEvent" msprop:Generator_TablePropName="LabTestResult" msprop:Generator_RowChangedName="LabTestResultRowChanged" msprop:Generator_UserTableName="LabTestResult" msprop:Generator_RowChangingName="LabTestResultRowChanging" msprop:Generator_TableClassName="LabTestResultDataTable" msprop:Generator_TableVarName="tableLabTestResult">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="LabTestNo" msprop:Generator_UserColumnName="LabTestNo" msprop:Generator_ColumnPropNameInTable="LabTestNoColumn" msprop:Generator_ColumnPropNameInRow="LabTestNo" msprop:Generator_ColumnVarNameInTable="columnLabTestNo">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="ReportDateTime" msdata:Caption="LabTestDateTime" msprop:Generator_UserColumnName="ReportDateTime" msprop:Generator_ColumnPropNameInTable="ReportDateTimeColumn" msprop:Generator_ColumnPropNameInRow="ReportDateTime" msprop:Generator_ColumnVarNameInTable="columnReportDateTime" type="xs:dateTime" />
+              <xs:element name="Mrno" msprop:Generator_UserColumnName="Mrno" msprop:Generator_ColumnPropNameInTable="MrnoColumn" msprop:Generator_ColumnPropNameInRow="Mrno" msprop:Generator_ColumnVarNameInTable="columnMrno">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="MrdateTime" msprop:Generator_UserColumnName="MrdateTime" msprop:Generator_ColumnPropNameInTable="MrdateTimeColumn" msprop:Generator_ColumnPropNameInRow="MrdateTime" msprop:Generator_ColumnVarNameInTable="columnMrdateTime" type="xs:dateTime" />
+              <xs:element name="ReportNo" msdata:Caption="TotalAmount" msprop:Generator_UserColumnName="ReportNo" msprop:Generator_ColumnPropNameInTable="ReportNoColumn" msprop:Generator_ColumnPropNameInRow="ReportNo" msprop:Generator_ColumnVarNameInTable="columnReportNo" type="xs:string" minOccurs="0" />
+              <xs:element name="Specimen" msprop:Generator_UserColumnName="Specimen" msprop:Generator_ColumnPropNameInTable="SpecimenColumn" msprop:Generator_ColumnPropNameInRow="Specimen" msprop:Generator_ColumnVarNameInTable="columnSpecimen" type="xs:string" minOccurs="0" />
+              <xs:element name="CarriedOutBy" msprop:Generator_UserColumnName="CarriedOutBy" msprop:Generator_ColumnPropNameInTable="CarriedOutByColumn" msprop:Generator_ColumnPropNameInRow="CarriedOutBy" msprop:Generator_ColumnVarNameInTable="columnCarriedOutBy" type="xs:string" minOccurs="0" />
+              <xs:element name="ReportTitle" msprop:Generator_ColumnPropNameInRow="ReportTitle" msprop:Generator_ColumnPropNameInTable="ReportTitleColumn" msprop:Generator_ColumnVarNameInTable="columnReportTitle" msprop:Generator_UserColumnName="ReportTitle" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="LabTestResultDetails" msprop:Generator_RowClassName="LabTestResultDetailsRow" msprop:Generator_RowEvHandlerName="LabTestResultDetailsRowChangeEventHandler" msprop:Generator_RowDeletedName="LabTestResultDetailsRowDeleted" msprop:Generator_RowDeletingName="LabTestResultDetailsRowDeleting" msprop:Generator_RowEvArgName="LabTestResultDetailsRowChangeEvent" msprop:Generator_TablePropName="LabTestResultDetails" msprop:Generator_RowChangedName="LabTestResultDetailsRowChanged" msprop:Generator_UserTableName="LabTestResultDetails" msprop:Generator_RowChangingName="LabTestResultDetailsRowChanging" msprop:Generator_TableClassName="LabTestResultDetailsDataTable" msprop:Generator_TableVarName="tableLabTestResultDetails">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="SerialNo" msdata:ReadOnly="true" msprop:Generator_UserColumnName="SerialNo" msprop:Generator_ColumnPropNameInTable="SerialNoColumn" msprop:Generator_ColumnPropNameInRow="SerialNo" msprop:Generator_ColumnVarNameInTable="columnSerialNo" type="xs:int" minOccurs="0" />
+              <xs:element name="TestCategoryName" msprop:Generator_UserColumnName="TestCategoryName" msprop:Generator_ColumnPropNameInTable="TestCategoryNameColumn" msprop:Generator_ColumnPropNameInRow="TestCategoryName" msprop:Generator_ColumnVarNameInTable="columnTestCategoryName">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="TestChargeName" msprop:Generator_UserColumnName="TestChargeName" msprop:Generator_ColumnPropNameInTable="TestChargeNameColumn" msprop:Generator_ColumnPropNameInRow="TestChargeName" msprop:Generator_ColumnVarNameInTable="columnTestChargeName">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="DeliveryDateTime" msprop:Generator_UserColumnName="DeliveryDateTime" msprop:Generator_ColumnPropNameInTable="DeliveryDateTimeColumn" msprop:Generator_ColumnPropNameInRow="DeliveryDateTime" msprop:Generator_ColumnVarNameInTable="columnDeliveryDateTime" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="Result" msdata:Caption="Amount" msprop:Generator_UserColumnName="Result" msprop:Generator_ColumnPropNameInTable="ResultColumn" msprop:Generator_ColumnPropNameInRow="Result" msprop:Generator_ColumnVarNameInTable="columnResult" type="xs:string" minOccurs="0" />
+              <xs:element name="ReferenceValue" msdata:Caption="LineTotal" msprop:Generator_UserColumnName="ReferenceValue" msprop:Generator_ColumnPropNameInTable="ReferenceValueColumn" msprop:Generator_ColumnPropNameInRow="ReferenceValue" msprop:Generator_ColumnVarNameInTable="columnReferenceValue" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

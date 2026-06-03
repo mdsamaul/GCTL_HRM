@@ -1,0 +1,101 @@
+﻿@model GCTL.UI.Core.ViewModels.SalesDefInvMainItem.SalesDefInvMainItemDto
+
+<div class="card mx-3 w-75">
+    <div class="card mx-3 mt-2">
+        <input type="hidden" asp-for="SubItem.TC" class="form-control form-control-sm" value="0">
+        <div class="mx-0 my-1">          
+            <div class="d-flex align-items-center container-fluid mx-auto g-3" style="padding-left: 0px;">
+                <!-- Item ID -->
+                <div style="width: 40vw;">
+                    <div class="gap-1 d-flex jusify-content-center align-items-center input-group-container">
+                        <div class="p-0 text-right ml-3 input-group-container-label">Main Group Id<span class="text-danger ">*</span></div>
+                        <div class="p-0 input-group-container-input">
+                            <input type="text" id="SubGroupMainItemID" readonly class="form-control form-control-sm" placeholder="Enter Main Item ID" aria-label="MainItemID">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item Name -->
+                <div style="width: 40vw;">
+                    <div class="gap-1 d-flex jusify-content-center align-items-center input-group-container">
+                        <div class="p-0 text-right input-group-container-label">Name <span class="text-danger ">*</span></div>
+                        <div class="p-0 input-group-container-input">
+                            <select class="form-select form-select-sm searchable-select main-group-item-dropdown" asp-items="ViewBag.MainGroup as SelectList" id="SubGroupMainItemName">
+                                <option value="">Main Group Name</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+        <!-- Decription Name -->
+        <div class="mx-0 w-100 mt-0">
+            <div class="m-0 mb-1">
+
+                <div class="input-group-container-sub">
+                    <div class="text-right p-0 ml-2 input-group-container-label-Print-Name-main">
+                        <label for="floatingTextarea1">Description</label>
+                    </div>
+                    <div class="input-group-container-label-Print-Name-input-main">
+                        <textarea id="SubGroupDescription" readonly class="form-control form-control-sm" placeholder="Leave a description here" rows="1"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+        <div class="mx-0 my-1">
+            <div class="d-flex align-items-center container-fluid mx-auto g-3" style="padding-left: 0px;">
+                <!-- Item ID -->
+                <div style="width: 40vw;">
+                    <div class="gap-1 d-flex jusify-content-center align-items-center input-group-container">
+                        <div class="p-0 text-right ml-4 input-group-container-label">Sub Group Id<span class="text-danger ">*</span></div>
+                        <div class="p-0 input-group-container-input">
+                            <input type="text" asp-for="SubItem.SubItemID" readonly class="form-control form-control-sm" placeholder="Enter Main Item ID" aria-label="MainItemID">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item Name -->
+                <div style="width: 40vw;">
+                    <div class="gap-1 mr-3 d-flex jusify-content-center align-items-center input-group-container">
+                        <div class="p-0 text-right input-group-container-label">Sub Group Name <span class="text-danger ">*</span></div>
+                        <div class="p-0 mr-1 input-group-container-input">
+                            <input type="text" asp-for="SubItem.SubItemName" class="form-control form-control-sm" placeholder="Enter Sub Group Name" aria-label="MainItemName">
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+        <!-- Decription Name -->
+        <div class="mx-0 w-100 mt-0">
+            <div class="m-0 mb-1">
+
+                <div class="input-group-container-sub">
+                    <div class="text-right p-0 ml-2 input-group-container-label-Print-Name-main">
+                        <label for="floatingTextarea1">Description</label>
+                    </div>
+                    <div class="input-group-container-label-Print-Name-input-main">
+                        <textarea id="SubGroupDescription" class="form-control form-control-sm" placeholder="Leave a description here" rows="1"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+   
+
+    <partial name="_ShowingDate"></partial>
+</div>
+<div class="card mx-3 mb-2 py-2 w-75">
+    <partial name="_GridSubGroup"></partial>
+</div>

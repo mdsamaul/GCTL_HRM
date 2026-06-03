@@ -1,0 +1,90 @@
+﻿@model GCTL.Core.ViewModels.HrmDefPerformance2.HrmDefPerformance2SetupViewModel
+
+
+<div style="padding-top: 10px;padding-left:15px;">
+    <div class="row">
+        <div class="col-lg-6">
+            <span id="message"></span>
+        </div>
+        <div class="col-lg-6">
+        </div>
+    </div>
+    <div class="form-group row">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <input type="hidden" id="lastCode" />
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="Ldate" />
+        <input type="hidden" asp-for="ModifyDate" />
+        <input type="hidden" asp-for="AutoId" />
+
+    </div>
+    <div class="form-group row">
+        <div class="col-lg-6">
+            <label asp-for="PerformanceCode">Performance Id </label>
+            <input asp-for="PerformanceCode" type="text" class="form-control form-control-sm js-PerformanceCode-check-duplicateName" readonly autofocus tabindex="1" />
+        </div>
+
+        <div class="col-lg-6">
+            <label asp-for="JobTitleId"> Job Title</label>
+            <span class="text-danger"></span>
+            <div class="input-group">
+                <select asp-for="JobTitleId" class="form-control form-control-sm selectpicker2 js-JobTitleId" asp-items="@ViewBag.JobTitleIdDD as SelectList">
+                    <option value="">--Select Job Title--</option>
+                </select>            
+                <div class="input-group-append">
+                    <button type="button" class="btn btn-sm btn-outline-success btn-default  js-quick-add input-group-textc"
+                            data-url="@Url.Action("Index", "JobTitles")"
+                            data-target="#JobTitleId"
+                            data-reload-url="@Url.Action("GetJobs", "Cascading")"
+                            data-title="Job Title">
+                        +
+                    </button>                 
+                </div>
+            </div>
+            @*  <span asp-validation-for="JobTitleId" class="text-danger" /> *@
+        </div>
+
+    </div>
+
+    <div class="form-group row">
+        <div class="col-lg-12">
+            <label asp-for="Performance">Performance Text<span style="color:red">*</span> </label>
+            <textarea type="text" asp-for="Performance" class="form-control form-control-sm js-Performance-check-duplicateName" autofocus required placeholder="--Select Performance Text--" tabindex="2">
+        </textarea>
+
+        </div>
+    </div>
+
+    @if (Model.AutoId > 0)
+    {
+        <hr />
+        <div class="form-group row" id="LdateModifyHide">
+            <div class="col-lg-6">
+                @if (Model.Ldate.HasValue)
+                {
+                    <label>Creation Date: </label>
+
+                    <label>@Model.Ldate?.ToString("dd/MM/yyyy")</label>
+                }
+            </div>
+            <div class="col-lg-6">
+                @if (Model.ModifyDate.HasValue)
+                {
+                    <label>Last Update Date: </label>
+
+                    <label>@Model.ModifyDate?.ToString("dd/MM/yyyy")</label>
+                }
+            </div>
+        </div>
+    }
+
+</div>
+
+<div class="row no-print" style="margin-top: 9px;">
+    <div class="col-12">
+        <button type="button" class="btn btn-default success-btn btn btn-outline-success btn-common btn-circle float-right js-Performancess-save" data-id="@Model.PerformanceCode">
+            <i class="fas fa-save"></i> Save
+        </button>
+    </div>
+</div>

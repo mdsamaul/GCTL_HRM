@@ -1,0 +1,147 @@
+﻿<style>
+ 
+    .flatpickr-input {
+        background-color: white !important;
+        color: black !important;
+    }
+
+        .flatpickr-input::placeholder {
+            color: #999;
+        }
+
+     .flatpickr-calendar {
+      background: #fff;
+      border-radius: 5px;
+      box-shadow: 0 3px 13px rgba(0,0,0,0.08);
+      /* width: 390px !important; */
+      /* width: 21vw !important; */
+     
+      padding: 8px;
+      box-sizing: border-box;
+    }
+    
+    .flatpickr-months {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 0px !important;
+    }
+    
+    .flatpickr-month {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 20px; /* Reduced height */
+    }
+    
+    .flatpickr-current-month {
+      font-size: 12px; /* Smaller text */
+      font-weight: bold;
+      text-align: center;
+      padding-top: 4px !important;
+    }
+    
+    .numInputWrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .numInput {
+      width: 50px;
+      text-align: center;
+      border: none;
+      font-size: 12px; /* Smaller text */
+    }
+   
+    .flatpickr-prev-month, .flatpickr-next-month {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+</style>
+<div class="g-3 mt-2 border py-2 rounded rounded-lg">
+    <input type="hidden" id="hiddenRosterId" value="" />
+    <input type="hidden" id="TcIdRosterDelete" value="" />
+
+    <!-- Roster Schedule -->
+  <!-- HTML Form Structure -->
+    <div class="col-md-5 mt-2 editHideRosterSchedule">
+        <div class="d-flex align-items-center gap-3">
+            <span class="col-md-3 mb-0 text-right px-0 pr-1 "><strong>Roster Schedule</strong></span>
+            <div class="col-md-8 d-flex align-items-center p-0">
+                <div class="form-check">
+                   
+                    <label><input type="radio" name="filterType" id="byDate" checked> By Date</label>                  
+
+                </div>
+                <div class="form-check mx-3">
+                    @* <input class="form-check-input" type="radio" name="rosterOption" id="byMonth"> *@
+                    @* <label class="form-check-label" for="byMonth">By Month</label> *@
+                    <label><input type="radio" name="filterType" id="byMonth"> By Month</label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6"></div>
+
+    <!-- Date From + To Date Fields -->
+    <div class="col-12" id="dateFields" style="padding: 0px;">
+        <div class="col-12 d-flex align-items-center" style="padding-left: 5px;">
+            <div class="col-md-5 showFromDate mt-2">
+                <div class="d-flex align-items-center">
+                    <label for="FromDatePicker" class="col-md-3 px-0 pr-1  mb-0 editDate text-right">Date From<sup class="text-danger"><span style="font-size:20px;">*</span></sup></label>
+                    <input type="text" id="FromDatePicker" class="form-control form-control-sm col-md-6 text-left cursor-pointer" placeholder="Select from date">
+                </div>
+            </div>
+            <div class="col-md-5 editHide mt-2 px-0">
+                <div class="d-flex align-items-center justify-content-md-start pl-5">
+                    <label for="toDateRosterFrom" class="mb-0 col-1 px-0 mr-1 mx-0 text-right">To<sup class="text-danger"><span style="font-size:20px;">*</span></sup></label>
+                    <input style="margin-left: 15px;" type="number" id="toDateRosterFrom" class="form-control form-control-sm col-md-6 cursor-pointer" placeholder="To Date" />
+                </div>
+            </div>
+       </div>
+    </div>
+   
+    <!-- Month + Year Fields -->
+    <div class="col-5" id="monthFields" style="display: none; gap: 0px; padding: 0px;">
+      
+                <div class="d-flex align-items-center col-md-12">
+            <label for="monthRosterFrom" class="mb-0 col-md-3 px-0 pr-1  text-right">Month<sup class="text-danger"><span style="font-size:20px;">*</span></sup></label>
+                 <select id="monthRosterFrom" class="form-control form-control-sm col-md-6">
+                     <option value="">--- Select Month ---</option>
+                 </select>
+                </div>               
+      
+             <div class="col-md-6 mt-2">
+                <div class="d-flex align-items-center justify-content-md-start">
+                <label for="YearRosterFrom" class="col-md-3 mb-0 px-0 pr-1  text-right ml-3">Year<sup class="text-danger"><span style="font-size:20px;">*</span></sup></label>
+                    <input type="number" id="YearRosterFrom" class="form-control form-control-sm col-md-12" placeholder="Year" />
+                </div>
+                <div class="validYearMessage text-danger pt-1 fs-6 col-md-12 text-center"></div>
+            </div> 
+     
+    </div>
+
+    <div class="col-md-12 mt-2 p-0">
+        <div class="d-flex col-md-5  align-items-center">
+            <label for="shiftSelect" class="col-md-3 mb-0 px-0 pr-1  text-right">Shift<sup class="text-danger"><span style="font-size:20px;">*</span></sup></label>
+            <select id="shiftSelect" class="form-control form-control-sm col-md-6">
+               
+            </select>
+        </div>
+    </div>
+
+
+    <!-- Remarks (full width) -->
+    <div class="col-md-7 mt-2">
+        <div class="d-flex align-items-center">
+            <label for="remarks" class="col-md-2 mb-0 px-0 pr-1 ml-2 text-right">Remarks</label>
+            <textarea id="remarks" class="form-control col-md-12 form-control-sm" style="resize:none;" rows="2" placeholder="Enter Remarks"></textarea>
+        </div>
+    </div>   
+
+</div>
+

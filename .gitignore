@@ -1,0 +1,15 @@
+# Build folders
+bin/
+obj/
+.vs/
+# Visual Studio cache files
+*.user
+*.suo
+*.cache
+
+# DLL and PDB files
+*.dll
+*.pdb
+
+# ASP.NET static assets
+*.staticwebassets.*

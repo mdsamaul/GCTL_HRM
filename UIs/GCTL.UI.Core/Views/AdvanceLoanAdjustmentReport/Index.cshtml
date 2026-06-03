@@ -1,0 +1,455 @@
+﻿@model GCTL.UI.Core.ViewModels.AdvanceLoanAdjustmentReport.AdvanceLoanAdjustmentReportViewModel
+@{
+    Model.Breadcrumb = "AdvanceLoanAdjustmentReport";
+    Model.PageTitle = "Advance Loan Adjustment Report";
+}
+
+<style>
+    .multiselect-container {
+        position: relative;
+        width: 100%;
+    }
+
+    .multiselect-input {
+        cursor: pointer;
+        background-color: white;
+        border: 1px solid #ced4da;
+        border-radius: 0.375rem;
+        position: relative;       
+    }
+
+        .multiselect-input:focus {
+            border-color: #86b7fe;
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+        }
+
+    .multiselect-arrow {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        pointer-events: none;
+        transition: transform 0.2s;
+    }
+
+        .multiselect-arrow.open {
+            transform: translateY(-50%) rotate(180deg);
+        }
+
+    .multiselect-dropdown {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: white;
+        border: 1px solid #ced4da;
+        border-top: none;
+        border-radius: 0 0 0.375rem 0.375rem;
+        max-height: 250px;
+        overflow-y: hidden;
+        z-index: 1000;
+        display: none;
+    }
+
+    .multiselect-search {
+        padding: 4px;
+        border-bottom: 1px solid #e9ecef;
+        position: sticky;
+        top: 0;
+        background: white;
+        z-index: 2;
+    }
+
+        .multiselect-search input {
+            width: 100%;
+            border: 1px solid #ced4da;
+            border-radius: 0.25rem;
+            padding: 6px 10px;
+            font-size: 14px;
+        }
+
+    .multiselect-options {
+        max-height: 200px;
+        overflow-y: auto;
+    }
+
+    .multiselect-option {
+        padding: 8px 12px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 14px;
+    }
+
+        .multiselect-option:hover {
+            background-color: #f8f9fa;
+        }
+
+        .multiselect-option input[type="checkbox"] {
+            margin: 0;
+        }
+
+    .selected-items {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px;        
+    }
+
+    .selected-item {
+        border: 1px solid #ccc;
+        padding: 4px 8px;
+        width: 100%;
+        border-radius: 0;
+        background-color: #f5f5f5;
+        font-size: 14px;
+
+    }
+
+        .selected-item .remove {
+            cursor: pointer;
+            font-weight: bold;
+            color: #666;
+        }
+
+            .selected-item .remove:hover {
+                color: #000;
+            }
+
+    .placeholder-text {
+        color: #6c757d;
+        font-size: 14px;
+        padding:5px;
+    }
+
+    .count-display {
+        color: #495057;
+        font-size: 14px;
+        font-weight: 500;
+        padding: 4px 8px;
+        border:1px solid #eee;
+    }
+
+   @@media (min-width: 1400px) {
+        .SearchAndReportOption
+
+    {       
+        margin-left: 5vw;
+        font-weight: bold;
+    }
+   }
+
+    #btnPreview, #downloadReport {
+        transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        min-width: 120px;
+        min-height: 25px;
+        position: relative;
+        overflow: visible;
+    }
+
+        #btnPreview:hover,
+        #downloadReport:hover {
+            background-color: rgba(173, 255, 47, 0.2) !important;
+            color: #1e90ff !important;
+            border-color: #1e90ff !important;
+            box-shadow: 0 4px 10px rgba(30, 144, 255, 0.5) !important;
+        }
+
+
+        #btnPreview i,
+        #btnPreview span,
+        #downloadReport i,
+        #downloadReport span {
+            transition: transform 0.3s ease;
+            display: inline-block;
+            transform: scale(1);
+            margin-right: 2px;
+        }
+
+        #btnPreview:hover i,
+        #downloadReport:hover i {
+            transform: scale(1.3);
+        }
+</style>
+<div class="container-fluid">
+    <partial name="_PageHeader" model="Model"></partial>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Advance Adjustment Report</h3>
+                </div>
+                <div class="card-body py-0">
+                    <div class="container-fluid mt-4">
+                        <h6 class="mb-1 SearchAndReportOption">
+                            Search By:</h6>
+                        <div style="width:36.5vw;">
+                            <hr style="height:2px; color:#ddd; margin:0px;"/>
+                        </div>
+                        <div class="row mb-1">
+                            <div class="col-12 col-md-6">
+                                <div class="d-flex justify-content-center">
+                                    <div class="col-md-3  d-flex justify-content-end align-items-center " style="padding-right:5px;">
+                                        <label for="companyCodes" class="form-label" style="white-space:nowrap;">Company</label>
+                                    </div>
+
+                                    <div class="multiselect-container col-md-6" data-field="companyCodes" data-multiselect="false">
+                                        <div class="multiselect-input" tabindex="0">
+                                            <div class="selected-items"></div>
+                                            <div class="placeholder-text">Select Company Codes...</div>
+                                            <i class="fas fa-chevron-down multiselect-arrow"></i>
+                                        </div>
+                                        <div class="multiselect-dropdown">
+                                            <div class="multiselect-search">
+                                                <input type="text" placeholder="Search company codes...">
+                                            </div>
+                                            <div class="multiselect-options"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 ">
+                                <div class="d-flex justify-content-center">
+                                    <div class="col-md-3 d-flex justify-content-end align-items-center" style="padding-right:5px;">
+                                        <label for="branchCodes" class="form-label" style="white-space:nowrap;">Branch</label>
+                                    </div>
+                                    <div class="multiselect-container col-md-6" data-field="branchCodes">
+                                        <div class="multiselect-input" tabindex="0">
+                                            <div class="selected-items"></div>
+                                            <div class="placeholder-text">Select Branch Codes...</div>
+                                            <i class="fas fa-chevron-down multiselect-arrow"></i>
+                                        </div>
+                                        <div class="multiselect-dropdown">
+                                            <div class="multiselect-search">
+                                                <input type="text" placeholder="Search branch codes...">
+                                            </div>
+                                            <div class="multiselect-options"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                          
+                        <div class="row mb-1">
+                            <div class="col-12 col-md-6 ">
+                                <div class="d-flex justify-content-center">
+                                    <div class="col-md-3 d-flex justify-content-end align-items-center" style="padding-right:5px;">
+                                        <label for="departmentCodes" class="form-label" style="white-space:nowrap;">Department</label>
+
+                                    </div>
+                                    <div class="multiselect-container col-md-6" data-field="departmentCodes">
+                                        <div class="multiselect-input" tabindex="0">
+                                            <div class="selected-items"></div>
+                                            <div class="placeholder-text">Select Department Codes...</div>
+                                            <i class="fas fa-chevron-down multiselect-arrow"></i>
+                                        </div>
+                                        <div class="multiselect-dropdown">
+                                            <div class="multiselect-search">
+                                                <input type="text" placeholder="Search department codes...">
+                                            </div>
+                                            <div class="multiselect-options"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 ">
+                                <div class="d-flex justify-content-center">
+                                    <div class="col-md-3 d-flex justify-content-end align-items-center" style="padding-right:5px;">
+                                        <label for="designationCodes" class="form-label" style="white-space:nowrap;">Designation</label>
+                                    </div>
+                                    <div class="multiselect-container col-md-6" data-field="designationCodes">
+                                        <div class="multiselect-input" tabindex="0">
+                                            <div class="selected-items"></div>
+                                            <div class="placeholder-text">Select Designation Codes...</div>
+                                            <i class="fas fa-chevron-down multiselect-arrow"></i>
+                                        </div>
+                                        <div class="multiselect-dropdown">
+                                            <div class="multiselect-search">
+                                                <input type="text" placeholder="Search designation codes...">
+                                            </div>
+                                            <div class="multiselect-options"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-1">
+                            <div class="col-12 col-md-6 ">
+                                <div class="d-flex justify-content-center">
+                                    <div class="col-md-3  d-flex justify-content-end align-items-center " style="padding-right:5px;">
+                                        <label for="employeeIDs" class="form-label" style="white-space:nowrap;">Employee ID</label>
+                                    </div>
+
+                                    <div class="multiselect-container col-md-6" data-field="employeeIDs">
+                                        <div class="multiselect-input" tabindex="0">
+                                            <div class="selected-items"></div>
+                                            <div class="placeholder-text">Select Employee IDs...</div>
+                                            <i class="fas fa-chevron-down multiselect-arrow"></i>
+                                        </div>
+                                        <div class="multiselect-dropdown">
+                                            <div class="multiselect-search">
+                                                <input type="text" placeholder="Search employee IDs...">
+                                            </div>
+                                            <div class="multiselect-options"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 ">
+                                <div class="d-flex justify-content-center">
+                                    <div class="col-md-3 d-flex justify-content-end align-items-center" style="padding-right:5px;">
+                                        <label for="payHeadIDs" class="form-label" style="white-space:nowrap;">Deduction Head</label>
+                                    </div>
+                                    <div class="multiselect-container col-md-6" data-field="payHeadIDs">
+                                        <div class="multiselect-input" tabindex="0">
+                                            <div class="selected-items"></div>
+                                            <div class="placeholder-text">Select Pay Head IDs...</div>
+                                            <i class="fas fa-chevron-down multiselect-arrow"></i>
+                                        </div>
+                                        <div class="multiselect-dropdown">
+                                            <div class="multiselect-search">
+                                                <input type="text" placeholder="Search pay head IDs...">
+                                            </div>
+                                            <div class="multiselect-options"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-1">
+                            <div class="col-12 col-md-6 ">
+                                <div class="d-flex justify-content-center">
+                                    <div class="col-md-3  d-flex justify-content-end align-items-center " style="padding-right:5px;">
+                                        <label for="monthIDs" class="form-label" style="white-space:nowrap;">Month</label>
+                                    </div>
+
+                                    <div class="multiselect-container col-md-6" data-field="monthIDs" data-multiselect="false">
+                                        <div class="multiselect-input" tabindex="0">
+                                            <div class="selected-items"></div>
+                                            <div class="placeholder-text">Select Months...</div>
+                                            <i class="fas fa-chevron-down multiselect-arrow"></i>
+                                        </div>
+                                        <div class="multiselect-dropdown">
+                                            <div class="multiselect-search">
+                                                <input type="text" placeholder="Search months...">
+                                            </div>
+                                            <div class="multiselect-options"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 ">
+                                <div class="d-flex justify-content-center">
+                                    <div class="col-md-3 d-flex justify-content-end align-items-center" style="padding-right:5px;">
+                                        <label for="yearIDs" class="form-label" style="white-space:nowrap">Year</label>
+                                    </div>
+                                    <div class="multiselect-container col-md-6" data-field="yearIDs" data-multiselect="false">
+                                        <div class="multiselect-input" tabindex="0">
+                                            <div class="selected-items"></div>
+                                            <div class="placeholder-text">Select Years...</div>
+                                            <i class="fas fa-chevron-down multiselect-arrow"></i>
+                                        </div>
+                                        <div class="multiselect-dropdown">
+                                            <div class="multiselect-search">
+                                                <input type="text" placeholder="Search years...">
+                                            </div>
+                                            <div class="multiselect-options"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                          
+                        </div>
+
+                    </div>
+                   
+                <div class="col-12 pt-2" style="padding-left:20px;">
+                    <h6 class="mb-1 SearchAndReportOption">Report Option:</h6>
+                    <div style="width:36.5vw;">
+                        <hr style="height:2px; color:#ddd; margin:0px;" />
+                    </div>
+                </div>
+                <div class="col-12 col-md-12 mx-auto">
+                    <div class="row pb-4 ">
+                        <div class="col-12 col-md-6 py-1">
+                            <div class="row align-items-center">
+                                <label class="col-4 text-right mb-0" style="padding-right: 0px; margin-left: 30px;">Export Report Format</label>
+                                <div class="col-9 col-md-6">
+                                    <select id="reportText" class="form-control form-control-sm">
+                                        <option value="downloadPdf">Pdf</option>
+                                        <option value="downloadExcel">Excel</option>
+                                        <option value="downloadWord">Word</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2 col-0"></div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 py-1">
+                            <div class="col-12 col-md-9 py-1 mx-auto">
+                                <div class="row justify-content-end align-items-center" style="padding-right: 22px;">
+                                    <div class="col-auto px-1 d-grid">
+                                        <button id="downloadReport" class="btn btn-sm common-btn btn-outline-secondary">
+                                            <i class="fas fa-file-export fa-export"></i> <span>Export Report</span>
+                                        </button>
+                                    </div>
+                                    <div class="col-auto px-1 d-grid">                                        
+                                        <button id="btnPreview" class="btn btn-sm btn-outline-secondary common-btn px-4">
+                                            <i class="fas fa-eye preview-icon" title="Preview"></i> <span>Preview</span>
+                                        </button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>                       
+                    </div>
+                </div>                  
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container-fluid">
+    <iframe id="pdfViewer" style="width:100%;height:100vh;padding-right: 5px;"></iframe>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <!--word-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
+    <!-- docx library - -->
+    <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
+    <script src="https://unpkg.com/docx@8.5.0/build/index.js"></script>
+
+    <!--js pdf-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+
+    <!-- Load the js -->
+    <script src="~/js/pages/AdvanceLoanAdjustmentReport.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            
+            $.patientTypes({
+                baseUrl: '@Url.Action("Index", "AdvanceLoanAdjustmentReport")',
+                load: function () {
+                    console.log("Custom load logic called from Razor view");
+                }
+            });
+            if (typeof pdfjsLib !== 'undefined') {
+                pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
+            }
+        });
+    </script>
+}

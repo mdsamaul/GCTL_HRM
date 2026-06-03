@@ -1,0 +1,559 @@
+﻿@model GCTL.UI.Core.ViewModels.HRM_NOCEntryViewModel.HRM_NOCEntryViewModel
+
+@{
+    Model.PageTitle = "NOC Entry";
+    Model.Breadcrumb = "NOC Entry";
+}
+
+<style>
+    .panel-box {
+        background: linear-gradient(to right, #f4f4f4, #ffffff);
+       border: 1px solid #ccc;
+        border-radius: 4px;
+        padding: 15px 20px;
+        margin-bottom: 10px;
+    }
+
+    .form-group {
+        margin-bottom: 6px;
+    }
+
+    .control-label {
+        text-align: right;
+        font-weight: normal;
+        color: #333;
+        padding-right: 8px;
+        line-height: 28px;
+    }
+
+    .required-star {
+        color: #cc0000;
+        margin-left: 2px;
+    }
+
+    .form-control, .form-control-sm {
+        height: 26px;
+        padding: 2px 8px;
+        font-size: 13px;
+        border-radius: 3px;
+        border: 1px solid #bbb;
+        background: #fff;
+    }
+
+    select.form-control, select.form-control-sm {
+        padding: 2px 4px;
+    }
+
+    textarea.form-control, textarea.form-control-sm {
+        height: auto;
+        resize: none;
+    }
+
+    .info-value {
+        line-height: 28px;
+        color: #333;
+        display: inline-block;
+    }
+
+    .passport-heading {
+        font-size: 18px;
+        font-weight: bold;
+        color: #333;
+        margin: 10px 0 5px 0;
+    }
+
+    .passport-divider {
+        border: none;
+        border-top: 1px solid #bbb;
+        margin: 4px 0 10px 0;
+    }
+
+    .bottom-box {
+        background: #ffffff !important;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        padding: 15px 20px;
+        margin-bottom: 10px;
+    }
+
+    .row {
+        align-items: center !important;
+    }
+
+    #section-travel {
+        display: block;
+    }
+
+    #section-education {
+        display: none;
+    }
+
+    #btnUpdate {
+        display: none;
+    }
+
+    #btnUpdate {
+        border-top-left-radius: 20px !important;
+        border-bottom-left-radius: 20px !important;
+    }
+</style>
+
+<partial name="_PageHeader" model="Model" />
+
+<div class="rounded-sm mb-1 container"
+     style="background: linear-gradient(to right, #f4f4f4, #ffffff);">
+    <div class="">
+        <partial name="_Toolbars"
+                 model="new ToobarModel() { Title = Model.Breadcrumb, Code = Model.Code, Name = Model.Setup.NOCID }" />
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     TOP PANEL — Employee Info
+═══════════════════════════════════════════════════════════════ -->
+<div class="panel-box container">
+
+    <!-- Company | NOC Type -->
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-4 control-label pr-0">
+                        Company <span class="required-star">*</span>
+                    </div>
+                   
+                    <div class="col-sm-7 pl-1 gc-inline-select2">
+                        <select id="companySelect" class="gc-select2">
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-4 control-label pr-0" style="text-align:right;">
+                        NOC Type <span class="required-star">*</span>
+                    </div>
+                    <div class="col-sm-7 pl-1 gc-inline-select2">
+                        <select class="form-control form-control-sm gc-select2" id="nocTypeSelect">
+                            <option value="travel">Travel</option>
+                            <option value="education">Education</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Employee ID | Name -->
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-4 control-label pr-0">
+                        Employee ID <span class="required-star">*</span>
+                    </div>
+                    <div class="col-sm-7 pl-1 gc-inline-select2">
+                        <select class="form-control form-control-sm gc-select2" id="employeeSelect">
+                            <option value=""></option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-4 control-label pr-0" style="text-align:right;">Name :</div>
+                    <div class="col-sm-7 pl-1">
+                        <span class="info-value" id="iName"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Department | Designation -->
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-4 control-label pr-0">Department:</div>
+                    <div class="col-sm-7 pl-1"><span class="info-value" id="iDept"></span></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-4 control-label pr-0" style="text-align:right;">Designation:</div>
+                    <div class="col-sm-7 pl-1"><span class="info-value" id="iDesig"></span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gross Salary | Joining Date -->
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-4 control-label pr-0">Gross Salary:</div>
+                    <div class="col-sm-7 pl-1"><span class="info-value" id="iGross"></span></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-4 control-label pr-0" style="text-align:right;">Joining Date:</div>
+                    <div class="col-sm-7 pl-1"><span class="info-value" id="iJoin"></span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Service Length | National ID -->
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-4 control-label pr-0">Service Length:</div>
+                    <div class="col-sm-7 pl-1"><span class="info-value" id="iSrv"></span></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-4 control-label pr-0" style="text-align:right;">National ID:</div>
+                    <div class="col-sm-7 pl-1"><span class="info-value" id="iNid"></span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Passport Info (Travel only) ─────────────────────────────── -->
+    <div id="section-travel-passport">
+        <div class="passport-heading">Passport Info:</div>
+        <hr class="passport-divider" />
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-4 control-label pr-0">Passport Number:</div>
+                        <div class="col-sm-7 pl-1"><span class="info-value" id="passNo"></span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-4 control-label pr-0">Passport Number:</div>
+                        <div class="col-sm-7 pl-1"><span class="info-value"></span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-4 control-label pr-0">Date of Birth:</div>
+                        <div class="col-sm-7 pl-1"><span class="info-value" id="passDob"></span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-4 control-label pr-0">Place of Birth:</div>
+                        <div class="col-sm-7 pl-1"><span class="info-value" id="passPob"></span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-4 control-label pr-0">Place of Issue:</div>
+                        <div class="col-sm-7 pl-1"><span class="info-value" id="passPoI"></span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-4 control-label pr-0">Date of Issue:</div>
+                        <div class="col-sm-7 pl-1"><span class="info-value" id="passDoI"></span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-4 control-label pr-0">Date of Expiry:</div>
+                        <div class="col-sm-7 pl-1"><span class="info-value" id="passExp"></span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END Passport Info -->
+
+</div>
+<!-- END TOP PANEL -->
+<!-- ══════════════════════════════════════════════════════════════
+     BOTTOM PANEL — NOC Details
+═══════════════════════════════════════════════════════════════ -->
+<div class="bottom-box container bg-light">
+
+    <!-- ── TRAVEL SECTION ───────────────────────────────────────────── -->
+    <div id="section-travel">
+
+        <!-- NOC ID | Place of Visit -->
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-4 control-label pr-0">NOC ID</div>
+                        <div class="col-sm-7 pl-1">
+                            <input type="text" class="form-control form-control-sm" id="iNocId" readonly />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-4 control-label pr-0" style="text-align:right;">
+                            Place of Visit <span class="required-star">*</span>
+                        </div>
+                        <div class="col-sm-7 pl-1">
+                            <textarea class="form-control form-control-sm"
+                                      id="iPlaceOfVisit" rows="1"
+                                      placeholder="Enter Place of Visit"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Date From | To -->
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-4 control-label pr-0">
+                            Date From <span class="required-star">*</span>
+                        </div>
+                        <div class="col-sm-7 pl-1">
+                            <input type="text" class="form-control form-control-sm"
+                                   id="iDateFrom" placeholder="Select Date From" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-4 control-label pr-0" style="text-align:right;">
+                            To <span class="required-star">*</span>
+                        </div>
+                        <div class="col-sm-7 pl-1">
+                            <input type="text" class="form-control form-control-sm"
+                                   id="iDateTo" placeholder="Select To" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Remarks -->
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-4 control-label pr-0">Remarks</div>
+                        <div class="col-sm-7 pl-1">
+                            <input type="text" class="form-control form-control-sm"
+                                   id="iRemarks" placeholder="Enter Remarks" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- END TRAVEL SECTION -->
+    <!-- ── EDUCATION SECTION ────────────────────────────────────────── -->
+    <div id="section-education">
+
+        <!-- NOC ID | University Name -->
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-4 control-label pr-0">NOC ID</div>
+                        <div class="col-sm-7 pl-1">
+                            <input type="text" class="form-control form-control-sm" id="iNocId_edu" readonly />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-4 control-label pr-0" style="text-align:right;">
+                            University Name <span class="required-star">*</span>
+                        </div>
+                        <div class="col-sm-7 pl-1">
+                            <textarea class="form-control form-control-sm"
+                                      id="iUniversityName" rows="1"
+                                      placeholder="Enter University Name"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Course Name -->
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-4 control-label pr-0">
+                            Course Name <span class="required-star">*</span>
+                        </div>
+                        <div class="col-sm-7 pl-1">
+                            <input type="text" class="form-control form-control-sm"
+                                   id="iCourseName" placeholder="Select Course Name" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Remarks -->
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-4 control-label pr-0">Remarks</div>
+                        <div class="col-sm-7 pl-1">
+                            <input type="text" class="form-control form-control-sm"
+                                   id="iRemarks_edu" placeholder="Enter Remarks" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- END EDUCATION SECTION -->
+    <!-- ── Divider ──────────────────────────────────────────────────── -->
+    <hr class="mb-1 mx-2" />
+
+    <!-- ── Footer: Creation Date | Last Update Date ─────────────────── -->
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-4 control-label pr-0">Creation Date</div>
+                    <div class="col-sm-7 pl-1">
+                        <span id="CreationDate"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-4 control-label pr-0">Last Update Date</div>
+                    <div class="col-sm-7 pl-1">
+                        <span id="LastUpdateDate"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="bottom-box px-0 container">
+    <partial name="_Grid" />
+</div>
+<!-- END BOTTOM PANEL -->
+<!-- ══════════════════════════════════════════════════════════════
+     ACTION BUTTONS
+═══════════════════════════════════════════════════════════════ -->
+@* <div class="container mb-3">
+    <button type="button" class="btn btn-success btn-sm px-3 mr-1" id="btnSave">
+        <i class="fa fa-save mr-1"></i> Save
+    </button>
+    <button type="button" class="btn btn-primary btn-sm px-3 mr-1" id="btnUpdate">
+        <i class="fa fa-edit mr-1"></i> Update
+    </button>
+    <button type="button" class="btn btn-danger btn-sm px-3 mr-1" id="btnDelete">
+        <i class="fa fa-trash mr-1"></i> Delete
+    </button>
+    <button type="button" class="btn btn-secondary btn-sm px-3" id="btnNew">
+        <i class="fa fa-plus mr-1"></i> New
+    </button>
+</div> *@
+
+<!-- Flatpickr CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="~/js/pages/HRM_NOCEntry.js"></script>
+
+    <script type="text/javascript">
+        // ── Sync Education NOC ID box with Travel NOC ID box ─────────────
+        $(document).on("input", "#iNocId", function () {
+            $("#iNocId_edu").val($(this).val());
+        });
+
+        // ── Sync Remarks between sections ────────────────────────────────
+        $(document).on("input", "#iRemarks", function () {
+            $("#iRemarks_edu").val($(this).val());
+        });
+        $(document).on("input", "#iRemarks_edu", function () {
+            $("#iRemarks").val($(this).val());
+        });
+
+        // ── Init plugin ──────────────────────────────────────────────────
+        var _nocEntry = $.HRM_NOCEntry({
+            baseUrl: '@Url.Action("", "HRM_NOCEntry")'
+        });
+
+        // ── If editing an existing record pass AutoId from query-string ──
+        (function () {
+            var params = new URLSearchParams(window.location.search);
+            var autoId = params.get("autoId");
+            if (autoId) { _nocEntry.loadRecord(Number(autoId)); }
+        })();
+    </script>
+}

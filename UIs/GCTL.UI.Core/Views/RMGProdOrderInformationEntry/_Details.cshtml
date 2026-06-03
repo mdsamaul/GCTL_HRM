@@ -1,0 +1,577 @@
+﻿@model GCTL.UI.Core.ViewModels.RMGProdOrderInformationEntry.RMGProdOrderInformationEntryViewModel
+<div class="form-container">
+    <div class="left-panel">
+        <div class="card container mt-2 ">
+            <input type="hidden" asp-for="OrderDetailsDto.TC" value="0" class="form-control">
+            <input type="hidden" id="OrderDetailsDto_PreviousQuantity" value="@Model.OrderDetailsDto.OrderQuantity" />
+
+            <div class="form-grid py-2">
+                <!-- Row 1 -->
+                <div class="form-row">
+                    <label class="col-form-label">Intrgra Job NO <span class="text-danger">*</span></label>
+                    <div class="input-group input-group-sm">
+                        <select class="form-select form-select-sm searchAbleSelectMulti" asp-items="ViewBag.intregraJobNoList as SelectList" asp-for="OrderDetailsDto.IntegraJobNO">
+                            <option value="" disabled selected hidden>Select Intregra Job No</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <label class="col-form-label">Style</label>
+                    <div class="input-group input-group-sm">
+                        <select class="form-select form-select-sm searchAbleSelectMulti" asp-items="ViewBag.styleList as SelectList" asp-for="OrderDetailsDto.Style">
+                            <option value="" disabled selected hidden>Select Style</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Row 2 -->
+                <div class="form-row">
+                    <label class="col-form-label">Product/Item<span class="text-danger">*</span></label>
+                    <div class="input-group input-group-sm">
+                        <select class="form-select form-select-sm searchAbleSelectMulti" asp-for="OrderDetailsDto.ProductId" asp-items="ViewBag.itemRepoList as SelectList">
+                            <option value="" disabled selected hidden>Select Item</option>
+                        </select>
+                      @*   <button type="button" class="btn btn-light border">
+                            <i class="fa fa-plus" style="color: #8d8d8d;"></i>
+                        </button> *@  
+                        <button type="button"
+                                               class="btn btn-light border js-quick-add"
+                                               data-url="@Url.Action("Index", "SALES_Def_Inv_MainItemGroup")"
+                                               data-target="#OrderDetailsDto_ProductId"
+                                               data-reload-url="@Url.Action("GetBuyerCompany", "Cascading")"
+                                               data-title="Item">
+                            <i class="fa fa-plus" style="color: #8d8d8d;"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <label class="col-form-label">Item Description</label>
+                    <div class="input-group input-group-sm">
+                        <textarea rows="1" asp-for="OrderDetailsDto.Description" class="form-control form-control-sm" placeholder="Enter Description"></textarea>
+                    </div>
+                </div>
+
+                <!-- Row 3 -->
+                <div class="form-row">
+                    <label class="col-form-label">Supplier</label>
+                    <div class="input-group input-group-sm">
+                        <select class="form-select form-select-sm searchAbleSelectMulti" asp-for="OrderDetailsDto.SupplierId" asp-items="ViewBag.supplierRepoList as SelectList">
+                            <option value="" disabled hidden selected>Select Supplier</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    @* <label class="col-form-label"></label>
+                <div class="input-group input-group-sm">
+                    <div class="radio-group gap-5">
+                        <div class="radio-item">
+                            <input type="radio" name="option" id="optionA" class="me-2">
+                            <label for="optionA" class="mb-0">Option A</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" name="option" id="optionB" class="me-2">
+                            <label for="optionB" class="mb-0">Option B</label>
+                        </div>
+                    </div>
+                </div> *@
+                </div>
+
+                <!-- Row 4 -->
+                <div class="form-row">
+                    <label class="col-form-label">P.O No  <span class="text-danger">*</span></label>
+                    <div class="input-group input-group-sm">
+                        <input type="text" placeholder="Enter P.O No" asp-for="OrderDetailsDto.PurchaseOrder" class="form-control">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <label class="col-form-label">P.O Date</label>
+                    <div class="input-group input-group-sm">
+                        <input type="text" asp-for="OrderDetailsDto.PODate" class="form-control FlatDatePicker">
+                    </div>
+                </div>
+
+                <!-- Row 5 -->
+                <div class="form-row">
+                    <label class="col-form-label">Ref No</label>
+                    <div class="input-group input-group-sm">
+                        <input type="text" placeholder="Enter Ref No" asp-for="OrderDetailsDto.RefNo" class="form-control">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <label class="col-form-label">HS Code</label>
+                    <div class="input-group input-group-sm">
+                        <input type="text" asp-for="OrderDetailsDto.HSCode" placeholder="Enter HS Code" class="form-control">
+                    </div>
+                </div>
+
+                <!-- Row 6 -->
+                <div class="form-row">
+                    <label class="col-form-label">Order Quantity<span class="text-danger">*</span></label>
+                    <div class="d-flex" style="padding-left: 5px;">
+                        <input type="number" asp-for="OrderDetailsDto.OrderQuantity" placeholder="Enter Order Quantity" class="form-control form-control-sm col-md-6" />
+                        <div class="input-group col-md-6   input-group-sm" style="padding-right: 0px;">
+                            <select class="form-select form-select-sm searchAbleSelectMulti" asp-for="OrderDetailsDto.POUnitTypID" asp-items="ViewBag.unitTypeList as SelectList">
+                                <option value="" disabled selected hidden>Select Type</option>
+                            </select>
+                            @* <button type="button" class="btn btn-light border">
+                            <i class="fa fa-plus" style="color: #8d8d8d;"></i>
+                        </button> *@
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <label class="col-form-label">Unit Price</label>
+                    <div class="d-flex" style="padding-left: 5px;">
+                        <input type="number" placeholder="Enter Unit Price" class="form-control form-control-sm col-md-6" asp-for="OrderDetailsDto.UnitPrice" />
+                        <div class="input-group col-md-6   input-group-sm" style="padding-right: 0px;">
+                            <select class="form-select form-select-sm searchAbleSelectMulti" asp-for="OrderDetailsDto.CurrencyId" asp-items="ViewBag.currentcyList as SelectList">
+                                <option value="" disabled hidden selected>Select Currency</option>
+                            </select>
+                            @* <button type="button" class="btn btn-light border">
+                                <i class="fa fa-plus" style="color: #8d8d8d;"></i>
+                            </button> *@
+                            <button type="button"
+                                    class="btn btn-light border js-quick-add"
+                                    data-url="@Url.Action("Index", "Currencies")"
+                                    data-target="#OrderDetailsDto_CurrencyId"
+                                    data-reload-url="@Url.Action("GetBuyerCompany", "Cascading")"
+                                    data-title="Currency">
+                                <i class="fa fa-plus" style="color: #8d8d8d;"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Row 7 -->
+                <div class="form-row">
+                    <label class="col-form-label">Total Amount</label>
+                    <div class="d-flex" style="padding-left: 5px;">
+                        <input type="text" placeholder="Total Amount" class="form-control form-control-sm col-md-6" asp-for="OrderDetailsDto.TotalAmount" />
+                        <div class="input-group col-md-6   input-group-sm" style="padding-right: 0px;">
+                            <select class="form-select form-select-sm searchAbleSelectMulti" id="totalAmountCurrency" asp-items="ViewBag.currentcyList as SelectList">
+                                <option value="" disabled hidden selected>Select Currency</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <label class="col-form-label">Payment Term</label>
+                    <div class="input-group input-group-sm">
+                        <select class="form-select form-select-sm searchAbleSelectMulti" asp-for="OrderDetailsDto.PaymentTermsId" asp-items="ViewBag.paymentTermsRepoList as SelectList">
+                            <option value="" disabled selected hidden>Select Payment Trem</option>
+                        </select>
+                        <button type="button"
+                                class="btn btn-light border js-quick-add"
+                                data-url="@Url.Action("Index", "PaymentTerms")"
+                                data-target="#OrderDetailsDto_PaymentTermsId"
+                                data-reload-url="@Url.Action("GetBuyerCompany", "Cascading")"
+                                data-title="Payment Term">
+                            <i class="fa fa-plus" style="color: #8d8d8d;"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="bank-account-section">
+            <fieldset class="bank-fieldset">
+                <legend>Instruction Info</legend>
+                <div class="full-width">
+                    <div class="form-row">
+                        <label class="col-form-label">Material Info</label>
+                        <div class="input-group input-group-sm mb-2">
+                            <textarea rows="1" asp-for="OrderDetailsDto.MaterialInfo" class="form-control" placeholder="Enter Material Info"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="full-width">
+                    <div class="form-row">
+                        <label class="col-form-label">Printing Instruction</label>
+                        <div class="input-group input-group-sm mb-2">
+                            <textarea rows="1" class="form-control" asp-for="OrderDetailsDto.PrintingInstruction" placeholder="Enter Printing Instruction"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="full-width">
+                    <div class="form-row">
+                        <label class="col-form-label">Washing Instruction</label>
+                        <div class="input-group input-group-sm mb-2">
+                            <textarea rows="1" class="form-control" asp-for="OrderDetailsDto.WashingInstruction" placeholder="Enter Washing Instruction"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="full-width">
+                    <div class="form-row">
+                        <label class="col-form-label">Label Instruction</label>
+                        <div class="input-group input-group-sm mb-2">
+                            <textarea rows="1" class="form-control" asp-for="OrderDetailsDto.LabelInstruction" placeholder="Enter Label Instruction"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="full-width">
+                    <div class="form-row">
+                        <label class="col-form-label">Packaging Instruction</label>
+                        <div class="input-group input-group-sm mb-2">
+                            <textarea rows="1" class="form-control" asp-for="OrderDetailsDto.PackagingInstruction" placeholder="Enter Packaging Instruction"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="full-width">
+                    <div class="form-row">
+                        <label class="col-form-label">Other Instruction</label>
+                        <div class="input-group input-group-sm">
+                            <textarea rows="1" class="form-control" asp-for="OrderDetailsDto.OtherInstruction" placeholder="Enter Other Instruction"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+
+
+
+        <div class="bank-account-section">
+            <fieldset class="bank-fieldset">
+                <legend>Test Info</legend>
+
+                <div class="form-grid pt-2">
+                    <!-- Row 1 -->
+                    <div class="form-row">
+                        <label class="col-form-label">Garments Test</label>
+                        <div class="input-group input-group-sm">
+                            <select class="form-select form-control-sm searchAbleSelectMulti" asp-for="OrderDetailsDto.GarmentsTesting" asp-items="ViewBag.garmentsTesingRepoList as SelectList">
+                                <option value="" disabled hidden selected>Select Garments Tesing</option>
+                            </select>
+                            @* <button type="button" class="btn btn-light border">
+                                <i class="fa fa-plus" style="color: #8d8d8d;"></i>
+                            </button> *@
+                            <button type="button"
+                                    class="btn btn-light border js-quick-add"
+                                    data-url="@Url.Action("Index", "GarmentsTest")"
+                                    data-target="#OrderDetailsDto_GarmentsTesting"
+                                    data-reload-url="@Url.Action("GetBuyerCompany", "Cascading")"
+                                    data-title="Garments Testing">
+                                <i class="fa fa-plus" style="color: #8d8d8d;"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <label class="col-form-label">Garments Instruction</label>
+                        <div class="input-group input-group-sm">
+                            <input type="text" class="form-control" asp-for="OrderDetailsDto.GarmentsInstruction" placeholder="Enter Garments Testing Instruction ">
+                        </div>
+                    </div>
+
+                    <!-- Row 2 -->
+                    <div class="form-row">
+                        <label class="col-form-label">Remainding Period</label>
+                        <div class="d-flex" style="padding-left: 5px;">
+                            <input type="text" asp-for="OrderDetailsDto.GarmentReminderDay" class="form-control form-control-sm col-md-6" placeholder="Enter Remainding" />
+                            <div class="input-group col-md-6   input-group-sm" style="padding-right: 0px;">
+                                <select class="form-select  searchAbleSelectMulti" asp-for="OrderDetailsDto.GarmentReminderType">
+                                    <option value="" hidden disabled selected>Select Remainding</option>
+                                    <option value="001">Day</option>
+                                    <option value="002">Month</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <label class="col-form-label">Remainder To</label>
+                        <div class="input-group input-group-sm">
+                            <input type="email" asp-for="OrderDetailsDto.GarmnetRemainderMail" class="form-control" placeholder="Enter Mail Address">
+                        </div>
+                    </div>
+
+                    <!-- Row 3 -->
+                    <div class="form-row">
+                        <label class="col-form-label">Is Febric Report Recieved</label>
+                        <div class="input-group input-group-sm">
+                            <input type="checkbox" asp-for="OrderDetailsDto.IsGarmentTestRecieved" class="form-check">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <label for="formFile" class="form-label col-form-label">Attachment</label>
+                        <div class="input-group input-group-sm">
+                            @* <input class="form-control" type="file" id="formFile"> *@
+                            <input class="form-control" type="file" asp-for="OrderDetailsDto.GarmentTestAttachment">
+                        </div>
+                    </div>
+
+                    <!-- Row 4 -->
+                    <div class="form-row">
+                        <label class="col-form-label">Febric Test</label>
+                        <div class="input-group input-group-sm">
+                            <select class="form-select form-select-sm searchAbleSelectMulti" asp-for="OrderDetailsDto.FebricTesting" asp-items="ViewBag.fabricTypeRepoList as SelectList">
+                                <option value="" selected disabled hidden>Select Febric</option>                               
+                            </select>
+                            @* <button type="button" class="btn btn-light border">
+                                <i class="fa fa-plus" style="color: #8d8d8d;"></i>
+                            </button> *@
+
+                            <button type="button"
+                                    class="btn btn-light border js-quick-add"
+                                    data-url="@Url.Action("Index", "FebricTest")"
+                                    data-target="#OrderDetailsDto_FebricTesting"
+                                    data-reload-url="@Url.Action("GetBuyerCompany", "Cascading")"
+                                    data-title="Febric Testing">
+                                <i class="fa fa-plus" style="color: #8d8d8d;"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <label class="col-form-label">Febric Instruction</label>
+                        <div class="input-group input-group-sm">
+                            <input type="text" class="form-control" asp-for="OrderDetailsDto.FebricInstruction" placeholder="Enter Febric Instruction">
+                        </div>
+                    </div>
+
+                    <!-- Row 5 -->
+                    <div class="form-row">
+                        <label class="col-form-label">Remainding Period</label>
+                        <div class="d-flex" style="padding-left: 5px;">
+                            <input type="text" asp-for="OrderDetailsDto.FebricReminderDay" class="form-control form-control-sm col-md-6" placeholder="Enter Remainding" />
+                            <div class="input-group col-md-6   input-group-sm" style="padding-right: 0px;">
+                                <select class="form-select searchAbleSelectMulti" asp-for="OrderDetailsDto.FebricReminderType">
+                                    <option value="" hidden disabled selected>Select Remainding</option>
+                                    <option value="001">Day</option>
+                                    <option value="002">Month</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <label class="col-form-label">Remainder To</label>
+                        <div class="input-group input-group-sm">
+                            <input type="email" class="form-control" asp-for="OrderDetailsDto.FebricRemainderMail" placeholder="Enter Mail Address">
+                        </div>
+                    </div>
+
+                    <!-- Row 6 -->
+                    <div class="form-row">
+                        <label class="col-form-label">Is Febric Report Recieved</label>
+                        <div class="input-group input-group-sm">
+                            <input type="checkbox" asp-for="OrderDetailsDto.IsFebricTestRecieved" class="form-check">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <label for="formFile" class="form-label col-form-label">Attachment</label>
+                        <div class="input-group input-group-sm">
+                            <input class="form-control" asp-for="OrderDetailsDto.FebricTestAttachment" type="file" id="formFile">
+                        </div>
+                    </div>
+                </div>
+
+            </fieldset>
+        </div>
+
+
+        <div class="bank-account-section">
+            <fieldset class="bank-fieldset">
+                <legend>Delivery Info</legend>
+
+                <div class="form-grid pt-2">
+                    <!-- Row 1 -->
+                    <div class="form-row">
+                        <label class="col-form-label">Shipment Date<spam class="text-danger">*</spam></label>
+                        <div class="input-group input-group-sm">
+                            <input type="text" asp-for="OrderDetailsDto.DeliveryDate" class="form-control FlatDatePicker">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <label class="col-form-label ">X-Factory Date<span class="text-danger">*</span></label>
+                        <div class="input-group input-group-sm">
+                            <input type="text" class="form-control FlatDatePicker" asp-for="OrderDetailsDto.XFactoryDate">
+                        </div>
+                    </div>
+
+                    <!-- Row 2 -->
+                    <div class="form-row">
+                        <label class="col-form-label">Shipment Address</label>
+                        <div class="input-group input-group-sm">
+                         <textarea rows="1" asp-for="OrderDetailsDto.DeliveryAddress" class="form-control form-control-sm" placeholder="Enter Shipment Address"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <label class="col-form-label">Shippint Term</label>
+                        <div class="input-group input-group-sm">
+                            <input type="text" asp-for="OrderDetailsDto.DeliveryTerm" class="form-control" placeholder="Enter Delivery Term">
+                        </div>
+                    </div>
+
+                    <!-- Row 3 -->
+                    <div class="full-width">
+                        <div class="form-row">
+                            <label class="col-form-label">Shipment Method</label>
+                            <div class="percentage-input-grid">
+                                <select class="form-select grid-input searchAbleSelectMulti" asp-items="ViewBag.deliveryRepoList as SelectList" asp-for="OrderDetailsDto.DeliveryMethod">
+                                    <option value="">Select</option>
+                                </select>
+                                <div class="input-percent-wrapper">
+                                    <input type="number" asp-for="OrderDetailsDto.Percentage1" class="grid-input" placeholder="Percentage" min="0" max="100">
+                                    <span class="percent-symbol">%</span>
+                                </div>
+
+                                <select class="form-select grid-input searchAbleSelectMulti" asp-items="ViewBag.deliveryRepoList as SelectList" asp-for="OrderDetailsDto.DeliveryMethod2">
+                                    <option value="">Select</option>
+                                </select>
+                                <div class="input-percent-wrapper">
+                                    <input type="number" class="grid-input" placeholder="Percentage" asp-for="OrderDetailsDto.Percentage2" min="0" max="100">
+                                    <span class="percent-symbol">%</span>
+                                </div>
+
+                                <select class="form-select grid-input searchAbleSelectMulti" asp-items="ViewBag.deliveryRepoList as SelectList" asp-for="OrderDetailsDto.DeliveryMethod3">
+                                    <option value="">Select</option>
+                                </select>
+                                <div class="input-percent-wrapper">
+                                    <input type="number" asp-for="OrderDetailsDto.Percentage3" class="grid-input" placeholder="Percentage" min="0" max="100">
+                                    <span class="percent-symbol">%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Row 4 -->
+                    <div class="form-row">
+                        <label class="col-form-label">Port Of Loading</label>
+                        <div class="input-group input-group-sm">
+                            @* <select class="form-select  searchAbleSelectMulti" asp-for="OrderDetailsDto.PortOfLoading" asp-items="ViewBag.portRepoList as SelectList">
+                                <option value="" disabled hidden selected></option>
+                            </select> *@
+                            <select id="OrderDetailsDto_PortOfLoading" class="form-select form-select-sm" >
+                                <option value="" selected disabled>Select Port</option>
+                            </select>
+
+
+                            <button type="button"
+                                    class="btn btn-light border js-quick-add"
+                                    data-url="@Url.Action("Index", "PaymentTerms")"
+                                    data-target="#OrderDetailsDto_PortOfLoading"
+                                    data-reload-url="@Url.Action("GetBuyerCompany", "Cascading")"
+                                    data-title="Port Of Loading">
+                                <i class="fa fa-plus" style="color: #8d8d8d;"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <label class="col-form-label">Port of Discharge</label>
+                        <div class="input-group input-group-sm">
+                           
+                            <select id="OrderDetailsDto_PortOfDischarge" class="form-select form-select-sm" >
+                                <option value="" selected disabled>Select Port</option>
+                            </select>
+
+                            <button type="button"
+                                    class="btn btn-light border js-quick-add"
+                                    data-url="@Url.Action("Index", "PaymentTerms")"
+                                    data-target="#OrderDetailsDto_PortOfDischarge"
+                                    data-reload-url="@Url.Action("GetBuyerCompany", "Cascading")"
+                                    data-title="Port Of Loading">
+                                <i class="fa fa-plus" style="color: #8d8d8d;"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                @* <partial name="_ShowingDate"></partial> *@
+                <div class="container-fluid mx-auto pb-3 showCreateModifyDateContainer">
+                    <div class="d-md-flex justify-content-around">
+                        <div class="w-50 text-center me-3">
+                            <hr class="border border-2 text-dark mb-0">
+                            <p class="mb-0">Entry Date: <span class="showCreateDateOrderDetails"></span></p>
+                        </div>
+                        <div class="w-50 text-center">
+                            <hr class="border border-2 text-dark mb-0">
+                            <p class="mb-0">Last Update Date: <span class="showModifyDateOrderDetails"></span></p>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+         
+        </div>
+
+        <div>
+            <hr style="margin-bottom: 5px;">
+            <div class="toolbar-container mx-auto" style="margin-top: 5px;">
+                <div class="toolbar-section">
+                    <div class="toolbar-actions">
+                        <button class="toolbar-btn mail-send-btn" id="downloadReport">
+                            <i class="fas fa-envelope"></i> Mail Send
+                        </button>
+                        <select class="toolbar-select" style="min-width: 120px;">
+                            <option value="">Select</option>
+                        </select>
+                        <span class="toolbar-divider"></span>
+                        <button class="toolbar-btn" id="btnPreviewPdf">
+                            <i class="fas fa-print"></i> Preview
+                        </button>
+                        <select class="toolbar-select" style="min-width: 120px;">
+                            <option value="">Format</option>
+                        </select>
+                        <span class="toolbar-divider"></span>
+                        <button class="toolbar-btn icon-only" title="Settings">
+                            <i class="fas fa-cog"></i>
+                        </button>
+                        <button class="toolbar-btn icon-only" title="Download">
+                            <i class="fas fa-download"></i>
+                        </button>
+                        <button class="toolbar-btn icon-only" title="Share">
+                            <i class="fas fa-share-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <hr style="margin-top: 5px;">
+        </div>
+       
+        <div class="card py-2">
+            <partial name="_DetailsGrid"></partial>         
+
+        </div>
+    </div>
+
+    <div class="right-panel">
+        <div class="right-panel">
+            <div class="card image-card">
+                <img src="https://printiment.com/wp-content/uploads/2024/10/The-Emmanuel-Clase-that-showed-up-for-Cleveland-in-the-ALCS-MLB-t-shirt-1.jpg" id="itemPhotoPreview" class="card-img-top" alt="No Image">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="portModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body p-0">
+                <table id="portTable" class="table table-bordered table-hover table-sm m-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Port Name</th>
+                            <th>Port Type</th>
+                            <th>Address</th>
+                            <th>Country</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,106 @@
+﻿@model GCTL.UI.Core.ViewModels.EmployeeOfficialInfoReport.EmployeeOfficialInfoReportPageViewModel
+
+
+@{
+
+    Model.PageTitle = ViewBag.Title;
+    ViewBag.Title = "Employee Official Info Report(List)";
+    Model.Breadcrumb = "Employee Official Info Report(List)";
+}
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header border-transparent mt-1">
+                        <partial name="_Toolbars" model="new ToobarModel() { Title = Model.Breadcrumb, Code = Model.Code, Name = Model.Setup.ComapnyBranchName }" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+<section class="content consistent-look">
+    <div class="container-fluid">
+        <div class="row">
+
+            <div class="col-md-12 pr-0">
+                <div class="card">
+                    <div class="card-body px-2">
+
+                        @*     <div class="js-EmployeeOfficialInfoReport-form-container">
+                            <partial name="_Setup" model="Model.Setup" />
+                        </div> *@
+
+                        <form asp-action="Setup" id="EmployeeOfficialInfoReport-form" asp-controller="EmployeeOfficialInfoReport">
+
+                            <div class="js-EmployeeOfficialInfoReport-form-container">
+
+                                <partial name="_Setup" model="Model.Setup" />
+
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div id="pdf-preview-container" style="width: 100%; height: 100vh; border: 1px solid #ccc; display: none; margin-top: 20px; border-radius: 5px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+            <!-- iframe content will be dynamically generated -->
+        </div>
+    </div>
+</section>
+
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <!-- Bootstrap JS (once only) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Bootstrap Multiselect CSS & JS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/1.1.2/css/bootstrap-multiselect.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/1.1.2/js/bootstrap-multiselect.min.js"></script>
+
+    <!-- jsPDF - MUST BE FIRST before autoTable -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <!-- jsPDF AutoTable - MUST BE AFTER jsPDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+
+    <!-- Other libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+    <!-- Your script - MUST BE LAST -->
+    <script src="~/js/pages/employeeOfficialInfoReport.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            setTimeout(function () {
+                if (window.jspdf && window.jspdf.jsPDF) {
+                    console.log('jsPDF loaded successfully');
+                } else {
+                    console.error('jsPDF failed to load');
+                }
+            }, 500);
+
+            var options = {
+                baseUrl: '@Url.Action("", "EmployeeOfficialInfoReport")'
+            };
+            $.employeeOfficialInfoReport(options);
+        });
+    </script>
+}

@@ -1,0 +1,55 @@
+﻿@model List<GCTL.Core.ViewModels.HrmAtdHolidays.HrmAtdHolidaySetupViewModel>
+
+<table id="HrmHolidayInformation-grid" class="table table-striped  table-bordered table-sm table-hover table-common">
+
+        <thead class="row-border">
+            <tr class="table row-border">
+                <th class="text-center text-middle">
+                    Select <br /> <input type="checkbox" id="HrmHolidayInformation-check-all" />
+                </th>
+                <th class="text-center text-middle">Holiday  Id</th>
+                <th class="text-center text-middle">Holiday  Name</th>
+                <th class="text-center text-middle"> Holiday Type</th>
+                <th class="text-center text-middle">From</th>
+                <th class="text-center text-middle">To</th>
+                <th class="text-center text-middle">No. Of Day</th>
+
+            </tr>
+        </thead>
+        <tbody>
+
+            @if (Model == null || !Model.Any())
+            {
+                <tr class="text-center text-middle">
+                    <td colspan="8">No   Holiday Information Available.</td>
+                </tr>
+            }
+            else
+            {
+                @foreach (var item in Model.OrderByDescending(x => x.HolidayCode))
+                {
+                    <tr>
+                        <td class="text-center">
+                            <input type="checkbox" class="text-center text-middle checkBox" data-id="@item.HolidayCode" value="@item.HolidayCode" />
+                        </td>
+                        <td>
+                            <a href="#" class='btn js-HrmHolidayInformation-edit'
+                               style="text-decoration: underline; color: rebeccapurple;"
+                               data-id="@item.HolidayCode" title="Edit">
+                                @item.HolidayCode
+                            </a>
+                        </td>
+                        <td class="text-center text-middle">@item.HolidayName</td>
+                        <td class="text-center text-middle">@item.HolidayTypeName</td>
+                        <td class="text-center text-middle">@item.FromDate.ToString("dd/MM/yyyy")</td>
+                        <td class="text-center text-middle">@item.ToDate.ToString("dd/MM/yyyy")</td>
+                        <td class="text-center text-middle">@item.NoOfDays</td>
+
+
+                    </tr>
+                }
+            }
+
+
+        </tbody>
+    </table>

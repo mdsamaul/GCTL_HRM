@@ -1,0 +1,42 @@
+﻿@model List<GCTL.Core.ViewModels.SupplierBankAccountTemp.SupplierBankAccountTempSetupViewModel>
+
+<div class="card">
+    <div class="card-body">
+        <table id="SupplierBankAccountTemp-grid" class="table table-striped text-center table-bordered table-sm table-hover table-common">
+            <thead class="row-border">
+                <tr class="table row-border">
+                    <th class="text-center text-middle" style="width: 10%;">BDID</th>
+                    <th class="text-center text-middle" style="width: 20%;">Bank Name</th>
+                    <th class="text-center text-middle" style="width: 18%;">Branch</th>
+                    <th class="text-center text-middle" style="width: 18%;">Account Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model == null || !Model.Any())
+                {
+                    <tr class="text-center text-middle">
+                        <td colspan="5">No Data Available.</td>
+                    </tr>
+                }
+                else
+                {
+                    @foreach (var item in Model.OrderByDescending(x => x.Sbaid))
+                    {
+                        <tr>
+                            <td>
+                                <a href="#" class='btn js-SupplierBankAccountTemp-edit'
+                                   style="text-decoration: underline; color: rebeccapurple;"
+                                   data-id="@item.Sbaid" title="Edit">
+                                    @item.Sbaid
+                                </a>
+                            </td>
+                            <td class="text-center text-middle">@item.BankName</td>
+                            <td class="text-center text-middle">@item.BankBranchName</td>
+                            <td class="text-center text-middle">@item.AccountName</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

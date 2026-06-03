@@ -1,0 +1,169 @@
+﻿@model GCTL.Core.ViewModels.Companies.CompanySetupViewModel
+
+<div style="padding-top: 10px;">
+    <div class="row">
+        <div class="col-lg-6">
+            <span id="message"></span>
+        </div>
+        <div class="col-lg-6">
+        </div>
+    </div>
+    <div class="form-group row">
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="Ldate" />
+        <input type="hidden" asp-for="ModifyDate" />
+        <input type="hidden" id="lastCode" />
+        <div class="col-lg-6">
+            <label asp-for="CompanyCode">Company Code</label>
+            <div class="input-group input-group-sm">
+                <input asp-for="CompanyCode" class="form-control form-control-sm js-code" readonly="readonly" />
+            </div>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-lg-6">
+            <label asp-for="CompanyName">Company Name</label>
+            <span class="text-danger">*</span>
+            <input asp-for="CompanyName" class="form-control form-control-sm js-company-check-availability" placeholder="Enter Company Name" />
+            <span asp-validation-for="CompanyName" class="text-danger" />
+        </div>
+        <div class="col-lg-6">
+            <label asp-for="CompanyShortName">Short Name</label>
+            <input asp-for="CompanyShortName" class="form-control form-control-sm" placeholder="Enter Short Name" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-lg-6">
+            <label asp-for="Address1">Address 1</label>
+            <span class="text-danger">*</span>
+            <textarea asp-for="Address1" class="form-control form-control-sm" placeholder="Enter Address 1" rows="2"></textarea>
+            <span asp-validation-for="Address1" class="text-danger" />
+        </div>
+        <div class="col-lg-6">
+            <label asp-for="Address2">Address 2</label>
+            <textarea asp-for="Address2" style="width:100%" class="form-control form-control-sm" placeholder="Enter Address 2" rows="2"></textarea>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-lg-6">
+            <label asp-for="CompanyBanglaName">Company Name (বাংলা)</label>
+            <input asp-for="CompanyBanglaName" class="form-control form-control-sm" placeholder="Enter Company Name (বাংলা)" />
+        </div>
+        <div class="col-lg-6">
+            <label asp-for="AddressBangla">Address (বাংলা)</label>
+            <input asp-for="AddressBangla" type="text" style="width:100%" class="form-control form-control-sm" placeholder="Enter Address (বাংলা)" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-lg-6">
+            <label asp-for="ZipCode">Zip/Postal Code</label>
+            <input asp-for="ZipCode" class="form-control form-control-sm" placeholder="Enter Zip/Postal Code" />
+        </div>
+        <div class="col-lg-6">
+            <label asp-for="City">City</label>
+            <input asp-for="City" class="form-control form-control-sm" placeholder="Enter City" />
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-lg-6">
+            <label asp-for="State">State/Division</label>
+            <input asp-for="State" class="form-control form-control-sm" placeholder="Enter State/Division" />
+        </div>
+        <div class="col-lg-6">
+            <label asp-for="Country">Country</label>
+            <select asp-for="Country" class="form-control selectpicker form-control-sm" data-placeholder="Select Country">
+                <option value="Bangladesh">Bangladesh</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-lg-6">
+            <label asp-for="Phone1">Phone 1</label>
+            <input asp-for="Phone1" class="form-control form-control-sm phone-validationx" placeholder="Enter Phone 1" />
+            <span asp-validation-for="Phone1" class="text-danger" />
+        </div>
+        <div class="col-lg-6">
+            <label asp-for="Phone2">Phone 2</label>
+            <input asp-for="Phone2" class="form-control form-control-sm" placeholder="Enter Phone 2" />
+            <span asp-validation-for="Phone2" class="text-danger" />
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-lg-6">
+            <label asp-for="HotLine">Hotline/Customer Care No</label>
+            <span class="RedText">&nbsp;</span>
+            <input asp-for="HotLine" class="form-control form-control-sm" placeholder="Enter Hotline/Customer Care No" />
+            <span asp-validation-for="HotLine" class="text-danger" />
+        </div>
+        <div class="col-lg-6">
+            <label asp-for="Email">Email</label>
+            <input asp-for="Email" class="form-control form-control-sm" placeholder="Enter Email" />
+            <span asp-validation-for="Email" class="text-danger" />
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-lg-6">
+            <label asp-for="Url"></label>
+            <span class="RedText">&nbsp;</span>
+            <input asp-for="Url" class="form-control form-control-sm" placeholder="Enter Website" />
+            <span asp-validation-for="Url" class="text-danger" />
+        </div>
+        <div class="col-lg-6">
+            <label asp-for="Fax">Bin</label>
+            <input asp-for="Fax" class="form-control form-control-sm" placeholder="Enter Bin" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-lg-6">
+            <label asp-for="RegNo">Business Reg. No</label>
+            <input asp-for="RegNo" class="form-control form-control-sm" placeholder="Enter Business Reg. No" />
+        </div>
+        <div class="col-lg-6">
+            <label asp-for="Tin">Tax Identification No</label>
+            <span class="RedText">&nbsp;</span>
+            <input asp-for="Tin" class="form-control form-control-sm" placeholder="Enter Tax Identification No" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-lg-6">
+            <label asp-for="BaseCurrency">Base Currency</label>
+            <select asp-for="BaseCurrency" class="form-control form-control-sm selectpicker" placeholder="Enter Base Currency"
+                    data-placeholder="Select Base Currency">
+                <option value="BDT">BDT</option>
+            </select>
+        </div>
+    </div>
+    @if (Model.Id > 0)
+    {
+        <hr />
+        <div class="form-group row">
+            <div class="col-lg-6">
+                @if (Model.Ldate.HasValue)
+                {
+                    <label>Creation Date: </label>
+                    <label>@Model.Ldate.Value.ToString(ApplicationConstants.DateFormat)</label>
+                }
+            </div>
+            <div class="col-lg-6">
+                @if (Model.ModifyDate.HasValue)
+                {
+                    <label>Last Update Date: </label>
+                    <label>@Model.ModifyDate.Value.ToString(ApplicationConstants.DateFormat)</label>
+                }
+            </div>
+        </div>
+    }
+</div>
+
+<div class="row no-print" style="margin-top: 9px;">
+    <div class="col-12">
+        <button class="btn btn-default success-btn btn-common btn-circle float-right js-company-save" type="button">
+            <i class="fas fa-save">&nbsp;</i> Save
+        </button>
+    </div>
+</div>

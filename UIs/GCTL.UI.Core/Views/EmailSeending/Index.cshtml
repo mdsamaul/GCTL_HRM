@@ -1,0 +1,82 @@
+﻿@{
+    ViewData["Title"] = "Email Sender";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow border-0">
+                <div class="card-header bg-dark text-white text-center">
+                    <h4><i class="fas fa-paper-plane"></i> Attendance Email Sender</h4>
+                </div>
+                <div class="card-body p-4">
+                    <form id="emailForm">
+                        <div class="mb-3">
+                            <label class="form-label font-weight-bold">Recipient Email</label>
+                            <input type="email" id="toEmail" class="form-control" placeholder="example@domain.com" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label font-weight-bold">Subject</label>
+                            <input type="text" id="subject" class="form-control" value="Attendance Notification" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label font-weight-bold">Message</label>
+                            <textarea id="body" class="form-control" rows="4" placeholder="Type your message..."></textarea>
+                        </div>
+                        <button type="button" id="btnSend" onclick="sendAttendanceEmail()" class="btn btn-primary w-100">
+                            <span id="btnText">Send Email</span>
+                            <span id="btnLoader" class="spinner-border spinner-border-sm d-none"></span>
+                        </button>
+                    </form>
+                </div>
+                <div id="responseMessage" class="card-footer d-none text-center font-weight-bold"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function sendAttendanceEmail() {
+            const emailData = {
+                toEmail: $("#toEmail").val(),
+                subject: $("#subject").val(),
+                body: $("#body").val()
+            };
+
+            if (!emailData.toEmail) {
+                alert("Recipient email is required!");
+                return;
+            }
+
+            // UI State Change
+            $("#btnSend").prop("disabled", true);
+            $("#btnText").text("Sending...");
+            $("#btnLoader").removeClass("d-none");
+            $("#responseMessage").addClass("d-none");
+
+            $.ajax({
+                url: '@Url.Action("SendMail", "EmailSeending")',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(emailData),
+                success: function (res) {
+                    if (res.success) {
+                        $("#responseMessage").removeClass("d-none text-danger").addClass("text-success").text("✅ " + res.message);
+                        $("#emailForm")[0].reset();
+                    } else {
+                        $("#responseMessage").removeClass("d-none text-success").addClass("text-danger").text("❌ " + res.message);
+                    }
+                },
+                error: function () {
+                    $("#responseMessage").removeClass("d-none text-success").addClass("text-danger").text("❌ Error connecting to server.");
+                },
+                complete: function () {
+                    $("#btnSend").prop("disabled", false);
+                    $("#btnText").text("Send Email");
+                    $("#btnLoader").addClass("d-none");
+                }
+            });
+        }
+    </script>
+}

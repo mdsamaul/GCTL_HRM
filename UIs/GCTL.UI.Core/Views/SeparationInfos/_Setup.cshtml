@@ -1,0 +1,273 @@
+﻿@model GCTL.Core.ViewModels.SeparationInfos.SeparationInfosSetupViewModel
+
+<div style="padding-top: 1px;">
+    <div class="row">
+        <div class="col-lg-6">
+            <span id="message"></span>
+        </div>
+        <div class="col-lg-6">
+        </div>
+    </div>
+
+    <div style="padding-top: 1px;">
+        <div class="row">
+            <div class="col-lg-12">
+                <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="Ldate" />
+                <input type="hidden" asp-for="ModifyDate" />
+                <input type="hidden" asp-for="SeparationCode" />
+                <input type="hidden" asp-for="SeparationId" />
+                <input asp-for="SeparationId" type="hidden" />
+                <div class="card">
+                    <div class="card-header px-2">
+                        @await Html.PartialAsync("_TabButton")
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+
+                            <div class="col-lg-6">
+                                <div class="form-group d-flex align-items-center justify-content-between">
+                                    <label class="d-flex justify-content-end form-label col-form-label-sm required" asp-for="CompanyCode">Comapny</label>
+                                    <div class="input-wrapper">
+                                        <select asp-for="CompanyCode" tabindex="1" required data-placeholder="Select Company" class="form-control form-control-sm selectpickerrr js-" asp-items="@ViewBag.CoreCompanyDD as SelectList">
+                                            <option value=""></option>
+                                        </select>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group d-flex align-items-center justify-content-between">
+                                    <label class="d-flex justify-content-end form-label col-form-label-sm required" asp-for="EmployeeId">Employee Id </label>
+                                    <div class="input-wrapper">
+                                        <select asp-for="EmployeeId" tabindex="2" required data-placeholder="Select Employee" class="form-control form-control-sm selectpickerrr" asp-items="@ViewBag.EmployeeDD as SelectList">
+                                            <option value=""></option>
+                                        </select>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group d-flex align-items-center justify-content-between">
+                                    <label class="d-flex justify-content-end form-label col-form-label-sm" asp-for="EmployeeName"> Name:</label>
+                                    <div class="input-wrapper">
+                                        <span id="FullName" style="text-align: left; display: block;">@Model.EmployeeName</span>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group d-flex align-items-center justify-content-between">
+                                    <label class="d-flex justify-content-end form-label col-form-label-sm" asp-for="DesignationName">Designation:</label>
+                                    <div class="input-wrapper">
+
+                                        <span id="DesignationName" style="text-align: left; display: block;">@Model.DesignationName</span> <!-- Right aligned -->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-6">
+                                <div class="form-group d-flex align-items-center justify-content-between">
+                                    <label class="d-flex justify-content-end form-label col-form-label-sm" asp-for="DepartmentName">Department:</label>
+                                    <div class="input-wrapper">
+                                        <span id="DepartmentName" style="text-align: left; display: block;">@Model.DepartmentName</span>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group d-flex align-items-center justify-content-between">
+                                    <label class="d-flex justify-content-end form-label col-form-label-sm  required" asp-for="SeparationDate">Separation Date</label>
+                                    <div class="input-wrapper">
+                                        <input type="text" class="form-control form-control-sm employeeFamilyDatepicker" placeholder="Enter Separation Date" tabindex="3" asp-for="SeparationDate" />
+                                        <span asp-validation-for="SeparationDate" class="text-danger"></span>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="form-group d-flex align-items-center justify-content-between">
+                                    <label class="d-flex justify-content-end form-label col-form-label-sm required" asp-for="SeparationTypeId">Separation Type<span style="color:red"></span></label>
+                                    <div class="input-group">
+                                        <select asp-for="SeparationTypeId" data-placeholder="Select SeparationType" class="form-control form-control-sm selectpickerrr" tabindex="4"
+                                                asp-items="@ViewBag.SepratDD as SelectList">
+                                            <option value=""></option>
+                                        </select>
+                                        <span asp-validation-for="SeparationTypeId" class="text-danger"></span>
+                                    </div>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-sm btn-default js-quick-add input-group-textc"
+                                                data-url="@Url.Action("Index", "SeparationTypes")"
+                                                data-target="#SeparationTypeId"
+                                                data-reload-url="@Url.Action("GetSeparation", "Cascading")"
+                                                data-title="SeparationType">
+                                            +
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group d-flex align-items-center justify-content-between">
+                                    <label class="d-flex justify-content-end form-label col-form-label-sm  required" asp-for="FinalPayment">Final Payment</label>
+                                    <div class="input-wrapper">
+                                        <input type="number" class="form-control form-control-sm" placeholder="Enter Final Payment" tabindex="5" asp-for="FinalPayment" />
+                                        <span asp-validation-for="FinalPayment" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group d-flex align-items-center justify-content-between">
+                                    <label class="d-flex justify-content-end form-label col-form-label-sm" asp-for="IsPaid">IsPaid</label>
+                                    <div class="input-wrapper">
+
+                                        <input type="checkbox" name="IsPaid" value="Y" class="form-control-sm custom-checkbox" id="y"
+                                        @(Model.IsPaid != null && Model.IsPaid.Contains("Y") ? "checked" : "") >
+
+                                        <span asp-validation-for="IsPaid" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group d-flex align-items-center justify-content-between">
+                                    <label class="d-flex justify-content-end form-label col-form-label-sm " asp-for="RefLetterNo">Ref Letter No</label>
+                                    <div class="input-wrapper">
+                                        <input type="text" class="form-control form-control-sm" placeholder="Enter Ref Letter No" tabindex="6" asp-for="RefLetterNo" />
+                                        <span asp-validation-for="RefLetterNo" class="text-danger"></span>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="form-group d-flex align-items-center justify-content-between">
+                                    <label class="d-flex justify-content-end form-label col-form-label-sm " asp-for="RefLetterDate">Ref Letter Date</label>
+                                    <div class="input-wrapper">
+                                        <input type="text" class="form-control form-control-sm employeeFamilyDatepicker22" placeholder="Select Ref Letter Date" tabindex="7" asp-for="RefLetterDate" />
+                                        <span asp-validation-for="RefLetterDate" class="text-danger"></span>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group d-flex align-items-center justify-content-between">
+                                    <label class="d-flex justify-content-end form-label col-form-label-sm " asp-for="Remark">Remarks</label>
+                                    <div class="input-wrapper">
+                                        <input type="text" class="form-control form-control-sm" placeholder="Enter Remarks" tabindex="8" asp-for="Remark" />
+                                        <span asp-validation-for="Remark" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        @if (Model.SeparationCode > 0)
+                        {
+                            <hr />
+                            <div class="form-group row" id="LdateModifyHide">
+
+                                <div class="col-6">
+                                    <div class="form-group d-flex align-items-center justify-content-between">
+                                        @if (Model.Ldate.HasValue)
+                                        {
+                                            <label class="d-flex justify-content-end form-label col-form-label-sm" asp-for="Ldate">Creation Date:</label>
+                                            <div class="input-wrapper">
+                                                <span style="text-align: left; display: block;">@Model.Ldate?.ToString("dd/MM/yyyy hh:mm tt")</span>
+                                            </div>
+                                        }
+
+                                    </div>
+                                </div>
+
+
+                                <div class="col-6">
+                                    <div class="form-group d-flex align-items-center justify-content-between">
+                                        @if (Model.ModifyDate.HasValue)
+                                        {
+                                            <label class="d-flex justify-content-end form-label col-form-label-sm" asp-for="ModifyDate">Last Update Date:</label>
+                                            <div class="input-wrapper">
+                                                <span style="text-align: left; display: block;">@Model.ModifyDate?.ToString("dd/MM/yyyy hh:mm tt")</span>
+                                            </div>
+                                        }
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        }
+
+                        <div class="row no-print" style="margin-top: 9px;">
+
+                            <div class="col-12">
+                                @*  <a href='@Url.Action("Index")' class="btn btn-default btn-common btn-circle"><i class="fas fa-arrow-alt-circle-left">&nbsp;</i>Back To List</a> *@
+                                <button type="button" class="btn btn-default success-btn btn btn-outline-success btn-common btn-circle float-right js-SeparationInfos-save" data-id="@Model.SeparationId">
+                                    <i class="fas fa-save"></i> Save
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+</div>
+
+<style>
+
+    .required::after {
+        content: '*';
+        color: red;
+        margin-left: 5px;
+    }
+
+    .custom-checkbox {
+        width: 15px; /* Adjust width */
+        height: 15px; /* Adjust height */
+    }
+
+    .form-group label {
+        margin-right: .5rem;
+        min-width: 150px;
+    }
+
+    .form-group input {
+        flex: 1;
+        max-width: 100%; /*150px*/
+    }
+
+    .input-wrapper {
+        position: relative;
+        width: 100%; /* Set wrapper width to 100% */
+    }
+
+        .input-wrapper span {
+            width: 100%; /* Set input width to 100% */
+        }
+
+</style>

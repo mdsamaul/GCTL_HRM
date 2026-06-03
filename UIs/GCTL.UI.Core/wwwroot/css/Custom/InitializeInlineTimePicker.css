@@ -1,0 +1,44 @@
+﻿.time-picker-wrapper .flatpickr-calendar {
+    width: 100% !important;
+    max-width: 390px !important;
+}
+
+    .time-picker-wrapper .flatpickr-calendar.hasTime.noCalendar.animate.inline {
+        height: auto;
+        transform: scale(0.85);
+        transform-origin: left top;
+        margin: 0;
+        padding: 0;
+        width: 100% !important;
+    }
+
+.time-picker-wrapper .flatpickr-time.hasSeconds {
+    height: 25px;
+    line-height: 25px;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+
+.time-picker-wrapper .numInput.flatpickr-hour,
+.time-picker-wrapper .numInput.flatpickr-minute,
+.time-picker-wrapper .numInput.flatpickr-second {
+    height: 20px;
+    font-size: 14px;
+}
+
+.time-picker-wrapper .flatpickr-am-pm {
+    height: 20px;
+    line-height: 20px;
+    font-size: 14px;
+}
+
+.time-picker-wrapper .numInputWrapper .arrowUp,
+.time-picker-wrapper .numInputWrapper .arrowDown {
+    height: 12px;
+}
+
+.time-picker-wrapper .numInputWrapper {
+    display: inline-flex;
+    align-items: center;
+}

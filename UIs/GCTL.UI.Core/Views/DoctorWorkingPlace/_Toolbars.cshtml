@@ -1,0 +1,23 @@
+﻿@model ToobarModel
+<div class="row">
+    <div class="col-md-5">
+        <h6 class="page-title">@Model.Title</h6>
+    </div>
+    <div class="col-md-7">
+        <div class="btn-toolbar d-flex justify-content-end">
+            <div class="btn-group">
+                <button type="button" class="btn btn-default success-btn js-doctorWorkingPlace-save">
+                    <i class="fa fa-save">&nbsp;</i> Save
+                </button>
+                <button type="button" class="btn btn-default danger-btn js-doctorWorkingPlace-delete-confirm">
+                    <i class="fa fa-trash">&nbsp;</i>
+                    Delete
+                </button>
+                <button type="button" class="btn btn-default primary-btn js-doctorWorkingPlace-clear">
+                    <i class="fas fa-sync">&nbsp;</i>
+                    Clear
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

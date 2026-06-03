@@ -1,0 +1,60 @@
+﻿@model List<GCTL.Core.ViewModels.HrmAtdShifts.HrmAtdShiftSetupViewModel>
+
+<table id="hRMATDShifts-grid" class="table table-striped  table-bordered table-sm table-hover table-common">
+
+        <thead class="row-border">
+            <tr class="table row-border">
+                <th class="text-center text-middle">
+                    Select <br /> <input type="checkbox" id="hRMATDShifts-check-all" />
+                </th>
+                <th class="text-center text-middle">ID</th>
+                <th class="text-left text-left">Shift Name</th>
+                <th class="text-left text-left">Description</th>
+                <th class="text-center text-middle">In Time</th>
+                <th class="text-center text-middle">Out Time</th>
+                <th class="text-center text-middle">Late Time</th>
+                <th class="text-center text-middle">Absent Time</th>
+                <th class="text-center text-middle">Lunch Out Time</th>
+                <th class="text-center text-middle">Lunch In Time</th>
+                <th class="text-center text-middle">Lunch Break(Hr)</th>
+                <th class="text-center text-middle">W.E.F</th>
+                <th class="text-center text-middle">Remarks</th>
+                <th class="text-center text-middle">Shift Type</th>              
+            </tr>
+        </thead>
+        <tbody> 
+                @foreach (var item in Model.OrderByDescending(x => x.ShiftCode))
+                {
+                    <tr>
+                        <td class="text-center">
+                            <input type="checkbox" class="text-center text-middle checkBox" data-id="@item.ShiftCode" value="@item.ShiftCode" />
+                        </td>
+                        <td>
+                            <a href="#" class='btn js-hRMATDShifts-edit'
+                               style="text-decoration: underline; color: rebeccapurple;"
+                               data-id="@item.ShiftCode" title="Edit">
+                                @item.ShiftCode
+                            </a>
+                        </td>
+
+                        <td class="text-left text-left">@item.ShiftName</td>
+                <td class="text-left text-left">@item.Description</td>
+                    <td class="text-center text-middle">@item.ShiftStartTime.ToString("hh:mm:ss tt")</td>
+                    <td class="text-center text-middle">@item.ShiftEndTime.ToString("hh:mm:ss tt")</td>
+                    <td class="text-center text-middle">@item.LateTime.ToString("hh:mm:ss tt")</td>
+                    <td class="text-center text-middle">@item.AbsentTime.ToString("hh:mm:ss tt")</td>
+                    <td class="text-center text-middle">@item.LunchOutTime.ToString("hh:mm:ss tt")</td>
+                    <td class="text-center text-middle">@item.LunchInTime.ToString("hh:mm:ss tt")</td>
+                    <td class="text-center text-middle">@(item.LunchBreakHour == 0.00m ? "" : item.LunchBreakHour.ToString())</td>
+                    <td class="text-center text-middle">@item.Wef.ToString("dd/MM/yyyy")</td>
+                    <td class="text-center text-middle">@item.Remarks</td>
+                <td class="text-center text-middle">@item.ShiftTypeName</td>
+                     
+                    </tr>
+                }
+            @* } *@
+
+
+        </tbody>
+ </table>
+

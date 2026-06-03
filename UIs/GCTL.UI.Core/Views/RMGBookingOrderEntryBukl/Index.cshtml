@@ -1,0 +1,590 @@
+﻿@model GCTL.UI.Core.ViewModels.RMGBookingOrderEntryBukl.RMGBookingOrderEntryBuklViewModel
+@{
+    Model.Breadcrumb = "RMGBookingOrderEntryBukl";
+    Model.PageTitle = "RMG Booking Order Entry Bukl";
+}
+
+<style>
+    .custom-fieldset {
+        position: relative;
+        border: 2px solid #ddd;
+        border-radius: 10px;
+        padding: 30px 20px 20px 20px;
+        margin: 20px 0;
+        box-shadow: 0 0 10px rgba(76, 175, 80, 0.2);
+    }
+
+        .custom-fieldset legend {
+            position: absolute;
+            top: -14px;
+            left: 20px;
+            background-color: white;
+            padding: 0 10px;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #727272;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            width: auto;
+        }
+
+        .custom-fieldset label {
+            display: block;
+            margin-top: 10px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .custom-fieldset input[type="text"],
+        .custom-fieldset input[type="email"],
+        .custom-fieldset input[type="date"] {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+            color: #000;
+        }
+
+        .custom-fieldset input[type="submit"] {
+            margin-top: 15px;
+            padding: 10px 20px;
+            background-color: #fff;
+            border: 2px solid #333;
+            border-radius: 5px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+            .custom-fieldset input[type="submit"]:hover {
+                background-color: #45a049;
+                border-color: #45a049;
+            }
+
+    #stickyHeader {
+        position: sticky;
+        top: 0;
+        z-index: 1050;
+        background: white;
+        padding: 10px 20px;
+        transition: all 0.3s ease-in-out;
+        box-shadow: none;
+    }
+
+        #stickyHeader.scrolled {
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        }
+
+
+    /* input[type="text"], */
+    input[type="email"],
+    input[type="date"],
+    input[type="number"],
+    input[type="password"],
+    select,
+    textarea {
+        border: 1px solid #ccc !important;
+        border-radius: 4px;
+        padding: 6px 10px;
+        box-sizing: border-box;
+        outline: none;
+    }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #999 !important;
+            box-shadow: none;
+        }
+
+
+
+    .flatpickr-calendar.inline {
+        font-size: 12px !important;
+        max-width: 9.9vw !important;
+        border: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        box-shadow: none !important;
+        background: transparent !important;
+    }
+
+
+    .dataTables_wrapper .dataTables_filter input {
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+        padding: 0px;
+    }
+    /* Remove padding, margin, border, background, and hover effects */
+    .dataTables_wrapper .dataTables_paginate .paginate_button {
+        padding: 0 !important;
+        margin: 0 !important;
+        border: none !important;
+        background: transparent !important;
+        color: inherit !important;
+        box-shadow: none !important;
+    }
+
+        /* Remove selected page button styling */
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+            background: transparent !important;
+            color: inherit !important;
+            font-weight: normal !important;
+            border: none !important;
+        }
+
+        /* Remove hover effect */
+        .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+            background: transparent !important;
+            color: inherit !important;
+        }
+
+
+    .loading-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.8);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+    }
+
+        .loading-overlay.active {
+            display: flex !important;
+        }
+
+ 
+    .dataTables_scrollHead {
+        display: none !important;
+    }
+
+    .dataTables_scrollBody {
+        overflow: visible !important;
+    }
+
+    #bookingTable {
+        width: 100% !important;
+    }
+    #bookingTable input{
+        text-align:center;
+    }
+    .dataTables_sizing{
+        height: auto !important;
+        text-align: center !important;
+    }
+
+  
+
+    .select2-container--bootstrap-5 .select2-results {
+        max-height: 250px !important;
+        overflow-y: auto !important;
+    }
+    /* Focus state border */
+    .select2-container--bootstrap-5.select2-container--focus .select2-selection--single {
+        border-color: #86b7fe;
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+    }
+
+    /* Text container */
+    .select2-container--bootstrap-5 .select2-selection--single .select2-selection__rendered {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        padding-right: 30px;
+        line-height: 38px;
+    }
+
+    /* Clear icon - right side */
+    .select2-container--bootstrap-5 .select2-selection--single .select2-selection__clear {
+        position: absolute !important;
+        right: 35px !important; /* arrow থেকে left এ */
+        top: 50% !important;
+        transform: translateY(-50%) !important;
+        margin: 0 !important;
+        cursor: pointer;
+        color: #999;
+        font-size: 18px;
+        z-index: 3;
+    }
+
+    /* Dropdown arrow - সবচেয়ে right এ */
+    .select2-container--bootstrap-5 .select2-selection--single .select2-selection__arrow {
+        position: absolute !important;
+        top: 50% !important;
+        right: 10px !important;
+        height: 20px !important;
+        width: 20px !important;
+        margin-top: -10px !important;
+        pointer-events: none;
+        z-index: 2;
+    }
+
+        /* Arrow shape */
+        .select2-container--bootstrap-5 .select2-selection--single .select2-selection__arrow b {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-left: -4px;
+            margin-top: -2px;
+            border-style: solid !important;
+            border-color: #333 transparent transparent transparent !important;
+            border-width: 5px 4px 0 4px !important;
+        }
+
+    div.dataTables_wrapper div.dataTables_filter input {
+        width: 85% !important;
+    }
+
+    div.dataTables_wrapper div.dataTables_scrollBody {
+        overflow-y: auto !important;
+    }
+
+    .custom-tooltip .tooltip-inner {
+        max-width: 300px; 
+        white-space: normal;
+        background-color: #fff479;
+        color: #000;
+        border: 2px solid #000;
+        font-size: 14px;
+    }
+
+    .select2-container--bootstrap-5 .select2-selection--single {
+        /* margin-top: 5px; */
+        min-height: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        padding: 0 10px;
+        position: relative;
+        border: 1px solid #ced4da;
+        border-radius: 0.375rem;
+    }
+
+    .flatpickr-current-month .flatpickr-monthDropdown-months, .flatpickr-current-month .cur-year {
+        border: none !important;
+    }
+
+    .header-hidden {
+        display: none !important;
+    }
+    /* Data cells (td) to hide */
+    .row-hidden {
+        display: none !important;
+    }
+
+    .input-group {       
+        flex-wrap: nowrap !important;
+    }
+
+    .purchaseOrderTable_wrapper{
+       padding-top: 6px !important;
+       
+    }
+
+    .input-group .btn {
+        border-top-left-radius: 0 !important;
+        border-bottom-left-radius: 0 !important;
+        border-top-right-radius: 0.25rem;
+        border-bottom-right-radius: 0.25rem;
+    }
+
+    /* DeliveryAddress এর জন্য */
+    #BookingOrderEntryBuklSetup_DeliveryAddress + .select2-container--bootstrap-5 .select2-selection--single,
+    #BookingOrderEntryBuklSetup_SupplierId + .select2-container--bootstrap-5 .select2-selection--single,
+    #BookingOrderEntryBuklSetup_DeliveryMethod + .select2-container--bootstrap-5 .select2-selection--single,
+    #BookingOrderEntryBuklSetup_TermsCondition + .select2-container--bootstrap-5 .select2-selection--single,
+    #BookingOrderEntryBuklSetup_PaymentTerms + .select2-container--bootstrap-5 .select2-selection--single {
+        border-top-right-radius: 0 !important;
+        border-bottom-right-radius: 0 !important;
+        border-top-left-radius: 0.25rem;
+        border-bottom-left-radius: 0.25rem;
+    }
+
+
+
+    #btnPreviewPdf, #downloadReport {
+        transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        min-width: 120px;
+        min-height: 25px;
+        position: relative;
+        overflow: visible;
+    }
+
+        #btnPreviewPdf:hover,
+        #downloadReport:hover {
+            background-color: rgba(173, 255, 47, 0.2) !important;
+            color: #1e90ff !important;
+            border-color: #1e90ff !important;
+            box-shadow: 0 4px 10px rgba(30, 144, 255, 0.5) !important;
+        }
+
+
+        #btnPreviewPdf i,
+        #btnPreviewPdf span,
+        #downloadReport i,
+        #downloadReport span {
+            transition: transform 0.3s ease;
+            display: inline-block;
+            transform: scale(1);
+            margin-right: 2px;
+        }
+
+        #btnPreviewPdf:hover i,
+        #downloadReport:hover i {
+            transform: scale(1.3);
+        }
+
+
+
+    .toolbar-container {
+        background-color: #fff;
+        border: 1px solid #dee2e6;
+        border-radius: 4px;
+        padding: 0;
+    }
+
+    .toolbar-section {
+        padding: 8px 15px;
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+        .toolbar-section:last-child {
+            border-bottom: none;
+        }
+
+    .toolbar-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .toolbar-group {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 4px 0;
+    }
+
+    .toolbar-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 16px;
+        font-size: 13px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        background-color: #fff;
+        color: #333;
+        cursor: pointer;
+        transition: all 0.2s;
+        white-space: nowrap;
+        height: 32px;
+    }
+
+        .toolbar-btn:hover {
+            background-color: #f8f9fa;
+            border-color: #999;
+        }
+
+        .toolbar-btn i {
+            font-size: 14px;
+        }
+
+        .toolbar-btn.icon-only {
+            padding: 6px 12px;
+            min-width: 36px;
+            justify-content: center;
+        }
+
+    .toolbar-select {
+        height: 32px;
+        font-size: 13px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        padding: 4px 32px 4px 10px;
+        background-color: #fff;
+        cursor: pointer;
+        min-width: 150px;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 10px center;
+        background-size: 12px;
+        appearance: none;
+    }
+
+        .toolbar-select:focus {
+            outline: none;
+            border-color: #86b7fe;
+            box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+        }
+
+    .toolbar-divider {
+        width: 1px;
+        height: 24px;
+        background-color: #dee2e6;
+        margin: 0 4px;
+    }
+
+    .icon-group {
+        display: flex;
+        gap: 4px;
+        padding: 4px;
+        background-color: #f8f9fa;
+        border-radius: 4px;
+        border: 1px solid #e0e0e0;
+    }
+
+        .icon-group .toolbar-btn {
+            border: 1px solid transparent;
+            background-color: transparent;
+        }
+
+            .icon-group .toolbar-btn:hover {
+                background-color: #fff;
+                border-color: #ccc;
+            }
+
+    /* Mail Send button special styling */
+    .mail-send-btn {
+        background-color: #f0f0f0;
+        font-weight: 500;
+    }
+
+        .mail-send-btn i {
+            color: #666;
+        }
+
+    @@media (max-width: 768px) {
+        .toolbar-actions {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .toolbar-group {
+            flex-wrap: wrap;
+        }
+
+        .toolbar-select {
+            min-width: 100%;
+        }
+    }
+
+    .btn-group-sm .btn {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.875rem;
+        line-height: 1.5;
+    }
+
+        .btn-group-sm .btn i {
+            font-size: 0.875rem;
+        }
+
+    #bookingOrderGridTable_filter, #bookingOrderGridTable_length {
+        margin-top:10px;       
+    }
+    #bookingOrderGridTable_filter {
+        margin-right:35px;       
+    }
+
+    .item-container + .select2-container {
+        width: 8vw !important;
+        max-width: 130px !important;
+    }
+
+    .description-container + .select2-container {
+        width: 8vw !important;
+        max-width: 100px !important;
+    }
+
+    .color-container + .select2-container {
+        width: 8vw !important;
+        max-width: 100px !important;
+    }
+    
+</style>
+<!-- Content Header (Page header) -->
+<div class="container-fluid">
+    <partial name="_PageHeader" model="Model"></partial>
+</div>
+
+<div class="container-fluid">
+    <div id="stickyHeader" class="px-2 sticky-top rounded">
+        <partial name="_Toolbars" model="new ToobarModel() { Title = Model.Breadcrumb, Code = Model.Code, Name = Model.BookingOrderEntryBuklSetup.BookinOrderNo }" />
+    </div>
+    <div>
+        <partial name="_Setup" model="Model" />
+    </div>
+    <div class="card">
+        <partial name="_Grid" />
+    </div>
+    <partial name="QuickAddModal"></partial>
+
+    <!-- Global Loader -->
+    <div id="bookingLoader"
+         class="position-fixed top-0 start-0 w-100 h-100 d-none
+            bg-white bg-opacity-75
+            d-flex align-items-center justify-content-center"
+         style="z-index: 1055;">
+
+        <div class="text-center">
+            <div class="spinner-border text-primary mb-2" role="status"></div>
+            <div class="fw-semibold text-primary">Loading, please wait...</div>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Bootstrap 5 CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- FontAwesome -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<!-- Bootstrap 5 JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- DataTables CSS -->
+<link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+<!-- DataTables JS -->
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <!-- Flatpickr -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    @* <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/material_blue.css"> *@
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <!-- Toastr for notifications -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <!-- Page-specific JS -->
+    <script src="~/js/pages/RMGBookingOrderEntryBukl.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            var bookingInstance = $.RMGBookingOrderEntryBukl({
+                baseUrl: '@Url.Action("Index", "RMGBookingOrderEntryBukl")',
+                load: function () {
+                    console.log("Custom load logic called from Razor view");
+                }
+            });          
+        });
+
+        // PDF.js configuration (if needed)
+        if (typeof pdfjsLib !== 'undefined') {
+            pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
+        }
+    </script>
+}

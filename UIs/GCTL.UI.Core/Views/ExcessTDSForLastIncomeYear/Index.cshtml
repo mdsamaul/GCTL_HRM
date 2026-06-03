@@ -1,0 +1,149 @@
+﻿@model GCTL.UI.Core.ViewModels.ExcessTDSForLastIncomeYear.ExcessTDSForLastIncomeYearPageViewModel
+
+@{
+    Model.PageTitle = ViewBag.Title;
+    ViewBag.Title = "Excess TDS For Last Income Year";
+    Model.Breadcrumb = "Excess TDS For Last Income Year";
+}
+
+<section class="content-header" style="padding-bottom: 0;">
+    <div class="container-fluid">
+        <div class="calloutx callout-info" style="height: 30px;">
+            <div class="row">
+                <div class="col-md-8 row">
+                    <ol class="breadcrumb float-sm-right">
+                    </ol>
+                </div>
+                <div class="col-md-4">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="/Dashboard">Home</a></li>
+                        <li class="breadcrumb-item"><a href="/ExcessTDSForLastIncomeYear">Excess TDS For Last Income Year</a></li>
+                        <li class="breadcrumb-item active"></li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<section class="content">
+
+    <div class="container-fluid">
+        <div class="form-group row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header px-2">
+                        <partial name="_Toolbars" model="new ToobarModel() { Title = Model.Breadcrumb, Code = Model.Code, Name = Model.Setup.Etdsliyid }" />
+                    </div>
+                    <div class="card-body">
+                        <div style="padding-top: 5px;">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="form">
+                                        <div class="row">
+                                            <div class="col-md-1 borer border-bottom">
+                                                <strong>Filter By:</strong>
+                                            </div>
+                                        </div>
+                                        <div class="row gx-3 gy-3 mb-3 text-center">
+
+                                            <div class="col">
+                                                <label for="companySelect">Company</label>
+                                                <select id="companySelect" class="form-control form-control-sm"></select>
+                                            </div>
+                                            <div class="col">
+                                                <label for="branchSelect">Branch</label>
+                                                <select id="branchSelect" class="form-control form-control-sm" multiple="multiple"></select>
+                                            </div>
+
+                                            <div class="col">
+                                                <label for="departmentSelect">Department</label>
+                                                <select id="departmentSelect" class="form-control form-control-sm" multiple="multiple"></select>
+                                            </div>
+                                            <div class="col">
+                                                <label for="designationSelect">Designation</label>
+                                                <select id="designationSelect" class="form-control form-control-sm" multiple="multiple"></select>
+                                            </div>
+                                            <div class="col">
+                                                <label for="employeeTypeSelect">Employee Type</label>
+                                                <select id="employeeTypeSelect" class="form-control form-control-sm" multiple="multiple"></select>
+                                            </div>
+                                            <div class="col">
+                                                <label for="employmentNatureSelect">Employment Naturee</label>
+                                                <select id="employmentNatureSelect" class="form-control form-control-sm" multiple="multiple"></select>
+                                            </div>
+                                            <div class="col">
+                                                <label for="employeeSelect">Employee</label>
+                                                <select id="employeeSelect" class="form-control form-control-sm" multiple="multiple"></select>
+                                            </div>
+                                            <div class="col">
+                                                <label for="activityStatusSelect">Activity Status</label><br />
+                                                <select id="activityStatusSelect" class="form-control form-control-sm multiselectCustom">
+                                                    <option value="01">Active</option>
+                                                    <option value="02">Inactive</option>
+                                                    <option value="02,01">All</option>
+                                                </select>
+                                            </div>
+
+                                        </div>
+
+                                        <div id="loadingIndicator" style="display:none;">Loading...</div>
+                                    </div>
+
+                                    <div class="js-ExcessTDSForLastIncomeYear-grid-containerttttt">
+
+                                        @await Html.PartialAsync("_ExcessTDSForLastIncomeYearGrid", Model.ExcessTDSForLastIncomeYearList)
+
+                                    </div>
+
+                                    @await Html.PartialAsync("_Setup", Model.Setup)
+
+                                    <div class="js-ExcessTDSForLastIncomeYear-grid-container">
+
+                                        @await Html.PartialAsync("_Grid", Model.ExcessTDSForLastIncomeYearList2)
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <partial name="_BottomNavigation" />
+</section>
+
+<partial name="DeleteModal" />
+<partial name="QuickAddModal" />
+
+<!-- Bootstrap Multiselect CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/1.1.2/css/bootstrap-multiselect.min.css">
+
+<!-- Flatpickr CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+<!-- Optional: Theme -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/material_blue.css">
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="~/js/pages/excessTDSForLastIncomeYear.js"></script>
+    <script type="text/javascript">
+        var options = {
+            baseUrl: '@Url.Action("", "ExcessTDSForLastIncomeYear")'
+        };
+        options.load = () => {
+        };
+
+
+        $.excessTDSForLastIncomeYear(options);
+    </script>
+    <!-- Bootstrap Multiselect JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/1.1.2/js/bootstrap-multiselect.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+}

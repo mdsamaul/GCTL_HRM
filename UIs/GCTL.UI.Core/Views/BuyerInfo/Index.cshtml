@@ -1,0 +1,248 @@
+﻿@model GCTL.UI.Core.ViewModels.BuyerInfos.BuyerInfoPageViewModel
+
+
+@{
+    Model.PageTitle = ViewBag.Title;
+    ViewBag.Title = "Buyer Info";
+    Model.Breadcrumb = "Buyer Info";
+}
+
+
+<style>
+    .form-control-sm,
+    .form-select-sm,
+    .multi-select-button {
+        height: 31px;
+        min-height: 31px;
+    }
+
+    textarea.form-control-sm {
+        resize: vertical !important;
+        min-height: 31px;
+    }
+
+    .photoRemove:hover {
+        transform: scale(1.1);
+        background: #dc3545 !important;
+    }
+
+        .photoRemove:hover .fa-times {
+        color: white !important;
+    }
+
+    .multi-select-dropdown {
+        position: relative;
+    }
+
+    .multi-select-button {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        cursor: pointer;
+        min-height: 31px;
+    }
+
+        .multi-select-button:hover {
+            border-color: #86b7fe;
+        }
+
+    .multi-select-dropdown-menu {
+        position: absolute;
+        z-index: 1000;
+        left: 0;
+        max-height: 300px;
+        overflow-y: auto;
+        overflow-x: auto;
+        min-width: 100%;
+        width: max-content;
+        max-width: 90vw;
+    }
+
+        .multi-select-dropdown-menu.show-below {
+            top: 100%;
+            margin-top: 2px;
+        }
+
+        .multi-select-dropdown-menu.show-above {
+            bottom: 100%;
+            margin-bottom: 2px;
+            top: auto;
+        }
+
+    .contact-table {
+        width: 100%;
+        margin: 0;
+        min-width: 600px;
+        table-layout: auto;
+    }
+
+        .contact-table th {
+            font-weight: 600;
+            font-size: 12px;
+            padding: 8px 10px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            white-space: nowrap;
+        }
+
+    .multi-select-dropdown-menu.show-above .contact-table th {
+        bottom: 0;
+        top: auto;
+    }
+
+    .contact-table td {
+        padding: 8px 10px;
+        font-size: 12px;
+        border-bottom: 1px solid #f0f0f0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 0;
+    }
+
+        .contact-table td:first-child {
+            width: 40px;
+            max-width: 40px;
+        }
+
+        .contact-table td:nth-child(2) {
+            min-width: 120px;
+            max-width: 150px;
+        }
+
+        .contact-table td:nth-child(3) {
+            min-width: 120px;
+            max-width: 200px;
+        }
+
+        .contact-table td:nth-child(4) {
+            min-width: 100px;
+            max-width: 120px;
+        }
+
+        .contact-table td:nth-child(5) {
+            min-width: 150px;
+            max-width: 200px;
+        }
+
+    .contact-checkbox {
+        margin: 0;
+    }
+
+    .selected-count {
+        font-size: 14px;
+    }
+
+    .clear-selection {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 2px;
+    }
+
+        .clear-selection:hover {
+            color: #dc3545;
+        }
+
+
+    .select2-container--default .select2-selection--single {
+        background-color: #fff;
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+        height: calc(1.5em + 0.75rem + 2px);
+        padding: 0.375rem 0.75rem;
+    }
+
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            color: #495057;
+            line-height: calc(1.5em + 0.75rem);
+            padding-left: 0;
+            padding-right: 20px;
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__arrow {
+            height: calc(1.5em + 0.75rem + 2px);
+            right: 3px;
+        }
+
+    .select2-container--default.select2-container--focus .select2-selection--single {
+        border-color: #80bdff;
+        outline: 0;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+</style>
+
+
+<div class="container-fluid">
+    <partial name="_PageHeader" model="Model" />
+</div>
+
+<div class="container-fluid">
+    <div class="card">
+        <div id="stickyHeader" class="card-header px-2 py-1 sticky-top" style="z-index:1020">
+            <partial name="_Toolbars" model="new ToobarModel() { Title = Model.Breadcrumb, Code = Model.Code, Name = Model.Setup.Code }"></partial>
+        </div>
+    </div>
+
+    <div class="card">
+        <nav>
+            <div class="nav nav-tabs m-3" id="buyer-tab" role="tablist">
+                <button class="nav-link active" id="nav-buyer-tab" data-bs-toggle="tab" data-bs-target="#nav-buyer" type="button" role="tab" aria-controls="nav-buyer" aria-selected="true">Buyer Info</button>
+                <button class="nav-link" id="nav-brand-tab" data-bs-toggle="tab" data-bs-target="#nav-brand" type="button" role="tab" aria-controls="nav-brand" aria-selected="false">Brand Info</button>
+                <button class="nav-link" id="nav-dladdress-tab" data-bs-toggle="tab" data-bs-target="#nav-dladdress" type="button" role="tab" aria-controls="nav-dladdress" aria-selected="false">Delivery Address</button>
+            </div>
+        </nav>
+        <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="nav-buyer" role="tabpanel" aria-labelledby="nav-buyer-tab" tabindex="0">
+                <partial name="_BuyerInfo" model="Model"></partial>
+            </div>
+            <div class="tab-pane fade" id="nav-brand" role="tabpanel" aria-labelledby="nav-brand-tab" tabindex="0">
+                <partial name="_BrandInfo" model="Model"></partial>
+            </div>
+            <div class="tab-pane fade" id="nav-dladdress" role="tabpanel" aria-labelledby="nav-dladdress-tab" tabindex="0">
+                <partial name="_DLAddress" model="Model"></partial>
+            </div>
+        </div>
+    </div>
+    <partial name="QuickAddModal" />
+    <partial name="_BottomNavigation" />
+
+</div>
+
+
+
+<link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+
+    
+    <link href="~/frontend/plugins/fontawesome-free/css/fontawesome.min.css" rel="stylesheet" />
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+
+    <link href="~/select2_4.0.13/select2/css/select2.min.css" rel="stylesheet" />
+
+    <script src="~/select2_4.0.13/select2/js/select2.min.js"></script>
+
+    <link href="~/frontend/plugins/datatables-bs4/css/datatables.bootstrap4.min.css" rel="stylesheet" />
+
+    <script src="~/js/jquery.datatables.min.js"></script>
+    <script src="~/js/datatables.bootstrap4.min.js"></script>
+
+    
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <link href="~/frontend/plugins/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+    
+    <script src="~/frontend/plugins/sweetalert2/sweetalert2.all.min.js"></script>
+
+    @* <script src="~/js/pages/buyerMain.js"></script> *@
+
+    <script src="~/js/pages/buyerInfoEntry.js"></script> 
+    <script src="~/js/pages/buyerBrandEntry.js"></script>
+    <script src="~/js/pages/buyerDLEntry.js"></script>
+}

@@ -1,0 +1,164 @@
+﻿@model GCTL.UI.Core.ViewModels.BuyerInfos.BuyerInfoPageViewModel
+
+<form id="buyerDLForm" method="post" enctype="multipart/form-data">
+    <input type="text" asp-for="DLAddress.Tc" hidden value=0 />
+    <div class="row col-md-12">
+        <div class="d-flex gap-3">
+            <div class="card col-md-10">
+                <!--Buyer-->
+                <div class="container-fluid mx-auto py-2">
+                    <div class="row align-items-center">
+                        <div class="col-md-6">
+                            <div class="row align-items-center">
+                                <div class="col-md-4 text-end">
+                                    Buyer
+                                </div>
+                                <div class="col-md-8">
+                                    <select asp-items="ViewBag.Buyer as SelectList" class="form-select form-select-sm dlSelect searchable-select" asp-for="DLAddress.BuyerId">
+                                        <option value="">--Select Buyer--</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                        </div>
+                    </div>
+                </div>
+
+                <!--DeliveryAddressID, Name-->
+                <div class="container-fluid mx-auto py-2">
+                    <div class="row align-items-center">
+                        <div class="col-md-6">
+                            <div class="row align-items-center">
+                                <div class="col-md-4 text-end">
+                                    Delivery Address Id
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="input-group input-group-sm">
+                                        <div style="flex: 1; min-width: 0;">
+                                            <input type="text" asp-for="DLAddress.DeliveryAddressId" class="form-control form-control-sm" aria-label="DeliveryAddressId" placeholder="Enter @Html.DisplayNameFor(m => m.DLAddress.DeliveryAddressId)" />
+                                        </div>
+                                        <button type="button" id="DLAddress_Search" class="btn btn-outline-secondary btn-sm">
+                                            <i class="fas fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row align-items-center">
+                                <div class="col-md-4 text-end">
+                                    Delivery Name
+                                </div>
+                                <div class="col-md-8">
+                                    <input type="text" asp-for="DLAddress.Name" class="form-control form-control-sm" aria-label="Name" placeholder="Enter @Html.DisplayNameFor(m => m.DLAddress.Name)" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--Delivery Address-->
+                <div class="container-fluid mx-auto py-2">
+                    <div class="row align-items-center">
+                        <div class="col-md-12">
+                            <div class="row align-items-center">
+                                <div class="col-md-2 text-end">
+                                    Delivery Address<span class="text-danger">*</span>
+                                </div>
+                                <div class="col-md-10">
+                                    <textarea asp-for="DLAddress.DeliveryAddress" class="form-control form-control-sm" rows="1" required placeholder="Enter @Html.DisplayNameFor(m => m.DLAddress.DeliveryAddress)"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--ContactPerson, Designation-->
+                <div class="container-fluid mx-auto py-2">
+                    <div class="row align-items-center">
+                        <div class="col-md-6">
+                            <div class="row align-items-center">
+                                <div class="col-md-4 text-end">
+                                    Contact Person
+                                </div>
+                                <div class="col-md-8">
+                                    <input type="text" asp-for="DLAddress.ContactPerson" class="form-control form-control-sm" aria-label="ContactPerson" placeholder="Enter @Html.DisplayNameFor(m => m.DLAddress.ContactPerson)" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row align-items-center">
+                                <div class="col-md-4 text-end">
+                                    Designation
+                                </div>
+                                <div class="col-md-8">
+                                    <input type="text" asp-for="DLAddress.Designation" class="form-control form-control-sm" aria-label="Designation" placeholder="Enter @Html.DisplayNameFor(m => m.DLAddress.Designation)" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--Phone, Email-->
+                <div class="container-fluid mx-auto py-2">
+                    <div class="row align-items-center">
+                        <div class="col-md-6">
+                            <div class="row align-items-center">
+                                <div class="col-md-4 text-end">
+                                    Phone
+                                </div>
+                                <div class="col-md-8">
+                                    <input type="text" asp-for="DLAddress.Phone" class="form-control form-control-sm" aria-label="Phone" placeholder="Enter @Html.DisplayNameFor(m => m.DLAddress.Phone)"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row align-items-center">
+                                <div class="col-md-4 text-end">
+                                    Email
+                                </div>
+                                <div class="col-md-8">
+                                    <input type="email" asp-for="DLAddress.Email" class="form-control form-control-sm" aria-label="Email" placeholder="Enter @Html.DisplayNameFor(m => m.DLAddress.Email)" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <partial name="_DateInfo" model='"DLAddress"' />
+
+            </div>
+        </div>
+    </div>
+</form>
+<div class="row col-md-12">
+    <div class="d-flex">
+        <div class="card col-md-10 py-2">
+            <table id="dlAddress-grid" class="table table-bordered table-striped table-hover align-middle mb-0">
+
+                <thead>
+                    <tr class="text-center">
+                        <th class="text-center no-sort" style="width: 5%; padding-left: 0; padding-right: 0;">
+                            <label for="dlAddress-check-all">Select</label><br />
+                            <input type="checkbox" id="dlAddress-check-all">
+                        </th>
+                        <th class="text-center align-middle">ID</th>
+                        <th class="text-center align-middle">Name</th>
+                        <th class="text-center align-middle">Delivery Address</th>
+                        <th class="text-center align-middle">Contact Person</th>
+                        <th class="text-center align-middle">Designation</th>
+                        <th class="text-center align-middle">Phone</th>
+                        <th class="text-center align-middle">Email</th>
+                    </tr>
+                </thead>
+                <tbody id="dlAddress-grid-body"></tbody>
+
+            </table>
+        </div>
+    </div>
+</div>
+@* 
+<div class="card mx-3 mb-2">
+    
+</div> *@

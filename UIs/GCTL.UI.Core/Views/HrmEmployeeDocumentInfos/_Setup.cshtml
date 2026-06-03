@@ -1,0 +1,279 @@
+﻿@using GCTL.Core.ViewModels.HrmEmployeeDocumentInfos
+
+@model GCTL.Core.ViewModels.HrmEmployeeDocumentInfos.HrmEmployeeDocumentInfosSetup
+@{
+
+    var list = ViewData["List"] as List<HrmEmployeeDocumentInfosSetup>;
+
+}
+
+
+<style>
+
+    .required::after {
+        content: '*';
+        color: red;
+        margin-left: 5px;
+    }
+
+    .form-group label {
+        margin-right: .5rem;
+        min-width: 150px;
+    }
+
+    .form-group input {
+        flex: 1;
+        max-width: 100%; /*150px*/
+    }
+
+    .input-wrapper {
+        position: relative;
+        width: 100%; /* Set wrapper width to 100% */
+    }
+
+        .input-wrapper span {
+            width: 100%; /* Set input width to 100% */
+        }
+
+</style>
+
+<div id="customLoadingOverlay" style="
+        display: flex;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 9999;
+        justify-content: center;
+        align-items: center;">
+    <div style="
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+            text-align: center;">
+        <div class="spinner-border text-primary" role="status">
+            <span class="sr-only"></span>
+        </div>
+        <p style="margin-top: 10px; margin-bottom: 0;"></p>
+    </div>
+</div>
+
+<div style="padding-top:1px;">
+
+    <div class="row">
+        <div class="col-lg-6">
+            <span id="message"></span>
+        </div>
+        <div class="col-lg-6">
+        </div>
+    </div>
+
+
+    @*    <div class="card">
+        <div class="card-body"> *@
+
+
+
+    <div style="padding-top: 1px;">
+        <div class="row">
+            <div class="col-lg-12">
+
+                <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="Ldate" />
+                <input type="hidden" asp-for="ModifyDate" />
+                <input type="hidden" asp-for="AutoId" />
+                <input type="hidden" asp-for="EmpDocId" />
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+
+                            <div class="col-lg-6">
+                                <div class="form-group d-flex align-items-center justify-content-between">
+                                    <label class="d-flex justify-content-end form-label col-form-label-sm required" asp-for="CompanyCode">Comapny</label>
+                                    <div class="input-wrapper">
+                                        <select asp-for="CompanyCode" tabindex="1" data-placeholder="Select Company" required class="form-control form-control-sm HrmEmployeeDocumentInfosselectpicker" asp-items="@ViewBag.CompanyDD as SelectList">
+                                            <option value=""></option>
+                                        </select>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group d-flex align-items-center justify-content-between">
+                                    <label class="d-flex justify-content-end form-label col-form-label-sm" asp-for="BranchCode">Branch</label>
+                                    <div class="input-wrapper">
+                                        <select asp-for="BranchCode" tabindex="1" data-placeholder="Select Branch" class="form-control form-control-sm HrmEmployeeDocumentInfosselectpicker" asp-items="@ViewBag.BranchDD as SelectList">
+                                            <option value=""></option>
+                                        </select>
+
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group d-flex align-items-center justify-content-between">
+                                    <label class="d-flex justify-content-end form-label col-form-label-sm required" asp-for="EmployeeId">Employee Id </label>
+                                    <div class="input-wrapper">
+                                        <select asp-for="EmployeeId" tabindex="2" data-placeholder="Select Employee" required class="form-control form-control-sm HrmEmployeeDocumentInfosselectpicker" asp-items="@ViewBag.EmpDD as SelectList">
+                                            <option value=""></option>
+                                        </select>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group d-flex align-items-center justify-content-between">
+                                    <label class="d-flex justify-content-end form-label col-form-label-sm" asp-for="EmployeeName">Employee Name:</label>
+                                    <div class="input-wrapper">
+                                        <span id="FullName" style="text-align: left; display: block;">@Model.EmployeeName</span>
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group d-flex align-items-center justify-content-between">
+                                    <label class="d-flex justify-content-end form-label col-form-label-sm" asp-for="DesignationName">Designation:</label>
+                                    <div class="input-wrapper">
+
+                                        <span id="DesignationName" style="text-align: left; display: block;">@Model.DesignationName</span> <!-- Right aligned -->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-6">
+                                <div class="form-group d-flex align-items-center justify-content-between">
+                                    <label class="d-flex justify-content-end form-label col-form-label-sm" asp-for="DepartmentName">Department:</label>
+                                    <div class="input-wrapper">
+                                        <span id="DepartmentName" style="text-align: left; display: block;">@Model.DepartmentName</span>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+                <div style="display:none">Table List</div>
+                <div class="js-HrmEmployeeDocumentInfos-grid-container">
+                    @*  <partial name="_Grid" /> *@
+                    @await Html.PartialAsync("_Grid", list)
+                </div>
+
+
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                                <div class="col-lg-3">
+                                    <label asp-for="Doucment">Name</label>
+                                <input type="file" asp-for="Photo" name="Photo" class="form-control form-control-sm" id="fileInput" accept=".png,.jpg,.jpeg,.pdf" />
+                                    <span style="color: blue;font-size:12px">Max Size 1 MB</span>
+                                </div>
+                                <div class="col-lg-3">
+                                    <label asp-for="DocumentName">Document Name</label>
+                                    <input asp-for="DocumentName" class="form-control form-control-sm " placeholder="Enter Document Name" tabindex="7" />
+                                </div>
+                                <div class="col-lg-3">
+                                    <label asp-for="DocumentDiscription">Discription</label>
+                                    <input asp-for="DocumentDiscription" class="form-control form-control-sm" placeholder="Enter Document Discription" tabindex="8" />
+                                   
+                                </div>
+                                <div class="col-lg-3">
+                                <img id="previewImage" height="120" width="120" src="@Url.Content("~/Uploads/Images/Employees/"+ @Model.Doucment)" />
+                                </div>
+                         
+                          
+                        </div>
+
+                        @if (Model.AutoId > 0)
+                        {
+                            <hr />
+                            <div class="form-group row" id="LdateModifyHide">
+
+
+                                <div class="col-6">
+                                    <div class="form-group d-flex align-items-center justify-content-between">
+                                        @if (Model.Ldate.HasValue)
+                                        {
+                                            <label class="d-flex justify-content-end form-label col-form-label-sm" asp-for="Ldate">Creation Date:</label>
+                                            <div class="input-wrapper">
+                                                <span style="text-align: left; display: block;">@Model.Ldate?.ToString("dd/MM/yyyy hh:mm tt")</span>
+                                            </div>
+                                        }
+
+                                    </div>
+                                </div>
+
+
+                                <div class="col-6">
+                                    <div class="form-group d-flex align-items-center justify-content-between">
+                                        @if (Model.ModifyDate.HasValue)
+                                        {
+                                            <label class="d-flex justify-content-end form-label col-form-label-sm" asp-for="ModifyDate">Last Update Date:</label>
+                                            <div class="input-wrapper">
+                                                <span style="text-align: left; display: block;">@Model.ModifyDate?.ToString("dd/MM/yyyy hh:mm tt")</span>
+                                            </div>
+                                        }
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        }
+
+
+
+                        <div class="row no-print" style="margin-top: 9px;">
+
+                            <div class="col-12">
+                                @*  <a href='@Url.Action("Index")' class="btn btn-default btn-common btn-circle"><i class="fas fa-arrow-alt-circle-left">&nbsp;</i>Back To List</a> *@
+                                <button type="button" class="btn btn-default success-btn btn btn-outline-success btn-common btn-circle float-right js-HrmEmployeeDocumentInfos-save" data-id="@Model.EmpDocId">
+                                    <i class="fas fa-save"></i> Save
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+    <partial name="_BottomNavigation" />
+</div>
+@*  </div>
+
+
+</div> *@
+
+<script>
+
+    document.getElementById('fileInput').addEventListener('change', function (event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const previewImage = document.getElementById('previewImage');
+                previewImage.src = e.target.result;
+                previewImage.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+
+</script>

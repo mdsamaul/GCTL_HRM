@@ -1,0 +1,36 @@
+﻿ @model GCTL.Core.ViewModels.HRM_Def_Floor.HRM_Def_FloorSetupViewModel
+<!-- Hidden field for AutoId in Edit -->
+<input type="hidden" asp-for="AutoId" />
+<div class="row">
+    <div class="col-12 col-md-6">
+        <div class="d-flex align-items-center">
+            <div class="floorLeft text-right">Floor ID <span class="text-danger">*</span></div>
+            <div class="floorRight">
+                <input asp-for="FloorCode" class="form-control-sm form-control" readonly />
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-md-6"> </div>
+</div>
+
+<div class="row py-2">
+    <div class="col-12 col-md-6">
+        <div class="d-flex align-items-center">
+            <div class="floorLeft text-right">Floor Name <span class="text-danger">*</span></div>
+            <div class="floorRight">
+                <input asp-for="FloorName" class="form-control-sm form-control" />
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-md-6">
+        <div class="d-flex align-items-center">
+            <div class="floorLeft text-right">Short Name</div>
+            <div class="floorRight">
+                <input asp-for="ShortName" class="form-control-sm form-control" />
+            </div>
+        </div>
+    </div>
+</div>
+
+

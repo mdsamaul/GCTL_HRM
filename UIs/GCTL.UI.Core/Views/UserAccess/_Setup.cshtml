@@ -1,0 +1,75 @@
+﻿@model GCTL.Core.ViewModels.UserAccesses.UserAccessSetupViewModel
+
+<input type="hidden" asp-for="UserId" />
+<input type="hidden" asp-for="Id" />
+<div style="padding-top: 10px;">
+    <div class="row">
+        <div class="col-lg-6">
+            <span id="message"></span>
+        </div>
+        <div class="col-lg-6">
+        </div>
+    </div>  
+
+    <div class="form-group row">
+        <div class="col-lg-6">
+            <label asp-for="EmployeeId">Employee</label>
+            <select asp-for="EmployeeId" class="form-control form-control-sm selectpicker" asp-items="@ViewBag.Employees as SelectList">
+                <option value="">--Select Employee--</option>
+            </select>
+            <span asp-validation-for="EmployeeId" class="text-danger" />
+        </div>
+        <div class="col-lg-6">
+            <label asp-for="EmployeeName">Name</label>
+            <label id="lblEmployeeName" style="width:100%">@Model.EmployeeName</label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-6">
+            Department
+            <label id="lblDepartment" style="width:100%">@Model.DepartmentName</label>
+        </div>
+        <div class="col-lg-6">
+            Designation
+            <label id="lblDesignation" style="width:100%">@Model.DesignationName</label>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-6">
+            <label asp-for="Username">Username</label>
+            <input asp-for="Username" class="form-control form-control-sm" style="width:100%" autocomplete="off" />
+            <span asp-validation-for="Username" class="text-danger" />
+        </div>
+        <div class="col-lg-6">
+            <label asp-for="UserPassword">Password</label>
+            <input asp-for="UserPassword" type="password" style="width:100%" class="form-control form-control-sm" autocomplete="off" />
+            <span asp-validation-for="UserPassword" class="text-danger" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-6">
+            <label asp-for="Role"></label>
+            <select asp-for="Role" class="form-control form-control-sm selectpicker" asp-items="@ViewBag.Roles as SelectList">
+                <option>--Select Role--</option>
+            </select>
+            <span asp-validation-for="Role" class="text-danger" />
+        </div>
+        <div class="col-lg-6">
+            <label asp-for="AccessCode">Access Code</label>
+            <select asp-for="AccessCode" class="form-control form-control-sm selectpicker" asp-items="@ViewBag.AccessCodes as SelectList">
+                <option>--Select Access Code--</option>
+            </select>
+            <span asp-validation-for="AccessCode" class="text-danger" />
+        </div>
+    </div>
+</div>
+<div class="row no-print" style="margin-top: 9px;">
+    <div class="col-12">
+        <button type="button" style="border-radius:18px; font-size:12px; border: none; float:right " id="btnSubmit2"
+                class=" btn-shadow btn-wide btn btn-success waves-effect waves-light js-useraccess-save" data-id="@Model.Id">
+            <span class="btn-icon-wrapper pr-2 opacity-7"><i class="fas fa-plus"></i></span>Save
+        </button>
+    </div>
+</div>
+

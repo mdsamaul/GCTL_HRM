@@ -1,0 +1,62 @@
+﻿
+<aside class="main-sidebar elevation-4 sidebar-light-success">
+    <!-- Brand Logo -->
+    <a href="@Url.Action("Index", "Home")" class="brand-link">
+        <img src="~/images/CoIcon.ico" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+             style="opacity: .8">
+        <span class="brand-text font-weight-light">GCTL Software</span>
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <!-- Sidebar user panel (optional) -->
+        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+            <div class="image">
+                <img src="~/images/images.png" class="img-circle elevation-2" alt="User Image">
+            </div>
+            <div class="info">
+                <a href="#" class="d-block">User Name</a>
+            </div>
+        </div>
+
+        <!-- Sidebar Menu -->
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false" style="font-size:14px">
+                <li class="nav-item has-treeview">
+                    <a href="@Url.Action("Index", "Dashboard")" class="nav-link" style="color:#00203FFF">
+                        <i class="fas fa-tachometer-alt nav-icon" style="font-size:14px"></i>
+                        <p>Dashboard</p>
+                    </a>
+                </li>
+                <li class="nav-item has-treeview menu-open">
+                    <a href="#" class="nav-link" style="color:#00203FFF">
+                        <i class="nav-icon nav-icon" style="font-size:14px"></i>
+                        <p>
+                            Master Setup
+                            <i class="right fas fa-angle-left" style="font-size:14px"></i>
+                        </p>
+                    </a>
+                    <ul class="nav  nav-treeview" style="padding-left: 10px; display: block;" id="myTab">
+                        <li class="nav-item">
+                            <a asp-action="View_Company" asp-controller="Companies" class="nav-link" style="color: #3d76ae">
+                                <i class="far fa-dot-circle nav-icon" style="font-size:14px"></i>
+                                <p>Company Info</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+
+               
+                <li class="nav-item">
+                    <a href="@Url.Action("Logout", "Home")" class="nav-link" style="color:#00203FFF">
+                        <i class="fas fa-sign-out-alt nav-icon" style="font-size:14px"></i>
+                        <p>
+                            Logout
+                        </p>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</aside>

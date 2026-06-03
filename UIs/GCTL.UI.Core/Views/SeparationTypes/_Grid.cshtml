@@ -1,0 +1,47 @@
+﻿@model List<GCTL.Core.ViewModels.SeparationTypes.SeparationTypesSetupViewModel>
+
+<table id="SeparationTypes-grid" class="table table-striped  table-bordered table-sm table-hover table-common">
+    <thead class="row-border">
+        <tr class="table row-border">
+            <th class="text-center text-middle" style="width: 10%;">
+                Select <br /> <input type="checkbox" id="SeparationTypes-check-all" />
+            </th>
+            <th class="text-center text-middle" style="width: 10%;"> ID</th>
+            <th class="text-center text-middle" style="width: 80%;"> Separation Type</th>
+
+        </tr>
+    </thead>
+    <tbody>
+
+        @if (Model == null || !Model.Any())
+        {
+            <tr class="text-center text-middle">
+                <td colspan="8">No Data Available.</td>
+            </tr>
+        }
+        else
+        {
+            @foreach (var item in Model.OrderByDescending(x => x.SeparationTypeId))
+            {
+                <tr>
+                    <td class="text-center">
+                        <input type="checkbox" class="text-center text-middle checkBox" data-id="@item.SeparationTypeId" value="@item.SeparationTypeId" />
+                    </td>
+                    <td>
+                        <a href="#" class='btn js-SeparationTypes-edit'
+                           style="text-decoration: underline; color: rebeccapurple;"
+                           data-id="@item.SeparationTypeId" title="Edit">
+                            @item.SeparationTypeId
+                        </a>
+                    </td>
+
+                    <td class="text-center text-middle">@item.SeparationType</td>
+
+
+                </tr>
+            }
+        }
+
+
+    </tbody>
+</table>

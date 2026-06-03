@@ -1,0 +1,49 @@
+﻿@model List<GCTL.Core.ViewModels.StyleInformation.StyleInformationSetupViewModel>
+
+<table id="StyleInformation-grid" class="table table-striped  table-bordered table-sm table-hover table-common">
+    <thead class="row-border">
+        <tr class="table row-border">
+            <th class="text-center text-middle" style="width: 8%;">
+                Select <br /> <input type="checkbox" id="StyleInformation-check-all" />
+            </th>
+            <th class="text-center text-middle" style="width: 10%;">ID</th>
+            <th class="text-center text-middle" style="width: 28%;"> Style</th>
+            <th class="text-center text-middle" style="width: 26%;"> Short Name</th>
+            <th class="text-center text-middle" style="width: 28%;"> Buyer Name</th>
+
+        </tr>
+    </thead>
+    <tbody>
+
+        @if (Model == null || !Model.Any())
+        {
+            <tr class="text-center text-middle">
+                <td colspan="8">No Data Available.</td>
+            </tr>
+        }
+        else
+        {
+            @foreach (var item in Model.OrderByDescending(x => x.StyleId))
+            {
+                <tr>
+                    <td class="text-center">
+                        <input type="checkbox" class="text-center text-middle checkBox" data-id="@item.StyleId" value="@item.StyleId" />
+                    </td>
+                    <td>
+                        <a href="#" class='btn js-StyleInformation-edit'
+                           style="text-decoration: underline; color: rebeccapurple;"
+                           data-id="@item.StyleId" title="Edit">
+                            @item.StyleId
+                        </a>
+                    </td>
+
+                    <td class="text-center text-middle">@item.Style</td>
+                    <td class="text-center text-middle">@item.ShortName</td>
+                    <td class="text-center text-middle">@item.Name</td>
+
+                </tr>
+            }
+        }
+
+    </tbody>
+</table>

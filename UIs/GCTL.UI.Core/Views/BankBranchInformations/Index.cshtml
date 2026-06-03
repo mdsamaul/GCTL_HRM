@@ -1,0 +1,156 @@
+﻿@model GCTL.UI.Core.ViewModels.SalesDefBankBranchInfos.SalesDefBankBranchInfoPageViewModel
+@{
+
+    Model.PageTitle = ViewBag.Title;
+    ViewBag.Title = "Bank Branch Information";
+    Model.Breadcrumb = "Bank Branch Information";
+}
+<style>
+    /* Wrapper for tabs */
+    .tabwrap {
+        margin-bottom: 10px;
+    }
+
+    /* Basic styling for the tab container */
+    .MenuTab {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        border-bottom: 2px solid #ddd;
+        flex-wrap: wrap;
+    }
+
+        /* Styling for individual list items (tabs) */
+        .MenuTab li {
+            margin: 0 1px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* padding: 0.4vh; */
+            margin-right: 0.1rem;
+            text-decoration: none;
+            color: #4a4a4a;
+            font-weight: bold;
+            white-space: nowrap;
+            border: 1px solid lightgray;
+            border-bottom: none;
+            /* background: linear-gradient(to right, #d8f4f7, #fff); */
+            background: linear-gradient(to right, #E0E0E0, #ffffff);
+            border-radius: 10px 10px 0 0;
+            font-size: 14px;
+            text-align: center;
+            transition: background 0.3s, color 0.3s;
+        }
+
+            /* Styling for links in the tabs */
+            .MenuTab li a {
+                display: flex;
+                text-decoration: none;
+                color: #4a4a4a;
+                font-weight: bold;
+                white-space: nowrap;
+                border: none;
+                font-size: 14px;
+                text-align: center;
+                padding: 3%;
+            }
+
+            /* Active tab (selected) styling */
+            .MenuTab li.selected {
+                background: linear-gradient(to right, #ffffff, #ffffff);
+                color: #4a4a4a;
+                font-weight: bold;
+                border: 1px solid lightgray;
+                border-radius: 10px 10px 0 0;
+                background-color: white;
+                border-bottom: none;
+            }
+
+    
+    #BankBranchInformationsDeleteModalBodyHeightFeixd {
+        height: 50px !important;
+    }
+</style>
+
+<!-- Content Header (Page header) -->
+<partial name="_PageHeader" model="Model" />
+
+<section class="content consistent-look">
+    <div class="container-fluid">
+        <div class="row">
+
+
+            <div class="col-md-6 pr-0">
+                <div class="card">
+                    <div class="card-header px-2">
+
+                        @* @await Html.PartialAsync("_TabButton") *@
+
+                  
+
+                        <!-- First tab set -->
+                        <div class="tabwrap" style="z-index: 100; width: 100%;">
+                            <ul class="MenuTab">
+                                <li style="width: 16%;">
+                                    <a href="/BankInformations/Index?PageID=41">Bank</a>
+                                </li>
+                                <li class="selected" style="width: 16%;">
+                                    <a href="/BankBranchInformations/Index?PageID=41">Branch</a>
+                                </li>
+                                <li style="width: 16%;">
+                                    <a href="/BankAccountInfo/Index?PageID=41">A/C Info</a>
+                                </li>
+
+                            </ul>
+                        </div>
+
+                        <partial name="_Toolbars" model="new ToobarModel() { Title = Model.Breadcrumb, Code = Model.Code, Name = Model.Setup.BankBranchId }" />
+                    </div>
+                    <div class="card-body px-2">
+
+                        <form asp-action="Setup" method="post" id="BankBranchInformations-form" asp-controller="BankBranchInformations">
+
+
+                            <partial name="_Setup" model="Model.Setup" />
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body p-2 pt-3">
+                        <div class="js-BankBranchInformations-grid-container">
+                            @await Html.PartialAsync("_Grid", Model.TableList)
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+        <partial name="_BottomNavigation" />
+    </div>
+</section>
+<partial name="DeleteModal" />
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="~/js/pages/bankBranchInformations.js"></script>
+    <script type="text/javascript">
+        var options = {
+            baseUrl: '@Url.Action("", "BankBranchInformations")'
+        };
+        options.load = () => 
+        {
+
+        };
+
+        $.bankBranchInformations(options);
+    </script>
+}

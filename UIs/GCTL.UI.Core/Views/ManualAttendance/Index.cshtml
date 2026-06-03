@@ -1,0 +1,68 @@
+﻿@model GCTL.UI.Core.ViewModels.ManualAttendance.ManualAttendancePageViewModel
+@{
+    ViewBag.Title = "Manual Attendance List";
+    Model.PageTitle = ViewBag.Title;
+    Model.Breadcrumb = "Manual Attendance List";
+}
+
+<!-- Content Header (Page header) -->
+<section class="content-header" style="padding-bottom: 0;">
+    <div class="container-fluid">
+        <div class="calloutx callout-info" style="height: 35px;">
+            <div class="row mb-2">
+                <div class="col-md-8 row">
+                    <ol class="breadcrumb float-sm-right">
+                        
+                    </ol>
+                </div>
+                <div class="col-md-4">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="/Dashboard">Home</a></li>
+                        <li class="breadcrumb-item"><a href="/ManualAttendance/Index">Manual Attendance</a></li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body p-2 pb-0 pt-3">
+                        <partial name="Setup" model="Model.Setup" />
+                    </div>
+
+                    <div class="js-manualAttendance-grid-container px-2">
+                        @await Html.PartialAsync("_Grid", Model.ListTableData)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <partial name="_BottomNavigation" />
+    </div>
+</section>
+
+<partial name="DeleteModal" />
+<partial name="QuickAddModal" />
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.js"></script>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="~/js/pages/manualAttendance.js"></script>
+    <script type="text/javascript">
+        var options = {
+            baseUrl: '@Url.Action("", "manualAttendance")'
+        };
+        options.load = () => {
+        };
+
+        $.manualAttendance(options);
+    </script>
+}

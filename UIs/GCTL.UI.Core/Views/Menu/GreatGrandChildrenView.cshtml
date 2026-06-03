@@ -1,0 +1,58 @@
+﻿@using GCTL.Core.Configurations
+@model GCTL.Core.ViewModels.AccessCodes.AccessCodeModel
+@inject ApplicationSettings applicationSettings
+
+@{
+    ViewData["Title"] = Model.Title;
+    var urlPath = string.IsNullOrWhiteSpace(applicationSettings.VirtualPath) ? "" : string.Concat("/", @applicationSettings.VirtualPath);
+}
+
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0 text-dark">@Model.Title</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active">@Model.Title</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            @if (Model.Children.Any())
+            {
+                foreach (var greatGrandChild in Model.Children)
+                {
+                    <div class="col-md-3 col-sm-6 mb-4">
+                        <div class="card h-100">
+                            <div class="card-body text-center">
+                                <i class="@(string.IsNullOrEmpty(greatGrandChild.Icon) ? "fa fa-link" : greatGrandChild.Icon) fa-2x mb-3"></i>
+                                <h5>@greatGrandChild.Title</h5>
+                            </div>
+                            <div class="card-footer">
+                                <a href="@urlPath/@greatGrandChild.ControllerName/@greatGrandChild.ViewName" class="btn btn-primary btn-block">
+                                    Go to @greatGrandChild.Title
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="col-12">
+                    <div class="alert alert-info">
+                        No items available.
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>

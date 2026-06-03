@@ -1,0 +1,123 @@
+﻿@model GCTL.Core.ViewModels.AccessCodes.AccessCodeSetupViewModel
+
+
+<form asp-action="Setup" id="accesscode-form">
+<div style="padding-top: 10px;">
+    <div class="row">
+        <div class="col-lg-6">
+            <span id="message"></span>
+        </div>
+        <div class="col-lg-6">
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-lg-6">
+            <label asp-for="AccessCodeId"></label>
+            <label class="text-danger">*</label>
+            <input asp-for="AccessCodeId" class="form-control form-control-sm" style="width:100%" />
+        </div>
+        <div class="col-lg-6">
+            <label asp-for="AccessCodeName"></label>
+            <label class="text-danger">*</label>
+            <input asp-for="AccessCodeName" class="form-control form-control-sm" style="width:100%" placeholder="Enter Access Code Name" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <table id="tblMenTab" class="table  table-condensed table-hover table-striped table-bordered" style="width:100%">
+                <thead>
+                    <tr>
+                        <th style="text-align:center">
+                            Select
+                            <input type="checkbox" class="accesscode-check-all" />
+                        </th>
+                        <th class="text-center">Title</th>
+                        <th class="text-center">Add</th>
+                        <th class="text-center">Edit</th>
+                        <th class="text-center">Delete</th>
+                        <th class="text-center">Print</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < Model.Accesses.Count; i++)
+                    {
+                        <tr>
+                            <td class="text-center">
+                                <input asp-for="@Model.Accesses[i].MenuId" type="hidden" />
+                                <input asp-for="@Model.Accesses[i].ParentId" type="hidden" />
+                                <input asp-for="@Model.Accesses[i].OrderBy" type="hidden" />
+                                <input asp-for="@Model.Accesses[i].ControllerName" type="hidden" />
+                                <input asp-for="@Model.Accesses[i].ViewName" type="hidden" />
+                                <input asp-for="@Model.Accesses[i].Icon" type="hidden" />
+                                <input asp-for="@Model.Accesses[i].TitleCheck" class="view checked" />
+                                <input asp-for="@Model.Accesses[i].IsActive" type="hidden" />
+                            </td>
+                            <td class="text-left">
+                                <input asp-for="@Model.Accesses[i].Title" type="hidden" />
+                                <i class="@Model.Accesses[i].Icon"></i>
+                                <label asp-for="@Model.Accesses[i].Title" class="title" id="lnkID"><i>@Model.Accesses[i].Title</i></label>
+                            </td>
+                            <td class="text-center">
+                                <input asp-for="@Model.Accesses[i].CheckAdd" class="checked" />
+                            </td>
+                            <td class="text-center">
+                                <input asp-for="@Model.Accesses[i].CheckEdit" class="checked" />
+                            </td>
+                            <td class="text-center">
+                                <input asp-for="@Model.Accesses[i].CheckDelete" class="checked" />
+                            </td>
+                            <td class="text-center">
+                                <input asp-for="@Model.Accesses[i].CheckPrint" class="checked" />
+                            </td>
+                        </tr>
+
+                        if (Model.Accesses[i].Children.Any())
+                        {
+                            for (int j = 0; j < Model.Accesses[i].Children.Count; j++)
+                            {
+                                <tr>
+                                    <td class="text-center">
+                                        <input asp-for="@Model.Accesses[i].Children[j].MenuId" type="hidden" />
+                                        <input asp-for="@Model.Accesses[i].Children[j].ParentId" type="hidden" />
+                                        <input asp-for="@Model.Accesses[i].Children[j].OrderBy" type="hidden" />
+                                        <input asp-for="@Model.Accesses[i].Children[j].ControllerName" type="hidden" />
+                                        <input asp-for="@Model.Accesses[i].Children[j].ViewName" type="hidden" />
+                                        <input asp-for="@Model.Accesses[i].Children[j].Icon" type="hidden" />
+                                        <input asp-for="@Model.Accesses[i].Children[j].TitleCheck" class="view checked" />
+                                        <input asp-for="@Model.Accesses[i].Children[j].IsActive" type="hidden" />
+                                    </td>
+                                    <td class="text-left">
+                                        <input asp-for="@Model.Accesses[i].Children[j].Title" type="hidden" />
+                                      >>  <label asp-for="@Model.Accesses[i].Children[j].Title" class="title" id="lnkID"><i>@Model.Accesses[i].Children[j].Title</i></label>
+                                    </td>
+                                    <td class="text-center">
+                                        <input asp-for="@Model.Accesses[i].Children[j].CheckAdd" class="checked" />
+                                    </td>
+                                    <td class="text-center">
+                                        <input asp-for="@Model.Accesses[i].Children[j].CheckEdit" class="checked" />
+                                    </td>
+                                    <td class="text-center">
+                                        <input asp-for="@Model.Accesses[i].Children[j].CheckDelete" class="checked" />
+                                    </td>
+                                    <td class="text-center">
+                                        <input asp-for="@Model.Accesses[i].Children[j].CheckPrint" class="checked" />
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="row no-print" style="margin-top: 9px;">
+    <div class="col-12">
+        <button type="submit" style="border-radius:18px; font-size:12px; border: none; float:right"
+                class="btn-shadow btn-wide btn btn-success waves-effect waves-light js-accesscode-savex">
+            <span class="btn-icon-wrapper pr-2 opacity-7"><i class="fas fa-plus"></i></span>Save
+        </button>
+    </div>
+</div>
+
+</form>

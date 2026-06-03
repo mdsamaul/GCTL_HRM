@@ -1,0 +1,85 @@
+﻿@model GCTL.Core.ViewModels.ContactPersonInfo.ContactPersonInfoSetupViewModel
+
+<div style="padding-top: 10px;">
+    <div class="row">
+        <div class="col-lg-6">
+            <span id="message"></span>
+        </div>
+        <div class="col-lg-6">
+        </div>
+    </div>
+    <div class="form-group row">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <input type="hidden" id="lastCode" />
+        <input type="hidden" asp-for="AutoId" />
+        @* <input type="hidden" asp-for="Id" /> *@
+        <input type="hidden" asp-for="Ldate" />
+        <input type="hidden" asp-for="ModifyDate" />
+        <div class="col-lg-6">
+            <label asp-for="Cpid">ID </label>
+            <div class="input-group input-group-sm">
+                <input asp-for="Cpid" type="text" class="form-control form-control-sm js-Cpid-code" readonly="readonly" />
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-lg-6">
+            <label asp-for="ContactPersonName"> Name<span style="color:red">*</span> </label>
+            <input type="text" asp-for="ContactPersonName" class="form-control form-control-sm js-ContactPersonName-check-duplicateName" autofocus required placeholder="Enter Contact Person Name" tabindex="1" />
+        </div>
+        <div class="col-lg-6">
+            <label asp-for="DesignationCode">Designation</label>
+            <div class="input-group">
+                <select asp-for="DesignationCode" class="form-control form-control-sm selectpickers9" tabindex="2" data-placeholder="-- Select Designation --" asp-items="@ViewBag.DesignationDD as SelectList">
+                    <option></option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-lg-6">
+            <label asp-for="ContactPersonMobile">Phone </label>
+            <input type="text" asp-for="ContactPersonMobile" class="form-control form-control-sm" placeholder="Enter Contact Person Phone" tabindex="3" />
+        </div>
+        <div class="col-lg-6">
+            <label asp-for="ContactPersonEmail">Email</label>
+            <input type="text" asp-for="ContactPersonEmail" class="form-control form-control-sm" placeholder="Enter Contact Person Email" tabindex="4" />
+        </div>
+    </div>
+
+    @if (Model.AutoId > 0)
+    {
+
+        <hr />
+        <div class="form-group row" id="LdateModifyHide">
+            <div class="col-lg-6">
+                @if (Model.Ldate.HasValue)
+                {
+                    <label>Creation Date: </label>
+
+                    <label>@Model.Ldate?.ToString("dd/MM/yyyy")</label>
+                }
+            </div>
+            <div class="col-lg-6">
+                @if (Model.ModifyDate.HasValue)
+                {
+                    <label>Last Update Date: </label>
+
+                    <label>@Model.ModifyDate?.ToString("dd/MM/yyyy")</label>
+                }
+            </div>
+        </div>
+
+    }
+
+</div>
+<div class="row no-print" style="margin-top: 9px;">
+    <div class="col-12">
+        <button type="button" class="btn btn-default success-btn btn btn-outline-success btn-common btn-circle float-right js-ContactPersonInfo-save" data-id="@Model.Cpid">
+            <i class="fas fa-save"></i> Save
+        </button>
+    </div>
+</div>

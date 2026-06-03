@@ -1,0 +1,102 @@
+﻿@model GCTL.UI.Core.ViewModels.ProbationPeriodExtension.ProbationPeriodExtensionPageViewModel
+
+<!-- Content Header (Page header) -->
+@{
+
+    Model.PageTitle = ViewBag.Title;
+    ViewBag.Title = "Probation Period Extension Entry";
+    Model.Breadcrumb = "Probation Period Extension Entry";
+}
+
+<section class="content-header" style="padding-bottom: 0;">
+    <div class="container-fluid">
+        <div class="calloutx callout-info" style="height: 30px;">
+            <div class="row">
+                <div class="col-md-8 row">
+                    <ol class="breadcrumb float-sm-right">
+                    </ol>
+                </div>
+                <div class="col-md-4">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="/Dashboard">Home</a></li>
+                        <li class="breadcrumb-item"><a href="/ProbationPeriodExtension">Probation Period Extension Entry</a></li>
+                        <li class="breadcrumb-item active"></li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<section class="content">
+
+    <div class="container-fluid">
+        <div class="form-group row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header px-2">
+                        <partial name="_Toolbars" model="new ToobarModel() { Title = Model.Breadcrumb, Code = Model.Code, Name = Model.Setup.Ppeid }" />
+                    </div>
+                    <div class="card-body">
+                        <div style="padding-top: 5px;">
+                            <div class="row">
+
+                                <div class="col-lg-12">
+
+                                    <form asp-action="Setup" method="post" id="ProbationPeriodExtension-form" asp-controller="ProbationPeriodExtension">
+
+                                        <div class="js-ProbationPeriodExtension-form-container">
+
+                                            @await Html.PartialAsync("_Setup", Model.Setup)
+                                        </div>
+
+                                    </form>
+
+                                </div>
+
+                                <div class="col-lg-12" style="height:570px;overflow:auto;">
+
+                                    <div class="js-ProbationPeriodExtension-grid-container">
+                                        @await Html.PartialAsync("_Grid", Model.ProbationPeriodExtensionList2)
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <partial name="_BottomNavigation" />
+                </div>
+                @* <partial name="_BottomNavigation" /> *@
+            </div>
+        </div>
+    </div>
+</section>
+<partial name="DeleteModal" />
+<partial name="QuickAddModal" />
+
+<!-- Flatpickr CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+<!-- Optional: Theme -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/material_blue.css">
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="~/js/pages/probationPeriodExtension.js"></script>
+    <script type="text/javascript">
+        var options = {
+            baseUrl: '@Url.Action("", "ProbationPeriodExtension")'
+        };
+        options.load = () => {
+        };
+
+        $.probationPeriodExtension(options);
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+} 
+

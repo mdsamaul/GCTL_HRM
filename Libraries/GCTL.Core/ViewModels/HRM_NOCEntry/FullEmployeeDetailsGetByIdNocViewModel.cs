@@ -1,0 +1,108 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace GCTL.Core.ViewModels.HRM_NOCEntry
+{
+    public class FullEmployeeDetailsGetByIdNocViewModel
+    {
+        // ── Company ──
+        public string CompanyName { get; set; }
+        public string Address1 { get; set; }
+        public string LeavingDate { get; set; }
+        public string LetterRefNo { get; set; }
+        // ── Personal Info ──
+        public string EmployeeID { get; set; }
+        public string EmployeeName { get; set; }
+        public string FatherName { get; set; }
+        public string MotherName { get; set; }
+        public string FathersOccupation { get; set; }
+        public string MothersOccupation { get; set; }
+        public string DateOfBirthCertificate { get; set; }
+        public string DateOfBirthOrginal { get; set; }
+        public string PlaceOfBirth { get; set; }
+        public string NationalIDNO { get; set; }
+        public string BirthCertificateNo { get; set; }
+        public string NoOfSon { get; set; }
+        public string NoOfDaughters { get; set; }
+        public string Telephone { get; set; }
+        public string TINNo { get; set; }
+        public string ExtraCurricularActivities { get; set; }
+        public string PersonalEmail { get; set; }
+        public string CardNo { get; set; }
+
+        // ── Personal Details ──
+        public string Gender { get; set; }
+        public string MaritalStatus { get; set; }
+        public string BloodGroup { get; set; }
+        public string Nationality { get; set; }
+        public string Religion { get; set; }
+
+        // ── Additional Info ──
+        public string PassportNo { get; set; }
+        public string PassportExpiryDate { get; set; }
+        public string DrivingLicenseNo { get; set; }
+        public string DrivingLicenseExpiryDate { get; set; }
+        public string WorkPermitNo { get; set; }
+        public string WorkPermitType { get; set; }
+        public string WpEffectiveDate { get; set; }
+        public string WpExpireDate { get; set; }
+
+        // ── Official Info ──
+        public string BranchName { get; set; }
+        public string DepartmentName { get; set; }
+        public string DesignationName { get; set; }
+        public string EmployeeType { get; set; }
+        public string EmploymentNature { get; set; }
+        public string GradeNo { get; set; }
+        public decimal GrossSalary { get; set; }
+        public string ShiftName { get; set; }
+        public string ModeOfPayment { get; set; }
+        public string ImmediateSupervisor { get; set; }
+        public string HeadOfDepartment { get; set; }
+        public string OfficialPhone { get; set; }
+        public string OfficialEmail { get; set; }
+        public string AppointmentLetterDate { get; set; }
+        public string JoiningDate { get; set; }
+        public string ProbationPeriod { get; set; }
+        public string ProbationEndDate { get; set; }
+        public string ConfirmationDate { get; set; }
+        public string ContractEndDate { get; set; }
+        public string ServiceLength { get; set; }
+
+        // ── Contact Info ──
+        public string PresentAddress { get; set; }
+        public string ParmanentAddress { get; set; }
+
+        // ── Emergency Contact 1 ──
+        public string EmContactName1 { get; set; }
+        public string EmContactRelation1 { get; set; }
+        public string EmContactMobile1 { get; set; }
+        public string EmContactPhone1 { get; set; }
+        public string EmContactEmail { get; set; }
+
+        // ── Emergency Contact 2 ──
+        public string EmContactName2 { get; set; }
+        public string EmContactRelation2 { get; set; }
+        public string EmContactMobile2 { get; set; }
+        public string EmContactPhone2 { get; set; }
+        public string EmContactEmai2 { get; set; }
+
+        // ── Photo & Signature ──
+        public byte[] Photo { get; set; }
+        public byte[] DigitalSignature { get; set; }
+
+        // ── Helper: Photo as Base64 ──
+        public string PhotoBase64 =>
+            Photo != null && Photo.Length > 0
+                ? $"data:image/jpeg;base64,{Convert.ToBase64String(Photo)}"
+                : null;
+
+        public string SignatureBase64 =>
+            DigitalSignature != null && DigitalSignature.Length > 0
+                ? $"data:image/jpeg;base64,{Convert.ToBase64String(DigitalSignature)}"
+                : null;
+    }
+}

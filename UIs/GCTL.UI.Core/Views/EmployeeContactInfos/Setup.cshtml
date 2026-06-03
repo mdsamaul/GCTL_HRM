@@ -1,0 +1,550 @@
+﻿@model GCTL.Core.ViewModels.EmployeeContactInfos.EmployeeContactInfosSetupViewModel
+
+@{
+    ViewBag.Title = "Employee Contact List";
+    Model.PageTitle = ViewBag.Title;
+    Model.Breadcrumb = "Employee Contact Info";
+
+}
+
+<div id="customLoadingOverlay" style="
+        display: flex;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 9999;
+        justify-content: center;
+        align-items: center;">
+    <div style="
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+            text-align: center;">
+        <div class="spinner-border text-primary" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+        <p style="margin-top: 10px; margin-bottom: 0;">Loading data...</p>
+    </div>
+</div>
+
+<!-- Content Header (Page header) -->
+<section class="content-header" style="padding-bottom: 0;">
+    <div class="container-fluid">
+        <div class="calloutx callout-info" style="height: 30px;">
+            <div class="row">
+                <div class="col-md-8 row">
+                    <ol class="breadcrumb float-sm-right">
+                    </ol>
+                </div>
+                <div class="col-md-4">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="/Dashboard">Home</a></li>
+                        <li class="breadcrumb-item"><a href="/EmployeeContactInfos">Employee Contact Informtion</a></li>
+                        <li class="breadcrumb-item active"> Employee Contact Setup </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header border-transparent">
+
+                        <partial name="_Toolbars" model="new ToobarModel() { Title = Model.Breadcrumb, Code = Model.Code, Name = Model.EmpContactId }" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="content">
+    <form asp-action="Setup" id="EmployeeContactInfos-form" method="post" enctype="multipart/form-data" asp-controller="EmployeeContactInfos">
+        <div class="container-fluid">
+            <div class="form-group row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header px-2">
+                            @await Html.PartialAsync("_TabButton")
+                        </div>
+                        <div class="card-body">
+                            <div style="padding-top: 10px;">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        @* <input type="hidden" id="lastCode" /> *@
+                                        <input type="hidden" asp-for="Id" />
+                                        <input type="hidden" asp-for="Ldate" />
+                                        <input type="hidden" asp-for="ModifyDate" />
+                                        <input type="hidden" asp-for="EmpContactId" />
+                                        <input type="hidden" asp-for="AutoId" />
+
+
+                                        @*       <div class="form-group row">
+                                            <div class="col-lg-12">
+                                                <label asp-for="EmpContactId">EmpContactId</label>
+                                                <input asp-for="EmpContactId" type="text" />
+
+                                            </div>
+                                          </div>  *@
+
+
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="row mt-2">
+                                                    <div class="col-lg-2">
+                                                        <div class="form-group text-end" style="text-align: end;">
+                                                            <label asp-for="CompanyCode" class="col-form-label-sm required">Company</label>
+                                                        </div>
+                                                        <div class="form-group text-end" style="text-align: end;">
+                                                            <label asp-for="EmployeeId" class="col-form-label-sm required">Employee Id<span style="color:red">*</span></label>
+                                                        </div>
+                                                        <div class="form-group text-end" style="text-align: end;">
+                                                            <label>Designation:</label>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-4">
+                                                        <div class="input-group text-end mb-2">
+                                                            <select asp-for="CompanyCode" tabindex="1" data-placeholder="Select Company" class="form-control form-control-sm selectpickerrrr js-" asp-items="@ViewBag.CoreCompanyDD as SelectList">
+                                                                <option value=""></option>
+                                                            </select>
+                                                        </div>
+
+                                                        <div class="input-group text-end mb-2">
+                                                            <select asp-for="EmployeeId" tabindex="3" data-placeholder="Select Employee" class="form-control form-control-sm selectpickerrrr js-" required asp-items="@ViewBag.EmployeeDD as SelectList">
+                                                                <option value=""></option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="input-group text-end">
+                                                            <span id="DesignationName" style="text-align: right; display: block;">@Model.DesignationName</span> 
+                                                        </div>
+
+                                                    </div>
+
+                                                    <div class="col-lg-2">
+                                                        <div class="form-group text-end" style="text-align: end;">
+                                                            <label asp-for="BranchCode" class="col-form-label-sm required">Branch</label>
+                                                        </div>
+                                                        <div class="form-group text-end" style="text-align: end;">
+                                                            <label>Employee Name:</label>
+                                                        </div>
+                                                        <div class="form-group text-end" style="text-align: end;">
+                                                            <label>Deperment:</label>
+                                                        </div>
+
+                                                    </div>
+
+                                                    <div class="col-lg-4">
+                                                        <div class="input-group text-end mb-2">
+                                                            <select asp-for="BranchCode" tabindex="2" data-placeholder="Select Branch" class="form-control form-control-sm selectpickerrrr js-" asp-items="@ViewBag.CoreBranchDD as SelectList">
+                                                                <option value=""></option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="input-group text-end mb-2">
+                                                            <span id="FullName" style="text-align: right; display: block;">@Model.EmployeeName</span>
+                                                        </div>
+                                                        <div class="input-group text-end mt-0">
+                                                            <span id="DepartmentName" style="text-align: right; display: block;">@Model.DepartmentName</span>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <label> Parmanent Address </label>
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-lg-4 ">
+                                                        <label asp-for="ParmanentAddress">Address </label>
+                                                        <textarea asp-for="ParmanentAddress" class="form-control form-control-sm" placeholder="Enter Address " rows="1"></textarea>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <label asp-for="ParmanentAddressBangla">Address (বাংলা)</label>
+                                                        <textarea asp-for="ParmanentAddressBangla" class="form-control form-control-sm" placeholder="Enter Address (বাংলা)" rows="1"></textarea>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <label asp-for="ParmanentPostOffice">Post Office</label>
+                                                        <span class="text-danger"></span>
+                                                        <input asp-for="ParmanentPostOffice" class="form-control form-control-sm" placeholder="Enter Post Office" tabindex="4" />
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-lg-4">
+                                                        <label asp-for="ParmanentThana">Thana</label>
+                                                        <span class="text-danger"></span>
+                                                        <input asp-for="ParmanentThana" class="form-control form-control-sm" placeholder="Enter Thana" tabindex="4" />
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <label asp-for="ParmanentPostCode">PostCode</label>
+                                                        <span class="text-danger"></span>
+                                                        <input asp-for="ParmanentPostCode" class="form-control form-control-sm" placeholder="Enter PostCode" tabindex="4" />
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <label asp-for="ParmanentDistrict"> District</label>
+                                                        <span class="text-danger"></span>
+                                                        <div class="input-group">
+                                                            <select asp-for="ParmanentDistrict" data-placeholder="Select District" class="form-control form-control-sm selectpickerrrr js-" asp-items="@ViewBag.DistrictDD as SelectList">
+                                                                <option value=""></option>
+                                                            </select>
+                                                            <div class="input-group-append">
+                                                                <button type="button" class="btn btn-sm btn-default js-quick-add input-group-textc"
+                                                                        data-url="@Url.Action("Index", "Districts")"
+                                                                        data-target="#ParmanentDistrict"
+                                                                        data-reload-url="@Url.Action("GetDistrictsSelections", "Cascading")"
+                                                                        data-title="Districts">
+                                                                    +
+                                                                </button>
+                                                                @* <button type="button" class="btn btn-sm btn-default js-quick-add input-group-textc"
+                                                                        data-url="@Url.Action("Index", "Districts")"
+                                                                        data-target="#ParmanentDistrict"
+                                                                        data-reload-url="@Url.Action("GetDistrictsSelections", "Cascading")"
+                                                                        data-title="Districts">
+                                                                    +
+                                                                </button> *@
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-4">
+                                                        <label asp-for="ParmanentPhone">Phone </label>
+                                                        <span class="text-danger"></span>
+                                                        <input asp-for="ParmanentPhone" class="form-control form-control-sm phone-validationx" placeholder="Enter Phone " />
+                                                        <span asp-validation-for="ParmanentPhone" class="text-danger" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <label> Present Address </label>
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-lg-4 ">
+                                                        <label asp-for="PresentAddress">Address </label>
+                                                        <textarea asp-for="PresentAddress" class="form-control form-control-sm" placeholder="Enter Address " rows="1"></textarea>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <label asp-for="PresentAddressBangla">Address (বাংলা)</label>
+                                                        <textarea asp-for="PresentAddressBangla" class="form-control form-control-sm" placeholder="Enter Address (বাংলা)" rows="1"></textarea>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <label asp-for="PresentPostOffice">Post Office</label>
+                                                        <span class="text-danger"></span>
+                                                        <input asp-for="PresentPostOffice" class="form-control form-control-sm" placeholder="Enter Post Office" tabindex="4" />
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-lg-4">
+                                                        <label asp-for="PresentThana">Thana</label>
+                                                        <span class="text-danger"></span>
+                                                        <input asp-for="PresentThana" class="form-control form-control-sm" placeholder="Enter Thana" tabindex="4" />
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <label asp-for="PresentPostCode">PostCode</label>
+                                                        <span class="text-danger"></span>
+                                                        <input asp-for="PresentPostCode" class="form-control form-control-sm" placeholder="Enter PostCode" tabindex="4" />
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <label asp-for="PresentDistrict"> District</label>
+                                                        <span class="text-danger"></span>
+                                                        <div class="input-group">
+                                                            <select asp-for="PresentDistrict" data-placeholder="Select District" class="form-control form-control-sm selectpickerrrr js-" asp-items="@ViewBag.DistrictDD as SelectList">
+                                                                <option value=""></option>
+                                                            </select>
+                                                            <div class="input-group-append">
+                                                               @*  <button type="button" class="btn btn-sm btn-default js-quick-add input-group-textc"
+                                                                        data-url="@Url.Action("Index", "Districts")"
+                                                                        data-target="#ParmanentDistrict"
+                                                                        data-reload-url="@Url.Action("GetDistrictSelections", "Cascading")"
+                                                                        data-title="PresentDistrict">
+                                                                </button> *@
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-lg-4">
+                                                        <label asp-for="PresentMobile">Mobile </label>
+                                                        <span class="text-danger"></span>
+                                                        <input asp-for="PresentMobile" class="form-control form-control-sm phone-validationx" placeholder="Enter Mobile " />
+                                                        <span asp-validation-for="PresentMobile" class="text-danger" />
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <label asp-for="PresentPhone ">Phone </label>
+                                                        <span class="text-danger"></span>
+                                                        <input asp-for="PresentPhone " class="form-control form-control-sm phone-validationx" placeholder="Enter Phone " />
+                                                        <span asp-validation-for="PresentPhone" class="text-danger" />
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <label asp-for="PresentFax">Fax</label>
+                                                        @* <span class="text-danger">*</span> *@
+                                                        <input asp-for="PresentFax" class="form-control form-control-sm" placeholder="Enter Fax" />
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-lg-4">
+                                                        <label asp-for="PresentEmail ">Email</label>
+                                                        <span class="text-danger"></span>
+                                                        <input asp-for="PresentEmail " class="form-control form-control-sm" placeholder="Enter Email" />
+                                                        <span asp-validation-for="PresentEmail" class="text-danger" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <label> Emergency Contact-1</label>
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-lg-4">
+                                                        <label asp-for="EmContactName1">Name </label>
+                                                        @* <span class="text-danger">*</span> *@
+                                                        <input asp-for="EmContactName1" class="form-control form-control-sm js-branch-check-availability" placeholder="Enter Name " />
+                                                        @* <span asp-validation-for="EmContactName1" class="text-danger" /> *@
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <label asp-for="EmContactRelation1">Relationship</label>
+                                                        <span class="text-danger"></span>
+                                                        <div class="input-group">
+                                                            <select asp-for="EmContactRelation1" data-placeholder="Select Relationship" class="form-control form-control-sm selectpickerrrr js-" asp-items="@ViewBag.RelationshipDD as SelectList">
+                                                                <option value=""></option>
+                                                            </select>
+                                                            <div class="input-group-append">
+                                                                <button type="button" class="btn btn-sm btn-default js-quick-add input-group-textc"
+                                                                        data-url="@Url.Action("Index", "Relationships")"
+                                                                        data-target="#EmContactRelation1"
+                                                                        data-reload-url="@Url.Action("GetRelationship", "Cascading")"
+                                                                        data-title="Relationship">
+                                                                    +
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4 ">
+                                                        <label asp-for="EmContactAddress1">Address </label>
+                                                        <textarea asp-for="EmContactAddress1" class="form-control form-control-sm" placeholder="Enter Address " rows="1"></textarea>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-lg-4">
+                                                        <label asp-for="EmContactMobile1">Mobile </label>
+                                                        <span class="text-danger"></span>
+                                                        <input asp-for="EmContactMobile1" class="form-control form-control-sm phone-validationx" placeholder="Enter Mobile " />
+                                                        <span asp-validation-for="EmContactMobile1" class="text-danger" />
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <label asp-for="EmContactPhone1 ">Phone </label>
+                                                        <span class="text-danger"></span>
+                                                        <input asp-for="EmContactPhone1" class="form-control form-control-sm phone-validationx" placeholder="Enter Phone " />
+                                                        <span asp-validation-for="EmContactPhone1" class="text-danger" />
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <label asp-for="EmContactFax1">Fax</label>
+                                                        @* <span class="text-danger">*</span> *@
+                                                        <input asp-for="EmContactFax1" class="form-control form-control-sm" placeholder="Enter Fax" />
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-lg-4">
+                                                        <label asp-for="EmContactEmail ">Email</label>
+                                                        <span class="text-danger"></span>
+                                                        <input asp-for="EmContactEmail " class="form-control form-control-sm" placeholder="Enter Email" />
+                                                        <span asp-validation-for="EmContactEmail" class="text-danger" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <label> Emergency Contact-2</label>
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-lg-4">
+                                                        <label asp-for="EmContactName2">Name </label>
+                                                        @*  <span class="text-danger">*</span> *@
+                                                        <input asp-for="EmContactName2" class="form-control form-control-sm js-branch-check-availability" placeholder="Enter Name " />
+                                                        @* <span asp-validation-for="EmContactName1" class="text-danger" /> *@
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <label asp-for="EmContactRelation2 ">Relationship</label>
+                                                        <span class="text-danger"></span>
+                                                        <div class="input-group">
+                                                            <select asp-for="EmContactRelation2" data-placeholder="Select Relationship" class="form-control form-control-sm selectpickerrrr js-" asp-items="@ViewBag.RelationshipDD as SelectList">
+                                                                <option value=""></option>
+                                                            </select>
+                                                            <div class="input-group-append">
+                                                                @* <button type="button" class="btn btn-sm btn-default js-quick-add input-group-textc"
+                                                                        data-url="@Url.Action("Index", "Relationships")"
+                                                                        data-target="#EmContactRelation2 "
+                                                                        data-reload-url="@Url.Action("GetRelationship", "Cascading")"
+                                                                        data-title="EmContactRelation2 ">
+                                                                </button> *@
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4 ">
+                                                        <label asp-for="EmContactAddress2">Address </label>
+                                                        <textarea asp-for="EmContactAddress2" class="form-control form-control-sm" placeholder="Enter Address " rows="1"></textarea>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-lg-4">
+                                                        <label asp-for="EmContactMobile2">Mobile </label>
+                                                        <span class="text-danger"></span>
+                                                        <input asp-for="EmContactMobile2" class="form-control form-control-sm phone-validationx" placeholder="Enter Mobile " />
+                                                        <span asp-validation-for="EmContactMobile2" class="text-danger" />
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <label asp-for="EmContactPhone2 ">Phone </label>
+                                                        <span class="text-danger"></span>
+                                                        <input asp-for="EmContactPhone2" class="form-control form-control-sm phone-validationx" placeholder="Enter Phone " />
+                                                        <span asp-validation-for="EmContactPhone2" class="text-danger" />
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <label asp-for="EmContactFax2 ">Fax</label>
+                                                        @* <span class="text-danger">*</span> *@
+                                                        <input asp-for="EmContactFax2 " class="form-control form-control-sm" placeholder="Enter Fax" />
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-lg-4">
+                                                        <label asp-for="EmContactEmai2 ">Email</label>
+                                                        <span class="text-danger"></span>
+                                                        <input asp-for="EmContactEmai2 " class="form-control form-control-sm" placeholder="Enter Email" />
+                                                        <span asp-validation-for="EmContactEmai2" class="text-danger" />
+                                                    </div>
+                                                </div>
+
+                                                @if (Model.AutoId > 0)
+                                                {
+                                                    <hr />
+                                                    <div class="form-group row" id="LdateModifyHide">
+                                                        <div class="col-lg-4">
+                                                            @if (Model.Ldate.HasValue)
+                                                            {
+                                                                <label>Creation Date: </label>
+
+                                                                <label>@Model.Ldate?.ToString("dd/MM/yyyy hh:mm tt")</label>
+                                                            }
+                                                        </div>
+                                                        <div class="col-lg-4">
+                                                            @if (Model.ModifyDate.HasValue)
+                                                            {
+                                                                <label>Last Update Date: </label>
+
+                                                                <label>@Model.ModifyDate?.ToString("dd/MM/yyyy hh:mm tt")</label>
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                }
+
+                                                <div class="form-group row">
+                                                    <div class="col-12">
+                                                        <!-- Spacer -->
+                                                        <div style="height: 20px;"></div>
+                                                        <a href='@Url.Action("Index")' class="btn btn-default btn-common btn-circle">
+                                                            <i class="fas fa-arrow-alt-circle-left">&nbsp;</i>Back To List
+                                                        </a>
+                                                        <button type="button" class="btn btn-default btn-common js-EmployeeContactInfos-save btn-circle float-right">
+                                                            <i class="fas fa-save"></i>
+                                                            @if (ViewBag.IsEditMode != null && (bool)ViewBag.IsEditMode)
+                                                            {
+                                                                <text>Update</text>
+                                                            }
+                                                            else
+                                                            {
+                                                                <text>Save</text>
+                                                            }
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <partial name="_BottomNavigation" />
+        </div>
+    </form>
+</section>
+<partial name="DeleteModal" />
+<partial name="QuickAddModal" />
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script src="~/js/pages/employeeContactInfos.js"></script>
+    <script type="text/javascript">
+        var options =
+        {
+            baseUrl: '@Url.Action("", "EmployeeContactInfos")'
+        };
+        options.load = () => {
+        };
+
+        $.employeeContactInfos(options);
+
+
+
+        function validateBanglaInput(input) {
+
+            const banglaRegex = /^[\u0980-\u09FF\s]*$/;
+
+            if (!banglaRegex.test(input.value))
+            {
+
+                input.value = input.value.slice(0, -1);
+            }
+        }
+
+        function validatePasteBangla(event)
+        {
+
+            const pastedText = (event.clipboardData || window.clipboardData).getData('text');
+
+
+            const banglaRegex = /^[\u0980-\u09FF\s]*$/;
+
+            // If the pasted text contains non-Bangla characters, prevent the paste
+            if (!banglaRegex.test(pastedText))
+            {
+                event.preventDefault();
+                //("Please paste only Bangla text.");
+            }
+        }
+
+      
+
+    </script>
+}
+
+
+        

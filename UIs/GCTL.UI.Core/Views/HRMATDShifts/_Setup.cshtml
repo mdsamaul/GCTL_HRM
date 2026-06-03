@@ -1,0 +1,208 @@
+﻿@model GCTL.Core.ViewModels.HrmAtdShifts.HrmAtdShiftSetupViewModel
+
+@{
+    var isEditing = Model.AutoId > 0;
+    var currentTime = DateTime.Now.ToString("hh:mm:ss tt");
+}
+
+<style>
+    body {
+        background-color: #f5f7fa;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .card {
+        margin-bottom: 15px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .card-header {
+        background-color: #3498db;
+        color: #000;
+        font-weight: 600;
+        border-radius: 8px 8px 0 0;
+    }
+
+    .form-label {
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+    }
+
+    .required::after {
+        content: "*";
+        color: red;
+        margin-left: 3px;
+    }
+
+    .time-section {
+        padding: 0;
+        background-color: #f8f9fa;
+        border-radius: 5px;
+        width: 100%;
+    }
+
+    .time-picker-container {
+        width: 100%;
+        padding: 0;
+        margin: 0;
+    }
+
+    .select2-container {
+        width: 100% !important;
+    }
+
+    .dataTables_filter {
+        margin-right: 0px !important;
+    }
+</style>
+
+
+<div class="container py-0">
+    <div>
+        <input type="hidden" id="lastCode" />
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="Ldate" />
+        <input type="hidden" asp-for="ModifyDate" />
+        <input type="hidden" asp-for="AutoId" />
+
+        <!-- Basic Information Section -->
+        <div class="mb-0">
+           
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <div class="form-group">
+                            <label for="ShiftTypeIdDD" class="form-label required">Shift Type</label>
+                            <select asp-for="ShiftTypeId" id="ShiftTypeIdDD" class="form-control form-control-sm" tabindex="1"
+                                    asp-items="@(ViewBag.ShiftTypeDD as SelectList)">
+                                <option value="">--Select Shift Type--</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <div class="form-group">
+                            <label for="ShiftCode" class="form-label">Shift ID</label>
+                            <input asp-for="ShiftCode" type="text" class="form-control form-control-sm js-ShiftCode-code" readonly="readonly" />
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <div class="form-group">
+                            <label for="ShiftName" class="form-label required">Shift Name</label>
+                            <input type="text" asp-for="ShiftName" id="ShiftName" name="ShiftName" class="form-control form-control-sm js-hRMATDShifts-check-duplicateName" placeholder="Enter Shift Name" tabindex="2" autofocus />
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <div class="form-group">
+                            <label asp-for="Description" class="form-label">Description</label>
+                            <input type="text" id="Description" asp-for="ShiftShortName" name="Description" class="form-control form-control-sm" placeholder="Enter Description" tabindex="3" />
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <div class="form-group">
+                            <label asp-for="Wef" class="form-label required">W.E.F </label>
+                            <input type="text" id="WefDate" placeholder="dd/MM/yyyy" asp-for="Wef" class="form-control form-control-sm datepicker" />
+                            <input type="hidden" id="WefHidden" name="Wef" />
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <div class="form-group">
+                            <label asp-for="Remarks" class="form-label">Remarks</label>
+                            <textarea type="text" class="form-control form-control-sm" placeholder="Enter Remarks" style=" resize: none;" asp-for="Remarks" tabindex="9" rows="2"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Shift Timing Section -->
+            <div class="mb-3">
+                <div class="bg-light text-dark py-1 px-4">
+                    <i class="fas fa-hourglass-half me-2"></i> Shift Timing
+                </div>
+
+
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12 col-md-6 col-xl-4">
+                            <div class="form-group">
+                                <label for="inTimeInput" class="form-label">In Time</label>
+                                <div class="time-picker-wrapper">
+                                    <div id="inTimeInput" class="time-picker-container w-100 p-0 m-0"></div>
+                                </div>
+                                <input type="hidden"
+                                       value="@(isEditing && Model.ShiftStartTime != default(DateTime) ? Model.ShiftStartTime.ToString("hh:mm:ss tt") : null)"
+                                       id="inDateTimeInput" name="ShiftStartTime" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 col-xl-4">
+                            <div class="form-group">
+                                <label for="outTimeInput" class="form-label">Out Time</label>
+                                <div class="time-picker-wrapper">
+                                    <div id="outTimeInput" class="time-picker-container w-100 p-0 m-0"></div>
+                                </div>
+                                <input type="hidden"
+                                       value="@(isEditing && Model.ShiftEndTime != default(DateTime) ? Model.ShiftEndTime.ToString("hh:mm:ss tt") : null)"
+                                       id="outDateTimeInput" name="ShiftEndTime" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 col-xl-4">
+                            <div class="form-group">
+                                <label for="lateTimeInput" class="form-label">Late Time</label>
+                                <div class="time-picker-wrapper">
+                                    <div id="lateTimeInput" class="time-picker-container w-100 p-0 m-0"></div>
+                                </div>
+                                <input type="hidden"
+                                       value="@(isEditing && Model.LateTime != default(DateTime) ? Model.LateTime.ToString("hh:mm:ss tt") : null)"
+                                       id="lateDateTimeInput" name="LateTime" class="form-control form-control-sm" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 col-xl-4">
+                            <div class="form-group">
+                                <label for="AbsentTimeInput" class="form-label">Absent Time</label>
+                                <div class="time-picker-wrapper">
+                                    <div id="AbsentTimeInput" class="time-picker-container w-100 p-0 m-0"></div>
+                                </div>
+                                <input type="hidden"
+                                       value="@(isEditing && Model.AbsentTime != default(DateTime) ? Model.AbsentTime.ToString("hh:mm:ss tt") : null)"
+                                       id="AbsentDateTimeInput" name="AbsentTime" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 col-xl-4">
+                            <div class="form-group">
+                                <label for="LunchOutTime" class="form-label">Lunch Out Time</label>
+                                <div class="time-picker-wrapper">
+                                    <div id="LunchOutTime" class="time-picker-container w-100 p-0 m-0"></div>
+                                </div>
+                                <input type="hidden"
+                                       value="@(isEditing && Model.LunchOutTime != default(DateTime) ? Model.LunchOutTime.ToString("hh:mm:ss tt") : null)"
+                                       id="LunchOutDateTime" name="LunchOutTime" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 col-xl-4">
+                            <div class="form-group">
+                                <label for="LunchInTime" class="form-label">Lunch In Time</label>
+                                <div class="time-picker-wrapper">
+                                    <div id="LunchInTime" class="time-picker-container w-100 p-0 m-0"></div>
+                                </div>
+                                <input type="hidden"
+                                       value="@(isEditing && Model.LunchInTime != default(DateTime) ? Model.LunchInTime.ToString("hh:mm:ss tt") : null)"
+                                       id="LunchInDateTime" name="LunchInTime" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 col-xl-4">
+                            <div class="form-group">
+                                <label for="LunchBreakHour" class="form-label">Lunch Break (Hour)</label>
+                                <input type="number" asp-for="LunchBreakHour" id="LunchBreakHour"
+                                       class="form-control form-control-sm" name="LunchBreakHour" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

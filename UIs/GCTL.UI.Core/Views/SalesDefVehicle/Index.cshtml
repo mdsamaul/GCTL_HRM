@@ -1,0 +1,210 @@
+﻿@model GCTL.UI.Core.ViewModels.SalesDefVehicle.SalesDefVehicleViewModel
+
+@{
+    Model.Breadcrumb = "SalesDefVehicle";
+    Model.PageTitle = "Sales Def Vehicle";
+}
+
+
+<style>
+    #stickyHeader {
+        position: sticky;
+        top: 0px;
+        z-index: 1020;
+        min-height: 50px;
+        background: linear-gradient(to right, #fff, white);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        transition: box-shadow 0.3s ease-in-out;
+        transition: all 0.5s ease-in-out;
+    }
+
+        #stickyHeader.scrolled {
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+            padding-top: 7px;
+            padding-bottom: 7px;
+        }
+
+    .transportLeft {
+        width: 12vw;
+        padding-right: 5px;
+        white-space: nowrap;
+    }
+
+    .transportRight {
+        width: 22vw;
+    }
+
+    input,
+    select,
+    textarea {
+        border: 1px solid #eee !important;
+    }
+
+    .dataTables_wrapper .dataTables_filter input {
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+        padding: 4px 8px;
+    }
+
+    .dataTables_wrapper .dataTables_paginate .paginate_button {
+        /* padding: 2px 8px; */
+        margin: 0 2px;
+        border-radius: 4px;
+        background-color: #f8f9fa;
+    }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+            background-color: #007bff;
+            color: white !important;
+        }
+
+    #transportTable tbody tr td {
+        padding: 2px 8px !important;
+        font-size: 14px;
+    }
+
+    .dataTables_wrapper .dataTables_paginate .paginate_button {
+        cursor: pointer !important;
+        /* padding: 5px 10px; */
+        border-radius: 4px;
+        margin: 2px;
+        transition: background-color 0.3s;
+        border: 1px solid #eee;
+    }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+            background-color: #e2e8f0;
+            color: #000;
+        }
+
+
+    #transportTable td:first-child,
+    #transportTable th:first-child {
+        text-align: center;
+        vertical-align: middle;
+        width: 1%;
+        white-space: nowrap;
+    }
+
+        #transportTable td:first-child input[type="checkbox"] {
+            display: block;
+            margin: 0 auto;
+            cursor: pointer;
+        }
+
+    input.VehicleType-input {
+        border: 1px solid red !important;
+    }
+    #trapnsportTypeAddmoreDetailsBtn{
+        border:1px solid #333 !important;
+    }
+</style>
+
+<div class="container-fluid">
+    <partial name="_PageHeader" model="Model"></partial>
+</div>
+
+<div class="container-fluid">
+    <div id="stickyHeader" class="card-header px-2 sticky-top rounded-bottom"
+         style="min-height: 50px; z-index: 1020;">
+        <partial name="_Toolbars" model="new ToobarModel(){Title=Model.Breadcrumb, Code=Model.Code , Name=Model.Setup.VehicleTypeID }" />
+    </div>
+    <div class="card my-3 py-3">
+        <partial name="_Setup" model="Model.Setup" />
+        <div class="row py-2">
+            <div class="col-12 col-md-6">
+                <hr />
+                <div class="d-flex justify-content-center align-items-center">
+                    Create Date:<span class="createDate ps-1"></span>
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+                <hr />
+                <div class="d-flex justify-content-center align-items-center">
+                    Last Update Date:<span class="updateDate ps-1"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="card p-2">
+        <partial name="_Grid"></partial>
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="transportTypeModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered  modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Transport Type Add</h1>
+                <button type="button" class="btn-close cloaseLoadedTransportTypelistBtn" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="VehicleTypeModalContainer">
+              
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary cloaseLoadedTransportTypelistBtn" data-bs-dismiss="modal">Close</button>              
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Bootstrap 5 CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Font Awesome (latest) -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+
+<!-- jQuery (latest) -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<!-- Bootstrap 5 Bundle JS (includes Popper) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- DataTables CSS & JS (Bootstrap 5 compatible) -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+
+<!-- Bootstrap Multiselect (still works with BS5 for simple cases) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/1.1.2/css/bootstrap-multiselect.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/1.1.2/js/bootstrap-multiselect.min.js"></script>
+
+<!-- Flatpickr Date Picker -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/material_blue.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+<!-- PDF.js (only if needed) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <!-- Page-specific JS -->
+    <script src="~/js/pages/SalesDefVehicle.js"></script>
+    <script src="~/js/pages/SalesDefVehicleType.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            $.SalesDefVehicleJs({
+                baseUrl: '@Url.Action("Index", "SalesDefVehicle")',
+                load: function () {
+                    console.log("Custom load logic called from Razor view");
+                }
+            });
+        });
+
+        if (typeof pdfjsLib !== 'undefined') {
+            pdfjsLib.GlobalWorkerOptions.workerSrc =
+                'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
+        }
+    </script>
+}

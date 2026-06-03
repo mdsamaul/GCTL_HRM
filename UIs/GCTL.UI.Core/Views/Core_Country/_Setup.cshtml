@@ -1,0 +1,52 @@
+﻿ @model GCTL.Core.ViewModels.Core_Country.Core_CountrySetupViewModel
+<!-- Hidden field for AutoId in Edit -->
+<input type="hidden" asp-for="CountryCode" />
+<div class="row">
+    <div class="col-12 col-md-6">
+        <div class="d-flex align-items-center">
+            <div class="countryLeft text-right">Country ID <span class="text-danger">*</span></div>
+            <div class="countryRight">
+                <input asp-for="CountryID" class="form-control-sm form-control" readonly />
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-md-6"> </div>
+</div>
+
+<div class="row py-2">
+    <div class="col-12 col-md-6">
+        <div class="d-flex align-items-center">
+            <div class="countryLeft text-right">Country Name <span class="text-danger">*</span></div>
+            <div class="countryRight">
+                <input asp-for="CountryName" class="form-control-sm form-control" />
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-md-6">
+       
+    </div>
+</div>
+
+
+
+<div class="row py-2">
+    <div class="col-12 col-md-6">
+        <div class="d-flex align-items-center">
+            <div class="countryLeft text-right">ISO Code </div>
+            <div class="countryRight">
+                <input asp-for="ISOCode" class="form-control-sm form-control" />
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-md-6">
+        <div class="d-flex align-items-center">
+            <div class="countryLeft text-right">IOC Code</div>
+            <div class="countryRight">
+                <input asp-for="IOCCode" class="form-control-sm form-control" />
+            </div>
+        </div>
+    </div>
+</div>
+

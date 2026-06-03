@@ -1,0 +1,17 @@
+﻿@using GCTL.Core.ViewModels.Doctors
+@model DoctorAppointment
+
+<tr>
+    <td>
+        @Model.AppointmentDays
+        <input type="hidden" asp-for="AppointmentDays" />
+    </td>
+    <td>
+        @Model.VisitingTimeFrom
+        <input type="hidden" asp-for="VisitingTimeFrom" />
+    </td>
+    <td>
+        @Model.VisitingTimeTo
+        <input type="hidden" asp-for="VisitingTimeTo" />
+    </td>
+</tr>

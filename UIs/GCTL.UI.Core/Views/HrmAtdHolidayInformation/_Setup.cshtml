@@ -1,0 +1,136 @@
+﻿@model GCTL.Core.ViewModels.HrmAtdHolidays.HrmAtdHolidaySetupViewModel
+
+
+
+
+<div style="padding-top: 10px;padding-left:15px;">
+    <div class="row">
+        <div class="col-lg-6">
+            <span id="message"></span>
+        </div>
+        <div class="col-lg-6">
+        </div>
+    </div>
+    <div class="form-group row">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="Ldate" />
+        <input type="hidden" asp-for="ModifyDate" />
+        <input type="hidden" id="HolydayInfoAutoId" asp-for="AutoId" />
+
+    </div>
+
+    <div class="form-group row">
+        <div class="col-lg-6">
+            <label asp-for="HolidayCode">Holiday Id </label>
+            <input asp-for="HolidayCode" type="text" class="form-control form-control-sm js-HolidayCode-code" readonly="readonly" />
+        </div>
+        <div class="col-lg-6">
+        </div>
+    </div>
+
+
+
+    <div class="form-group row">
+        <div class="col-lg-6">
+            <label asp-for="HolidayName">Holiday Name<span style="color:red">*</span> </label>
+            <input asp-for="HolidayName" type="text" placeholder="Enter Holiday Name" class="form-control form-control-sm js-HrmHolidayInformation-check-duplicateName" autofocus tabindex="1" />
+        </div>
+
+        <div class="col-lg-6">
+            <label asp-for="HolidayTypeCode"> Holiday Type<span style="color:red">*</span></label>
+             <div class="input-group">
+                <select asp-for="HolidayTypeCode" id="HolidayTypeCodeDropDown" class="form-control form-control-sm selectpicker js-HolidayTypeCode"
+                        asp-items="@ViewBag.HolidayTypeCodeDD as SelectList"
+                        data-placeholder="Select Holyday Type">
+                    <option></option>
+                </select>
+                <div class="input-group-append">
+
+                        <button type="button" class="btn btn-sm btn-default js-quick-add input-group-textc"
+                                data-url="@Url.Action("Index", "HolidayTypes")"
+                                data-target="#HolidayTypeCode"
+                                data-reload-url="@Url.Action("GetHolidayTypes", "Cascading")"
+                                data-title="Holiday Type">
+                            +
+                        </button> 
+
+                </div>
+            </div> 
+           
+        </div>
+
+    </div>
+
+
+    <div class="form-group row">
+        <div class="col-lg-6">
+
+            <label asp-for="FromDate">From <span style="color:red;">*</span></label>
+            <input type="hidden" id="FromDateHidden" name="FromDate" value=""/>
+            <input type="text" id="FromDate" placeholder="dd/MM/yyyy" asp-for="FromDate"  class="form-control form-control-sm datepicker" required tabindex="3" />
+
+        </div>
+
+        <div class="col-lg-6">
+
+            <label asp-for="ToDate">To <span style="color:red;">*</span></label>
+            <input type="hidden" id="ToDateHidden" name="ToDate" value=""/>
+            <input type="text" id="ToDate" placeholder="dd/MM/yyyy" asp-for="ToDate"  class="form-control form-control-sm datepicker" required tabindex="4" />
+
+        </div>
+
+    </div>
+
+
+
+    <div class="form-group row">
+        <div class="col-lg-6">
+
+            <label asp-for="NoOfDays">No. of Day(s)</label>
+
+            <input type="number" id="NoOfDays" asp-for="NoOfDays"  class="form-control form-control-sm datepicker" readonly="readonly" tabindex="5" />
+
+        </div>
+
+
+    </div>
+
+
+    
+
+
+    @if (Model.AutoId > 0)
+    {
+        <hr />
+        <div class="form-group row" id="LdateModifyHide">
+            <div class="col-lg-6">
+                @if (Model.Ldate.HasValue)
+                {
+                    <label>Creation Date: </label>
+
+                    <label>@Model.Ldate?.ToString("dd/MM/yyyy")</label>
+                }
+            </div>
+            <div class="col-lg-6">
+                @if (Model.ModifyDate.HasValue)
+                {
+                    <label>Last Update Date: </label>
+
+                    <label>@Model.ModifyDate?.ToString("dd/MM/yyyy")</label>
+                }
+            </div>
+        </div>
+    }
+
+</div>
+
+<div class="row no-print" style="margin-top: 9px;">
+    <div class="col-12">
+        <button type="button" class="btn btn-default success-btn btn btn-outline-success btn-common btn-circle float-right js-HrmHolidayInformation-save" data-id="@Model.HolidayCode">
+            <i class="fas fa-save"></i> Save
+        </button>
+    </div>
+</div>
+

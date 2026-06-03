@@ -1,0 +1,57 @@
+﻿<style>
+    .dataTables_filter input {
+        width: 250px !important;
+        padding: 6px 12px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+
+    .dataTables_filter {
+        margin-bottom: 10px;
+    }
+
+    .table-responsive {
+        overflow-x: auto;
+        width: 100%;
+    }
+
+    .text-center {
+        text-align: center;
+    }
+
+    #RosterScheduleApprove-grid {
+        width: 100% !important;
+    }
+
+    .text-center {
+        text-align: center !important;
+    }
+
+    .align-middle {
+        vertical-align: middle !important;
+    }
+
+</style>
+
+<h5>Emp. List:</h5>
+<div class="table-responsive">
+    <table id="RosterScheduleApprove-grid" class="display table-bordered  table-common" style="width:100%;">
+        <thead>
+            <tr>
+                <th>Is Approved <br /><input type="checkbox" id="rosterScheduleApprove-check-all" /></th>
+                <th>Roster ID</th>
+                <th>Employee ID</th>
+                <th>Name</th>
+                <th>Designation</th>
+                <th>Department</th>
+                <th>Date</th>
+                <th>Day</th>
+                <th>Shift</th>
+                <th>Remarks</th>
+            </tr>
+        </thead>
+        <tbody id="RosterScheduleApprove-grid-body">
+            <!-- Data will be inserted dynamically -->
+        </tbody>
+    </table>
+</div>

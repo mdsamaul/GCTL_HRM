@@ -1,0 +1,423 @@
+﻿@model GCTL.UI.Core.ViewModels.TaxChallanEntry.EmployeeTaxChallanViewModel
+@{
+    Model.Breadcrumb = "TaxChallanEntry";
+    Model.PageTitle = "Tax Challan Entry";
+}
+<style>
+
+    .page-header {
+        color: black;
+        margin-bottom: 30px;
+        border-radius: 12px;
+        text-align: center;
+    }
+
+    #stickyHeader {
+        position: sticky;
+        top: 0;
+        z-index: 1050;
+        background: white;
+        padding: 10px 20px;
+        transition: all 0.3s ease-in-out;
+        box-shadow: none;
+    }
+
+        #stickyHeader.scrolled {
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        }
+
+    #productTable th {
+        white-space: nowrap;
+        text-align: center;
+        font-weight: bold;
+    }
+
+    .searchable-dropdown {
+        position: relative;
+    }
+
+    .dropdown-input {
+        background: white;
+    }
+
+    .dropdown-menu {
+        width: auto !important;
+        max-height: 250px;
+        overflow-y: auto;
+        z-index: 1050;
+    }
+
+    .dropdown-item:hover {
+        background-color: #f8f9fa;
+    }
+
+    .dropdown-item.active {
+        background-color: #007bff;
+        color: white;
+    }
+
+    .table-responsive {
+        -webkit-overflow-scrolling: auto !important;
+        overflow-x: unset !important;
+        overflow: unset !important;
+    }
+
+    .no-results {
+        padding: 0.5rem 1rem;
+        color: #6c757d;
+        font-style: italic;
+    }
+
+    .search-icon {
+        position: absolute;
+        right: 30px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #6c757d;
+        pointer-events: none;
+    }
+
+    .dropdown-arrow {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        transition: transform 0.3s;
+    }
+
+        .dropdown-arrow.rotated {
+            transform: translateY(-50%) rotate(180deg);
+        }
+
+    .searchable-dropdown {
+        position: relative;
+    }
+
+        .searchable-dropdown.active {
+            z-index: 1051;
+        }
+          
+
+    .dateInput {
+        width: 10vw !important;
+    }
+
+  
+
+    /* CSS for show/hide functionality */
+    .dateFilterHide {
+        display: none !important;
+    }
+
+    .dateFilterShow {
+        display: table-cell !important;
+    }
+
+    /* Additional styling for better appearance */
+    .table th, .table td {
+        vertical-align: middle;
+        padding: 8px;
+    }
+
+    .common-btn {
+        white-space: nowrap;
+    }
+
+    .form-check-inline {
+        margin-right: 1rem;
+    }
+
+    .preview-icon {
+        margin-right: 5px;
+    }
+
+    .fa-export {
+        margin-right: 5px;
+    }
+
+    .dropdown-menu {
+        width: 100% !important;
+    }
+
+
+    .taxChallanLeft {
+        width: 12vw;
+        padding-right: 5px;
+        white-space: nowrap;
+        padding-bottom: 5px;
+    }
+
+    .taxChallanRight {
+        width: 22vw;
+        padding-bottom: 5px;
+    }
+
+    input,
+    select,
+    textarea {
+        border: 1px solid #eee !important;
+    }
+
+    .dataTables_processing {
+        background: transparent !important;
+        color: #333d8a !important;
+        border: none !important;
+        box-shadow: none !important;
+    }
+
+</style>
+
+<div class="container-fluid">
+    <partial name="_PageHeader" model="Model"></partial>
+</div>
+
+<div class="container-fluid">
+    <div id="stickyHeader" class="card-header px-2 sticky-top rounded"
+         style="min-height: 50px; z-index: 1020;">
+        <partial name="_Toolbars" model="new ToobarModel() { Title = Model.Breadcrumb, Code = Model.Code, Name = Model.Setup.TaxDepositId }" />
+    </div>
+    <div>
+        <div class="container-fluid my-3  bg-light">
+            <div>
+                @* <div class="card-header ">
+
+                    <h5 class="mb-0">Filter By:</h5>
+                </div> *@
+                <div>
+
+                    <div class="table-responsive rounded p-1 border bg-light">
+                        <table class="table text-left rounded-md m-0 bg-light" style="border:0px solid #eee !important;">
+                            <thead class="text-left ">
+                                <tr>
+                                    <th style="width: 25vw; border:0px; padding: 5px 0px 0px 10px;">Company <span class="text-danger">*</span></th>
+                                    <th style="width: 25vw; border:0px; padding: 5px 0px 0px 10px;">Branch</th>
+                                    <th style="width: 25vw; border:0px; padding: 5px 0px 0px 10px;">Department</th>
+                                    <th style="width: 25vw; border:0px; padding: 5px 0px 0px 10px;">Designation</th>
+                                    <th style="width: 25vw; border:0px; padding: 5px 0px 0px 10px;">Active Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="border-0">
+
+                                        <select class="form-select form-select-sm searchable-select form-control form-control-sm" id="taxChallanCompanyDropdown" name="company" style="width: 100%;">
+                                            <option value="">Company...</option>
+                                        </select>
+                                    </td>
+                                    <td class="border-0">
+                                        <select class="form-select  form-select-sm searchable-select form-control form-control-sm" id="taxChallanBranchDropdown" name="branch" style="width: 100%;">
+                                            <option value="">Branch...</option>
+
+                                        </select>
+                                    </td>
+                                    <td class="border-0">
+                                        <select class="form-select  form-select-sm searchable-select form-control form-control-sm" id="taxChallanDepartmentDropdown" name="department" style="width: 100%;">
+                                            <option value="">Department...</option>
+                                        </select>
+                                    </td>
+                                    <td class="border-0">
+                                        <select class="form-select  form-select-sm searchable-select form-control form-control-sm" id="taxChallanDesignationDropdown" name="designation" style="width: 100%;">
+                                            <option value="">Designation...</option>
+                                        </select>
+                                    </td>
+                                    <td class="border-0">
+                                        <select class="form-select  form-select-sm searchable-select form-control form-control-sm" id="taxChallanEmployeeStatusDropdown" name="activeStatus" style="width: 100%;">
+                                            <option value="01">Active</option>
+                                            <option value="02">InActive</option>
+                                            <option value="">All</option>
+                                        </select>
+                                    </td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="card mx-2 py-2">
+            <partial name="_Grid"></partial>
+        </div>
+    </div>
+    <div class="container-fluid" id="defaultScroll">
+        <div class="card mx-2 py-2">
+            <div class="col-12">
+                <input type="hidden" value="0" asp-for="Setup.TaxDepositCode" />
+                <div class="row">
+                    <div class="col-12 col-md-6">
+                        <div class="d-flex align-items-center">
+                            <div class="taxChallanLeft text-right">Tax Deposit ID </div>
+                            <div class="taxChallanRight">
+
+                                <input asp-for="Setup.TaxDepositId" class="form-control-sm form-control" readonly />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="d-flex align-items-center">
+                            <div class="taxChallanLeft text-right">Financial Year <span class="text-danger">*</span></div>
+                            <div class="taxChallanRight">
+                                @* <input asp-for="Setup.FinancialCodeNo" class="form-control-sm form-control" /> *@
+                                <select asp-for="Setup.FinancialCodeNo" class="form-select form-select-sm"></select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-md-6">
+                        <div class="d-flex align-items-center">
+                            <div class="taxChallanLeft text-right">Month <span class="text-danger">*</span></div>
+                            <div class="taxChallanRight">
+                                @* <input asp-for="Setup.TaxDepositId" class="form-control-sm form-control"  /> *@
+                                <select asp-for="Setup.SalaryMonth" class="form-select form-select-sm" asp-items="ViewBag.MonthList as SelectList">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="d-flex align-items-center">
+                            <div class="taxChallanLeft text-right">Year <span class="text-danger">*</span></div>
+                            <div class="taxChallanRight">
+                                <input asp-for="Setup.SalaryYear" class="form-control-sm form-control" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-md-6">
+                        <div class="d-flex align-items-center">
+                            <div class="taxChallanLeft text-right">Tax Challan No. <span class="text-danger">*</span></div>
+                            <div class="taxChallanRight">
+                                <input asp-for="Setup.TaxChallanNo" class="form-control-sm form-control" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="d-flex align-items-center">
+                            <div class="taxChallanLeft text-right">Date <span class="text-danger">*</span></div>
+                            <div class="taxChallanRight">
+                                <input asp-for="Setup.TaxChallanDate" class="form-control-sm form-control" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-md-6">
+                        <div class="d-flex align-items-center">
+                            <div class="taxChallanLeft text-right">Challan Amount <span class="text-danger">*</span></div>
+                            <div class="taxChallanRight">
+                                <input asp-for="Setup.ChallanAmount" type="number" class="form-control-sm form-control" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-md-6">
+                        <div class="d-flex align-items-center">
+                            <div class="taxChallanLeft text-right">Bank<span class="text-danger">*</span></div>
+                            <div class="taxChallanRight">
+                                <select asp-items="ViewBag.BankList as SelectList" asp-for="Setup.BankId" class="form-control-sm form-control">
+                                    <option value="">--Select Bank--</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="d-flex align-items-center">
+                            <div class="taxChallanLeft text-right">Branch </div>
+                            <div class="taxChallanRight">
+                                <select asp-for="Setup.BankBranchId" class="form-control-sm form-control"></select>                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="d-flex align-items-center">
+                            <div class="taxChallanLeft text-right">Branch Address </div>
+                            <div style="width: 65vw;">
+                                <textarea id="showBranchAddress" rows="1" readonly class="form-control-sm form-control"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin-top:5px;">
+                    <div class="col-12">
+                        <div class="d-flex align-items-center">
+                            <div class="taxChallanLeft text-right">Remarks </div>
+                            <div style="width: 65vw;">
+                                <textarea asp-for="Setup.Remark" rows="2" class="form-control-sm form-control"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row py-2">
+                    <div class="col-12 col-md-6">
+                        <hr />
+                        <div class="d-flex justify-content-center align-items-center">
+                            Create Date:<span class="createDate ps-1"></span>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <hr />
+                        <div class="d-flex justify-content-center align-items-center">
+                            Last Update Date:<span class="updateDate ps-1"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="card mx-2 py-2">
+        <partial name="_TaxChallanGrid"></partial>
+    </div>
+</div>
+@* <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/material_blue.css"> *@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<!-- Bootstrap 5.3 CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- Font Awesome 6.4 -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<!-- Bootstrap Icons -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+<!-- DataTables CSS -->
+<link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+<!-- DataTables Responsive CSS -->
+<link href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap5.min.css" rel="stylesheet">
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <!-- Bootstrap Bundle JS (with Popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    <!-- DataTables Responsive JS -->
+    <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.bootstrap5.min.js"></script>
+
+    <!-- Custom JS -->
+    <script src="~/js/pages/TaxChallanEntry.js"></script>
+
+    <script type="text/javascript">
+        // Optional PDF.js config
+        if (typeof pdfjsLib !== 'undefined') {
+            pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
+        }
+    </script>
+}

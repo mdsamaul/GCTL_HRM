@@ -1,0 +1,398 @@
+﻿@model GCTL.UI.Core.ViewModels.RosterScheduleEntry.RosterScheduleEntryViewModel
+@{
+    
+    Model.Breadcrumb = "RosterScheduleEntry";
+    Model.PageTitle = "Roster Schedule Entry";
+}
+
+<style>
+    .swal2-toast {
+        min-height: 40px !important;
+        padding: 0px 12px !important;
+        font-size: 14px !important;
+        width: auto !important;
+    }
+
+        .swal2-toast .swal2-title {
+            font-size: 14px !important;
+            text-align: left !important;
+            padding-top: 10px !important;
+        }
+
+        .swal2-toast .swal2-icon {
+            width: 20px !important;
+            height: 30px !important;
+            margin: 0 5px 0 0 !important;
+        }
+
+    .swal2-timer-progress-bar {
+        background: #FF5722 !important;
+    }
+
+    .sticky-scrolled {
+        background-color: #fff !important;
+        transition: background-color 0.3s ease-in-out;
+        opacity: 95%;
+    }
+
+    .page-item.active .page-link {
+        z-index: 3 !important;
+        color: #000000 !important;
+        background-color: #ffffff !important;
+        border-color: #007bff !important;
+    }
+
+
+    .dropdown-wrapper .col-auto {
+        padding: 0 6px !important;
+        margin-bottom: 0px;
+        flex: 0 0 auto;
+        min-width: 10vw;
+    }
+
+    .dropdown-wrapper .form-group {
+        margin: 0;
+        width: 10vw;
+        background: #ffffff;
+        padding: 0px;
+        border-radius: 6px;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.05);       
+        transition: all 0.2s ease-in-out;
+    }
+
+        .dropdown-wrapper .form-group:hover {
+            background: #e9ecef;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        }
+
+    .dropdown-wrapper label {
+        font-size: 12px;
+        font-weight: 600;
+        color: #495057;
+        margin-bottom: 6px;
+        display: block;
+    }
+    
+
+
+    @@media (max-width: 768px) {
+        .dropdown-wrapper .form-group {
+            width: 100% !important;
+        }
+
+        .dropdown-wrapper label {
+            font-size: 11px;
+        }
+
+        .dropdown-wrapper .multiselect,
+        .dropdown-wrapper .regular-select {
+            font-size: 12px !important;
+            padding: 6px 8px !important;
+            height: 25px !important;
+        }
+    }
+
+    .multiselect-all {
+        height: 30px !important;
+    }
+
+    .dropdown-wrapper .btn-group {
+        width: 100% !important;
+        display: block !important;
+    }
+
+    .dropdown-wrapper .multiselect {
+        width: 100% !important;
+        border: 1px solid #ced4da !important;
+        border-radius: 4px !important;
+        background-color: #fff !important;
+        padding: 6px 8px !important;
+        font-size: 13px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        cursor: pointer !important;
+    }
+
+        .dropdown-wrapper .multiselect .multiselect-selected-text {
+            flex: 1 1 auto;
+            text-align: left;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            padding-right: 6px;
+        }
+
+        .dropdown-wrapper .multiselect input.multiselect-inline-search {
+            user-select: text !important;
+            -webkit-user-select: text !important;
+            -moz-user-select: text !important;
+        }
+
+        .dropdown-wrapper .multiselect .multiselect-inline-search {
+            display: none;
+            width: 100%;
+            border: 0 !important;
+            outline: 0 !important;
+            background: #ffffff !important;
+            color: #212529 !important;
+            caret-color: #212529 !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            font-size: 13px !important;
+            line-height: 1.2 !important;
+            height: 18px !important;
+            cursor: text !important;
+        }
+
+    .multiselect-container.dropdown-menu {
+        border-radius: 4px !important;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        font-size: 13px;
+        margin-top: 1px !important;
+        max-height: 250px !important;
+        overflow-y: auto !important;
+        /* width:100% !important; */
+    }
+
+    .multiselect-container .multiselect-filter {
+        position: absolute !important;
+        left: -9999px !important;
+        top: -9999px !important;
+        width: 1px !important;
+        height: 1px !important;
+        overflow: hidden !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+    }
+
+    .dropdown-wrapper .multiselect.is-inline-searching::after {
+        opacity: .35;
+    }
+
+
+    .dropdown-wrapper .multiselect .ms-right-clear {
+        display: none;
+        margin-left: 10px; 
+        margin-right: 18px;
+        color: #dc3545;
+        cursor: pointer;
+        line-height: 1;
+        user-select: none;
+        align-items: center;
+    }
+
+    .dropdown-wrapper .multiselect.show-right-clear .ms-right-clear {
+        display: inline-flex;
+    }
+
+    .dropdown-wrapper .multiselect .ms-right-clear .fa + .ms-x {
+        display: none;
+    }
+
+    .dropdown-wrapper .multiselect .ms-right-clear .ms-x {
+        font-size: 16px;
+        font-weight: 800;
+    }
+
+    .multiselect-container .multiselect-clearall .ca-x {
+        font-weight: 800;
+        margin-left: 0;
+    }
+
+    .multiselect-container .multiselect-clearall .fa + .ca-x {
+        display: none;
+    }
+
+    /* Regular select dropdown */
+    .dropdown-wrapper .regular-select {
+        width: 100% !important;
+        border-radius: 4px !important;
+        border: 1px solid #ced4da !important;
+        background: #fff !important;
+        padding: 6px 8px !important;
+        font-size: 13px !important;
+        height: 30px !important;
+        appearance: none;
+        background-image: url("data:image/svg+xml;charset=US-ASCII,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'><path fill='%23666' d='m2 0-2 2h4zm0 5 2-2h-4z'/></svg>");
+        background-repeat: no-repeat;
+        background-position: right 12px center;
+        background-size: 12px;
+        padding-right: 36px !important;
+    }
+
+        .dropdown-wrapper .regular-select:hover {
+            border-color: #007bff !important;
+            box-shadow: 0 2px 6px rgba(0,123,255,0.15) !important;
+            transform: translateY(-1px) !important;
+        }
+
+        .dropdown-wrapper .regular-select:focus {
+            box-shadow: 0 0 0 3px rgba(0,123,255,0.1) !important;
+            border-color: #007bff !important;
+            outline: none !important;
+            transform: translateY(-1px) !important;
+        }
+
+    #RosterScheduleEntry-grid_filter, #rosterScheduleEntry-grid-show_filter {
+        margin: 0px !important;
+    }
+
+    
+</style>
+
+<!-- Content Header (Page header) -->
+<div class="container-fluid">
+    <partial name="_PageHeader" model="Model"></partial>
+</div>
+
+<section class="content consistent-look">
+    <div class="container-fluid">
+        <div class="row px-2 pr-3">
+            <!-- Left Side: Form -->
+            <div class="col-md-12 pr-0">
+                <div class="card">
+                   
+                    <div id="stickyHeader" class="card-header px-4 sticky-top" style="min-height: 50px; z-index: 1020;">
+                        <partial name="_Toolbars" model="new ToobarModel() { Title = Model.Breadcrumb, Code = Model.Code, Name = Model.Setup.RosterScheduleId}"></partial>
+                    </div>
+
+
+                    <div class="card-body px-2" style="padding-top:0px">
+                        <div class="container-fluid py-2" style="padding-top:0px">
+                            <div>
+                                <h5>Filter By:</h5>
+                            </div>
+                          
+                            <div class="row d-flex flex-wrap justify-content-start align-items-end dropdown-wrapper px-2">
+                                <div class="col-auto">
+                                    <div class="form-group">
+                                        <label for="companySelect">Company</label>
+                                        <select id="companySelect" class="gc-company" multiple="multiple"></select>
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <div class="form-group">
+                                        <label for="branchSelect">Branch</label>
+                                        <select id="branchSelect" class="gc-branch" multiple="multiple"></select>
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <div class="form-group">
+                                        <label for="divisionSelect">Division</label>
+                                        <select id="divisionSelect" class="gc-division" multiple="multiple"></select>
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <div class="form-group">
+                                        <label for="departmentSelect">Department</label>
+                                        <select id="departmentSelect" class="gc-department" multiple="multiple"></select>
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <div class="form-group">
+                                        <label for="designationSelect">Designation</label>
+                                        <select id="designationSelect" class="gc-designation" multiple="multiple"></select>
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <div class="form-group">
+                                        <label for="employeeSelect">Employee</label>
+                                        <select id="employeeSelect" class="gc-employee" multiple="multiple"></select>
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <div class="form-group">
+                                        <label for="activityStatusSelect">Activity Status</label>
+                                        <select id="activityStatusSelect" class="regular-select" >
+                                            <option value="01">Active</option>
+                                            <option value="02">Inactive</option>
+                                            <option value="02,01">All</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- table: Grid -->
+                            <div class="col-md-12 mt-2" style="padding-left: 0px;padding-right: 0px;">
+                                <partial name="_Grid" />
+                            </div>
+                            <div>
+                                <partial name="_FromRoster"></partial>
+                            </div>
+                            <div>
+                                <partial name="_ExcelFileUploaded"></partial>
+                            </div>
+                            <div>
+                                <partial name="_RosterScheduleEntryGrid"></partial>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+
+@* <select id="companySelect1" class="gc-company" multiple></select>
+<select id="branchSelect1" class="gc-branch" multiple></select>
+<select id="divisionSelect1" class="gc-division" multiple></select>
+<select id="departmentSelect1" class="gc-department" multiple></select>
+<select id="designationSelect1" class="gc-designation" multiple></select>
+<select id="employeeSelect1" class="gc-employee" multiple></select>
+
+<select id="activityStatusSelect1" multiple>
+    <option value="01">Active</option>
+    <option value="02">Inactive</option>
+</select> *@
+
+<!-- Flatpickr CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+<!-- Optional: Theme -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/material_blue.css">
+
+<!-- Bootstrap (Optional, for layout) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Bootstrap Bundle JS (includes Popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <!-- Bootstrap Multiselect CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/1.1.2/css/bootstrap-multiselect.min.css">
+
+    <!-- Bootstrap Multiselect JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/1.1.2/js/bootstrap-multiselect.min.js"></script>
+
+    <!-- Flatpickr CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+    <!-- Flatpickr JS -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+    <!-- Flatpickr Month Select Plugin CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/monthSelect/style.css">
+
+    <!-- Flatpickr Month Select Plugin JS -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/monthSelect/index.js"></script>
+
+    <!-- custom JS -->
+    <script src="~/js/pages/RosterScheduleEntry.js"></script>
+}

@@ -1,0 +1,73 @@
+﻿@model GCTL.Core.ViewModels.Shifts.ShiftSetupViewModel
+
+<div style="padding-top: 10px;">
+    <div class="row">
+        <div class="col-lg-6">
+            <span id="message"></span>
+        </div>
+        <div class="col-lg-6">
+        </div>
+    </div>
+    <div class="form-group row">
+        <input type="hidden" id="lastCode" />
+        <input type="hidden" asp-for="ShiftId" />
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="Ldate" />
+        <input type="hidden" asp-for="ModifyDate" />
+        <div class="col-lg-6">
+            <label asp-for="ShiftCode">Shift Id</label>
+            <div class="input-group input-group-sm">
+                <input asp-for="ShiftCode" class="form-control form-control-sm js-shift-code" readonly="readonly" />
+            </div>
+        </div>       
+    </div>
+    <div class="form-group row">
+        <div class="col-lg-6">
+            <label asp-for="ShiftName">Name</label>
+            <span class="text-danger">*</span>
+            <input asp-for="ShiftName" class="form-control form-control-sm js-shift-check-availability" placeholder="Enter Name" />
+            <span asp-validation-for="ShiftName" class="text-danger" />
+        </div>
+        <div class="col-lg-6">
+            <label asp-for="ShiftShortName">Short Name</label>
+            <input asp-for="ShiftShortName" class="form-control form-control-sm" placeholder="Enter Short Name" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-lg-6">
+            <label asp-for="InTime">In Time</label>
+            <input asp-for="InTime" class="form-control form-control-sm timepicker" placeholder="Enter In Time" />
+        </div>
+        <div class="col-lg-6">
+            <label asp-for="OutTime">Out Time</label>
+            <input asp-for="OutTime" class="form-control form-control-sm timepicker" placeholder="Enter Out Time" />
+        </div>
+    </div>
+    @if (Model.Id > 0)
+    {
+        <hr />
+        <div class="form-group row">
+            <div class="col-lg-6">
+                @if (Model.Ldate.HasValue)
+                {
+                    <label>Creation Date: </label>
+                    <label>@Model.Ldate.Value.ToString(ApplicationConstants.DateFormat)</label>
+                }
+            </div>
+            <div class="col-lg-6">
+                @if (Model.ModifyDate.HasValue)
+                {
+                    <label>Last Update Date: </label>
+                    <label>@Model.ModifyDate.Value.ToString(ApplicationConstants.DateFormat)</label>
+                }
+            </div>
+        </div>
+    }
+</div>
+<div class="row no-print" style="margin-top: 9px;">
+    <div class="col-12">
+        <button type="button" class="btn btn-default success-btn btn-common btn-circle float-right js-shift-save" data-id="@Model.ShiftCode">
+            <i class="fas fa-save"></i> Save
+        </button>
+    </div>
+</div>

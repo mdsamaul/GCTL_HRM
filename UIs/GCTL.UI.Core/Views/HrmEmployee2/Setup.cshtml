@@ -1,0 +1,506 @@
+﻿@model GCTL.Core.ViewModels.HrmEmployees2.HrmEmployee2SetUpViewModel
+
+  @{
+    ViewBag.Title = "Employee Information List";
+    Model.PageTitle = "Employee Information System";
+    Model.Breadcrumb = "Employee Information System";
+  
+}
+
+<div id="customLoadingOverlay" style="
+        display: flex;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 9999;
+        justify-content: center;
+        align-items: center;">
+    <div style="
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+            text-align: center;">
+        <div class="spinner-border text-primary" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+        <p style="margin-top: 10px; margin-bottom: 0;">Loading data...</p>
+    </div>
+</div>
+
+<!-- Content Header (Page header) -->
+<section class="content-header" style="padding-bottom: 0;">
+    <div class="container-fluid">
+        <div class="calloutx callout-info" style="height: 30px;">
+            <div class="row">
+                <div class="col-md-8 row">
+                    <ol class="breadcrumb float-sm-right">
+                    </ol>
+                </div>
+                <div class="col-md-4">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="/Dashboard">Home</a></li>
+                        <li class="breadcrumb-item"><a href="/HrmEmployee2">Employee Informtion</a></li>
+                        <li class="breadcrumb-item active">Employee Setup</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header border-transparent">
+
+                        <partial name="_Toolbars" model="new ToobarModel() { Title = Model.Breadcrumb, Code = Model.Code, Name = Model.EmployeeId }" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section class="content">
+    <form asp-action="Setup" id="HrmEmployee2-form" method="post" enctype="multipart/form-data" asp-controller="HrmEmployee2">
+        <div class="container-fluid">
+            <div class="form-group row">
+              
+                <div class="col-md-9">
+                    <div class="card">
+                        <div class="card-header px-2">
+                            @await Html.PartialAsync("_TabButton")
+                        </div>
+                        <div class="card-body">
+                            <div style="padding-top: 10px;">
+                                <div class="form-group row">
+
+                                    <input type="hidden" id="lastCode" />
+                                    <input type="hidden" asp-for="Id" />
+                                    <input type="hidden" asp-for="Ldate" />
+                                    <input type="hidden" asp-for="ModifyDate" />
+                                    <input type="hidden" asp-for="AutoId" />
+                                    <div class="col-lg-4">
+                                        <label asp-for="CompanyCode">Company<span style="color:red">*</span></label>
+
+                                        <div class="input-group">
+                                            <select asp-for="CompanyCode" tabindex="1" required class="form-control form-control-sm selectpicker4" asp-items="ViewBag.CoreCompanyDD" data-placeholder="--Select Company--">
+                                                <option></option>
+                                            </select>
+                                        </div>
+                                
+                                    </div>
+
+                                    <div class="col-lg-4">
+                                        <label asp-for="BranchCode">Branch<span style="color:red">*</span></label>
+                                        <select asp-for="BranchCode"  class="form-control form-control-sm selectpicker4" required tabindex="2" asp-items="@ViewBag.CoreBranchDD as SelectList"
+                                                data-placeholder="--Select Branch--">
+                                            <option></option>
+                                        </select>
+                                     
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <div class="col-lg-4">
+                                        <label asp-for="EmployeeId">Employee ID<span style="color:red">*</span></label>
+                                        
+                                        <input asp-for="EmployeeId" type="text" class="form-control form-control-sm js-code" placeholder="Enter Employee Id" />
+                                        
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label asp-for="FirstName">First Name<span style="color:red">*</span></label>
+                                       
+                                        <input asp-for="FirstName" type="text" required class="form-control form-control-sm js-check-availability" tabindex="3" placeholder="Enter Employee First Name" />
+                                       
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label asp-for="LastName">Last Name</label>
+                                        <span class="text-danger"></span>
+                                        <input asp-for="LastName" class="form-control form-control-sm" placeholder="Enter Employee Last Name" tabindex="4" />
+                                    </div>
+
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-lg-4">
+                                        <label asp-for="FirstNameBangla">First Name(বাংলা)</label>
+                                        <input asp-for="FirstNameBangla" type="text" tabindex="5" onpaste="validatePasteBangla(event)" oninput="validateBanglaInput(this)" placeholder="Enter Employee First Name (বাংলা)" class="form-control form-control-sm " />
+                                        <span asp-validation-for="FirstNameBangla" class="text-danger"></span>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label asp-for="LastNameBangla">Last Name(বাংলা)</label>
+                                       
+                                        <input asp-for="LastNameBangla" type="text" tabindex="6" onpaste="validatePasteBangla(event)" oninput="validateBanglaInput(this)" class="form-control form-control-sm" placeholder="Enter Employee Last Name (বাংলা)" />
+                                        <span asp-validation-for="LastNameBangla" class="text-danger"></span>
+                                    </div>
+                                    <div class="col-lg-4">
+                                       
+                                    </div>
+
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-lg-4">
+                                        <label asp-for="FatherName">Father's Name</label>
+                                        <span class="text-danger"></span>
+                                        <input asp-for="FatherName" class="form-control form-control-sm datepicker" tabindex="7" placeholder="Enter Father's Name" />
+                                        <span asp-validation-for="FatherName" class="text-danger"></span>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label asp-for="MotherName">Mother's Name</label>
+                                        <span class="text-danger"></span>
+                                        <input asp-for="MotherName" class="form-control form-control-sm datepicker" tabindex="8" placeholder="Enter Mother's Name" />
+                                        <span asp-validation-for="MotherName" class="text-danger"></span>
+                                    </div>
+
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-lg-4">
+                                        <label asp-for="FatherOccupation">Father's Occupation</label>
+                                        <span class="text-danger"></span>
+                                        <input asp-for="FatherOccupation" class="form-control form-control-sm" tabindex="9" placeholder="Enter Father's Occupation" />
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label asp-for="MotherOccupation"> Mother's Occupation</label>
+                                        <span class="text-danger"></span>
+                                        <input asp-for="MotherOccupation" class="form-control form-control-sm" tabindex="10" placeholder="Enter  Mother's Occupation" />
+                                        <span asp-validation-for="MotherOccupation" class="text-danger" />
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label asp-for="DateOfBirthOrginal">Date of Birth<span style="color:red">*</span></label>
+                                       
+                                        <input type="hidden" id="DateOfBirthOrginalHidden" name="DateOfBirthOrginal" />
+                                        <input type="text" id="DateOfBirthOrginal" placeholder="dd/MM/yyyy" asp-for="DateOfBirthOrginal"  required class="form-control form-control-sm datepicker" tabindex="11" />
+                                       
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+
+
+
+                                    <div class="col-lg-4">
+                                        <label asp-for="DateOfBirthCertificate">Date of Birth(Certificate)</label>
+                                        <input type="hidden" id="DateOfBirthCertificateHidden" name="DateOfBirthCertificate" />
+                                        <input type="text" id="DateOfBirthCertificate" placeholder="dd/MM/yyyy" asp-for="DateOfBirthCertificate"  class="form-control form-control-sm datepicker" tabindex="12" />
+                                    </div>
+
+
+                                    <div class="col-lg-4">
+                                        <label asp-for="BirthCertificateNo">Birth Certificate No</label>
+                                        <span class="text-danger"></span>
+                                        <input asp-for="BirthCertificateNo" class="form-control form-control-sm" tabindex="13" placeholder="Enter Birth Certificate No." />
+                                    </div>
+
+
+                                    <div class="col-lg-4">
+                                        <label asp-for="PlaceOfBirth">Place Of Birth</label>
+                                        <span class="text-danger"></span>
+                                        <input asp-for="PlaceOfBirth" class="form-control form-control-sm" tabindex="14" placeholder="Enter Place Of Birth" />
+                                    </div>
+
+
+
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-lg-4">
+                                        <label asp-for="SexCode">Gender<span style="color:red">*</span></label>
+                                        <span class="text-danger"></span>
+                                        <div class="input-group">
+                                            <select asp-for="SexCode" class="form-control form-control-sm selectpicker4"  required  tabindex="15"
+                                                    asp-items="@ViewBag.SexesDD as SelectList"
+                                                    data-placeholder="--Select Gender--">
+                                                <option></option>
+                                            </select>
+
+                                        </div>
+                                       
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label asp-for="BloodGroupCode">Blood Group</label>
+                                            <span class="text-danger"></span>
+                                            <div class="input-group">
+                                                 <select asp-for="BloodGroupCode" class="form-control form-control-sm selectpicker4" tabindex="16"
+                                                        asp-items="@ViewBag.BloodGroupDD as SelectList"
+                                                        data-placeholder="--Select Blood Group--">
+                                                    <option></option>
+                                                </select> 
+
+                                            
+                                            </div>
+                                            <span asp-validation-for="BloodGroupCode" class="text-danger" />
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label asp-for="NationalityCode">NationalityCode</label>
+                                        <span class="text-danger"></span>
+                                        <div class="input-group">
+                                            <select asp-for="NationalityCode" class="form-control form-control-sm selectpicker4"   tabindex="17"
+                                                    asp-items="@ViewBag.NationalityDD as SelectList"
+                                                    data-placeholder="--Select Nationality--">
+                                                <option></option>
+                                            </select>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-lg-4">
+                                        <label asp-for="NationalIdno">National ID</label>
+                                        <span class="text-danger"></span>
+                                        <input asp-for="NationalIdno" class="form-control form-control-sm" placeholder="Enter National Id No." tabindex="18" />
+
+                                    </div>
+                            
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label asp-for="ReligionCode">Religion</label>
+                                            <span class="text-danger"></span>
+                                            <div class="input-group">
+                                                <select asp-for="ReligionCode" class="form-control form-control-sm selectpicker4" tabindex="19"
+                                                        asp-items="@ViewBag.ReligionDD as SelectList"
+                                                        data-placeholder="--Select Religion--">
+                                                    <option></option>
+                                                </select>
+
+
+                                            </div>
+                                            <span asp-validation-for="ReligionCode" class="text-danger" />
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label asp-for="ExtraCurriActivities">Other Activities/Hobbies</label>
+                                        <input asp-for="ExtraCurriActivities" class="form-control form-control-sm" placeholder="Enter Extra Curriculum Activities"  tabindex="20"/>
+
+
+                                    </div>
+                                </div>
+
+                               
+                                <div class="form-group row">
+                                    <div class="col-lg-4">
+                                        <label asp-for="MaritalStatusCode">Marital Status</label>
+                                        <span class="text-danger"></span>
+                                        <select asp-for="MaritalStatusCode" class="form-control form-control-sm selectpicker4"  tabindex="21"
+                                                asp-items="@ViewBag.MaritalyDD as SelectList"
+                                                data-placeholder="--Select Marital Status--">
+                                            <option></option>
+                                        </select>
+                                        <span asp-validation-for="MaritalStatusCode" class="text-danger"></span>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label asp-for="MarriageDate">Marriage Date</label>
+                                        <span class="text-danger"></span>
+                                        <input type="hidden" id="MarriageDateHidden" name="MarriageDate" />
+                                        <input type="text" id="MarriageDate" placeholder="dd/MM/yyyy" asp-for="MarriageDate"  class="form-control form-control-sm datepicker" tabindex="22" />
+                                    </div>
+
+                                    <div class="col-lg-4">
+                                        <label asp-for="Spouse">Spouse's Name</label>
+                                        <span class="text-danger"></span>
+                                        <input asp-for="Spouse" class="form-control form-control-sm" tabindex="23" placeholder="Enter Spoue's Name" />
+                                        <span asp-validation-for="Spouse" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-lg-4">
+                                        <label asp-for="NoOfSon">No of Son(s)</label>
+                                        <span class="text-danger"></span>
+                                        <input asp-for="NoOfSon" class="form-control form-control-sm" placeholder="Enter No of Son" tabindex="24"/>
+                                        <span asp-validation-for="NoOfSon" class="text-danger"></span>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label asp-for="NoOfDaughters">No Of Daughter(s)</label>
+                                        <input asp-for="NoOfDaughters" class="form-control form-control-sm" placeholder="Enter No of Daughter" tabindex="25"/>
+                                        <span asp-validation-for="NoOfDaughters" class="text-danger"></span>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label asp-for="Telephone">Personal Mobile No.</label>
+                                        <span class="text-danger"></span>
+                                        <input asp-for="Telephone" class="form-control form-control-sm" placeholder="Enter Personal Mobile No" tabindex="26"/>
+
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-lg-4">
+                                        <label asp-for="PersonalEmail">Personal Email</label>
+                                        <input asp-for="PersonalEmail" type="text" class="form-control form-control-sm" placeholder="Enter Personal Email" tabindex="27" />
+                                        <span asp-validation-for="PersonalEmail" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="col-lg-4">
+                                        <label asp-for="CardNo">Card No</label>
+                                        <input asp-for="CardNo" type="text" class="form-control form-control-sm" placeholder="Enter Card No." tabindex="28" />
+                                    </div>
+
+                                    <div class="col-lg-4">
+                                        <label asp-for="TinNo">TIN No</label>
+                                        <input asp-for="TinNo" type="text" class="form-control form-control-sm" placeholder="Enter Tin No." tabindex="29"/>
+                                    </div>
+
+                                </div>
+
+                               
+                                    @if (Model.AutoId > 0)
+                                    {
+                                        <hr />
+                                        <div class="form-group row" id="LdateModifyHide">
+                                            <div class="col-lg-4">
+                                                @if (Model.Ldate.HasValue)
+                                                {
+                                                    <label>Creation Date: </label>
+
+                                                    <label>@Model.Ldate?.ToString("dd/MM/yyyy hh:mm tt")</label>
+                                                }
+                                            </div>
+                                            <div class="col-lg-4">
+                                                @if (Model.ModifyDate.HasValue)
+                                                {
+                                                    <label>Last Update Date: </label>
+
+                                                    <label>@Model.ModifyDate?.ToString("dd/MM/yyyy hh:mm tt")</label>
+                                                }
+                                            </div>
+                                        </div>
+                                    }
+                               
+
+                                <div class="form-group row">
+                                   @*  value="Save" type="submit" *@
+                                    <div class="col-12">
+                                        <a href='@Url.Action("Index")' class="btn btn-default btn-common btn-circle"><i class="fas fa-arrow-alt-circle-left">&nbsp;</i>Back To List</a>
+                                        <button type="button" class="btn btn-default btn-common js-HrmEmployee2-save btn-circle float-right">
+                                            <i class="fas fa-save"></i>
+                                           @*  @if (ViewBag.IsEditMode != null && (bool)ViewBag.IsEditMode)
+                                            {
+                                                <text>Update</text>
+                                            }
+                                            else
+                                            {
+                                                <text>Save</text>
+                                            } *@
+                                            Save
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="form-group row">
+                                <div class="col-md-12">
+                                    <div class="img-preview">
+                                        <h6>Employee Picture</h6>
+                                        
+                                        <img  id="photoPreview" class="img-fluid img-thumbnail img-rounded js-file-chooser" data-target="#Photo"
+                                             src="@(!string.IsNullOrEmpty(Model.PhotoUrl) ? Model.PhotoUrl : "/images/noImage.png")" />
+
+                                        <input type="hidden" asp-for="IsClearPhoto" />
+                                        <div class="form-group row">
+                                            <button type="button" class="btn btn-secondary btn-circle js-file-chooser" data-target="#Photo">Browse Photo</button>
+                                            <button type="button" class="btn btn-danger btn-circle js-clear-file" data-file="#photoPreview" data-tag="#IsClearPhoto">Clear</button>
+                                        </div>
+
+                                        <div class="custom-file d-none">
+                                            <input type="hidden" asp-for="PhotoUrl"   value="@Model.PhotoUrl"/>
+                                            <input type="file" name="Photo" class="custom-file-input form-control form-control-sm js-file" data-target="#photoPreview" id="Photo">
+                                            <label class="custom-file-label" for="Photo">Choose file</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row mt-2">
+                                <div class="col-md-12">
+                                    <div class="img-preview">
+                                        <h6>Digital Signature</h6>
+                                        <img id="signaturePreview" class="img-fluid img-thumbnail img-rounded js-file-chooser" data-target="#Signature"
+                                             src="@(!string.IsNullOrEmpty(Model.DigitalSignatureUrl) ? Model.DigitalSignatureUrl :"/images/signature.jpg")" /> 
+                                        <input type="hidden" asp-for="IsClearSignature" />
+                                        <div class="form-group row">
+                                            <button type="button" class="btn btn-secondary btn-circle js-file-chooser" data-target="#Signature">Browse Signature</button>
+                                            <button type="button" class="btn btn-danger btn-circle js-clear-file" data-file="#signaturePreview" data-tag="#IsClearSignature">Clear</button>
+                                        </div>
+
+                                        <div class="custom-file d-none">
+                                            <input type="hidden" asp-for="DigitalSignatureUrl" value="@Model.DigitalSignatureUrl"/>
+                                            <input type="file" name="Signature" class="custom-file-input form-control form-control-sm js-file" data-target="#signaturePreview" id="Signature">
+                                            <label class="custom-file-label" for="Signature">Choose Signature</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+            </div>
+            <partial name="_BottomNavigation" />
+        </div>
+    </form>
+</section>
+<partial name="DeleteModal" />
+<partial name="QuickAddModal" />
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script src="~/js/pages/hrmEmployee2.js"></script>
+    <script type="text/javascript">
+        var options = 
+        {
+            baseUrl: '@Url.Action("", "HrmEmployee2")'
+        };
+        options.load = () => {
+        };
+
+        $.hrmEmployee2(options);
+
+
+            
+        function validateBanglaInput(input) {
+
+            const banglaRegex = /^[\u0980-\u09FF\s]*$/;
+
+            if (!banglaRegex.test(input.value))
+            {
+
+                input.value = input.value.slice(0, -1);
+            }
+        }
+
+        function validatePasteBangla(event)
+        {
+
+            const pastedText = (event.clipboardData || window.clipboardData).getData('text');
+
+
+            const banglaRegex = /^[\u0980-\u09FF\s]*$/;
+
+            // If the pasted text contains non-Bangla characters, prevent the paste
+            if (!banglaRegex.test(pastedText))
+            {
+                event.preventDefault();
+                //("Please paste only Bangla text.");
+            }
+        }
+    
+
+    </script>    
+}
+
+

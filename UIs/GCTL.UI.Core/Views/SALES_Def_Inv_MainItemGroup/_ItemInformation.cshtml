@@ -1,0 +1,649 @@
+﻿<style>
+    select {
+        margin-left: 2px;
+    }
+
+
+    @@media (min-width: 1500px) {
+
+        .input-group-container {
+            flex-direction: row;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .input-group-container-label {
+            width: 40% !important;
+            margin-bottom: 0;
+            text-align: right;
+        }
+
+        .input-group-container-label-Print-Name {
+            width: 13% !important;
+            margin-bottom: 0;
+            text-align: right;
+        }
+
+        .input-group-container-label-Print-Name-input {
+            width: 85.9% !important;
+            margin-bottom: 0;
+            text-align: right;
+        }
+
+        .input-group-container-input {
+            width: 60% !important;
+        }
+
+        .gridItemLeft {
+            width: 71vw !important;
+        }
+
+        .input-group-container-label-Print-Name-input-sub {
+            width: 52.5% !important;
+            margin-bottom: 0;
+            text-align: left !important;
+            margin-left: 5px;
+        }
+
+        .input-group-container-sub {
+            display: flex;
+        }
+
+        .input-group-container-label-Print-Name-input-main {
+            width: 28.5% !important;
+            margin-left: 5px;
+        }
+
+        .input-group-container-label-Print-Name-main {
+            width: 20% !important;
+            text-align: right !important;
+        }
+    }
+
+    @@media (max-width: 1499px) {
+
+        .input-group-container {
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 0px 10px;
+        }
+
+        .input-group-container-label {
+            width: 100% !important;
+            text-align: left !important;
+        }
+
+
+        .input-group-container-input {
+            width: 100% !important;
+        }
+
+        .input-group-container-label-Print-Name {
+            width: 100% !important;
+            text-align: left !important;
+        }
+
+
+        .input-group-container-label-Print-Name-input {
+            width: 100% !important;
+        }
+
+        .gridItemLeft {
+            width: 66vw !important;
+        }
+
+        .input-group-container-label-Print-Name-input-sub {
+            width: 65% !important;
+            margin-left: 5px;
+        }
+
+        .input-group-container-sub {
+            display: block;
+        }
+
+        .input-group-container-label-Print-Name-input-main {
+            width: 48% !important;
+            margin-left: 5px;
+        }
+
+        .input-group-container-label-Print-Name-main {
+            text-align: left !important;
+        }
+    }
+</style>
+@model GCTL.UI.Core.ViewModels.SalesDefInvMainItem.SalesDefInvMainItemDto
+<div class="d-flex">
+    <div class="card mx-3" style="width:85vw">
+        <input type="hidden" asp-for="MainItem.TC" class="form-control form-control-sm" value="0">
+        <div class="mx-3 mb-2">
+            <div class="d-flex align-items-center container-fluid mx-auto py-2 g-3" style="padding-left: 0px;">
+                <!-- Buyer -->
+                <div style="width: 33.33vw;">
+                    <div class="gap-1 d-flex jusify-content-center align-items-center input-group-container">
+                        <div class="p-0 text-right input-group-container-label">
+                            Buyer
+                        </div>
+                        <div class="p-0 input-group-container-input">
+                            <select asp-items="ViewBag.Buyer as SelectList" class="form-select form-select-sm searchable-select" asp-for="MainItem.BuyerId">
+                                <option value="">--Select Buyer--</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Style Name -->
+                <div style="width: 33.33vw;">
+                    <div class="gap-1 d-flex jusify-content-center align-items-center input-group-container">
+                        <div class="p-0 text-right input-group-container-label">Style</div>
+                        <div class="p-0 input-group-container-input">
+                            <select class="form-select form-select-sm searchable-select" asp-items="ViewBag.Style as SelectList" asp-for="MainItem.StyleId">
+                                <option value="">--Select Style--</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Empty Space -->
+                <div style="width: 33.33vw;">
+                </div>
+            </div>
+        </div>
+        <div class="card mx-3 mb-2">
+            <div class="d-flex align-items-center container-fluid mx-auto py-2 g-3" style="padding-left: 0px;">
+                <!-- Main Group ID -->
+                <div style="width: 33.33vw;">
+                    <div class="gap-1 d-flex jusify-content-center align-items-center input-group-container input-group-container">
+                        <div class="p-0 text-right input-group-container-label">Main Group Id</div>
+                        <div class="p-0 input-group-container-input">
+                            <input type="text" id="ItemInfoMainItemID" readonly class="form-control form-control-sm" placeholder="Enter Main Item ID" aria-label="MainItemID">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Group Name -->
+                <div style="width: 33.33vw;">
+                    <div class="gap-1 d-flex jusify-content-center align-items-center input-group-container input-group-container">
+                        <div class="p-0 text-right input-group-container-label">Name<sapn class="text-danger">*</sapn> </div>
+                        <div class="p-0 input-group-container-input">
+                            <select class="form-select form-select-sm searchable-select main-group-item-dropdown" asp-items="ViewBag.MainGroup as SelectList" id="ItemInfoMainItemName">
+                                <option value="">--Select Main Group Name--</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Description -->
+                <div style="width: 33.33vw;">
+                    <div class="form-floating d-flex justify-content-end align-items-center input-group-container input-group-container">
+                        <div class="text-right p-0 input-group-container-label">
+                            <label for="floatingTextarea">Description</label>
+                        </div>
+                        <div class="input-group-container-input">
+                            <textarea id="ItemInfoMainDescription" readonly class="form-control form-control-sm" placeholder="Enter Description" rows="1"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="card mx-3 mb-2">
+            <div class="d-flex align-items-center container-fluid mx-auto py-2 g-3" style="padding-left: 0px;">
+                <!-- Sub Group ID -->
+                <div style="width: 33.33vw;">
+                    <div class="gap-1 d-flex jusify-content-center align-items-center input-group-container input-group-container">
+                        <div class="p-0 text-right input-group-container-label">Sub Group Id</div>
+                        <div class="p-0 input-group-container-input">
+                            <input type="text" id="ItemInfoSubItemID" readonly class="form-control form-control-sm" placeholder="Enter Sub Item ID" aria-label="MainItemID">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sub Group Name -->
+                <div style="width: 33.33vw;">
+                    <div class="gap-1 d-flex jusify-content-center align-items-center input-group-container input-group-container">
+                        <div class="p-0 text-right input-group-container-label">Name</div>
+                        <div class="p-0 input-group-container-input">
+                            <select class="form-select form-select-sm searchable-select sub-group-item-dropdown" asp-items="ViewBag.SubGroup as SelectList" id="ItemInfoSubItemName">
+                                <option value="">--Select Sub Group Name--</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Description -->
+                <div style="width: 33.33vw;">
+                    <div class="form-floating d-flex justify-content-end align-items-center input-group-container">
+                        <div class="text-right p-0 input-group-container-label">
+                            <label for="floatingTextarea">Description</label>
+                        </div>
+                        <div class="input-group-container-input">
+                            <textarea id="ItemInfoSubDescription" readonly class="form-control form-control-sm" placeholder="Enter Description" rows="1"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mx-3 pb-2 mb-3">
+            <div class="d-flex align-items-center container-fluid mx-auto py-2 g-3" style="padding-left: 0px;">
+                <!-- Sub Group-2 ID -->
+                <div style="width: 33.33vw;">
+                    <div class="gap-1 d-flex jusify-content-center align-items-center input-group-container ">
+                        <div class="p-0 text-right input-group-container-label">Sub Group-2 Id</div>
+                        <div class="p-0 input-group-container-input">
+                            <input type="text" id="ItemInfoSubItem2ID" readonly class="form-control form-control-sm" placeholder="Enter Main Item ID" aria-label="MainItemID">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sub Group-2 Name -->
+                <div style="width: 33.33vw;">
+                    <div class="gap-1 d-flex jusify-content-center align-items-center input-group-container">
+                        <div class="p-0 text-right input-group-container-label">Name</div>
+                        <div class="p-0 input-group-container-input">
+                            <select class="form-select form-select-sm searchable-select sub-group-two-item-dropdown" asp-items="ViewBag.SubGroup2List as SelectList" id="ItemInfoSubItem2Name">
+                                <option value="">--Select Sub Group-2 Name--</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Description -->
+                <div style="width: 33.33vw;">
+                    <div class="form-floating d-flex justify-content-end align-items-center input-group-container">
+                        <div class="text-right p-0 input-group-container-label">
+                            <label for="floatingTextarea">Description</label>
+                        </div>
+                        <div class="input-group-container-input">
+                            <textarea id="ItemInfoSub2Description" readonly class="form-control form-control-sm" placeholder="Enter Description" rows="1"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row container-fluid mx-auto py-2 g-3">
+            <div class="mx-0 m-0 w-100">
+                <div class="d-flex align-items-center container-fluid mx-auto g-3" style="padding-left: 0px;">
+                    <!-- Item Type -->
+                    <div style="width: 33.33vw;">
+                        <div class="gap-1 d-flex jusify-content-center align-items-center input-group-container">
+                            <div class="p-0 text-right input-group-container-label">Item Booking Type</div>
+                            <div class="p-0 input-group-container-input">
+                                <select class="form-select form-select-sm searchable-select" asp-items="ViewBag.ItemTypeList as SelectList" asp-for="MainItem.ItemTypeID">
+                                    <option value="">--Select Item Type--</option>
+                                </select>
+                            </div>
+
+                            @* <button type="button"
+                                        class="btn btn-outline-secondary border-0 btn-sm js-quick-add"
+                                        data-url="@Url.Action("Index", "RMG_Prod_Def_UnitType")"
+                                        data-target="#MainItem_ItemTypeID"
+                                        data-reload-url="@Url.Action("GetItemType", "Cascading")"
+                                        data-title="Branch">
+                                    <i class="fa fa-plus"></i>
+                                </button> *@
+
+                        </div>
+                    </div>
+                    <!-- Empty spaces -->
+                    <div style="width: 33.33vw;"></div>
+                    <div style="width: 33.33vw;"></div>
+                </div>
+            </div>
+
+            <div class="mx-0 my-1 w-100">
+                <div class="d-flex align-items-center container-fluid mx-auto g-3" style="padding-left: 0px;">
+                    <!-- Item ID -->
+                    <div style="width: 33.33vw;">
+                        <div class="gap-1 d-flex jusify-content-center align-items-center input-group-container">
+                            <div class="p-0 text-right input-group-container-label">Item Id</div>
+                            <div class="p-0 input-group-container-input">
+                                <input type="text" asp-for="MainItem.ItemID" readonly class="form-control form-control-sm" placeholder="Item ID" aria-label="MainItemID">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Item Name -->
+                    <div style="width: 33.33vw;">
+                        <div class="gap-1 d-flex jusify-content-center align-items-center input-group-container">
+                            <div class="p-0 text-right input-group-container-label">Name <span class="text-danger ">*</span></div>
+                            <div class="p-0 input-group-container-input">
+                                <input type="text" asp-for="MainItem.ItemName" class="form-control form-control-sm" placeholder="Enter Product Name" aria-label="MainItemName">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Description -->
+                    <div style="width: 33.33vw;">
+                        <div class="form-floating d-flex justify-content-end align-items-center input-group-container" style="padding-right: 0px;">
+                            <div class="text-right p-0 input-group-container-label">
+                                <label for="floatingTextarea">Print Name</label>
+                            </div>
+                            <div class="input-group-container-input">
+                                <textarea asp-for="MainItem.PrintName" class="form-control form-control-sm" readonly placeholder="Enter Product Description" rows="1" style="height: 45px;"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Print Name -->
+            <div class="mx-0 w-100 mt-0">
+                <div class="m-0 mb-1 printName">
+
+                    <div class="form-floating d-flex align-items-center input-group-container">
+                        <div class="text-right p-0 input-group-container-label-Print-Name">
+                            <label for="floatingTextarea1">Description</label>
+                        </div>
+                        <div class="input-group-container-label-Print-Name-input printNameTextbox">
+
+                            <textarea id="ItemNameDescription" class="form-control form-control-sm" placeholder="Enter Description" rows="1"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mx-0 w-100 mt-0">
+                <div class="d-flex align-items-center container-fluid mx-auto g-3" style="padding-left: 0px;">
+                    <!-- Item Code -->
+                    <div style="width: 33.33vw;">
+                        <div class="gap-1 d-flex jusify-content-center align-items-center input-group-container">
+                            <div class="p-0 text-right input-group-container-label">Item Code</div>
+                            <div class="p-0 input-group-container-input">
+                                <input type="text" asp-for="MainItem.ItemCode" class="form-control form-control-sm" placeholder="Item Code" aria-label="MainItemID">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Barcode -->
+                    <div style="width: 33.33vw;">
+                        <div class="gap-1 d-flex jusify-content-center align-items-center input-group-container">
+                            <div class="p-0 text-right input-group-container-label">Barcode No.</div>
+                            <div class="p-0 input-group-container-input">
+                                <input type="text" asp-for="MainItem.Barcode" class="form-control form-control-sm" placeholder="Enter Main Item Name" aria-label="MainItemName">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Empty space -->
+                    <div style="width: 33.33vw;"></div>
+                </div>
+            </div>
+
+            <div class="mx-0 mt-1 w-100">
+                <div class="d-flex align-items-center container-fluid mx-auto g-3" style="padding-left: 0px;">
+                    <!-- Origin -->
+                    <div style="width: 33.33vw;">
+                        <div class="gap-1 d-flex jusify-content-center align-items-center input-group-container">
+                            <div class="p-0 text-right input-group-container-label">Origin</div>
+                            <div class="p-0 input-group-container-input">
+                                <select class="form-select form-select-sm searchable-select" asp-items="ViewBag.OriginList as SelectList" asp-for="MainItem.OriginId">
+                                    <option value="">--Select Origin--</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Manufacture Country -->
+                    <div style="width: 33.33vw;">
+                        <div class="gap-1 d-flex jusify-content-center align-items-center input-group-container">
+                            <div class="p-0 text-right input-group-container-label">Manufacture Country</div>
+                            <div class="p-0 input-group-container-input">
+                                <select class="form-select form-select-sm searchable-select" asp-items="ViewBag.CountryList as SelectList" asp-for="MainItem.ManufactureId">
+                                    <option value="">--Select Manufacture Country--</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Package Type -->
+                    <div style="width: 33.33vw;">
+                        <div class="d-flex jusify-content-center align-items-center gap-1 input-group-container">
+                            <div class="p-0 text-right input-group-container-label">Package Type</div>
+                            <div class="p-0 input-group-container-input">
+                                <select class="form-select form-select-sm searchable-select" asp-items="ViewBag.PackageList as SelectList" asp-for="MainItem.PackageTypeId" name="MainItem.PackageTypeId">
+                                    <option value="">--Select Package Type--</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Package Information Row -->
+            <div class="mx-0 mt-1 w-100">
+                <div class="d-flex align-items-center container-fluid mx-auto g-3" style="padding-left: 0px;">
+
+                    <!-- Package Quantity -->
+                    <div style="width: 33.33vw;">
+                        <div class="d-flex jusify-content-center align-items-center gap-1 input-group-container">
+                            <div class="p-0 text-right input-group-container-label">Package Quantity</div>
+                            <div class="p-0 input-group-container-input">
+                                <input type="number" class="form-control form-control-sm" placeholder="Enter Package Quantity"
+                                       data-val="true" data-val-number="The field PackageQuantity must be a number."
+                                       id="MainItem_PackageQuantity" name="MainItem.PackageQuantity" value="">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Item Quantity -->
+                    <div style="width: 33.33vw;">
+                        <div class="form-floating d-flex justify-content-end align-items-center input-group-container">
+                            <div class="text-right p-0 input-group-container-label">
+                                <label for="MainItem_ItemQuantity" class="form-label">Item Quantity<span class="text-danger ">*</span></label>
+                            </div>
+                            <div class="input-group-container-input">
+                                <div class="row g-1">
+                                    <div class="col-6" style="padding-right: 2px;">
+                                        <input asp-for="MainItem.ItemQuantity" type="number" class="form-control form-control-sm"
+                                               placeholder="Enter Item Qty" value="">
+                                    </div>
+                                    <div class="col-6" style=" padding-left: 2px;">
+                                        <select class="form-select form-select-sm searchable-select" asp-items="ViewBag.UnitTypeList as SelectList" asp-for="MainItem.ItemUnit">
+                                            <option value="">Select Unit</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Unit Price -->
+                    <div style="width: 33.33vw;">
+                        <div class="gap-1 d-flex jusify-content-center align-items-center input-group-container">
+                            <div class="p-0 text-right input-group-container-label">Unit Price<span class="text-danger ">*</span></div>
+                            <div class="p-0 input-group-container-input">
+                                <div class="row g-1">
+                                    <div class="col-6" style="padding-right: 2px;">
+                                        <input type="number" asp-for="MainItem.ItemPrice" class="form-control form-control-sm" placeholder="Enter Unit Price">
+                                    </div>
+                                    <div class="col-6" style="padding-left: 2px;">
+                                        <select class="form-select form-select-sm searchable-select" asp-for="MainItem.CurrencyId" asp-items="ViewBag.CurrencyList as SelectList">
+                                            <option value="">Select Currency</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mx-0 w-100 my-1">
+                <div class="d-flex align-items-center container-fluid mx-auto g-3" style="padding-left: 0px;">
+
+                    <!-- Discount -->
+                    <div style="width: 33.33vw;">
+                        <div class="gap-1 d-flex jusify-content-center align-items-center input-group-container">
+                            <div class="p-0 text-right input-group-container-label">Discount(%)</div>
+                            <div class="p-0 input-group-container-input">
+                                <input type="number" asp-for="MainItem.Discount" class="form-control form-control-sm" placeholder="Enter Discount" aria-label="MainItemName">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Total Amount -->
+                    <div style="width: 33.33vw;">
+                        <div class="form-floating d-flex justify-content-end align-items-center input-group-container">
+                            <div class="text-right p-0 input-group-container-label">
+                                <label for="floatingTextarea">Total Amount</label>
+                            </div>
+                            <div class="input-group-container-input">
+                                <div class="row g-1">
+                                    <div class="col-6" style="padding-right: 2px;">
+                                        <input type="number" asp-for="MainItem.TotalAmount" class="form-control form-control-sm" placeholder="Total Amt">
+                                    </div>
+                                    <div class="col-6" style=" padding-left: 2px;">
+                                        <select class="form-select form-select-sm searchable-select" readonly asp-for="MainItem.CurrencyId2" asp-items="ViewBag.CurrencyList as SelectList">
+                                            <option value="">Currency</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Warranty Status -->
+                    <div style="width: 33.33vw;">
+                        <div class="d-flex align-items-center ">
+                            <div class="text-md-end mb-2 m-0 p-0 mb-md-0 " style="width: 40%;">
+                                <label for="mainItemId" class="form-label mb-0">
+                                    Warranty Status
+                                </label>
+                            </div>
+                            <div class="form-check d-flex align-items-center ml-2">
+                                <input class="form-check-input" asp-for="MainItem.WarrantyStatus" type="checkbox">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mx-0 w-100 mt-0">
+                <div class="d-flex align-items-center container-fluid mx-auto g-3" style="padding-left: 0px;">
+
+                    <!-- Warranty Period -->
+                    <div style="width: 33.33vw;">
+                        <div class="gap-1 d-flex jusify-content-center align-items-center input-group-container">
+                            <div class="p-0 text-right input-group-container-label">Warrantly Period</div>
+                            <div class="p-0 input-group-container-input">
+                                <div class="row g-1">
+                                    <div class="col-6" style="padding-right: 2px;">
+                                        <input type="number" asp-for="MainItem.WarrantyTime" class="form-control form-control-sm" placeholder="Enter Warrantly">
+                                    </div>
+                                    <div class="col-6" style=" padding-left: 2px;">
+                                        <select class="form-select form-select-sm searchable-select" asp-for="MainItem.WarrantyType" asp-items="ViewBag.wPeriodList as SelectList">
+                                            <option value="">--Select W. Peri--</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Image Upload -->
+                    <div style="width: 33.33vw;">
+                        <div class="form-floating d-flex justify-content-end align-items-center input-group-container">
+                            <div class="text-right p-0 input-group-container-label">
+                                <label for="floatingTextarea">Image</label>
+                            </div>
+                            <div class="input-group-container-input">
+                                @* <input class="form-control form-control-sm" onclick="$('#photoInput').click()" id="photoInput" type="file"> *@
+                                <input class="form-control form-control-sm"
+                                       id="photoInput"
+                                       type="file"
+                                       accept="image/*">
+                                @* <input type="file" id="photoInput" accept="image/*" hidden> *@
+                                @* <button type="button" class="btn btn-primary mt-2" onclick="$('#photoInput').click()">Choose Photo</button> *@
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Supplier -->
+                    <div style="width: 33.33vw;">
+                        <div class="gap-1 d-flex jusify-content-center align-items-center input-group-container">
+                            <div class="p-0 text-right input-group-container-label">Supplier</div>
+                            <div class="p-0 input-group-container-input">
+                                <select class="form-select form-select-sm searchable-select supplier-dropdown" asp-for="MainItem.SupplierId" asp-items="ViewBag.SuplierList as SelectList">
+                                    <option value="">--Select Supplier Name--</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mx-0 w-100 my-1">
+                <div class="d-flex align-items-center container-fluid mx-auto g-3" style="padding-left: 0px;">
+                    @* <!-- Supplier -->
+                    <div style="width: 33.33vw;">
+                        <div class="gap-1 d-flex jusify-content-center align-items-center input-group-container">
+                            <div class="p-0 text-right input-group-container-label">Supplier</div>
+                            <div class="p-0 input-group-container-input">
+                                <select class="form-select form-select-sm searchable-select supplier-dropdown" asp-for="MainItem.SupplierId" asp-items="ViewBag.SuplierList as SelectList">
+                                    <option value="">--Select Supplier Name--</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div> *@
+
+
+
+                    <!-- Branch -->
+                    <div style="width: 33.33vw;">
+                        <div class="form-floating d-flex justify-content-end align-items-center input-group-container">
+                            <div class="text-right p-0 input-group-container-label">
+                                <label for="floatingTextarea">Branch</label>
+                            </div>
+                            <div class="input-group-container-input">
+                                <select class="form-select form-select-sm searchable-select" asp-for="MainItem.BranchID" asp-items="ViewBag.BranchList as SelectList">
+                                    <option value="">--Select Branch Name--</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Supplier Address -->
+                    <div style="width: 33.33vw;">
+                        <div class="gap-1 d-flex jusify-content-center align-items-center input-group-container">
+                            <div class="p-0 text-right input-group-container-label">Supplier Address</div>
+                            <div class="p-0 input-group-container-input">
+                                <input type="text" id="MainItemSupplierAddress" readonly class="form-control form-control-sm" placeholder="Enter Supplier Address" aria-label="MainItemName">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Supplier Address -->
+                    <div style="width: 33.33vw;">
+                        @* <div class="gap-1 d-flex jusify-content-center align-items-center input-group-container">
+                            <div class="p-0 text-right input-group-container-label">Supplier Address</div>
+                            <div class="p-0 input-group-container-input">
+                                <input type="text" id="MainItemSupplierAddress" readonly class="form-control form-control-sm" placeholder="Enter Supplier Address" aria-label="MainItemName">
+                            </div>
+                        </div> *@
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <partial name="_ShowingDate"></partial>
+    </div>
+
+    <!-- Image Preview Section -->
+    <div class="d-flex justify-center align-items-center" style="width:15vw">
+
+        <div class="d-flex justify-content-center align-items-center" style="width:15vw">
+            <div id="previewContainer" class="shadow-sm mx-auto rounded p-2 d-flex justify-content-center align-items-center"
+                 style="width:150px; height:150px; background-color:#f8f9fa; position:relative;">
+                <img id="previewImg" src="" class="img-thumbnail shadow-sm rounded d-none"
+                     style="max-width:100%; max-height:100%; object-fit:cover; object-position:center;">
+                <button type="button" id="removeBtn"
+                        class="btn btn-sm btn-danger rounded-circle position-absolute top-0 end-0 d-none">
+                    x
+                </button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="card mx-3 mb-2 py-2 gridItemLeft">
+    <partial name="_GridItemInformation"></partial>
+</div>

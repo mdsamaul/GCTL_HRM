@@ -1,0 +1,280 @@
+﻿@model GCTL.UI.Core.ViewModels.RMG_CostingInfoReport.RMG_CostingInfoReportViewModel
+@{
+	Model.Breadcrumb = "RMG_CostingInfoReport";
+	Model.PageTitle = "RMG Costing Info Report";
+}
+<style>
+	.headerToobar {
+		background: linear-gradient(to right, rgba(34, 211, 238, .1), #fff);
+		box-shadow: 3px 0 6px rgba(0, 0, 0, 0.2);
+		border-radius: 0px 11px 11px 0px;
+	}
+
+	#btnPreviewPdf, #downloadReport {
+		transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+		min-width: 120px;
+		min-height: 25px;
+		position: relative;
+		overflow: visible;
+	}
+
+		#btnPreviewPdf:hover,
+		#downloadReport:hover {
+			background-color: rgba(173, 255, 47, 0.2) !important;
+			color: #1e90ff !important;
+			border-color: #1e90ff !important;
+			box-shadow: 0 4px 10px rgba(30, 144, 255, 0.5) !important;
+		}
+
+
+		#btnPreviewPdf i,
+		#btnPreviewPdf span,
+		#downloadReport i,
+		#downloadReport span {
+			transition: transform 0.3s ease;
+			display: inline-block;
+			transform: scale(1);
+			margin-right: 2px;
+		}
+
+		#btnPreviewPdf:hover i,
+		#downloadReport:hover i {
+			transform: scale(1.3);
+		}
+
+	.multiselect-container {
+		width: 100% !important;
+	}
+
+	.multiselect-native-select .btn-group,
+	.multiselect-native-select .multiselect {
+		width: 100% !important;
+	}
+
+	input[type=checkbox], input[type=radio] {
+		display: none;
+		box-sizing: border-box;
+		padding: 0;
+	}
+
+	.multiselect.dropdown-toggle,
+	.multiselect-selected-text {
+		text-align: left !important;
+	}
+
+</style>
+
+<!-- Content Header (Page header) -->
+<div class="container-fluid">
+	<partial name="_PageHeader" model="Model"></partial>
+</div>
+
+<section class="content consistent-look">
+	<div class="container-fluid">
+		<div class="row px-2 pr-3">
+			<div class="col-md-12 pr-0">
+				<div class="w-100 headerToobar ">
+					<partial name="_Toolbars" model="new ToobarModel() { Title = Model.Breadcrumb, Code = Model.Code, Name = Model.Setup.CostingId }"></partial>
+				</div>
+			</div>
+		</div>
+
+
+		<div class="col-md-12 col-12 mx-auto">
+			<div class="border bg-white rounded-lg mt-3 px-2 ">
+				<div class="col-12 col-md-5" style="padding-right: 0px;">
+					<h6 class="pt-3 px-3 pb-0 font-weight-bold fs-6 mb-0">Search By :</h6>
+
+					<div class="d-flex" style="padding-right: 0px; ">
+						<hr class="m-0 p-0 w-100">
+					</div>
+				</div>
+				<div class="col-12 col-md-11 mx-auto">
+					<div class="row pb-4  ">
+						<div class="col-12 col-md-6 py-1">
+							<div class="row align-items-center">
+								<label class="col-3 text-right mb-0" style="padding-right: 0px;">Costing<span class="text-danger">*</span> </label>
+								<div class="col-9 col-md-7" style="padding-left: 5px;">
+									<select id="costingSelect" class="form-control form-control-sm">
+									</select>
+								</div>
+								<div class="col-md-2 col-0"></div>
+							</div>
+						</div>					
+						<div class="col-12 col-md-6 py-1">
+							<div class="row align-items-center">
+								<label class="col-3 text-right mb-0" style="padding-right: 0px;">Buyer<span class="text-danger">*</span></label>
+								<div class="col-9 col-md-7" style="padding-left: 5px;">
+									<select id="buyerSelect" class="form-control form-control-sm">
+									</select>
+								</div>
+								<div class="col-md-2 col-0"></div>
+							</div>
+						</div>
+						@* <div class="col-12 col-md-6 py-1">
+							<div class="row align-items-center">
+								<label class="col-3 text-right mb-0" style="padding-right: 0px;">Department</label>
+								<div class="col-9 col-md-7" style="padding-left: 5px;">
+									<select id="departmentSelect" class="form-control form-control-sm" multiple>
+									</select>
+								</div>
+								<div class="col-md-2 col-0"></div>
+							</div>
+						</div>
+						<div class="col-12 col-md-6 py-1">
+							<div class="row align-items-center">
+								<label class="col-3 text-right mb-0" style="padding-right: 0px;">Designation</label>
+								<div class="col-9 col-md-7" style="padding-left: 5px;">
+									<select id="designationSelect" class="form-control form-control-sm" multiple>
+									</select>
+								</div>
+								<div class="col-md-2  d-none d-md-block"></div>
+							</div>
+						</div>
+						<div class="col-12 col-md-6 py-1">
+							<div class="row align-items-center">
+								<label class="col-3 text-right mb-0" style="padding-right: 0px;">Employee</label>
+								<div class="col-9 col-md-7" style="padding-left: 5px;">
+									<select id="employeeSelect" class="form-control form-control-sm" multiple>
+									</select>
+								</div>
+								<div class="col-md-2 col-0"></div>
+							</div>
+						</div>
+						<div class="col-12 col-md-6 py-1">
+						</div>
+						<div class="d-none d-md-block col-md-6">
+						</div> *@
+						
+
+					</div>
+
+				</div>
+				<div class="col-12 col-md-5">
+					<h6 class="pt-3 px-3 pb-0 font-weight-bold fs-6 mb-0">Report Option:</h6>
+
+					<div class="d-flex" style="padding-right: 0px; ">
+						<hr class="m-0 p-0 w-100">
+					</div>
+				</div>
+				<div class="col-12 col-md-6">
+				</div>
+				<div class="col-12 col-md-12 mx-auto">
+					<div class="row pb-4 ">
+						<div class="col-12 col-md-6 py-1">
+							<div class="row align-items-center">
+								<label class="col-4 text-right mb-0" style="padding-right: 0px;">Export Report Format</label>
+								<div class="col-9 col-md-6">
+									<select id="reportText" class="form-control form-control-sm">
+										<option value="downloadPdf">Pdf</option>
+										<option value="downloadExcel">Excel</option>
+										@* <option value="downloadWord">Word</option> *@
+									</select>
+								</div>
+								<div class="col-md-2 col-0"></div>
+							</div>
+						</div>
+						<div class="col-12 col-md-6 py-1">
+						</div>
+						<div class="col-12 col-md-6 py-1">
+						</div>
+						<div class="col-12 col-md-6 py-1 mx-auto">
+							<div class="row justify-content-end align-items-center">
+								<div class="col-auto px-1 d-grid">
+									<button id="downloadReport" class="btn btn-sm common-btn btn-outline-secondary">
+										<i class="fas fa-file-export fa-export"></i> <span>Export Report</span>
+									</button>
+								</div>
+								<div class="col-auto px-1 d-grid">
+									<button id="btnPreviewPdf" class="btn btn-sm btn-outline-secondary common-btn px-4">
+										<i class="fas fa-eye preview-icon" title="Preview"></i> <span>Preview</span>
+									</button>
+								</div>
+
+								<div class="col-md-3"></div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	@* <!-- PDF Preview Section with iframe --> *@
+	<div class="container-fluid">
+		<div id="pdf-preview-container" style="width: 100%; height: 600px; border: 1px solid #ccc; display: none; margin-top: 20px; border-radius: 5px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+			
+		</div>
+	</div>
+
+
+	<div class="d-none">
+		@* <partial name="_Grid" /> *@
+	</div>
+</section>
+
+
+<!-- Flatpickr CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+<!-- Optional: Theme -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/material_blue.css">
+
+<!-- Bootstrap (Optional, for layout) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+<!-- word-->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
+<script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/docx@7.2.1/build/index.js"></script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+@section Scripts {
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
+	<!-- Bootstrap JS -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.bundle.min.js"></script>
+	<!-- Bootstrap Multiselect CSS -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/1.1.2/css/bootstrap-multiselect.min.css">
+	<!-- Bootstrap Multiselect JS -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/1.1.2/js/bootstrap-multiselect.min.js"></script>
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+	@* pdf *@
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+
+	@* //excel *@
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+	<!-- PDF.js viewer core -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
+
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+
+	<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+	<!-- Load the plugin -->
+	<script src="~/js/pages/RMG_CostingInfoReportJs.js"></script>
+
+	<!-- Initialize the plugin -->
+	<script type="text/javascript">
+		$(function () {
+			$.costingReportFilter({
+				baseUrl: '@Url.Action("Index", "RMG_CostingInfoReport")',
+				load: function () {
+					console.log("Custom load logic called from Razor view");
+				}
+			});
+		});
+			if (typeof pdfjsLib !== 'undefined') {
+			pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
+		}
+	</script>
+}

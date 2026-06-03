@@ -1,0 +1,67 @@
+﻿<style>
+    #RosterScheduleEntry-grid-body {
+        display: block;
+        max-height: 251px; 
+        overflow-y: auto;
+    }
+
+    #RosterScheduleEntry-grid thead {
+        display: table;
+        width: calc(100% - 17px); 
+        table-layout: fixed;
+    }
+
+    #RosterScheduleEntry-grid tbody {
+        display: block;
+        overflow-y: auto;
+        width: 100%;
+    }
+
+        #RosterScheduleEntry-grid tbody tr {
+            display: table;
+            width: 100%;
+            table-layout: fixed;
+        }
+
+    .table-responsive {
+        overflow-x: auto;
+    }
+    .dataTables_filter input {
+        width: 350px !important; 
+        max-width: 100%;
+        padding: 6px 12px;
+    }
+    .dataTables_filter {
+        margin-bottom: 10px;
+    }
+
+    #RosterScheduleEntry-grid tbody td:nth-child(3),
+    #RosterScheduleEntry-grid tbody td:nth-child(4){
+        text-align:left !important;
+    }
+</style>
+<h5>Emp. List:</h5>
+<div class="table-responsive">
+    
+    <table id="RosterScheduleEntry-grid" class="table table-striped table-bordered table-sm table-common">
+        <thead>
+            <tr>
+                <th class="text-center text-middle" width="50">
+                    Select <br /> <input type="checkbox" id="rosterSchedule-check-all" />
+                </th>
+                <th class="text-center text-middle" width="120">Employee ID</th>
+                <th class="text-center text-middle">Name</th>
+                <th class="text-center text-middle">Designation</th>
+                <th class="text-center text-middle">Department</th>
+                <th class="text-center text-middle">Branch</th>
+                <th class="text-center text-middle">Employee Type</th>
+                <th class="text-center text-middle">Joining Date</th>
+                <th class="text-center text-middle">Activity Status</th>
+              
+            </tr>
+        </thead>
+        <tbody id="RosterScheduleEntry-grid-body">
+            <!-- Data will be injected here -->
+        </tbody>
+    </table>
+</div>

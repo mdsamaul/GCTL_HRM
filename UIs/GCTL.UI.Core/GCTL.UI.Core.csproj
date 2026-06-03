@@ -1,0 +1,683 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Views\EducationalInfoReport\**" />
+    <Compile Remove="Views\EmployeeReferenceInformationReport\**" />
+    <Compile Remove="Views\HrmDefBankAndNomineeInfos\**" />
+    <Content Remove="Views\EducationalInfoReport\**" />
+    <Content Remove="Views\EmployeeReferenceInformationReport\**" />
+    <Content Remove="Views\HrmDefBankAndNomineeInfos\**" />
+    <EmbeddedResource Remove="Views\EducationalInfoReport\**" />
+    <EmbeddedResource Remove="Views\EmployeeReferenceInformationReport\**" />
+    <EmbeddedResource Remove="Views\HrmDefBankAndNomineeInfos\**" />
+    <None Remove="Views\EducationalInfoReport\**" />
+    <None Remove="Views\EmployeeReferenceInformationReport\**" />
+    <None Remove="Views\HrmDefBankAndNomineeInfos\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="C:\Users\siamm\.nuget\packages\tono.excel\1.0.7\contentFiles\any\netstandard2.0\TonoCoreIcon.png" />
+    <Content Remove="C:\Users\siamm\.nuget\packages\tono.excel\1.0.7\contentFiles\any\netstandard2.0\TonoExcel.snk" />
+    <Content Remove="C:\Users\siamm\.nuget\packages\tono.excel\1.0.7\contentFiles\any\netstandard2.0\TonoExcelIcon.png" />
+    <Content Remove="wwwroot\js\pages\balancesheetStatement.js" />
+    <Content Remove="wwwroot\js\pages\cashbookReports.js" />
+    <Content Remove="wwwroot\js\pages\controlLedger.js" />
+    <Content Remove="wwwroot\js\pages\doctorWorkingPlace.js" />
+    <Content Remove="wwwroot\js\pages\dueList.js" />
+    <Content Remove="wwwroot\js\pages\expenseEntry.js" />
+    <Content Remove="wwwroot\js\pages\expenseHead.js" />
+    <Content Remove="wwwroot\js\pages\expenseReport.js" />
+    <Content Remove="wwwroot\js\pages\generalLedger.js" />
+    <Content Remove="wwwroot\js\pages\incomeStatement.js" />
+    <Content Remove="wwwroot\js\pages\inPatientBillApproval.js" />
+    <Content Remove="wwwroot\js\pages\labTestBillApproval.js" />
+    <Content Remove="wwwroot\js\pages\outPatientBillApproval.js" />
+    <Content Remove="wwwroot\js\pages\outPatientPrescriptionReport.js" />
+    <Content Remove="wwwroot\js\pages\relation.js" />
+    <Content Remove="wwwroot\js\pages\salesCollectionReport.js" />
+    <Content Remove="wwwroot\js\pages\subControlLedger.js" />
+    <Content Remove="wwwroot\js\pages\subsidiaryLedger.js" />
+    <Content Remove="wwwroot\js\pages\subSubsidiaryLedger.js" />
+    <Content Remove="wwwroot\js\pages\voucherEntry.js" />
+    <Content Remove="wwwroot\Reports\balancesheetStatement.rdlc" />
+    <Content Remove="wwwroot\Reports\CashbookReport.rdlc" />
+    <Content Remove="wwwroot\Reports\Discharge.rdlc" />
+    <Content Remove="wwwroot\Reports\DueList.rdlc" />
+    <Content Remove="wwwroot\Reports\IncomeStatement.rdlc" />
+    <Content Remove="wwwroot\Reports\OutPatientPrescriptionFee.rdlc" />
+    <Content Remove="wwwroot\Reports\SalesCollectionReport.rdlc" />
+    <Content Remove="wwwroot\Reports\VoucherEntryReport.rdlc" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Controllers\CommissionPaymentsController.cs~RF13dee71.TMP" />
+    <None Remove="Controllers\okhe0rmp.yws~" />
+    <None Remove="Extensions\ServiceCollectionExtensions.cs~RF56e472.TMP" />
+  </ItemGroup>
+
+
+
+  <ItemGroup>
+    <None Include="Views\AccessCodes\DeleteModal.cshtml" />
+    <None Include="Views\AccessCodes\Index.cshtml" />
+    <None Include="Views\AccessCodes\_Grid.cshtml" />
+    <None Include="Views\AccessCodes\_Setup.cshtml" />
+    <None Include="Views\AccessCodes\_Toolbars.cshtml" />
+    <None Include="Views\Designations\DeleteModal.cshtml" />
+    <None Include="Views\Designations\Index.cshtml" />
+    <None Include="Views\Designations\_Grid.cshtml" />
+    <None Include="Views\Designations\_Setup.cshtml" />
+    <None Include="Views\Designations\_Toolbars.cshtml" />
+    <None Include="Views\Doctors\DeleteModal.cshtml" />
+    <None Include="Views\Doctors\Index.cshtml" />
+    <None Include="Views\Doctors\Setup.cshtml" />
+    <None Include="Views\Doctors\_Appointment.cshtml" />
+    <None Include="Views\Doctors\_Grid.cshtml" />
+    <None Include="Views\EmployeeGeneralInfoReport\Index.cshtml" />
+    <None Include="Views\EmployeeGeneralInfoReport\_Setup.cshtml" />
+    <None Include="Views\EmployeeGeneralInfoReport\_Toolbars.cshtml" />
+    <None Include="Views\Shared\Components\Menu\Default.cshtml" />
+    <None Include="Views\UserAccess\DeleteModal.cshtml" />
+    <None Include="Views\UserAccess\Index.cshtml" />
+    <None Include="Views\UserAccess\_Grid.cshtml" />
+    <None Include="Views\UserAccess\_Setup.cshtml" />
+    <None Include="Views\UserAccess\_Toolbars.cshtml" />
+    <None Include="Views\WorkingExperienceReport\Index.cshtml" />
+    <None Include="Views\WorkingExperienceReport\_Setup.cshtml" />
+    <None Include="Views\WorkingExperienceReport\_Toolbars.cshtml" />
+    <None Include="wwwroot\js\app.js" />
+    <None Include="wwwroot\js\bootstrap-select.min.js" />
+    <None Include="wwwroot\js\customMultiSelect\multiSelect.js" />
+    <None Include="wwwroot\js\Custom\DatePicker.js" />
+    <None Include="wwwroot\js\Custom\multiSelect.js" />
+    <None Include="wwwroot\js\dataTables.bootstrap4.min.js" />
+    <None Include="wwwroot\js\jquery-1.9.0.intellisense.js" />
+    <None Include="wwwroot\js\jquery-1.9.0.js" />
+    <None Include="wwwroot\js\jquery-1.9.0.min.js" />
+    <None Include="wwwroot\js\jquery-1.9.0.min.map" />
+    <None Include="wwwroot\js\jquery-3.3.1.js" />
+    <None Include="wwwroot\js\jquery-ui.js" />
+    <None Include="wwwroot\js\jquery-ui.min.js" />
+    <None Include="wwwroot\js\jquery.dataTables.min.js" />
+    <None Include="wwwroot\js\jquery.min.js" />
+    <None Include="wwwroot\js\jquery.timepicker.min.js" />
+    <None Include="wwwroot\js\notify.min.js" />
+    <None Include="wwwroot\js\owl.carousel.min.js" />
+    <None Include="wwwroot\js\pages\accessCodes.js" />
+    <None Include="wwwroot\js\pages\bankAccounts.js" />
+    <None Include="wwwroot\js\pages\banks.js" />
+    <None Include="wwwroot\js\pages\balancesheetStatement.js" />
+    <None Include="wwwroot\js\pages\expenseReport.js" />
+    <None Include="wwwroot\js\pages\incomeStatement.js" />
+    <None Include="wwwroot\js\pages\cashbookReports.js" />
+    <None Include="wwwroot\js\pages\expenseHead.js" />
+    <None Include="wwwroot\js\pages\expenseEntry.js" />
+    <None Include="wwwroot\js\pages\voucherEntry.js" />
+    <None Include="wwwroot\js\pages\subSubsidiaryLedger.js" />
+    <None Include="wwwroot\js\pages\subsidiaryLedger.js" />
+    <None Include="wwwroot\js\pages\generalLedger.js" />
+    <None Include="wwwroot\js\pages\subControlLedger.js" />
+    <None Include="wwwroot\js\pages\controlLedger.js" />
+    <None Include="wwwroot\js\pages\dueList.js" />
+    <None Include="wwwroot\js\pages\salesCollectionReport.js" />
+    <None Include="wwwroot\js\pages\outPatientBillApproval.js" />
+    <None Include="wwwroot\js\pages\inPatientBillApproval.js" />
+    <None Include="wwwroot\js\pages\labTestBillApproval.js" />
+    <None Include="wwwroot\js\pages\outPatientPrescriptionReport.js" />
+    <None Include="wwwroot\js\pages\commissionPayableReports.js" />
+    <None Include="wwwroot\js\pages\relation.js" />
+    <None Include="wwwroot\js\pages\doctorWorkingPlace.js" />
+    <None Include="wwwroot\js\pages\medicineReports.js" />
+    <None Include="wwwroot\js\pages\medicineCategories.js" />
+    <None Include="wwwroot\js\pages\medicineSuppliers.js" />
+    <None Include="wwwroot\js\pages\medicineManufacturers.js" />
+    <None Include="wwwroot\js\pages\medicineTypes.js" />
+    <None Include="wwwroot\js\pages\dueCollectionReports.js" />
+    <None Include="wwwroot\js\pages\collectionReports.js" />
+    <None Include="wwwroot\js\pages\medicineSetup.js" />
+    <None Include="wwwroot\js\pages\medicines - Copy.js" />
+    <None Include="wwwroot\js\pages\salesAllReports.js" />
+    <None Include="wwwroot\js\pages\salesReports.js" />
+    <None Include="wwwroot\js\pages\surnames.js" />
+    <None Include="wwwroot\js\pages\deliveryPeriods.js" />
+    <None Include="wwwroot\js\pages\specimens.js" />
+    <None Include="wwwroot\js\pages\labTestResultCarriedOuts.js" />
+    <None Include="wwwroot\js\pages\measurementUnits.js" />
+    <None Include="wwwroot\js\pages\units.js" />
+    <None Include="wwwroot\js\pages\commissionDueReports.js" />
+    <None Include="wwwroot\js\pages\discountPayableReports.js" />
+    <None Include="wwwroot\js\pages\commissionPaymentReports.js" />
+    <None Include="wwwroot\js\pages\dischargeReports.js" />
+    <None Include="wwwroot\js\pages\dischargeTypes.js" />
+    <None Include="wwwroot\js\pages\admissionTypes.js" />
+    <None Include="wwwroot\js\pages\nurseReports.js" />
+    <None Include="wwwroot\js\pages\patientReports.js" />
+    <None Include="wwwroot\js\pages\doctorReports.js" />
+    <None Include="wwwroot\js\pages\logs.js" />
+    <None Include="wwwroot\js\pages\beds.js" />
+    <None Include="wwwroot\js\pages\bloodGroups.js" />
+    <None Include="wwwroot\js\pages\companies.js" />
+    <None Include="wwwroot\js\pages\currencies.js" />
+    <None Include="wwwroot\js\pages\departments.js" />
+    <None Include="wwwroot\js\pages\designations.js" />
+    <None Include="wwwroot\js\pages\doctors.js" />
+    <None Include="wwwroot\js\pages\medicines.js" />
+    <None Include="wwwroot\js\pages\doctorTypes.js" />
+    <None Include="wwwroot\js\pages\dosages.js" />
+    <None Include="wwwroot\js\pages\employees.js" />
+    <None Include="wwwroot\js\pages\nurses.js" />
+    <None Include="wwwroot\js\pages\commissionReports.js" />
+    <None Include="wwwroot\js\pages\commissionPayments.js" />
+    <None Include="wwwroot\js\pages\pharmacies.js" />
+    <None Include="wwwroot\js\pages\labTestReferenceSetups.js" />
+    <None Include="wwwroot\js\pages\testDiscountSetups.js" />
+    <None Include="wwwroot\js\pages\testCommissionSetups.js" />
+    <None Include="wwwroot\js\pages\outPatientPrescriptions.js" />
+    <None Include="wwwroot\js\pages\patientCategories.js" />
+    <None Include="wwwroot\js\pages\patients.js" />
+    <None Include="wwwroot\js\pages\patientTypes.js" />
+    <None Include="wwwroot\js\pages\paymentModes.js" />
+    <None Include="wwwroot\js\pages\paymentTypes.js" />
+    <None Include="wwwroot\js\pages\qualifications.js" />
+    <None Include="wwwroot\js\pages\referencePersons.js" />
+    <None Include="wwwroot\js\pages\religions.js" />
+    <None Include="wwwroot\js\pages\roomCosts.js" />
+    <None Include="wwwroot\js\pages\rooms.js" />
+    <None Include="wwwroot\js\pages\roomTypes.js" />
+    <None Include="wwwroot\js\pages\serviceChargeGroups.js" />
+    <None Include="wwwroot\js\pages\shifts.js" />
+    <None Include="wwwroot\js\pages\specialities.js" />
+    <None Include="wwwroot\js\pages\testCategories.js" />
+    <None Include="wwwroot\js\pages\testCharges.js" />
+    <None Include="wwwroot\js\pages\testSubCategories.js" />
+    <None Include="wwwroot\js\pages\discountIssuers.js" />
+    <None Include="wwwroot\js\pages\serviceChargeHeads.js" />
+    <None Include="wwwroot\js\pages\unitTypes.js" />
+    <None Include="wwwroot\js\pages\userAccesses.js" />
+    <None Include="wwwroot\js\select2.min.js" />
+    <None Include="wwwroot\js\sidebar-menu.js" />
+    <None Include="wwwroot\js\site.js" />
+    <None Include="wwwroot\lib\bootstrap-multiselect-master\dist\js\bootstrap-multiselect.js" />
+    <None Include="wwwroot\lib\bootstrap-multiselect-master\dist\js\bootstrap-multiselect.min.js" />
+    <None Include="wwwroot\lib\bootstrap-multiselect-master\dist\less\bootstrap-multiselect.less" />
+    <None Include="wwwroot\Reports\balancesheetStatement.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\Reports\CashbookReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\Reports\DueList.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\Reports\IncomeStatement.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\Reports\VoucherEntryReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\Reports\SalesCollectionReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\Reports\OutPatientPrescriptionFee.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\Reports\CollectionsSingle.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\Reports\CollectionsPatientType.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\Reports\Collections.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\Reports\CommissionDue - Copy.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\Reports\CommissionPayment - Copy.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\Reports\DueCollectionsSingle.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\Reports\DueCollectionsPatientType.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\Reports\Medicines.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\Reports\DueCollections.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\Reports\Discharge.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\Reports\SalesPatientType.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\Reports\SalesSingle.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\Reports\SalesAll.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <EmbeddedResource Include="Reports\Sales.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <None Include="wwwroot\Reports\Sales.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\Reports\CommissionDue.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\Reports\LabTestCharges.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\Reports\LabTestResults.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\Reports\MoneyReceipts - Bak.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\Reports\MoneyReceipts - Custom.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\Reports\Nurses.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\Reports\Discharges.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\Reports\Doctors.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\Reports\CommissionPayment.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\Reports\Commission.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\Reports\OutPatientBill.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\Reports\InPatientBill.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\Reports\MoneyReceipts.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\Reports\Prescription.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\Reports\Template.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\css\bootstrap-select.css.map" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\bootstrap-select.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\bootstrap-select.js.map" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\bootstrap-select.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\bootstrap-select.min.js.map" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-am_et.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-am_et.js.map" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-am_et.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-ar_ar.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-ar_ar.js.map" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-ar_ar.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-bg_bg.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-bg_bg.js.map" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-bg_bg.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-cs_cz.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-cs_cz.js.map" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-cs_cz.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-da_dk.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-da_dk.js.map" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-da_dk.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-de_de.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-de_de.js.map" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-de_de.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-en_us.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-en_us.js.map" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-en_us.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-es_cl.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-es_cl.js.map" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-es_cl.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-es_es.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-es_es.js.map" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-es_es.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-et_ee.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-et_ee.js.map" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-et_ee.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-eu.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-eu.js.map" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-eu.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-fa_ir.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-fa_ir.js.map" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-fa_ir.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-fi_fi.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-fi_fi.js.map" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-fi_fi.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-fr_fr.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-fr_fr.js.map" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-fr_fr.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-hr_hr.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-hr_hr.js.map" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-hr_hr.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-hu_hu.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-hu_hu.js.map" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-hu_hu.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-id_id.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-id_id.js.map" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-id_id.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-it_it.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-it_it.js.map" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-it_it.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-ja_jp.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-ja_jp.js.map" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-ja_jp.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-kh_km.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-kh_km.js.map" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-kh_km.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-ko_kr.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-ko_kr.js.map" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-ko_kr.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-lt_lt.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-lt_lt.js.map" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-lt_lt.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-lv_lv.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-lv_lv.js.map" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-lv_lv.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-nb_no.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-nb_no.js.map" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-nb_no.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-nl_nl.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-nl_nl.js.map" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-nl_nl.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-pl_pl.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-pl_pl.js.map" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-pl_pl.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-pt_br.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-pt_br.js.map" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-pt_br.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-pt_pt.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-pt_pt.js.map" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-pt_pt.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-ro_ro.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-ro_ro.js.map" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-ro_ro.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-ru_ru.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-ru_ru.js.map" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-ru_ru.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-sk_sk.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-sk_sk.js.map" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-sk_sk.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-sl_si.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-sl_si.js.map" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-sl_si.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-sr_sp.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-sr_sp.js.map" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-sr_sp.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-sv_se.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-sv_se.js.map" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-sv_se.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-th_th.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-th_th.js.map" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-th_th.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-tr_tr.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-tr_tr.js.map" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-tr_tr.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-ua_ua.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-ua_ua.js.map" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-ua_ua.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-vi_vn.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-vi_vn.js.map" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-vi_vn.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-zh_cn.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-zh_cn.js.map" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-zh_cn.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-zh_tw.js" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-zh_tw.js.map" />
+    <None Include="wwwroot\Select2_4.0.13\bootstrap-select\js\i18n\defaults-zh_tw.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\af.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\af.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\ar.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\ar.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\az.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\az.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\bg.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\bg.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\bn.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\bn.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\bs.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\bs.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\ca.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\ca.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\cs.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\cs.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\da.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\da.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\de.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\de.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\dsb.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\dsb.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\el.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\el.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\en.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\en.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\es.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\es.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\et.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\et.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\eu.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\eu.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\fa.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\fa.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\fi.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\fi.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\fr.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\fr.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\gl.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\gl.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\he.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\he.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\hi.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\hi.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\hr.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\hr.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\hsb.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\hsb.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\hu.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\hu.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\hy.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\hy.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\id.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\id.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\is.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\is.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\it.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\it.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\ja.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\ja.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\ka.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\ka.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\km.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\km.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\ko.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\ko.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\lt.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\lt.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\lv.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\lv.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\mk.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\mk.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\ms.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\ms.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\nb.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\nb.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\ne.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\ne.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\nl.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\nl.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\pl.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\pl.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\ps.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\ps.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\pt-br.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\pt-br.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\pt.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\pt.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\ro.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\ro.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\ru.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\ru.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\sk.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\sk.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\sl.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\sl.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\sq.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\sq.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\sr-cyrl.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\sr-cyrl.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\sr.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\sr.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\sv.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\sv.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\th.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\th.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\tk.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\tk.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\tr.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\tr.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\uk.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\uk.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\vi.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\vi.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\zh-cn.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\zh-cn.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\zh-tw.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\i18n\zh-tw.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\select2.full.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\select2.full.min.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\select2.js" />
+    <None Include="wwwroot\Select2_4.0.13\select2\js\select2.min.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AspNetCore.Reporting" Version="2.1.0" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+    <PackageReference Include="DocumentFormat.OpenXml" Version="3.2.0" />
+    <PackageReference Include="itext7" Version="9.1.0" />
+    <PackageReference Include="itext7.bouncy-castle-adapter" Version="9.1.0" />
+    <PackageReference Include="itext7.bouncy-castle-fips-adapter" Version="9.1.0" />
+    <PackageReference Include="MailKit" Version="4.14.1" />
+    <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.3.0" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.3.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.18" />
+    <PackageReference Include="QRCoder" Version="1.6.0" />
+    <PackageReference Include="QuestPDF" Version="2025.1.2" />
+    <PackageReference Include="ReportViewerCore.NETCore" Version="15.1.17" />
+    <PackageReference Include="Serilog.AspNetCore" Version="9.0.0" />
+    <PackageReference Include="Serilog.Settings.Configuration" Version="9.0.0" />
+    <PackageReference Include="Serilog.Sinks.MSSqlServer" Version="8.1.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="7.2.0" />
+    <PackageReference Include="System.Drawing.Common" Version="9.0.2" />
+    <PackageReference Include="System.Security.Permissions" Version="9.0.2" />
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="9.0.2" />
+    <PackageReference Include="Tono.Excel" Version="1.0.7" />
+   
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Libraries\GCTL.Core\GCTL.Core.csproj" />
+    <ProjectReference Include="..\..\Libraries\GCTL.Data\GCTL.Data.csproj" />
+    <ProjectReference Include="..\..\Libraries\GCTL.Service\GCTL.Service.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="DataSets\BillDatasets.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>BillDatasets.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="DataSets\CommissionDataSets.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CommissionDataSets.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="DataSets\LabTestDataSets.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>LabTestDataSets.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="DataSets\MedicalDatasets.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>MedicalDatasets.xsd</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="wwwroot\js\sidebar-menu.js">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\Reports\ExpenseReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\Reports\Patients.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\Reports\PrescriptionBlank.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\Reports\PrescriptionBlank2.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\Reports\Rpt_Ledger.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\Reports\Rpt_PatientSingle.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\Reports\Rpt_ReceivedPaymentStatement.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\Reports\Rpt_VoucherEntry.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="DataSets\LabTestDataSets.xsd">
+      <LastGenOutput>LabTestDataSets.Designer.cs</LastGenOutput>
+      <Generator>MSDataSetGenerator</Generator>
+    </None>
+    <None Update="DataSets\CommissionDataSets.xsd">
+      <LastGenOutput>CommissionDataSets.Designer.cs</LastGenOutput>
+      <Generator>MSDataSetGenerator</Generator>
+    </None>
+    <None Update="DataSets\BillDatasets.xsd">
+      <LastGenOutput>BillDatasets.Designer.cs</LastGenOutput>
+      <Generator>MSDataSetGenerator</Generator>
+    </None>
+    <None Update="DataSets\MedicalDatasets.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>MedicalDatasets.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Pages\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="PXLibrary">
+      <HintPath>bin\PXLibrary.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

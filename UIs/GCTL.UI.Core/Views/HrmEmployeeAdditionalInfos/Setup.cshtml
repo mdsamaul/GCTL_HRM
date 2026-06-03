@@ -1,0 +1,557 @@
+﻿@model GCTL.Core.ViewModels.HrmEmployeeAdditionalInfos.HrmEmployeeAdditionalInfoSetupViewModel
+
+@{
+    ViewBag.Title = "Additional Info Entry";
+     Model.PageTitle = "Additional Info Entry";
+    Model.Breadcrumb = "Additional Info Entry";
+
+}
+
+<style>
+    .no-border {
+        border: none;
+        outline: none;
+        box-shadow: none;
+    }
+
+    select.form-control-sm ~ .select2-container--default {
+        width: 95% !important;
+    }
+
+</style>
+
+<div id="customLoadingOverlay" style="
+        display: flex;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 9999;
+        justify-content: center;
+        align-items: center;">
+    <div style="
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+            text-align: center;">
+        <div class="spinner-border text-primary" role="status">
+            <span class="sr-only"></span>
+        </div>
+        <p style="margin-top: 10px; margin-bottom: 0;"></p>
+    </div>
+</div>
+<!-- Content Header (Page header) -->
+<section class="content-header" style="padding-bottom: 0;">
+    <div class="container-fluid">
+        <div class="calloutx callout-info" style="height: 30px;">
+            <div class="row">
+                <div class="col-md-8 row">
+                    <ol class="breadcrumb float-sm-right">
+                    </ol>
+                </div>
+                <div class="col-md-4">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="/Dashboard">Home</a></li>
+                        <li class="breadcrumb-item"><a href="/HrmEmployeeAdditionalInfos">HrmEmployee Additional Informations List</a></li>
+                        <li class="breadcrumb-item active"></li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header border-transparent">
+
+                        <partial name="_Toolbars" model="new ToobarModel() { Title = Model.Breadcrumb, Code = Model.Code, Name = Model.EmployeAddInfoId }" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="content">
+    <form asp-action="Setup" id="HrmEmployeeAdditionalInfos-form" method="post"  asp-controller="HrmEmployeeAdditionalInfos">
+        <div class="container-fluid">
+            <div class="form-group row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header px-2">
+                            @await Html.PartialAsync("_TabButton")
+                        </div>
+                        <div class="card-body">
+                            <div style="padding-top: 10px;">
+                                <div class="row">
+                                    <div class="col-lg-12 gc-inline-select2">
+                                     
+                                        <input type="hidden" asp-for="Id" />
+                                        <input type="hidden" asp-for="Ldate" />
+                                        <input type="hidden" asp-for="ModifyDate" />
+                                        <input type="hidden" id="EmployeeAdInfoAutoId" asp-for="AutoId" />
+                                        <input asp-for="EmployeAddInfoId" type="hidden" />
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="row mt-2">
+                                                    <div class="col-lg-2">
+                                                        <div class="form-group text-end" style="text-align: end;">
+                                                            <label asp-for="CompanyCode" class="col-form-label-sm required">Company</label>
+                                                        </div>
+                                                        <div class="form-group text-end" style="text-align: end;">
+                                                            <label asp-for="EmployeeId" class="col-form-label-sm required">Employee Id<span style="color:red">*</span></label>
+                                                        </div>
+                                                        <div class="form-group text-end" style="text-align: end;">
+                                                            <label>Designation:</label>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-4">
+                                                        <div class="input-group text-end mb-2">
+                                                            <select asp-for="CompanyCode" tabindex="1" data-placeholder="Select Company" class="form-control form-control-sm selectpicker4 gc-select2 js-">
+                                                                <option value=""></option>
+                                                            </select>
+                                                        </div>
+
+                                                        <div class="input-group text-end mb-2">
+                                                            <select asp-for="EmployeeId" tabindex="3" data-placeholder="Select Employee" class="form-control form-control-sm selectpicker4 gc-select2 js-" required>
+                                                                <option value=""></option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="input-group text-end">
+                                                            <span id="DesignationName" style="text-align: right; display: block;">@Model.DesignationName</span> <!-- Right aligned -->
+                                                        </div>
+                                                       
+                                                    </div>
+
+                                                    <div class="col-lg-2">
+                                                        <div class="form-group text-end" style="text-align: end;">
+                                                            <label asp-for="BranchCode" class="col-form-label-sm required">Branch</label>
+                                                        </div>
+                                                        <div class="form-group text-end" style="text-align: end;">
+                                                            <label>Employee Name:</label>
+                                                          
+                                                        </div>
+                                                        <div class="form-group text-end" style="text-align: end;">
+                                                            <label>Deperment:</label>
+                                                        </div>
+                                                       
+                                                    </div>
+
+                                                    <div class="col-lg-4">
+                                                        <div class="input-group text-end mb-2">
+                                                            <select asp-for="BranchCode" tabindex="2" data-placeholder="Select Branch" class="form-control form-control-sm selectpicker4 gc-select2 js-">
+                                                                <option value=""></option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="input-group text-end mb-2">
+                                                            <span id="FullName" style="text-align: right; display: block;">@Model.EmployeeName</span>
+                                                           
+                                                        </div>
+                                                        <div class="input-group text-end mt-0">
+                                                            <span id="DepartmentName" style="text-align: right; display: block;">@Model.DepartmentName</span>
+                                                        </div>
+                                                       
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <label>Passport Informtion</label>
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-lg-4 ">
+                                                        <label asp-for="PassportName">Passport Name </label>
+                                                        <input asp-for="PassportName" tabindex="4" class="form-control form-control-sm"  placeholder="Enter Passport Name " autofocus/>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <label asp-for="PassportNo">Passport No</label>
+                                                        <input asp-for="PassportNo" tabindex="5" class="form-control form-control-sm"  placeholder="Enter Passport No"/>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <label asp-for="PassportPlaceOfIssue">Place of Issue</label>
+                                                        
+                                                        <input asp-for="PassportPlaceOfIssue"  class="form-control form-control-sm" placeholder="Enter Place of Issue" tabindex="6" />
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-lg-4 ">
+                                                        <label asp-for="PassportIssueDate">Date Issued</label>
+                                                        <input type="hidden"
+                                                               id="PassportIssueDateHidden" />
+
+                                                        <input asp-for="PassportIssueDate"
+                                                               id="PassportIssueDate" tabindex="7"
+                                                               class="form-control form-control-sm datepicker" />
+                                                      
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <label asp-for="PassportExpiryDate">Passport Expiry Date</label>
+                                                        <input type="hidden"
+                                                               id="PassportExpiryDateHidden" />
+
+                                                        <input asp-for="PassportExpiryDate"
+                                                               id="PassportExpiryDate" tabindex="8"
+                                                               class="form-control form-control-sm datepicker" />
+
+                                                    </div>
+                                                    <div class="col-lg-4">
+
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                        <label> Salary Account Informtion </label>
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                 
+                                                    <div class="col-lg-4 ">
+                                                        <label asp-for="SalaryBankId">Bank(DBBL)<span style="color:red">*</span> </label>
+                                                        <div class="input-group">
+                                                            <select asp-for="SalaryBankId" tabindex="9" data-placeholder="Select  Bank(DBBL)" class="form-control form-control-sm selectpicker4 gc-select2 BnakIdDDFilterDBBL" required asp-items="@ViewBag.BankDD as SelectList">
+                                                                <option value=""></option>
+                                                            </select>
+                                                        
+                                                            <div class="input-group-append">
+                                                                <button type="button" class="btn btn-sm btn-outline-secondary js-quick-add input-group-textc"
+                                                                        data-url="@Url.Action("Index", "BankInformations")"
+                                                                        data-target="#SalaryBankId"
+                                                                        data-reload-url="@Url.Action("GetBank", "Cascading")"
+                                                                        data-title="Bank">
+                                                                    +
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div> 
+                                                    <div class="col-lg-4">
+                                                        <label asp-for="SalaryBranchId">Branch(DBBL)</label>
+                                                        <div class="input-group">
+                                                            <select asp-for="SalaryBranchId" tabindex="10" data-placeholder="Select Branch(DBBL)" class="form-control form-control-sm selectpicker4 gc-select2 BankBranchDDFilterDBBL" asp-items="@ViewBag.BakBranchDD as SelectList">
+                                                                <option value=""></option>
+                                                            </select>
+                                                            <div class="input-group-append">
+                                                                <button type="button" class="btn btn-sm btn-outline-secondary js-quick-add input-group-textc"
+                                                                        data-url="@Url.Action("Index", "BankBranchInformations")"
+                                                                        data-target="#SalaryBranchId"
+                                                                        data-reload-url="@Url.Action("GetBankBranch", "Cascading")"
+                                                                        data-title="Branch">
+                                                                        +
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <label asp-for="BranchAddres">Address(DBBL)</label>
+                                                        <input asp-for="BranchAddres" class="form-control form-control-sm BranchAddressInputDbbl" placeholder="Enter Branch Address(DBBL)" tabindex="11" />
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-lg-4 ">
+                                                        <label asp-for="BankAcname">Bank A/C Name(DBBL)</label>
+                                                        <input asp-for="BankAcname" tabindex="12" class="form-control form-control-sm" placeholder="Enter Bank A/C Name(DBBL)" />
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <label asp-for="BankAcNo">A/C Number(DBBL)</label>
+                                                        <input asp-for="BankAcNo" tabindex="13" class="form-control form-control-sm" placeholder="Enter Bank A/C No(DBBL)" />
+                                                    </div>
+                                                  
+                                                </div>
+
+
+                                                <div class="row">
+                                                    <div class="col-lg-4 ">
+                                                        <label asp-for="BankIducbl">Bank(UCBL)<span style="color:red">*</span> </label>
+                                                        <div class="input-group">
+                                                            <select asp-for="BankIducbl" tabindex="14" data-placeholder="Select  Bank(UCBL)" class="form-control form-control-sm selectpicker4 gc-select2 BnakIdDDFilterUCBL" required asp-items="@ViewBag.BankDD as SelectList">
+                                                                <option value=""></option>
+                                                            </select>
+                                                            <div class="input-group-append">
+                                                                <button type="button" class="btn btn-sm btn-outline-secondary js-quick-add input-group-textc"
+                                                                        data-url="@Url.Action("Index", "BankInformations")"
+                                                                        data-target="#BankIducbl"
+                                                                        data-reload-url="@Url.Action("GetBank", "Cascading")"
+                                                                        data-title="Bank Informations">
+                                                                        +
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <label asp-for="BankBranchIducbl">Branch(UCBL)</label>
+                                                        <div class="input-group">
+                                                            <select asp-for="BankBranchIducbl" tabindex="15" data-placeholder="Select Branch(DBBL)" class="form-control form-control-sm selectpicker4 gc-select2 BankBranchDDFilterUCBL" asp-items="@ViewBag.BakBranchDD as SelectList">
+                                                                <option value=""></option>
+                                                            </select>
+                                                            <div class="input-group-append">
+                                                                <button type="button" class="btn btn-sm btn-outline-secondary js-quick-add input-group-textc"
+                                                                        data-url="@Url.Action("Index", "BankBranchInformations")"
+                                                                        data-target="#BankBranchIducbl"
+                                                                        data-reload-url="@Url.Action("GetBankBranch", "Cascading")"
+                                                                        data-title="Branch">
+                                                                        +
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <label asp-for="BranchAddressUcbl">Address(UCBL)</label>
+                                                        <span class="text-danger"></span>
+                                                        <input asp-for="BranchAddressUcbl" class="form-control form-control-sm BranchAddressInputUcbl BranchAddressInputUcbl" placeholder="Enter Branch Address(UCBL)" tabindex="16" />
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-lg-4 ">
+                                                        <label asp-for="BankAcNameUcbl">Bank A/C Name(UCBL)</label>
+                                                        <input asp-for="BankAcNameUcbl" tabindex="17" class="form-control form-control-sm" placeholder="Enter Bank A/C Name(UCBL)" />
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <label asp-for="BankAcNoUcbl">A/C Number(UCBL)</label>
+                                                        <input asp-for="BankAcNoUcbl" tabindex="18" class="form-control form-control-sm" placeholder="Enter A/C No(UCBL)" />
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="row">
+                                                    <div class="col-lg-4 ">
+                                                        <label asp-for="BankIdsibl">Bank(SIBL)<span style="color:red">*</span> </label>
+                                                        <div class="input-group">
+                                                            <select asp-for="BankIdsibl" tabindex="19" data-placeholder="Select  Bank(SIBL)" class="form-control form-control-sm selectpicker4 gc-select2 BnakIdDDFilterSIBL" required asp-items="@ViewBag.BankDD as SelectList">
+                                                                <option value=""></option>
+                                                            </select>
+                                                            <div class="input-group-append">
+                                                                <button type="button" class="btn btn-sm btn-outline-secondary js-quick-add input-group-textc"
+                                                                        data-url="@Url.Action("Index", "BankInformations")"
+                                                                        data-target="#BankIdsibl"
+                                                                        data-reload-url="@Url.Action("GetBank", "Cascading")"
+                                                                        data-title="Bank Informations">
+                                                                        +
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <label asp-for="BankBranchIdsibl">Branch(SIBL)</label>
+                                                        <div class="input-group">
+                                                            <select asp-for="BankBranchIdsibl" tabindex="20" data-placeholder="Select Branch(SIBL)" class="form-control form-control-sm selectpicker4 gc-select2 BankBranchDDFilterSIBL" asp-items="@ViewBag.BakBranchDD as SelectList">
+                                                                <option value=""></option>
+                                                            </select>
+                                                            <div class="input-group-append">
+                                                                <button type="button" class="btn btn-sm btn-outline-secondary js-quick-add input-group-textc"
+                                                                        data-url="@Url.Action("Index", "BankBranchInformations")"
+                                                                        data-target="#BankBranchIdsibl"
+                                                                        data-reload-url="@Url.Action("GetBankBranch", "Cascading")"
+                                                                        data-title="Branch">
+                                                                        +
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <label asp-for="BranchAddressSibl">Address(SIBL)</label>
+                                                        <span class="text-danger"></span>
+                                                        <input asp-for="BranchAddressSibl" class="form-control form-control-sm BranchAddressInputSibl" placeholder="Enter Branch Address(SIBL)" tabindex="21" />
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-lg-4 ">
+                                                        <label asp-for="BankAcNameSibl">Bank A/C Name(SIBL)</label>
+                                                        <input asp-for="BankAcNameSibl" tabindex="22" class="form-control form-control-sm" placeholder="Enter Bank A/C Name(SIBL)" />
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <label asp-for="BankAcNoSibl">A/C Number(SIBL)</label>
+                                                        <input asp-for="BankAcNoSibl" tabindex="23" class="form-control form-control-sm" placeholder="Enter A/C No(SIBL)" />
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                        <label>Driving License Information</label>
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="row">
+
+                                                        <div class="col-lg-4">
+                                                        <label asp-for="LicenseNo">LicenseNo</label>
+                                                        <input asp-for="LicenseNo" tabindex="24" type="text" class="form-control form-control-sm" placeholder="Enter License No" />
+                                                        </div>
+
+                                                        <div class="col-lg-4">
+                                                        <label asp-for="LicenseType">License Type</label>
+                                                        <input asp-for="LicenseType"  type="text" class="form-control form-control-sm" tabindex="25" placeholder="Enter  License Type" />
+                                                        </div>
+
+                                                        <div class="col-lg-4">
+                                                        <label asp-for="LicenseIssueDate">Date Issue</label>
+                                                        <input type="hidden"
+                                                               id="LicenseIssueDateHidden" /> 
+
+                                                        <input asp-for="LicenseIssueDate"
+                                                               id="LicenseIssueDate" tabindex="26"
+                                                               class="form-control form-control-sm datepicker" />
+
+                                                       </div>
+
+
+                                                    <div class="col-lg-4">
+                                                        <label asp-for="LicenseExpireDate">Expiry Date</label>
+                                                        <input type="hidden"
+                                                               id="LicenseExpireDateHidden" />
+
+                                                        <input asp-for="LicenseExpireDate"
+                                                               id="LicenseExpireDate" tabindex="27"
+                                                               class="form-control form-control-sm datepicker" />
+
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <label asp-for="SymbolOfVehicleClass">Symbol Of Vehicle Class</label>
+
+                                                        <input asp-for="SymbolOfVehicleClass"  type="text" class="form-control form-control-sm" tabindex="28" placeholder="Enter Symbol Of Vehicle Class" />
+
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <label asp-for="LicensePlaceOfIssue">Place of Issue</label>
+                                                        <span class="text-danger"></span>
+                                                        <input asp-for="LicensePlaceOfIssue" class="form-control form-control-sm" placeholder="Enter Place of Issue" tabindex="29" />
+                                                    </div>
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <label>Work Permit/Employeement Pass Informtion</label>
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-lg-4">
+                                                        <label asp-for="WorkPermitNo">Work Permit Number</label>
+                                                        <input asp-for="WorkPermitNo" tabindex="30" type="text" class="form-control form-control-sm" placeholder="Enter Work Permit Number" />
+                                                    </div>
+
+                                                    <div class="col-lg-4">
+                                                        <label asp-for="WorkPermitType">Work Permit Type</label>
+                                                        <input asp-for="WorkPermitType"  type="text" class="form-control form-control-sm" tabindex="31" placeholder="Enter Work Permit Type" />
+                                                    </div>
+
+                                                    <div class="col-lg-4">
+                                                        <label asp-for="WpEffectiveDate">WP Effective Date</label>
+                                                        <input type="hidden"
+                                                               id="WpEffectiveDateHidden" />
+
+                                                        <input asp-for="WpEffectiveDate"
+                                                               id="WpEffectiveDate" tabindex="32"
+                                                               class="form-control form-control-sm datepicker" />
+
+                                                    </div>
+
+
+                                                    <div class="col-lg-4">
+                                                        <label asp-for="WpExpireDate">WP Expire Date</label>
+                                                        <input type="hidden"
+                                                               id="WpExpireDateHidden" />
+
+                                                        <input asp-for="WpExpireDate"
+                                                               id="WpExpireDate" tabindex="33"
+                                                               class="form-control form-control-sm datepicker" />
+
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        @*  For LDate and Modify Date *@
+                                        @if (Model.AutoId > 0)
+                                        {
+                                                <hr />
+                                                <div class="form-group row" id="LdateModifyHide">
+                                                    <div class="col-lg-4">
+                                                    @if (Model.Ldate.HasValue)
+                                                    {
+                                                                <label>Creation Date: </label>
+
+                                                                <label>@Model.Ldate?.ToString("dd/MM/yyyy hh:mm tt")</label>
+                                                    }
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                    @if (Model.ModifyDate.HasValue)
+                                                    {
+                                                                <label>Last Update Date: </label>
+
+                                                                <label>@Model.ModifyDate?.ToString("dd/MM/yyyy hh:mm tt")</label>
+                                                    }
+                                                    </div>
+                                                </div>
+                                        }
+
+
+                                        <div class="form-group row">
+                                            @*  value="Save" type="submit" *@
+                                            <div class="col-12">
+                                                <a href='@Url.Action("Index")' class="btn btn-default btn-common btn-circle"><i class="fas fa-arrow-alt-circle-left">&nbsp;</i>Back To List</a>
+                                                <button type="button" class="btn btn-default btn-common js-HrmEmployeeAdditionalInfos-save btn-circle float-right">
+                                                    <i class="fas fa-save"></i>
+                                                    @if (ViewBag.IsEditMode != null && (bool)ViewBag.IsEditMode)
+                                                    {
+                                                        <text>Update</text>
+                                                    }
+                                                    else
+                                                    {
+                                                        <text>Save</text>
+                                                    }
+                                                </button>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</section>
+<partial name="QuickAddModal" />
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script src="~/js/pages/hrmEmployeeAdditionalInfos.js"></script>
+    <script type="text/javascript">
+        var options =
+        {
+            baseUrl: '@Url.Action("", "HrmEmployeeAdditionalInfos")'
+        };
+        options.load = () => {
+        };
+
+        $.hrmEmployeeAdditionalInfos(options);
+
+
+    </script>
+}
+

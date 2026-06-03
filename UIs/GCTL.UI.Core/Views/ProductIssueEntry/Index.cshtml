@@ -1,0 +1,746 @@
+﻿@model GCTL.UI.Core.ViewModels.ProductIssueEntry.ProductIssueEntryViewModel
+@{
+    Model.Breadcrumb = "ProductIssueEntry";
+    Model.PageTitle = "Product Issue Entry";
+}
+
+<style>
+    .custom-fieldset {
+        position: relative;
+        border: 2px solid #ddd;
+        border-radius: 10px;
+        padding: 30px 20px 20px 20px;
+        margin: 20px 0;
+        box-shadow: 0 0 10px rgba(76, 175, 80, 0.2);
+    }
+
+        .custom-fieldset legend {
+            position: absolute;
+            top: -14px;
+            left: 20px;
+            background-color: white;
+            padding: 0 10px;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #727272;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            width: auto;
+        }
+
+        .custom-fieldset label {
+            display: block;
+            margin-top: 10px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .custom-fieldset input[type="text"],
+        .custom-fieldset input[type="email"],
+        .custom-fieldset input[type="date"] {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+            color: #000;
+        }
+
+        .custom-fieldset input[type="submit"] {
+            margin-top: 15px;
+            padding: 10px 20px;
+            background-color: #fff;
+            border: 2px solid #333;
+            border-radius: 5px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+            .custom-fieldset input[type="submit"]:hover {
+                background-color: #45a049;
+                border-color: #45a049;
+            }
+
+    #stickyHeader {
+        position: sticky;
+        top: 0;
+        z-index: 1050;
+        background: white;
+        padding: 10px 20px;
+        transition: all 0.3s ease-in-out;
+        box-shadow: none;
+    }
+
+        #stickyHeader.scrolled {
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        }
+
+
+ /* input[type="text"], */
+    input[type="email"],
+    input[type="date"],
+    input[type="number"],
+    input[type="password"],
+    select,
+    textarea {
+        border: 1px solid #ccc !important;
+        border-radius: 4px;
+        padding: 6px 10px;
+        box-sizing: border-box;
+        outline: none;
+    } 
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #999 !important;
+            box-shadow: none;
+        }
+
+
+
+    .flatpickr-calendar.inline {
+        font-size: 12px !important;
+        max-width: 9.9vw !important;
+        border: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        box-shadow: none !important;
+        background: transparent !important;
+    }
+    /* Time container */
+    .flatpickr-time {
+        height: 30px !important;
+        border-radius: 0.375rem !important;
+        overflow: hidden;
+        border: 1px solid #ccc;
+        padding: 0 !important;
+        margin: 0 !important;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .flatpickr-monthDropdown-months {
+        border: none !important;
+    }
+
+    .numInputWrapper .cur-year {
+        border: none !important;
+    }
+    /* Input wrapper */
+    .numInputWrapper {
+        position: relative;
+        width: 26px;
+        height: 24px !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Time input fields */
+    .flatpickr-time .numInput {
+        width: 100%;
+        height: 100%;
+        font-size: 12px !important;
+        padding-right: 12px;
+        box-sizing: border-box;
+        text-align: center;
+        border: none !important;
+        background: transparent !important;
+        padding: 0 !important;
+        margin: 0 1px !important;
+    }
+
+    /* AM/PM toggle */
+    .flatpickr-am-pm {
+        font-size: 11px !important;
+        height: 24px !important;
+        line-height: 24px !important;
+        padding: 0 4px;
+        margin-left: 4px;
+        background: transparent !important;
+        border: none !important;
+        border-left: none #ccc;
+        cursor: pointer;
+        border-radius: 0 !important;
+    }
+
+    /* Arrow buttons */
+    .numInputWrapper .arrowUp,
+    .numInputWrapper .arrowDown {
+        right: 0;
+        width: 8px;
+        height: 50%;
+        cursor: pointer;
+        background: transparent;
+    }
+
+    .numInputWrapper .arrowUp {
+        top: 0;
+        border-bottom: none !important;
+    }
+
+    .numInputWrapper .arrowDown {
+        bottom: 0;
+        border-top: none !important;
+    }
+
+        .numInputWrapper .arrowUp:hover,
+        .numInputWrapper .arrowDown:hover {
+            border: none !important;
+            background: #fff !important;
+        }
+
+    .flatpickr-time-separator {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 24px;
+        font-size: 14px;
+        margin: 0 2px;
+        line-height: 1;
+    }
+
+    .timePickerContainer {
+        padding-bottom: 0% !important;
+    }
+
+    @@media (max-width: 1400px) {
+        .flatpickr-calendar.inline {
+            max-width: 8.5vw !important;
+        }
+
+        .flatpickr-am-pm {
+            padding-left: 0px !important;
+            margin-left: 0px !important;
+            padding-right: 0px !important;
+        }
+
+        .timePickerContainer {
+            padding-bottom: 0% !important;
+        }
+
+        .customDateField {
+            padding-top: 0px !important;
+            padding-bottom: 0px !important;
+            padding-left: 0px !important;
+            padding-right: 0px !important;
+        }
+    }
+
+    .dataTables_wrapper .dataTables_filter input {
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+        padding: 0px;
+    }
+    /* Remove padding, margin, border, background, and hover effects */
+    .dataTables_wrapper .dataTables_paginate .paginate_button {
+        padding: 0 !important;
+        margin: 0 !important;
+        border: none !important;
+        background: transparent !important;
+        color: inherit !important;
+        box-shadow: none !important;
+    }
+
+        /* Remove selected page button styling */
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+            background: transparent !important;
+            color: inherit !important;
+            font-weight: normal !important;
+            border: none !important;
+        }
+
+        /* Remove hover effect */
+        .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+            background: transparent !important;
+            color: inherit !important;
+        }
+
+
+    #printingStationTable tbody tr td {
+        padding: 2px 8px !important;
+        font-size: 14px;
+    }
+
+
+
+
+ /*    input[type="text"], .product-issue-input {
+        border: 1px solid red !important;
+    } */
+
+    input.product-issue-input,
+    input.product-issue-input:focus,
+    .select2-container--default .select2-selection--single.product-issue-input,
+    .select2-container--default .select2-selection--single.product-issue-input:focus {
+        border: 1px solid red !important;
+        box-shadow: none !important;
+    }
+
+
+
+    .js-product-issue-Entry-save {
+        border: 0px !important;
+    }
+    /* Nested Modal Styles */
+    .modal.nested-modal {
+        z-index: 1060 !important;
+    }
+
+    .modal-backdrop.nested-backdrop {
+        z-index: 1059 !important;
+    }
+
+    /* Ensure proper stacking of multiple modals */
+    .modal:nth-of-type(even) {
+        z-index: 1052 !important;
+    }
+
+    .modal:nth-of-type(odd) {
+        z-index: 1051 !important;
+    }
+
+
+    .supplier-modal-custom-lg {
+        max-width: 80vw !important; /* larger than modal-xl */
+    }
+
+
+    .product-table {
+        border-collapse: collapse;
+        border: 1px solid #dee2e6;
+    }
+
+        .product-table th,
+        .product-table td {
+            border: 1px solid #dee2e6;
+            padding: 8px;
+            vertical-align: middle;
+        }
+
+        .product-table th {
+            background-color: #f8f9fa;
+            font-weight: bold;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        .product-table td {
+            text-align: center;
+        }
+
+    .header-with-button {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .add-btn {
+        width: 1.5vw;
+        height: 1.5vw;
+        font-size: 0.7vw;
+        line-height: 1;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-shrink: 0;
+        min-width: 20px;
+        min-height: 20px;
+    }
+
+
+
+
+    .action-buttons {
+        display: flex;
+        gap: 0.3vw;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .action-btn {
+        width: 2.5vw;
+        height: 2.5vw;
+        font-size: 0.7vw;
+        line-height: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-width: 30px;
+        min-height: 30px;
+    }
+
+    .form-control-sm {
+        height: calc(1.5em + 0.5rem + 2px);
+        padding: 0.25rem 0.5rem;
+        font-size: 0.875rem;
+        line-height: 1.5;
+        border-radius: 0.2rem;
+    }
+
+    .total-label {
+        font-weight: bold;
+        text-align: right;
+        padding-top: 4px;
+    }
+
+
+    .date-divider {
+        height: 2px;
+        background-color: #333;
+        border: none;
+        margin: 16px 0;
+    }
+
+    @@media (max-width: 768px) {
+        .product-table {
+            font-size: 12px;
+        }
+
+        .form-control-sm {
+            font-size: 11px;
+        }
+
+        .header-with-button {
+            flex-direction: column;
+            gap: 4px;
+        }
+    }
+
+    .select2-container--default .select2-selection--single {
+        padding-left: 0px !important;
+        padding-right: 0px !important;
+    }
+
+    #productIssueTable thead th {
+        text-align: center;
+        vertical-align: middle;
+    }
+       
+    
+</style>
+<!-- Content Header (Page header) -->
+<div class="container-fluid">
+    <partial name="_PageHeader" model="Model"></partial>
+</div>
+<div class="container-fluid">
+    <div id="stickyHeader" class="px-2 sticky-top rounded">
+        <partial name="_Toolbars" model="new ToobarModel(){Title=Model.Breadcrumb, Code=Model.Code , Name=Model.Setup.IssueNo}" />
+    </div>
+    <input type="hidden" asp-for="Setup.TC" />
+    <div class="card p-2 my-2">
+        <fieldset class="custom-fieldset">
+            <legend>Main Information</legend>
+            <div class="row">
+                <div class="col-12 col-md-4 " style="padding-left: 0px;">
+                    <div class="d-flex align-items-center">
+                        <div class="col-4  text-right" style="padding-right: 0px; white-space:nowrap; padding-left: 0px;">
+                           Issue No <span class="text-danger">*</span>
+                        </div>
+                        <div class="col-8 ">
+                            <input type="text" name="name" class="form-control-sm form-control w-100" id="purchaseIssueNo" value="" style="margin-top: 0px;" readonly>
+                        </div>
+                        <div class="col-1 "></div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4 ">
+                    <div class="d-flex align-items-center">
+                        <div class="col-4  text-right" style="padding-right: 0px;">
+                            Date & Time <span class="text-danger">*</span>
+                        </div>
+                        <div class="col-8 d-flex align-items-center" style="padding-left: 5px;">
+                            <div class="col-md-5 px-0">
+                                <input type="text" id="purchaseIssueDatePicker" class="form-control-sm form-control datePicker w-100" style="margin-top: 0px;">
+                            </div>
+                            <div class="col-md-7 timePickerContainer px-0">
+                                <input type="hidden" id="purchaseIssueTimePicker" class="form-control-sm form-control w-100" style="margin-top: 0px;">
+                                <div id="purchaseIssueInlineTimePicker" class="small-time-picker w-100"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4"></div>
+            </div>
+            <div class="row py-2">
+                <div class="col-12 col-md-4 ">
+                    <div class="d-flex align-items-center">
+                        <div class="col-4  text-right" style="padding-right: 0px;">
+                            Department
+                        </div>
+                        <div class="col-8 " style="padding-left: 5px;">
+                            <select class="form-control-sm form-control searchable-select" id="purchaseIssueDepartment" asp-items="ViewBag.departmentList as SelectList">
+                                <option value="">Select Department</option>
+                            </select>
+                        </div>
+                        <div class="col-1 "></div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4 ">
+                    <div class="d-flex align-items-center">
+                        <div class="col-4  text-right" style="padding-right: 0px;">
+                            Employee
+                        </div>
+                        <div class="col-8 d-flex align-items-center" style="padding-left: 5px;">
+                                <select class="form-control-sm form-control form-select form-select-sm searchable-select purchaseIssueEmployeeBtn" asp-items="ViewBag.EmployeeList as SelectList">
+                                    <option value="">Select Employee</option>
+                                </select>  
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4">                   
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-12 col-md-4 ">
+                    <div class="d-flex align-items-center">
+                        <div class="col-4  text-right" style="padding-right: 0px;">
+                            Issued By <span class="text-danger">*</span>
+                        </div>
+                        <div class="col-8 " style="padding-left: 5px;">
+                            <select class="form-control-sm form-control searchable-select" id="productIssueBy" asp-items="ViewBag.EmployeeList as SelectList">
+                                <option value="">Select </option>
+                            </select>
+                        </div>
+                        <div class="col-1 "></div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4 ">
+                    <div class="d-flex align-items-center">
+                        <div class="col-4  text-right" style="padding-right: 0px;">
+                            Remarks
+                        </div>
+                        <div class="col-8" style="padding-left: 5px;">
+                            <textarea rows="2" id="Remarks" class="form-control-sm form-control"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4"> </div>
+            </div>
+        </fieldset>
+        <input type="hidden" name="name" value="0"  id="detailsTcId"/>
+        <div class="container-fluid px-0">
+            <div class="card">
+                <div class="table-responsive">
+                    <table class="table product-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 6vw;">Product</th>                               
+                                <th style="width: 6vw;">Brand</th>
+                                <th style="width: 6vw;">Model</th>
+                                <th style="width: 6vw;">Size</th>
+                                <th style="width: 5vw;">Unit</th>
+                                <th style="width: 5vw;">Stock Qty</th>
+                                <th style="width: 4vw;"> Issue Qty</th>
+                                <th style="width: 6vw;">
+                                    <div class="header-with-button">
+                                        <span>Floor</span>
+                                        <button class="btn btn-outline-dark rounded-circle shadow d-flex justify-content-center align-items-center"
+                                                style="width: 20px; height: 20px; font-size: 9px; line-height: 1;"
+                                                data-bs-toggle="modal" data-bs-target="#floorModal" id="purchaseIssueFloorBtn">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </th>
+                                <th style="width: 3vw;"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="dinamciDataAppend">
+                            <tr>
+                                <td>
+                                    <select class="form-control-sm form-control searchable-select productSelectId" asp-items="ViewBag.ProductList as SelectList">
+                                        <option value="">Select Product</option>
+                                    </select>
+                                </td>                               
+                                <td>
+                                    <select class="form-control-sm form-control searchable-select brandIdFromDropdown">
+                                        <option value="">Select Brand</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select class="form-control-sm form-control searchable-select modelPopulateFromBrandId">
+                                        <option value="">Select Model</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select class="form-control-sm form-control searchable-select sizeSelect" asp-items="ViewBag.SizeList as SelectList">
+                                        <option value="">Select Size</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select class="form-control-sm form-control searchable-select purchaseIssueSelectUnit" asp-items="ViewBag.UnitList as SelectList">
+                                        <option value="">Select Unit</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="number" class="form-control-sm form-control text-center purchaseIssueStockQty" readonly/>
+                                </td>
+                                <td>
+                                    <input type="number" class="form-control-sm form-control text-center purchaseIssueQtyOfIssue" />
+                                </td>
+                                <td>
+                                    <select class="form-control-sm form-control searchable-select purchaseIssueFloor" asp-items="ViewBag.FloorList as SelectList">
+                                        <option value="">Select Floor</option>
+                                    </select>
+                                </td>                               
+                                <td style="width:3vw;">
+                                    <div class="d-flex justify-content-center align-items-center gap-2" style="white-space:nowrap;">
+                                        <button class="btn btn-outline-dark rounded-md shadow d-flex justify-content-center align-items-center" id="purchaseIssueAddmoreDetailsBtn" style="width: auto; height: 30px; font-size: 9px; line-height: 1;">
+                                            <i class="fas fa-plus"></i> <span class="ps-2"> Add New</span>
+                                        </button>
+                                       @*  <button class="btn btn-outline-danger rounded-md shadow d-flex justify-content-center align-items-center purchaseIssueDeleteDetailsBtn" style="width: 30px; height: 30px; font-size: 9px; line-height: 1;">
+                                            <i class="fa fa-eraser">&nbsp;</i>
+                                        </button> *@
+                                    </div>
+                                </td>
+                            </tr>                            
+                        </tbody>
+                    </table>
+                </div>
+                <div class="py-2">
+                    <partial name="_GridTemp"></partial>
+                </div>
+                <!-- Date Information Section -->
+                <div class="date-info">
+                    <hr class="date-divider" />
+                    <div class="row">
+
+                        <div class="col-12 col-md-6">
+                            <div class="d-flex justify-content-center align-items-center">
+                                Create Date: <span class="createDate  ps-1"></span>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="d-flex justify-content-center align-items-center">
+                                Last Update Date: <span class="updateDate ps-1"></span>
+                            </div>
+                        </div>
+
+                    </div>
+                    <hr class="date-divider" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container-fluid">
+    <div class="card p-2">
+        <partial name="_Grid"></partial>
+    </div>
+</div>
+
+
+<!-- Supplier Type & Country Modal -->
+<div class="modal fade" id="supplierModal" tabindex="-1" aria-labelledby="supplierModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-xl supplier-modal-custom-lg">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="supplierModalLabel">Sales Supplier</h5>
+                <button type="button" class="btn-close" id="stationarySupplierModalClose" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <!-- Modal form content here -->
+                <div id="supplierContainer">
+                    <!-- Your dynamic content here -->
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+<!-- unit Modal -->
+<div class="modal fade" id="floorModal" tabindex="-1" aria-labelledby="floorModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal-xl modal-custom-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Floor</h5>
+                <button type="button" class="btn-close closeUnitModel" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div id="productUnitModelContainer">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@* 
+<div class="modal fade" id="brandModal" tabindex="-1" aria-labelledby="brandModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Brand</h5>
+                <button type="button" class="btn-close closeBrandModel" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="brandContainer">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+ *@
+
+
+
+<!-- Bootstrap 5 CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- FontAwesome (For icons like plus icon) -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+<!-- Bootstrap 5 JS (includes Popper) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- DataTables CSS (Optional, if you're using DataTables) -->
+<link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+
+<!-- DataTables JS (Bootstrap 5 compatible) -->
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+
+    <!-- Flatpickr (Date picker, if used) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/material_blue.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+    <!-- Page-specific JS -->
+    
+    <script src="~/js/pages/HRM_Def_Floor.js"></script>
+    <script src="~/js/pages/ProductIssueEntry.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            $.ProductIssueEntryJs({
+                baseUrl: '@Url.Action("Index", "ProductIssueEntry")',
+                load: function () {
+                    console.log("Custom load logic called from Razor view");
+                }
+            });
+        });
+
+        if (typeof pdfjsLib !== 'undefined') {
+            pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
+        }
+    </script>
+}

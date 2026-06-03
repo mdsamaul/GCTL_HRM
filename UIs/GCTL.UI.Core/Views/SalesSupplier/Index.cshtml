@@ -1,0 +1,194 @@
+﻿@model GCTL.UI.Core.ViewModels.SalesSupplier.SalesSupplierViewModel
+
+@{
+    Model.Breadcrumb = "SalesSupplier";
+    Model.PageTitle = "Supplier Information";
+}
+
+
+<style>
+    #stickyHeader {
+        position: sticky;
+        top: 0px;
+        z-index: 1020;
+        min-height: 50px;
+        background: linear-gradient(to right, #fff, white);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        transition: box-shadow 0.3s ease-in-out;
+        transition: all 0.5s ease-in-out;
+    }
+
+        #stickyHeader.scrolled {
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+            padding-top: 7px;
+            padding-bottom: 7px;
+        }
+
+    .supplierTypeLeft {
+        width: 12vw;
+        padding-right: 5px;
+        white-space: nowrap;
+    }
+
+    .supplierTypeRight {
+        width: 22vw;
+    }
+
+    input,
+    select,
+    textarea {
+        border: 1px solid #eee !important;
+    }
+
+    .dataTables_wrapper .dataTables_filter input {
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+        padding: 4px 8px;
+    }
+
+    .dataTables_wrapper .dataTables_paginate .paginate_button {
+        padding: 0 !important;
+        margin: 0 !important;
+        background-color: transparent !important;
+        border: none !important;
+        border-radius: 0 !important;
+        color: inherit !important;
+        box-shadow: none !important;
+        cursor: pointer;
+    }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+            background-color: transparent !important;
+            color: inherit !important;
+            font-weight: bold;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+            background-color: transparent !important;
+            color: inherit !important;
+        }
+
+
+    #supplierTypeTable tbody tr td {
+        padding: 2px 8px !important;
+        font-size: 14px;
+    }
+
+    #supplierTypeTable td:first-child,
+    #supplierTypeTable th:first-child {
+        text-align: center;
+        vertical-align: middle;
+        width: 1%;
+        white-space: nowrap;
+    }
+
+        #supplierTypeTable td:first-child input[type="checkbox"] {
+            display: block;
+            margin: 0 auto;
+            cursor: pointer;
+        }
+
+    textarea.SupplierType-input, input.SupplierType-input {
+        border: 1px solid red !important;
+    }
+
+    .custom-salse-supp-modal{
+        max-width:80vw !important;
+    }
+
+</style>
+
+<div class="container-fluid">
+    <partial name="_PageHeader" model="Model"></partial>
+</div>
+
+<div class="container-fluid">
+    <div id="stickyHeader" class="card-header p-2 sticky-top rounded-bottom"
+         style="min-height: 50px; z-index: 1020;">
+        <partial name="_Toolbars" model="new ToobarModel(){Title=Model.Breadcrumb, Code=Model.Code , Name=Model.Setup.SupplierID, }" />
+    </div>
+    <div class="card my-3 py-3">       
+            <partial name="_Setup" model="Model.Setup" />
+            <hr />
+        <div class="row mb-2">
+            <div class="col-12 col-md-6">
+                <div class="d-flex justify-content-center align-items-center">
+                    Entry Date:<span class="createDate"></span>
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="d-flex justify-content-center align-items-center">
+                    Last Update Date:<span class="updateDate"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+   <div class="card p-2">
+        <partial name="_Grid"></partial>
+   </div>
+</div>
+
+<!-- Head Section -->
+<!-- Bootstrap 5 CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- FontAwesome -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+<!-- DataTable CSS -->
+<link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+
+<!-- Bootstrap Multiselect CSS -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/1.1.2/css/bootstrap-multiselect.min.css" rel="stylesheet" />
+
+<!-- Flatpickr CSS -->
+<link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/material_blue.css" rel="stylesheet" />
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+<!-- DataTables JS -->
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+
+<!-- Bootstrap 5 JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Bootstrap Multiselect JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/1.1.2/js/bootstrap-multiselect.min.js"></script>
+<!-- Choices.js CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
+
+<!-- Choices.js JS -->
+<script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+
+<!-- Flatpickr JS -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <!-- Your Page Specific JS -->
+    <script src="~/js/pages/SalesSupplier.js"></script>
+    <script src="~/js/pages/Core_Country.js"></script>
+    <script src="~/js/pages/InvDefSupplierType.js"></script>
+    <script>
+        $(function () {
+            $.SalesSupplier({
+                baseUrl: '@Url.Action("Index", "SalesSupplier")',
+                load: function () {
+                    console.log("Custom load logic called from Razor view");
+                }
+            });
+
+            if (typeof pdfjsLib !== 'undefined') {
+                pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
+            }
+        });
+    </script>
+}

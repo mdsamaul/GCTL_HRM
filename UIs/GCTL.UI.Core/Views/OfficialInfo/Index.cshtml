@@ -1,0 +1,89 @@
+﻿@model GCTL.UI.Core.ViewModels.HrmEmployeeOfficialInfo.HrmEmployeeOfficialInfoPageViewModel
+@{
+    ViewBag.Title = "Official Info List";
+    Model.PageTitle = ViewBag.Title;
+    Model.Breadcrumb = "Official Info List";
+}
+
+<style>
+    .dataTables_filter {
+        margin-right: 0px;
+    }
+</style>
+
+<!-- Content Header (Page header) -->
+<section class="content-header" style="padding-bottom: 0;">
+    <div class="container-fluid">
+        <div class="calloutx callout-info" style="height: 35px;">
+            <div class="row mb-2">
+                <div class="col-md-8 row">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class=""><a href="@Url.Action("Setup", "OfficialInfo")" class="linkbutton1 btn btn-sm btn-success" style="font-size:13px; text-decoration: none;"> <i class="fa fa-plus"></i> Create </a></li>
+                    </ol>
+                </div>
+                <div class="col-md-4">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="/Dashboard">Home</a></li>
+                        <li class="breadcrumb-item"><a href="/OfficialInfo/Setup">Official Info</a></li>
+                        <li class="breadcrumb-item active">Official Info List</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header border-transparent">
+                        <h3 class="card-title">@ViewBag.Title</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body p-2 pt-3">
+                        <div class="js-officialInfo-grid-container">
+                            @await Html.PartialAsync("_Grid", Model.SetupList)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <partial name="_BottomNavigation" />
+    </div>
+</section>
+<partial name="DeleteModal" />
+
+<!-- Flatpickr CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<!-- Optional: Theme -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/material_blue.css">
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+   
+	<script src="~/js/pages/officialinfo.js"></script>
+    <script type="text/javascript">
+        var options = {
+            baseUrl: '@Url.Action("", "OfficialInfo")'
+        };
+        options.load = () => {
+        };
+
+        $.officialInfo(options);
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+}

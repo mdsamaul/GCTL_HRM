@@ -1,0 +1,65 @@
+﻿ @model GCTL.Core.ViewModels.SalesDefVehicle.SalesDefVehicleSetupViewModel
+<!-- Hidden field for AutoId in Edit -->
+<input type="hidden" asp-for="TC" />
+<div class="row">
+    <div class="col-12 col-md-6">
+        <div class="d-flex align-items-center">
+            <div class="transportLeft text-right">Company <span class="text-danger">*</span></div>
+            <div class="transportRight">
+                <select class="form-control-sm form-control form-select-sm form-select companySelectValue" asp-items="ViewBag.CompnayList as SelectList">				
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-md-6"> </div>
+</div>
+
+<div class="row py-2">
+    <div class="col-12 col-md-6">
+        <div class="d-flex align-items-center">
+            <div class="transportLeft text-right">Transport ID <span class="text-danger">*</span></div>
+            <div class="transportRight">
+                <input asp-for="VehicleID" readonly class="form-control-sm form-control" />
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-md-6">
+        <div class="d-flex align-items-center">
+            <div class="transportLeft text-right">Transport Type <span class="text-danger">*</span></div>
+            <div class="transportRight btn-group">
+                <select id="CloaseLoadedTransportTypelistSelectContainer" asp-items="ViewBag.TransportTypeList as SelectList" class="form-control-sm form-control form-select-sm form-select searchable-select">
+                    <option value="">Select Transport Type</option>
+                </select>
+             
+                <button class="btn btn-outline-dark rounded-md d-flex justify-content-center align-items-center"
+                        id="trapnsportTypeAddmoreDetailsBtn"
+                        style="width: auto; height: 30px; font-size: 9px; line-height: 1;" 
+                        data-bs-toggle="modal" data-bs-target="#transportTypeModal" >
+                    <i class="fas fa-plus"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row py-2">
+    <div class="col-12 col-md-6">
+        <div class="d-flex align-items-center">
+            <div class="transportLeft text-right">Transport No. <span class="text-danger">*</span></div>
+            <div class="transportRight">
+                <input asp-for="VehicleNo" class="form-control-sm form-control" />
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-md-6">
+        <div class="d-flex align-items-center">
+            <div class="transportLeft text-right">Transport Capacity</div>
+            <div class="transportRight">
+                <input asp-for="TransportCapacity" class="form-control-sm form-control" />
+            </div>
+        </div>
+    </div>
+</div>
+

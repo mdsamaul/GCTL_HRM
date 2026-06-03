@@ -1,0 +1,64 @@
+﻿<style>
+    #employee-weekend-grid-body {
+        display: block;
+        max-height: 251px; 
+        overflow-y: auto;
+    }
+
+    #employee-weekend-grid thead {
+        display: table;
+        width: calc(100% - 17px); 
+        table-layout: fixed;
+    }
+
+    #employee-weekend-grid tbody {
+        display: block;
+        overflow-y: auto;
+        width: 100%;
+    }
+
+        #employee-weekend-grid tbody tr {
+            display: table;
+            width: 100%;
+            table-layout: fixed;
+        }
+
+    .table-responsive {
+        overflow-x: auto;
+    }
+    .dataTables_filter input {
+        width: 350px !important; 
+        max-width: 100%;
+        padding: 6px 12px;
+    }
+    .dataTables_filter {
+        margin-bottom: 10px;
+    }
+</style>
+<div id="loadingOverlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(255,255,255,0.7); z-index:9999; text-align:center; padding-top:200px; font-size:24px;">
+    Loading...
+</div>
+
+<div class="table-responsive">
+    <table id="employee-weekend-grid" class="table table-striped table-bordered table-sm table-common">
+        <thead>
+            <tr>
+                <th class="text-center text-middle" width="50">
+                    Select <br /> <input type="checkbox" id="employee-check-all" />
+                </th>
+                <th class="text-center text-middle">Employee ID</th>
+                <th class="text-center text-middle">Name</th>
+                <th class="text-center text-middle">Designation</th>
+                <th class="text-center text-middle">Department</th>
+                <th class="text-center text-middle">Branch</th>
+                <th class="text-center text-middle">Company</th>
+                <th class="text-center text-middle">Employee Type</th>
+                <th class="text-center text-middle">Joining Date</th>
+                <th class="text-center text-middle">Activity Status</th>
+            </tr>
+        </thead>
+        <tbody id="employee-weekend-grid-body">
+            <!-- Data will be injected here -->
+        </tbody>
+    </table>
+</div>

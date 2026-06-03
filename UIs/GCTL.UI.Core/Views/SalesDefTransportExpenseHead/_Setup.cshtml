@@ -1,0 +1,36 @@
+﻿ @model GCTL.Core.ViewModels.SalesDefTransportExpenseHead.SalesDefTransportExpenseHeadSetupViewModel
+<!-- Hidden field for AutoId in Edit -->
+<input type="hidden" asp-for="TC" />
+<div class="row">
+    <div class="col-12 col-md-6">
+        <div class="d-flex align-items-center">
+            <div class="transportLeft text-right">ID <span class="text-danger">*</span></div>
+            <div class="transportRight">
+                <input asp-for="ExpenseHeadID" class="form-control-sm form-control" readonly />
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-md-6"> </div>
+</div>
+
+<div class="row py-2">
+    <div class="col-12 col-md-6">
+        <div class="d-flex align-items-center">
+            <div class="transportLeft text-right text-nowrap">Expense Head Name <span class="text-danger">*</span></div>
+            <div class="transportRight">
+                <input asp-for="ExpenseHead" class="form-control-sm form-control" placeholder="Enter Expense Head"/>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-md-6">
+        <div class="d-flex align-items-center">
+            <div class="transportLeft text-right">Short Name</div>
+            <div class="transportRight">
+                <input asp-for="ShortName" placeholder="Enter Short Name" class="form-control-sm form-control" />
+            </div>
+        </div>
+    </div>
+</div>
+
+

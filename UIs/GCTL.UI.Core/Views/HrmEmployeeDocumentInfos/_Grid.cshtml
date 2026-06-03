@@ -1,0 +1,65 @@
+﻿@model List<GCTL.Core.ViewModels.HrmEmployeeDocumentInfos.HrmEmployeeDocumentInfosSetup>
+
+<div class="card">
+    <div class="card-body">
+        <table id="HrmEmployeeDocumentInfos-gridTT" class="table table-striped  table-bordered table-sm table-hover table-common">
+            <thead class="row-border">
+                <tr class="table row-border">
+                    <th class="text-center text-middle" style="width:6%">
+                        Select <br /> <input class="text-center text-middle" type="checkbox" id="HrmEmployeeDocumentInfos-check-all" />
+                    </th>
+                    <th class="text-center text-middle" style="width:6%"> Id</th>
+                    <th class="text-center text-middle">Document</th>
+                    <th class="text-center text-middle">Discription</th>
+                    <th class="text-center text-middle" style="width:10%">Type</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model == null || !Model.Any())
+                {
+                    <tr class="text-center text-middle">
+                        <td colspan="13">No Data Available.</td>
+                    </tr>
+                }
+                else
+                {
+                    @foreach (var item in Model.OrderByDescending(x => x.Id))
+                    {
+                        <tr>
+                            <td class="text-center text-middle">
+                                <input type="checkbox" class="text-center checkBox" data-id="@item.EmpDocId" value="@item.EmpDocId" />
+                            </td>
+                            <td style="text-align: center; vertical-align: middle;">
+                                <a href="#" class="btn js-HrmEmployeeDocumentInfos-edit"
+                                   style="text-decoration: underline; color: rebeccapurple;"
+                                   data-id="@item.EmpDocId"  data-id2="@item.EmployeeId" title="Edit">
+                                    @item.EmpDocId
+                                </a>
+                              
+
+                            </td>
+                            <td class="text-center text-middle">@item.DocumentName</td>
+                            <td class="text-center text-middle">@item.DocumentDiscription</td>
+                            <td class="text-center text-middle">
+                                @if (!string.IsNullOrEmpty(item.Doucment))
+                                {
+                                    var extension = System.IO.Path.GetExtension(item.Doucment).ToLower();
+                                    if (extension == ".pdf")
+                                    {
+                                        <a href="@Url.Content("~/Uploads/Documents/" + item.Doucment)" target="_blank">
+                                            <i class="fa fa-file-pdf" style="font-size: 25px; color: red;"></i> View PDF
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <img src="@Url.Content("~/Uploads/Documents/" + item.Doucment)" alt="Document" height="50" width="50" />
+                                    }
+                                }
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

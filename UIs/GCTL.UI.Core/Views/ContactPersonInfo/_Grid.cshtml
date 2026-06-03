@@ -1,0 +1,50 @@
+﻿@model List<GCTL.Core.ViewModels.ContactPersonInfo.ContactPersonInfoSetupViewModel>
+
+<table id="ContactPersonInfo-grid" class="table table-striped  table-bordered table-sm table-hover table-common">
+    <thead class="row-border">
+        <tr class="table row-border">
+            <th class="text-center text-middle" style="width: 7%;">
+                Select <br /> <input type="checkbox" id="ContactPersonInfo-check-all" />
+            </th>
+            <th class="text-center text-middle" style="width: 11%;">ID</th>
+            <th class="text-center text-middle" style="width: 30%;"> Name</th>
+            <th class="text-center text-middle" style="width: 21%;"> Designation</th>
+            <th class="text-center text-middle" style="width: 15%;"> Phone</th>
+            <th class="text-center text-middle" style="width: 16%;"> Email</th>
+
+        </tr>
+    </thead>
+    <tbody>
+
+        @if (Model == null || !Model.Any())
+        {
+            <tr class="text-center text-middle">
+                <td colspan="8">No Data Available.</td>
+            </tr>
+        }
+        else
+        {
+            @foreach (var item in Model.OrderByDescending(x => x.Cpid))
+            {
+                <tr>
+                    <td class="text-center">
+                        <input type="checkbox" class="text-center text-middle checkBox" data-id="@item.Cpid" value="@item.Cpid" />
+                    </td>
+                    <td>
+                        <a href="#" class='btn js-ContactPersonInfo-edit'
+                           style="text-decoration: underline; color: rebeccapurple;"
+                           data-id="@item.Cpid" title="Edit">
+                            @item.Cpid
+                        </a>
+                    </td>
+
+                    <td class="text-center text-middle">@item.ContactPersonName</td>
+                    <td class="text-center text-middle">@item.DesignationName</td>
+                    <td class="text-center text-middle">@item.ContactPersonMobile</td>
+                    <td class="text-center text-middle">@item.ContactPersonEmail</td>
+                </tr>
+            }
+        }
+
+    </tbody>
+</table>

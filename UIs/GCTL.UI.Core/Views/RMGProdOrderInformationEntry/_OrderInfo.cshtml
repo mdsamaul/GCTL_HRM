@@ -1,0 +1,452 @@
+﻿@model GCTL.UI.Core.ViewModels.RMGProdOrderInformationEntry.RMGProdOrderInformationEntryViewModel
+
+<div class="form-container">
+    <div class="left-panel">
+<input type="hidden" asp-for="OrderDto.TC" value="0" class="form-control">
+        <div class="form-grid pt-2">
+            
+            <!-- Row 1 -->
+            <div class="form-row">
+                <label class="col-form-label">Entry ID <span class="text-danger">*</span></label>
+                <div class="input-group input-group-sm">
+                    <input type="text" asp-for="OrderDto.OrderId" readonly class="form-control">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <label class="col-form-label">Buyer<span class="text-danger">*</span></label>
+                <div class="input-group input-group-sm">
+                    <select class="form-select searchAbleSelectMulti" asp-items="ViewBag.buyerList as SelectList" asp-for="OrderDto.BuyerId">
+                        <option value="" disabled selected hidden>Select Buyer</option>
+                    </select>
+                    <button type="button"
+                            class="btn btn-light border js-quick-add"
+                            data-url="@Url.Action("Index", "BuyerInfo")"
+                            data-target="#OrderDto_BuyerId"
+                            data-reload-url="@Url.Action("GetBuyerCompany", "Cascading")"
+                            data-title="Buyer">
+                        <i class="fa fa-plus" style="color: #8d8d8d;"></i>
+                    </button>
+
+                    @* <button type="button" class="btn btn-light border">
+                        <i class="fa fa-plus" style="color: #8d8d8d;"></i>
+                    </button> *@
+                </div>
+            </div>
+
+            <!-- Row 2 -->
+            <div class="form-row">
+                <label class="col-form-label">Buyer Order No</label>
+                <div class="input-group input-group-sm">
+                    <input type="text" class="form-control" placeholder="Enter Buyer Order No" asp-for="OrderDto.BuyerOrderNo">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <label class="col-form-label">Brand</label>
+                <div class="input-group input-group-sm">
+                    <select class="form-select searchAbleSelectMulti" asp-items="ViewBag.buyerBrandList as SelectList" asp-for="OrderDto.BuyerBrand">
+                        <option value="" disabled selected hidden>Select Brand</option>
+                     </select>
+                    @* <button type="button" class="btn btn-light border">
+                        <i class="fa fa-plus" style="color: #8d8d8d;"></i>
+                    </button> *@
+                        <button type="button"
+                                class="btn btn-light border js-quick-add"
+                            data-url="@Url.Action("Index", "BuyerInfo")"
+                                data-target="#OrderDto_BuyerBrand"
+                            data-reload-url="@Url.Action("GetBuyerCompany", "Cascading")"
+                                data-title="Buyer Brand">
+                            <i class="fa fa-plus" style="color: #8d8d8d;"></i>
+                        </button>
+                </div>
+            </div>
+
+            <!-- Row 3 -->
+            <div class="form-row">
+                <label class="col-form-label">Integra JOB No.<span class="text-danger">*</span></label>
+                <div class="input-group input-group-sm">
+                    <input type="text" class="form-control" readonly asp-for="OrderDto.IntegraJOBNo">
+                </div>
+            </div>
+
+
+            <div class="form-row">
+                <label class="col-form-label"></label>
+                <div class="input-group input-group-sm">
+                    <div class="radio-group gap-5">
+                        <div class="radio-item">
+                            <input type="radio" name="option" id="styleWise" class="me-2" checked>
+                            <label for="styleWise" class="mb-0">Style Wise</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" name="option" id="poWise" class="me-2">
+                            <label for="poWise" class="mb-0">P.O Wise</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Row 4 -->
+            <div class="form-row styleWiseRow">
+                <label class="col-form-label">Style</label>
+                <div class="input-group input-group-sm">
+                    <select class="form-select searchAbleSelectMulti" asp-for="OrderDto.StyleId" asp-items="ViewBag.styleList as SelectList">
+                        <option value="" disabled selected hidden>Select Style</option>
+                    </select>
+                    @* <button type="button" class="btn btn-light border">
+                        <i class="fa fa-plus" style="color: #8d8d8d;"></i>
+                    </button> *@
+                    <button type="button"
+                            class="btn btn-light border js-quick-add"
+                            data-url="@Url.Action("Index", "StyleInformation")"
+                            data-target="#OrderDto_styleList"
+                            data-reload-url="@Url.Action("GetStyle", "Cascading")"
+                            data-title="Style">
+                        <i class="fa fa-plus" style="color: #8d8d8d;"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="form-row masterPoWise hidden">
+                <label for="masterPoWiseInput" class="col-form-label">Master P.O</label>
+                <div class="input-group input-group-sm only-multiselect-native">
+                    @* <input type="text" class="form-control" placeholder="Enter P.O No" asp-for="OrderDto.StylePOWise" id="masterPoWiseInput"> *@
+                    <input type="text" class="form-control" placeholder="Enter P.O No" asp-for="OrderDto.MasterPurchaseOrder">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <label class="col-form-label">Season</label>
+                <div class="d-flex" style="padding-left: 0px;">                    
+                    <div class="input-group col-md-6   input-group-sm" style="padding-right: 0px;margin-right: 8px;">
+                        <select class="form-select searchAbleSelectMulti" asp-items="ViewBag.seactionList" asp-for="OrderDto.SeasonId">
+                            <option value="" disabled selected hidden>Select Season</option>
+                        </select>
+                        @* <button type="button" class="btn btn-light border">
+                            <i class="fa fa-plus" style="color: #8d8d8d;"></i>
+                        </button> *@
+                        <button type="button"
+                                class="btn btn-light border js-quick-add"
+                                data-url="@Url.Action("Index", "SeasonInformation")"
+                                data-target="#OrderDto_BuyerBrand"
+                                data-reload-url="@Url.Action("GetBuyerCompany", "Cascading")"
+                                data-title="Season">
+                            <i class="fa fa-plus" style="color: #8d8d8d;"></i>
+                        </button>
+                    </div>
+                 @* <input type="number" class="form-control form-control-sm" asp-for="OrderDto.SeasonYear" value="@(Model?.OrderDto?.SeasonYear ?? DateTime.Now.Year.ToString())" /> *@
+                    <input type="number" maxlength="4" min="1900" max="2099"
+                           id="OrderDto_SeasonYear" name="OrderDto.SeasonYear"
+                           class="form-control form-control-sm">
+
+                </div>
+            </div>
+
+           
+
+            <!-- Row 5 -->
+             <div class="form-row">
+                <label class="col-form-label">P.O Status</label>
+                <div class="input-group input-group-sm">
+                    <select class="form-select searchAbleSelectMulti" asp-for="OrderDto.POStatusId">
+                        <option value="" disabled selected hidden>Select P.O Status</option>
+                        <option value="001">Approval</option>
+                        <option value="002">In Approval</option>
+                    </select>
+                </div>
+            </div>
+
+           
+
+            <div class="form-row">
+                <label class="col-form-label">Total Order Quantity<span class="text-danger">*</span></label>
+                @*<div class="input-group input-group-sm">
+            <input type="text" class="form-control">
+            <select class="form-select">
+                <option value=""></option>
+            </select>
+            <button type="button" class="btn btn-light border">
+                <i class="fa fa-plus" style="color: #8d8d8d;"></i>
+            </button>
+             </div>*@
+                <div class="d-flex" style="padding-left: 5px;">
+                    <input type="number" class="form-control form-control-sm col-md-6" placeholder="Enter Total Order Quantity" asp-for="OrderDto.TotalOrderQuantity">
+                    <div class="input-group col-md-6   input-group-sm" style="padding-right: 0px;">
+                        <select class="form-select searchAbleSelectMulti" asp-items="ViewBag.unitTypeList as SelectList" asp-for="OrderDto.UnitTypID">
+                            <option value="" disabled selected hidden>Select Quantity</option>
+                        </select>
+                        @* <button type="button" class="btn btn-light border">
+                            <i class="fa fa-plus" style="color: #8d8d8d;"></i>
+                        </button> *@
+                        <button type="button"
+                                class="btn btn-light border js-quick-add"
+                                data-url="@Url.Action("Index", "RMG_Prod_Def_UnitType")"
+                                data-target="#OrderDto_UnitTypID"
+                                data-reload-url="@Url.Action("GetStyle", "Cascading")"
+                                data-title="Unit Type">
+                            <i class="fa fa-plus" style="color: #8d8d8d;"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Row 6 -->
+            <div class="form-row">
+                <label class="col-form-label">FOB Amount Per Unit</label>
+                <div class="d-flex" style="padding-left: 5px;">
+                    <input type="number" class="form-control form-control-sm col-md-6" placeholder="Enter FOB Amount Per Unit" asp-for="OrderDto.FOBAmount" />
+                    <div class="input-group col-md-6   input-group-sm" style="padding-right: 0px;">
+                        <select class="form-select searchAbleSelectMulti" asp-items=" ViewBag.currentcyList as SelectList" asp-for="OrderDto.CurrencyId_FOB">
+                            <option value="" disabled selected hidden>Select Currency</option>
+                        </select>
+                        @* <button type="button" class="btn btn-light border">
+                            <i class="fa fa-plus" style="color: #8d8d8d;"></i>
+                        </button> *@
+                        <button type="button"
+                                class="btn btn-light border js-quick-add"
+                                data-url="@Url.Action("Index", "Currencies")"
+                                data-target="#OrderDto_CurrencyId_FOB"
+                                data-reload-url="@Url.Action("GetBuyerCompany", "Cascading")"
+                                data-title="currentcy List">
+                            <i class="fa fa-plus" style="color: #8d8d8d;"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <!-- Empty cell -->
+            </div>
+
+            <!-- Row 7 -->
+            <div class="form-row">
+                <label class="col-form-label">Buyer Bank</label>
+                <div class="input-group input-group-sm">
+                    <select class="form-select searchAbleSelectMulti" asp-items=" ViewBag.bankList as SelectList" asp-for="OrderDto.BuyerBankId">
+                        <option value="" disabled selected hidden>Select Buyer Bank</option>                       
+                    </select>
+                    @* <button type="button" class="btn btn-light border">
+                        <i class="fa fa-plus" style="color: #8d8d8d;"></i>
+                    </button> *@
+                    <button type="button"
+                            class="btn btn-light border js-quick-add"
+                            data-url="@Url.Action("Index", "BankInformations")"
+                            data-target="#OrderDto_BuyerBankId"
+                            data-reload-url="@Url.Action("GetBuyerCompany", "Cascading")"
+                            data-title="Bank Informtion">
+                        <i class="fa fa-plus" style="color: #8d8d8d;"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <label class="col-form-label">Branch</label>
+                <div class="input-group input-group-sm">
+                    <select class="form-select searchAbleSelectMulti" asp-items="ViewBag.bankBranchList as SelectList" asp-for="OrderDto.BuyerBranchId">
+                        <option value="" disabled selected hidden>Select Branch</option>                       
+                    </select>
+                    @* <button type="button" class="btn btn-light border">
+                        <i class="fa fa-plus" style="color: #8d8d8d;"></i>
+                    </button> *@
+                    <button type="button"
+                            class="btn btn-light border js-quick-add"
+                            data-url="@Url.Action("Index", "BankBranchInformations")"
+                            data-target="#OrderDto_bankBranchList"
+                            data-reload-url="@Url.Action("GetBuyerCompany", "Cascading")"
+                            data-title="Bank Branch Information">
+                        <i class="fa fa-plus" style="color: #8d8d8d;"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Row 8 -->
+            <div class="form-row">
+                <label class="col-form-label">Branch Address</label>
+                <div class="input-group input-group-sm">
+                    <textarea rows="1" class="form-control form-control-sm" placeholder="Enter Branch Address" id="buyerBranchAddress"></textarea>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <label class="col-form-label">SWIFT Code</label>
+                <div class="input-group input-group-sm">
+                    <input type="text" class="form-control" placeholder="Enter SWIFT Code" asp-for="OrderDto.BuyerSwiftCode">
+                </div>
+            </div>
+
+            <!-- IABL Bank -->
+            <div class="form-row mb-2">
+                <label class="col-form-label">IABL Bank</label>
+                <div class="input-group input-group-sm">
+                    <select class="form-select searchAbleSelectMulti" asp-items=" ViewBag.bankList as SelectList" asp-for="OrderDto.CompanyOwnBankId">
+                        <option value="" disabled selected hidden>Select Bank</option>
+                    </select>
+                    @* <button type="button" class="btn btn-light border">
+                        <i class="fa fa-plus" style="color: #8d8d8d;"></i>
+                    </button> *@
+                    <button type="button"
+                            class="btn btn-light border js-quick-add"
+                            data-url="@Url.Action("Index", "BankInformations")"
+                            data-target="#OrderDto_BuyerBankId"
+                            data-reload-url="@Url.Action("GetBuyerCompany", "Cascading")"
+                            data-title="Bank Informtion">
+                        <i class="fa fa-plus" style="color: #8d8d8d;"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Branch -->
+            <div class="form-row mb-2">
+                <label class="col-form-label">Branch</label>
+                <div class="input-group input-group-sm">
+                    <select class="form-select searchAbleSelectMulti" asp-items="ViewBag.bankBranchList as SelectList" asp-for="OrderDto.CompanyOwnBranchId">
+                        <option value="" disabled selected hidden>Select Branch</option>
+                    </select>
+                    <button type="button"
+                            class="btn btn-light border js-quick-add"
+                            data-url="@Url.Action("Index", "BankBranchInformations")"
+                            data-target="#OrderDto_bankBranchList"
+                            data-reload-url="@Url.Action("GetBuyerCompany", "Cascading")"
+                            data-title="Bank Branch Information">
+                        <i class="fa fa-plus" style="color: #8d8d8d;"></i>
+                    </button>
+                </div>
+            </div>
+
+
+            <!-- Row 10 -->
+            <div class="form-row">
+                <label class="col-form-label">IABL Bank Branch Add.</label>
+                <div class="input-group input-group-sm">
+                    <textarea rows="1" class="form-control form-control-sm" placeholder="Enter Bank Branch Address" id="CompanyOwnBankAddress"></textarea>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <label class="col-form-label">SWIFT Code</label>
+                <div class="input-group input-group-sm">
+                    <input type="text" class="form-control" placeholder="Enter SWIFT Code" asp-for="OrderDto.CompanySwiftCode">
+                </div>
+            </div>
+
+           
+            <!-- Row 11  -->
+            <div class="form-row">
+                <label class="col-form-label">Buyer Contact Person</label>
+                <div class="input-group input-group-sm">
+                    <select class="form-select searchAbleSelectMulti" multiple="multiple" asp-items=" ViewBag.buyerContactList as SelectList" asp-for="OrderDto.BuContatPerson">
+                        @* <option value="" disabled hidden>Select Contact Person</option> *@
+                    </select>
+                    @* <button type="button" class="btn btn-light border" id="addBuyerContact">
+                        <i class="fa fa-plus" style="color: #8d8d8d;"></i>
+                    </button> *@
+
+                    <button type="button"
+                            class="btn btn-light border js-quick-add"
+                            data-url="@Url.Action("Index", "ContactPersonInfo")"
+                            data-target="#OrderDto_BuContatPerson"
+                            data-reload-url="@Url.Action("GetBuyerCompany", "Cascading")"
+                            data-title="Contact Person Info">
+                        <i class="fa fa-plus" style="color: #8d8d8d;"></i>
+                    </button>
+                </div>
+            </div>
+            
+                <div class="form-row mb-3 mt-3">
+                <label class="col-form-label pl-3 py-0">Merchandiser Contact Person</label>
+                    <div class="input-group input-group-sm">
+                        <select id="merchandiserContactPerson" class="form-select form-select-sm" asp-for="OrderDto.MerchandiserContactId">
+                        <option value="" disabled selected hidden>Select Merchandisers</option>
+                        </select>
+                        @* <button type="button" class="btn btn-light border" id="addMerchandiserContact" title="Add Contact">
+                            <i class="fa fa-plus" style="color: #8d8d8d;"></i>
+                        </button> *@
+
+                    <button type="button"
+                            class="btn btn-light border js-quick-add"
+                            data-url="@Url.Action("Index", "ContactPersonInfo")"
+                            data-target="#OrderDto_MerchandiserContactId"
+                            data-reload-url="@Url.Action("GetBuyerCompany", "Cascading")"
+                            data-title="Contact Person Info">             
+                        <i class="fa fa-plus" style="color: #8d8d8d;"></i>
+                    </button>
+                    </div>
+                </div>
+
+            <div id="employeeContainer" class="border rounded border-dark p-2" style="display:none;">
+                <table id="employeeTable" class="table table-striped table-bordered align-middle" style="width:100%;">
+                    <thead style="background-color: #f8f9fa; color: #000;">
+                            <tr>
+                                <th style="width: 50px;">
+                                    <input type="checkbox" id="selectAll">
+                                    </th>
+                                <th>Employee Name</th>
+                                <th>Designation</th>
+                                <th>Phone</th>
+                                <th>Email</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+       
+
+
+            <!-- Full width rows -->
+            <div class="full-width">
+                <div class="form-row">
+                    <label class="col-form-label py-0">Buyer Declaration/Disclaimer</label>
+                    <div class="input-group input-group-sm">
+                        <textarea rows="1" class="form-control form-control-sm" placeholder="Enter Buyer Declaration" asp-for="OrderDto.BuyerDeclaration"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="full-width">
+                <div class="form-row">
+                    <label class="col-form-label">Inspection Info</label>
+                    <div class="input-group input-group-sm">
+                        <textarea rows="1" class="form-control form-control-sm" placeholder="Enter Inspection Info" asp-for="OrderDto.InspectionInfo"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="full-width">
+                <div class="form-row">
+                    <label class="col-form-label">Remarks</label>
+                    <div class="input-group input-group-sm">
+                        <textarea rows="1" class="form-control form-control-sm" placeholder="Enter Remarks" asp-for="OrderDto.Remarks"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @* <partial name="_ShowingDate"></partial> *@
+        <div class="container-fluid mx-auto pb-3 showCreateModifyDateContainer">
+            <div class="d-md-flex justify-content-around">
+                <div class="w-50 text-center me-3">
+                    <hr class="border border-2 text-dark mb-0">
+                    <p class="mb-0">Entry Date: <span class="showCreateDateOrderInfo"></span></p>
+                </div>
+                <div class="w-50 text-center">
+                    <hr class="border border-2 text-dark mb-0">
+                    <p class="mb-0">Last Update Date: <span class="showModifyDateOrderInfo"></span></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card py-2">
+            <partial name="_OrderInfoGrid"></partial>
+        </div>
+    </div>
+
+    <div class="right-panel">
+        <div class="right-panel">
+            <div class="card image-card">
+                <img src="https://printiment.com/wp-content/uploads/2024/10/The-Emmanuel-Clase-that-showed-up-for-Cleveland-in-the-ALCS-MLB-t-shirt-1.jpg" class="card-img-top" id="buyerPhotoPreview" alt="No Image">
+            </div>
+        </div>
+    </div>
+</div>
+
+

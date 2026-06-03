@@ -1,0 +1,650 @@
+﻿@model GCTL.UI.Core.ViewModels.RMGProdOrderInformationEntry.RMGProdOrderInformationEntryViewModel
+@{
+    Model.Breadcrumb = "RMGProdOrderInformationEntry";
+    Model.PageTitle = "RMG ProdOrder Information Entry";
+}
+<style>
+     .swal2-toast {
+        min-height: 40px !important;
+        padding: 0px 12px !important;
+        font-size: 14px !important;
+        width: auto !important;
+    }
+
+        .swal2-toast .swal2-title {
+            font-size: 14px !important;
+            text-align: left !important;
+            padding-top: 10px !important;
+        }
+
+        .swal2-toast .swal2-icon {
+            width: 20px !important;
+            height: 30px !important;
+            margin: 0 5px 0 0 !important;
+        }
+
+    .swal2-timer-progress-bar {
+        background: #FF5722 !important;
+    }
+
+    .sticky-scrolled {
+        background-color: #fff !important;
+        transition: background-color 0.3s ease-in-out;
+        opacity: 95%;
+    }
+
+    #stickyHeader {
+        top: 0px;
+    }
+
+    #itemInformationGrid_processing,
+    #subGroupGrid_processing,
+    #subGroup2Grid_processing,
+    #StockLevelManagementGrid_processing,
+    #mainGroupGrid_processing {
+        background-color: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+    }
+
+    #stickyHeader {
+        transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+        #stickyHeader{
+            background:#fff;
+        }
+        #stickyHeader.hide-header {
+            transform: translateY(-100%);
+            opacity: 0;
+        }
+
+    .select2-selection__clear {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+    .sticky-scrolled{
+        background:#fff !important;
+    }
+    .form-container {
+        display: grid;
+        grid-template-columns: 75% 25%;
+        gap: 0;
+        max-width: 100%;
+        margin: 0 auto;
+    }
+
+    .left-panel {
+        border: 1px solid #dee2e6;
+        border-top: 0;
+        padding: 15px;
+        margin : 16px;
+        padding-top: 0px;
+        margin-top: 0px;
+    }
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0px;
+    }
+    .form-grid-color {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 0px;
+    }
+    .form-grid-color-dt {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr 0.5fr;
+        gap: 0px;
+    }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: 33% 1fr;
+        align-items: center;
+        gap: 0px;
+        margin-bottom: 0px;
+    }
+
+        .form-row label {
+            text-align: right;
+            /* white-space: nowrap; */
+            padding-right: 0;
+            font-weight:normal;
+        }
+
+        .form-row .input-group {
+            padding-left: 5px;
+        }
+
+    .full-width {
+        grid-column: 1 / -1;
+        margin-bottom: 0px;
+    }
+
+        .full-width .form-row {
+            grid-template-columns: 16.5% 1fr;
+        }
+
+    .radio-group {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 5px;
+    }
+
+    .radio-item {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex: 1fr 1fr;
+        /* cursor:pointer; */
+    }
+
+    .radio-item > input+label {
+       
+        cursor: pointer;
+    }
+
+    .right-panel {
+        /* border: 1px solid #dee2e6; */
+        padding: 15px;
+    }
+
+
+   
+
+    .bank-fieldset {
+        border: 2px solid #ccc;
+        border-radius: 8px;
+        padding: 15px;
+        margin: 20px 0;
+        background: #fff;
+    }
+
+        .bank-fieldset legend {
+            font-weight: bold;
+            font-size: 1.1rem;
+            padding: 0 10px;
+            width: auto !important;
+            float: none;
+        }
+
+    .percentage-input-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+        gap: 5px;
+        padding-left: 5px;
+        align-items: center;
+    }
+
+    .grid-input {
+        height: 31px;
+        padding: 0 8px;
+        border: 1px solid #ced4da !important;
+        border-radius: 4px;
+        font-size: 0.875rem;
+    }
+
+    .input-percent-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+
+        .input-percent-wrapper input {
+            width: 100%;
+            padding-right: 25px;
+        }
+
+    .percent-symbol {
+        position: absolute;
+        right: 8px;
+        pointer-events: none;
+        color: #6c757d;
+        font-size: 0.875rem;
+    }
+
+
+
+    #btnPreviewPdf, #downloadReport {
+        transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        min-width: 120px;
+        min-height: 25px;
+        position: relative;
+        overflow: visible;
+    }
+
+        #btnPreviewPdf:hover,
+        #downloadReport:hover {
+            background-color: rgba(173, 255, 47, 0.2) !important;
+            color: #1e90ff !important;
+            border-color: #1e90ff !important;
+            box-shadow: 0 4px 10px rgba(30, 144, 255, 0.5) !important;
+        }
+
+
+        #btnPreviewPdf i,
+        #btnPreviewPdf span,
+        #downloadReport i,
+        #downloadReport span {
+            transition: transform 0.3s ease;
+            display: inline-block;
+            transform: scale(1);
+            margin-right: 2px;
+        }
+
+        #btnPreviewPdf:hover i,
+        #downloadReport:hover i {
+            transform: scale(1.3);
+        }
+
+
+
+
+
+    .toolbar-container {
+        background-color: #fff;
+        border: 1px solid #dee2e6;
+        border-radius: 4px;
+        padding: 0;
+    }
+
+    .toolbar-section {
+        padding: 8px 15px;
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+        .toolbar-section:last-child {
+            border-bottom: none;
+        }
+
+    .toolbar-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+        justify-content:center;
+    }
+
+    .toolbar-group {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 4px 0;
+    }
+
+    .toolbar-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 16px;
+        font-size: 13px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        background-color: #fff;
+        color: #333;
+        cursor: pointer;
+        transition: all 0.2s;
+        white-space: nowrap;
+        height: 32px;
+    }
+
+        .toolbar-btn:hover {
+            background-color: #f8f9fa;
+            border-color: #999;
+        }
+
+        .toolbar-btn i {
+            font-size: 14px;
+        }
+
+        .toolbar-btn.icon-only {
+            padding: 6px 12px;
+            min-width: 36px;
+            justify-content: center;
+        }
+
+    .toolbar-select {
+        height: 32px;
+        font-size: 13px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        padding: 4px 32px 4px 10px;
+        background-color: #fff;
+        cursor: pointer;
+        min-width: 150px;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 10px center;
+        background-size: 12px;
+        appearance: none;
+    }
+
+        .toolbar-select:focus {
+            outline: none;
+            border-color: #86b7fe;
+            box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+        }
+
+    .toolbar-divider {
+        width: 1px;
+        height: 24px;
+        background-color: #dee2e6;
+        margin: 0 4px;
+    }
+
+    .icon-group {
+        display: flex;
+        gap: 4px;
+        padding: 4px;
+        background-color: #f8f9fa;
+        border-radius: 4px;
+        border: 1px solid #e0e0e0;
+    }
+
+        .icon-group .toolbar-btn {
+            border: 1px solid transparent;
+            background-color: transparent;
+        }
+
+            .icon-group .toolbar-btn:hover {
+                background-color: #fff;
+                border-color: #ccc;
+            }
+
+    /* Mail Send button special styling */
+    .mail-send-btn {
+        background-color: #f0f0f0;
+        font-weight: 500;
+    }
+
+        .mail-send-btn i {
+            color: #666;
+        }
+
+    @@media (max-width: 768px) {
+        .toolbar-actions
+
+    {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .toolbar-group {
+        flex-wrap: wrap;
+    }
+
+    .toolbar-select {
+        min-width: 100%;
+    }
+
+    }
+
+    .btn-group-sm .btn {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.875rem;
+        line-height: 1.5;
+    }
+
+        .btn-group-sm .btn i {
+            font-size: 0.875rem;
+        }
+
+
+    /* Bootstrap Multiselect Custom Styling */
+    .multiselect-container {
+        max-height: 250px;
+        overflow-y: auto;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        border-radius: 4px;
+        width:100% !important;
+    }
+
+        .multiselect-container > li > a {
+            padding: 8px 15px;
+        }
+
+            .multiselect-container > li > a > label {
+                margin: 0;
+                cursor: pointer;
+                font-size: 14px;
+            }
+
+            .multiselect-container > li > a:hover {
+                background-color: #f8f9fa;
+            }
+
+        .multiselect-container .active a {
+            background-color: #007bff !important;
+            color: white !important;
+        }
+
+    .input-group .multiselect {
+        text-align: left;
+        border-radius: 0.25rem;
+        border: 1px solid #ced4da;
+        height: 31px;
+        font-size: 0.875rem;
+        padding: 0.25rem 0.5rem;
+        background-color: white;
+    }
+
+        .input-group .multiselect:focus {
+            border-color: #86b7fe;
+            outline: 0;
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+        }
+
+    .multiselect .caret {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .multiselect-selected-text {
+        display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        max-width: calc(100% - 30px);
+        text-align:left;
+    }
+
+
+
+    #employeeContainer {
+        position: absolute;
+        background: rgb(255, 255, 255);
+        z-index: 1000;
+        width: 70%;
+        top: 10%;
+    }
+
+    .multiselect {
+        border: 1px solid #ced4da;
+        height: 31px;
+        background-color: #fff !important;
+    }
+
+    .multiselect-container {
+        background-color: #fff !important;
+    }
+        .multiselect-container .form-check-input[type="radio"] {
+            display: none !important;
+        }
+
+
+    .only-multiselect-native .btn-group {
+        display: none !important;
+    }
+
+    .image-card {
+        width: 300px;
+        height: 300px;
+        border: 2px solid #dee2e6;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+        .image-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+   
+    .quantity-input {
+        width: 130px;
+        max-width: 130px;
+        text-align: center;
+        margin: 0 auto;
+        display: block;
+    }
+
+    /* Remarks textarea centered */
+    .remarks-input {
+        margin: 0 auto;
+        display: block;
+        text-align: left;
+    }
+
+    /* Dropdowns centered */
+    .color-select,
+    .size-select,
+    .unit-select {
+        margin: 0 auto;
+        display: block;
+        text-align: center;
+        width:180px !important;
+        min-width:180px !important;
+    }
+
+    /* Delete button centered (already flex, but double ensure) */
+    .delete-btn {
+        margin: 0 auto;
+        display: block;
+    }
+
+   #mainOrderGroupGrid .multiselect-selected-text {
+    display: inline;         
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: calc(100% - 30px);
+    text-align: center !important; 
+}
+
+    #portModal .modal-body {
+        max-height: calc(100vh - 160px);
+        overflow-y: auto;
+    }
+
+</style>
+
+<div class="container-fluid">
+    <partial name="_PageHeader" model="Model"></partial>
+</div>
+<div class="container-fluid">
+    <div class="card">
+        <div id="stickyHeader" class="card-header px-2 py-1 sticky-top" style="z-index:1020">
+            <partial name="_Toolbars" model="new ToobarModel() { Title = Model.Breadcrumb, Code = Model.Code, Name = Model.OrderDto.OrderId }"></partial>
+        </div>
+
+        <div class="card mb-0 rounded-top-0">
+            <nav>
+                <div class="nav nav-tabs m-3 mb-0" id="nav-tab" role="tablist">
+                    <button class="nav-link active" id="nav-order-tab" data-bs-toggle="tab" data-bs-target="#nav-order" type="button" role="tab" aria-controls="nav-order" aria-selected="true">Order Info</button>
+                    <button class="nav-link" id="nav-details-tab" data-bs-toggle="tab" data-bs-target="#nav-details" type="button" role="tab" aria-controls="nav-details" aria-selected="false">Details</button>
+                    <button class="nav-link" id="nav-colorbr-tab" data-bs-toggle="tab" data-bs-target="#nav-colorbr" type="button" role="tab" aria-controls="nav-colorbr" aria-selected="false">Color And Breakup</button>
+                </div>
+            </nav>
+            <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active" id="nav-order" role="tabpanel" aria-labelledby="nav-order-tab" tabindex="0">
+                    <partial name="_OrderInfo" model="Model"></partial>
+                </div>
+                <div class="tab-pane fade" id="nav-details" role="tabpanel" aria-labelledby="nav-details-tab" tabindex="0">
+                    <partial name="_Details" model="Model"></partial>
+                    dasfd
+                </div>
+                <div class="tab-pane fade" id="nav-colorbr" role="tabpanel" aria-labelledby="nav-colorbr-tab" tabindex="0">
+                    <partial name="_ColorAndSizeBreakup" model="Model"></partial>
+                </div>              
+            </div>
+        </div>
+    </div>
+</div>
+<partial name="QuickAddModal" />
+
+
+
+<!-- ===================== Required CSS ===================== -->
+<!-- Bootstrap 5 CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+
+<!-- DataTables CSS -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">
+
+<!-- Bootstrap Multiselect CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/1.1.2/css/bootstrap-multiselect.min.css"> 
+
+
+@* <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" /> *@
+
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<!-- Flatpickr CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+
+    <!-- ===================== Required JS ===================== -->
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <!-- Bootstrap 5 Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    @* <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script> *@
+
+
+
+    <!-- Bootstrap Multiselect -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/1.1.2/js/bootstrap-multiselect.min.js"></script>
+
+    <!-- DataTables -->
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Flatpickr -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/monthSelect/index.js"></script>
+
+
+
+    <link href="~/select2_4.0.13/select2/css/select2.min.css" rel="stylesheet" />
+
+    <script src="~/select2_4.0.13/select2/js/select2.min.js"></script>
+
+    <!-- Custom JS -->
+    <script src="~/js/pages/RMGProdOrderInformationEntry.js"></script>
+
+    <!-- Initialization -->
+    <script type="text/javascript">
+       
+        var options = {
+            baseUrl: '@Url.Action("", "RMGProdOrderInformationEntry")',
+        };
+        options.load = () => {
+           
+        };
+        $.RMGProdOrderInformationEntry(options);
+    </script>
+}

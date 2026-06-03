@@ -1,0 +1,62 @@
+﻿@model GCTL.Core.ViewModels.BloodGroups.BloodGroupSetupViewModel
+
+<div style="padding-top: 10px;">
+    <div class="row">
+        <div class="col-lg-6">
+            <span id="message"></span>
+        </div>
+        <div class="col-lg-6">
+        </div>
+    </div>
+    <div class="form-group row">
+        <input type="hidden" id="lastCode" />
+        <input type="hidden" asp-for="Tc" />
+        <input type="hidden" asp-for="Ldate" />
+        <input type="hidden" asp-for="ModifyDate" />
+        <div class="col-lg-6">
+            <label asp-for="BloodGroupCode">Blood Group Id</label>
+            <div class="input-group input-group-sm">
+                <input asp-for="BloodGroupCode" class="form-control form-control-sm js-bloodgroup-code" readonly="readonly" />
+            </div>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-lg-6">
+            <label asp-for="BloodGroup">Blood Group</label>
+            <span class="text-danger">*</span>
+            <input asp-for="BloodGroup" class="form-control form-control-sm js-bloodgroup-check-availability" placeholder="Enter Blood Group" />
+            <span asp-validation-for="BloodGroup" class="text-danger" />
+        </div>
+        <div class="col-lg-6">
+            <label asp-for="BanglaBloodGroup"></label>
+            <input asp-for="BanglaBloodGroup" class="form-control form-control-sm" placeholder="Enter Blood Group (বাংলা)" />
+        </div>
+    </div>
+    @if (Model.Tc > 0)
+    {
+        <hr />
+        <div class="form-group row">
+            <div class="col-lg-6">
+                @if (Model.Ldate.HasValue)
+                {
+                    <label>Creation Date: </label>
+                    <label>@Model.Ldate.Value.ToString(ApplicationConstants.DateFormat)</label>
+                }
+            </div>
+            <div class="col-lg-6">
+                @if (Model.ModifyDate.HasValue)
+                {
+                    <label>Last Update Date: </label>
+                    <label>@Model.ModifyDate.Value.ToString(ApplicationConstants.DateFormat)</label>
+                }
+            </div>
+        </div>
+    }
+</div>
+<div class="row no-print" style="margin-top: 9px;">
+    <div class="col-12">
+        <button class="btn btn-default success-btn btn-common btn-circle float-right js-bloodgroup-save" type="button">
+            <i class="fas fa-save">&nbsp;</i> Save
+        </button>
+    </div>
+</div>

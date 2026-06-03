@@ -1,0 +1,170 @@
+﻿@model GCTL.Core.ViewModels.Employees.EmployeeSetupViewModel
+@{
+    ViewBag.Title = $"Details of {Model.FirstName}";
+}
+
+<div class="row">
+    <div class="col-lg-9">
+
+        <div style="border: 1px solid #D9D9D9; margin-top: 10px; background-color: rgb(247,247,247);padding:15px">
+            <div class="row" style="border-bottom:1px solid lightgray">
+                <div class="col-lg-5">
+                    <h4>Employee General Info</h4>
+                </div>
+                <div class="col-lg-7">
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-lg-4">
+                    @Html.LabelFor(model => model.EmployeeID, "Employee ID", new { @class = "control-label" })
+                    @Html.TextBoxFor(model => model.EmployeeID, new { Value = ViewBag.MaxEmpID, @id = "txtEmployeeID", @readonly = "readonly", @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.EmployeeID)
+                </div>
+                <div class="col-lg-4">
+                    @Html.LabelFor(model => model.FirstName, "Name", new { @class = "control-label" })
+                    @Html.TextBoxFor(model => model.FirstName, new { @id = "txtFirstName", @class = "form-control", @readonly = "readonly" })
+                    @Html.ValidationMessageFor(model => model.FirstName)
+                </div>
+                <div class="col-lg-4" style="display:none">
+                    @Html.LabelFor(model => model.FingerPrintId, "Finger Print Id", new { @class = "control-label" })
+                    @Html.TextBoxFor(model => model.FingerPrintId, new { @id = "txtFingerPrintId", @class = "form-control", @readonly = "readonly" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4">
+                    @Html.LabelFor(model => model.FatherName, "Father's Name", new { @class = "control-label" })
+                    @Html.TextBoxFor(model => model.FatherName, new { @id = "txtFatherName", @class = "form-control", @readonly = "readonly" })
+                    @Html.ValidationMessageFor(model => model.FatherName)
+                </div>
+                <div class="col-lg-4">
+                    @Html.LabelFor(model => model.MotherName, "Mother's Name", new { @class = "control-label" })
+                    @Html.TextBoxFor(model => model.MotherName, new { @id = "txtMotherName", @class = "form-control", @readonly = "readonly" })
+                </div>
+                <div class="col-lg-4">
+                    @Html.LabelFor(model => model.NationalIdNo, "National ID", new { @class = "control-label" })
+                    @Html.TextBoxFor(model => model.NationalIdNo, new { @id = "txtNationalIdNo", @class = "form-control", @readonly = "readonly" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4">
+                    @Html.LabelFor(model => model.DateOfBirth, "Date Of Birth", new { @class = "control-label" })
+                    @Html.TextBoxFor(model => model.DateOfBirth, new { @id = "txtEmpBirthDate", @class = "EmpBirthDate form-control", @readonly = "readonly" })
+                    @Html.ValidationMessageFor(model => model.DateOfBirth)
+                </div>
+                <div class="col-lg-4">
+                    @Html.LabelFor(model => model.BloodGroupCode, "Blood Group", new { @class = "control-label" })
+                    @Html.DropDownListFor(model => model.BloodGroupCode, (SelectList)ViewBag.BloodGroup, "---- Select Blood Group ----", new { @class = "selectpicker", @disabled="disabled" })
+                </div>
+                <div class="col-lg-4">
+                    @Html.LabelFor(model => model.SexCode, "Gender", new { @class = "control-label" })
+                    @Html.DropDownListFor(model => model.SexCode, (SelectList)ViewBag.Sex, "---- Select Gender Test----", new { @class = "selectpicker", @disabled="disabled" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4">
+                    @Html.LabelFor(model => model.ReligionCode, "Religion", new { @class = "control-label" })
+                    @Html.DropDownListFor(model => model.ReligionCode, (SelectList)ViewBag.Religion, "---- Select Religion ----", new { @class = "selectpicker", @disabled="disabled" })
+                </div>
+                <div class="col-lg-4">
+                    @Html.LabelFor(model => model.PresentAddress, "Present Address", new { @class = "control-label" })
+                    @Html.TextAreaFor(model => model.PresentAddress, new { @id = "txtPresentAddress", @class = "form-control", @readonly = "readonly" })
+                </div>
+                <div class="col-lg-4">
+                    @Html.LabelFor(model => model.PermanentAddress, "Permanent Address", new { @class = "control-label" })
+                    @Html.TextAreaFor(model => model.PermanentAddress, new { @id = "txtPermanentAddress", @class = "form-control", @readonly = "readonly" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4">
+                    @Html.LabelFor(model => model.MobileNo, "Mobile No.", new { @class = "control-label" })
+                    @Html.TextBoxFor(model => model.MobileNo, new { @id = "txtMobileNo", @class = "form-control", @readonly = "readonly" })
+                </div>
+                <div class="col-lg-4">
+                    @Html.LabelFor(model => model.Email, "Email", new { @class = "control-label" })
+                    @Html.TextBoxFor(model => model.Email, new { @id = "txtEmail", @class = "form-control" , @readonly = "readonly"})
+               </div>
+                <div class="col-lg-4">
+                </div>
+
+                <div class="col-lg-4" style="display:none">
+                    @Html.LabelFor(model => model.DepartmentCode, "Department", new { @class = "control-label" })
+                    @Html.DropDownListFor(model => model.DepartmentCode, (SelectList)ViewBag.Department, "-- Select Department --", new { @class = "selectpicker", @disabled="disabled" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4" style="display:none">
+                    @Html.LabelFor(model => model.DesignationCode, "Designation", new { @class = "control-label" })
+                    @Html.DropDownListFor(model => model.DesignationCode, (SelectList)ViewBag.Designation, "-- Select Designation --", new { @class = "selectpicker", @disabled="disabled" })
+                </div>
+                <div class="col-lg-4">
+                </div>
+            </div>
+            <div class="row" style="padding-top:10px;">
+                <div class="col-lg-4">
+                   <a href='@Url.Action("Index", "Employee")' class="btn btn-success" style="width:100%">Back To List</a>
+                </div>
+                <div class="col-lg-4">
+                </div>
+                <div class="col-lg-4">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3">
+        <div class="row" style="padding-top:10px;">
+            <div class="col-lg-12">
+                <div id="divimgPreview">
+                    @if (String.IsNullOrEmpty(@Model.EmpPhoto))
+                    {
+                        <img id="imgPreview" style="height:170px;width:170px" />
+                    }
+                    else
+                    {
+                        <img id="imgPreview" src="@Url.Content("/Uploads/Images/Employees/"+ @Model.EmpPhoto)" style="height:170px;width:170px" />
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script type="text/javascript">
+     $(document).ready(function () {
+         $('input.EmpBirthDate').datepicker({
+            dateFormat: 'dd/mm/yy',
+            changeMonth: true,
+            changeYear: true,
+            yearRange: '1950:2100',
+            maxDate: '87Y'
+        });
+
+        $('.selectpicker').select2({
+            language: {
+                noResults: function () {
+                    //return 'Not found <a class="add_new_item" href="javascript:void(0)">Add New</a>';
+                }
+            },
+            escapeMarkup: function (markup) {
+                return markup;
+            }
+        });
+    });
+    function ShowSignaturePreview(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('#imgPreview').prop('src', e.target.result)
+                    .width(150)
+                    .height(150);
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
+}
+
+
+

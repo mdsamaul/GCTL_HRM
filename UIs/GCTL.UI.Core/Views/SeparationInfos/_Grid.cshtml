@@ -1,0 +1,54 @@
+﻿@model List<GCTL.Core.ViewModels.SeparationInfos.SeparationInfosSetupViewModel>
+
+<table id="SeparationInfos-grid" class="table table-striped  table-bordered table-sm table-hover table-common">
+    <thead class="row-border">
+        <tr class="table row-border">
+            <th class="text-center text-middle" style="width: 6%;">
+                Select <br /> <input type="checkbox" id="SeparationInfos-check-all" />
+            </th>
+            <th class="text-center text-middle" style="width: 6%;"> Id</th>
+            <th class="text-center text-middle" style="width: 8%;">Employee Id</th>
+            <th class="text-center text-middle" style="width: 20%;">Name</th>
+            <th class="text-center text-middle" style="width: 17%;">Designation</th>
+            <th class="text-center text-middle" style="width: 8%;">Separation Date</th>
+            <th class="text-center text-middle" style="width: 12%;">Separation Type</th>
+            <th class="text-center text-middle" style="width: 8%;">Final Payment</th>
+            <th class="text-center text-middle" style="width: 5%;">IsPaid</th>
+            <th class="text-center text-middle" style="width: 11%;">Remarks</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model == null || !Model.Any())
+        {
+            <tr class="text-center text-middle">
+                <td colspan="8">No Data Available.</td>
+            </tr>
+        }
+        else
+        {
+            @foreach (var item in Model.OrderByDescending(x => x.SeparationId))
+            {
+                <tr>
+                    <td class="text-center">
+                        <input type="checkbox" class="text-center text-middle checkBox" data-id="@item.SeparationId" value="@item.SeparationId" />
+                    </td>
+                    <td>
+                        <a href="#" class='btn js-SeparationInfos-edit'
+                           style="text-decoration: underline; color: rebeccapurple;"
+                           data-id="@item.SeparationId" title="Edit">
+                            @item.SeparationId
+                        </a>
+                    </td>
+                    <td class="text-center text-middle">@item.EmployeeId</td>
+                    <td class="text-center text-middle">@item.EmployeeName</td>
+                    <td class="text-center text-middle">@item.DesignationName</td>
+                    <td class="text-center text-middle">@item.SeparationDate</td>
+                    <td class="text-center text-middle">@item.SeparationType</td>
+                    <td class="text-center text-middle">@item.FinalPayment</td>
+                    <td class="text-center text-middle">@(item.IsPaid == "Y" ? "Yes" : "No")</td>
+                    <td class="text-center text-middle">@item.Remark</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

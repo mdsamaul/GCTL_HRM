@@ -1,0 +1,36 @@
+﻿@model GCTL.UI.Core.ViewModels.EditUsers.EditUserPageViewModel
+
+@{
+    Model.Breadcrumb = "EditUser";
+    Model.PageTitle = "Edit User Profile";
+}
+
+<div class="container-fluid">
+    <partial name="_PageHeader" model="Model"/>
+</div>
+
+<div class="container-fluid">
+    <div class=" gap-3">
+        <div class="card p-2">
+            <div class="card-header p-1">
+                <partial name="_Toolbars" model="new ToobarModel(){Title=Model.PageTitle, Code=Model.Code, Name = Model.setup.Username}"/>
+            </div>
+            <div class="card-body p-1">
+                <partial name="_Setup" model="Model.setup"/>
+            </div>
+        </div>
+
+        <div class="card p-2">
+            <partial name="_Grid"/>
+        </div>
+    </div>
+    <partial name="_BottomNavigation" />
+</div>
+
+
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+
+    <script src="~/js/pages/useredit.js"></script>
+}

@@ -1,0 +1,39 @@
+﻿namespace GCTL.Core.Reports
+{
+    public enum ReportType
+    {
+        MoneyReceipts,
+        Prescription,
+        InPatientBill,
+        OutPatientBill,
+        Commission,
+        CommissionPayment,
+        CommissionDue,
+        Doctors,
+        Patients,
+        Nurses,
+        LabTestCharges,
+        LabTestResults,
+        Discharges,
+        Sales,
+        SalesAll,
+        SalesSingle,
+        SalesPatientType,
+        Collections,
+        CollectionsSingle,
+        CollectionsPatientType,
+        DueCollections,
+        DueCollectionsSingle,
+        DueCollectionsPatientType,
+        Medicines,
+        OutPatientPrescriptionFee,
+        Discharge,
+        SalesCollectionReport,
+        DueList,
+        VoucherEntryReport,
+        CashbookReport,
+        IncomeStatement,
+        balancesheetStatement,
+        ExpenseReport
+    }
+}

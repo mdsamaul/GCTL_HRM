@@ -1,0 +1,248 @@
+﻿@model GCTL.UI.Core.ViewModels.ItemModel.ItemModelViewModel
+@{
+    Model.Breadcrumb = "ModelInfo";
+    Model.PageTitle = "Model Info";
+}
+
+<style>
+    #stickyHeader {
+        position: sticky;
+        top: 0px;
+        z-index: 1020;
+        min-height: 50px;
+        background: linear-gradient(to right, #fff, white);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        transition: box-shadow 0.3s ease-in-out;
+        transition: all 0.5s ease-in-out;
+    }
+
+        #stickyHeader.scrolled {
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+            padding-top: 7px;
+            padding-bottom: 7px;
+        }
+
+    .ModelLeft {
+        width: 12vw;
+        padding-right: 5px;
+        white-space: nowrap;
+    }
+
+    .ModelRight {
+        width: 22vw;
+    }
+
+    input,
+    select,
+    textarea {
+        border: 1px solid #eee !important;
+    }
+
+    .dataTables_wrapper .dataTables_filter input {
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+        padding: 4px 8px;
+    }
+
+    .dataTables_wrapper .dataTables_paginate .paginate_button {
+        padding: 2px 8px;
+        margin: 0 2px;
+        border-radius: 4px;
+        background-color: #f8f9fa;
+    }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+            background-color: #007bff;
+            color: white !important;
+        }
+
+    #itemModelTable tbody tr td {
+        padding: 2px 8px !important;
+        font-size: 14px;
+    }
+
+    .dataTables_wrapper .dataTables_paginate .paginate_button {
+        cursor: pointer !important;
+        padding: 5px 10px;
+        border-radius: 4px;
+        margin: 2px;
+        transition: background-color 0.3s;
+        border: 1px solid #eee;
+    }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+            background-color: #e2e8f0;
+            color: #000;
+        }
+
+    #itemModelTable td:first-child,
+    #itemModelTable th:first-child {
+        text-align: center;
+        vertical-align: middle;
+        width: 1%;
+        white-space: nowrap;
+    }
+
+        #itemModelTable td:first-child input[type="checkbox"] {
+            display: block;
+            margin: 0 auto;
+            cursor: pointer;
+        }
+
+    select.itemModel-input, input.itemModel-input {
+        border: 1px solid red !important;
+    }
+    .custom-modal-item{
+        max-width:80vw!important;
+    }
+
+</style>
+
+<div class="container-fluid">
+    <partial name="_PageHeader" model="Model"></partial>
+</div>
+
+<div class="container-fluid">
+    <div id="stickyHeader" class="card-header px-2 sticky-top rounded"
+         style="min-height: 50px; line-height:50px; z-index: 1020;">
+        <partial name="_Toolbars" model="new ToobarModel(){Title=Model.Breadcrumb, Code=Model.Code , Name=Model.Setup.ModelID}" />
+    </div>
+    <div class="card my-3 py-3">
+        <div class="row">
+            <!-- Hidden field for AutoId in Edit -->
+            <input type="hidden" asp-for="Setup.AutoId" />
+            <div class="col-12 col-md-6">
+                <div class="d-flex align-items-center">
+                    <div class="ModelLeft text-right">Model ID <span class="text-danger">*</span></div>
+                    <div class="ModelRight">
+                        <input type="text" name="name" id="itemModelId" value="" class="form-control-sm form-control" readonly />
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="d-flex align-items-center">
+                    <div class="ModelLeft text-right">Brand <span class="text-danger">*</span></div>
+                    <div class="ModelRight btn-group">
+                        <select class="form-control-sm form-control searchable-select" asp-items="ViewBag.BrandList as SelectList" id="itemModelBrand">
+                            <option value="">Select Brand</option>
+                        </select>
+                        <button class="btn btn-outline-success rounded-md d-flex justify-content-center align-items-center" id="itemBrandBtn"
+                                style="width: 31px; height: 31px; font-size: 9px; line-height: 1; margin-left:2px;"
+                                data-bs-toggle="modal" data-bs-target="#itemBrandModal">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                </div>             
+            </div>
+        </div>
+        <div class="row py-2">
+            <div class="col-12 col-md-6">
+                <div class="d-flex align-items-center">
+                    <div class="ModelLeft text-right">Model Name <span class="text-danger">*</span></div>
+                    <div class="ModelRight">
+                        <input type="text" name="name" id="itemModelName" value="" class="form-control-sm form-control" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="d-flex align-items-center">
+                    <div class="ModelLeft text-right">Short Name </div>
+                    <div class="ModelRight">
+                        <input type="text" id="shortName" name="name" value="" class="form-control-sm form-control" />
+                    </div>
+                </div>
+            </div>
+        </div>        
+        <div class="row py-2">
+            <div class="col-12 col-md-6">
+                <div class="d-flex justify-content-center align-items-center">
+                    Create Date:<span class="createDate"></span>
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="d-flex justify-content-center align-items-center">
+                    Last Update Date:<span class="updateDate"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="card p-2">
+        <partial name="_Grid"></partial>
+    </div>
+</div>
+
+
+<!-- Item Brand Modal -->
+@* <div class="modal fade" id="itemBrandModal" tabindex="-1" aria-labelledby="itemBrandModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered custom-modal-item modal-xl">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="itemBrandModalLabel">Brand</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <div id="itemBrandContainer"></div>
+            </div>   
+        </div>
+    </div>
+</div> *@
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<!-- jQuery (DataTables ) -->
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+<!-- DataTables JS -->
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap4.min.js"></script>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+
+    <!-- ✅ Bootstrap 5 JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap Multiselect CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/1.1.2/css/bootstrap-multiselect.min.css">
+    <!-- Bootstrap Multiselect JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/1.1.2/js/bootstrap-multiselect.min.js"></script>
+
+
+
+    <!-- DataTable JS -->
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+
+    <!--flat picker-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/material_blue.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+    <!-- Load the plugin -->
+    <script src="~/js/pages/HrmBrand.js"></script>
+    <script src="~/js/pages/ItemModel.js"></script>
+
+    <!-- Initialize the plugin -->
+    <script type="text/javascript">
+        $(function () {
+            $.ItemModel({
+                baseUrl: '@Url.Action("Index", "ItemModel")',
+                load: function () {
+                    console.log("Custom load logic called from Razor view");
+                }
+            });
+        });
+            if (typeof pdfjsLib !== 'undefined') {
+            pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
+        }
+    </script>
+}

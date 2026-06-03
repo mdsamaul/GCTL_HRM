@@ -1,0 +1,100 @@
+﻿@model GCTL.Core.ViewModels.PackagingInformation.PackagingInformationSetupViewModel
+
+<div style="padding-top: 10px;">
+    <div class="row">
+        <div class="col-lg-6">
+            <span id="message"></span>
+        </div>
+        <div class="col-lg-6">
+        </div>
+    </div>
+    <div class="form-group row">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <input type="hidden" id="lastCode" />
+        <input type="hidden" asp-for="Tc" />
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="Ldate" />
+        <input type="hidden" asp-for="ModifyDate" />
+        <div class="col-lg-6">
+            <label asp-for="PackageId">ID </label>
+            <div class="input-group input-group-sm">
+                <input asp-for="PackageId" type="text" class="form-control form-control-sm js-PackageId-code" readonly="readonly" />
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <label asp-for="PackageName">Package Name<span style="color:red">*</span> </label>
+            <input type="text" asp-for="PackageName" class="form-control form-control-sm js-PackageName-check-duplicateName" autofocus required placeholder="Enter Package Name" tabindex="1" />
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-lg-6">
+            <label asp-for="Type">Package Type</label>
+            <div class="input-group">
+                <select asp-for="Type" class="form-control form-control-sm selectpickerPac js-Type" tabindex="2" data-placeholder="-- Select Type --" asp-items="@ViewBag.TypeDD as SelectList">
+                    <option></option>
+                </select>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <label asp-for="Volume">Volume</label>
+            <input type="text" asp-for="Volume" class="form-control form-control-sm" placeholder="Enter Volume" tabindex="3" />
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-lg-6">
+            <label asp-for="MaxCapacity">Max Capacity</label>
+            <input type="text" asp-for="MaxCapacity" class="form-control form-control-sm" placeholder="Enter Max Capacity" tabindex="4" />
+        </div>
+        <div class="col-lg-6">
+            <label asp-for="UnitTypId">Unit Typ</label>
+            <div class="input-group">
+                <select asp-for="UnitTypId" class="form-control form-control-sm selectpickerPac js-Type" tabindex="5" data-placeholder="-- Select Unit Typ --" asp-items="@ViewBag.UnitTypDD as SelectList">
+                    <option></option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-lg-12">
+            <label asp-for="Remarks"> Remarks</label>
+            <textarea asp-for="Remarks" class="form-control form-control-sm" rows="1" placeholder="Enter Remarks" tabindex="6"></textarea>
+        </div>
+    </div>
+
+    @if (Model.Tc > 0)
+    {
+
+        <hr />
+        <div class="form-group row" id="LdateModifyHide">
+            <div class="col-lg-6">
+                @if (Model.Ldate.HasValue)
+                {
+                    <label>Creation Date: </label>
+
+                    <label>@Model.Ldate?.ToString("dd/MM/yyyy")</label>
+                }
+            </div>
+            <div class="col-lg-6">
+                @if (Model.ModifyDate.HasValue)
+                {
+                    <label>Last Update Date: </label>
+
+                    <label>@Model.ModifyDate?.ToString("dd/MM/yyyy")</label>
+                }
+            </div>
+        </div>
+
+    }
+
+</div>
+<div class="row no-print" style="margin-top: 9px;">
+    <div class="col-12">
+        <button type="button" class="btn btn-default success-btn btn btn-outline-success btn-common btn-circle float-right js-PackagingInformation-save" data-id="@Model.PackageId">
+            <i class="fas fa-save"></i> Save
+        </button>
+    </div>
+</div>

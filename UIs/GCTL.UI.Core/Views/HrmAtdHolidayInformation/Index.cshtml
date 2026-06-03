@@ -1,0 +1,77 @@
+﻿ @model GCTL.UI.Core.ViewModels.HrmAtdHolidays.HrmAtdHolidayPageViewModel
+
+
+@{
+
+    Model.PageTitle = ViewBag.Title;
+    ViewBag.Title = "Holiday Information";
+    Model.Breadcrumb = "Holiday Information";
+}
+
+<!-- Content Header (Page header) -->
+<partial name="_PageHeader" model="Model" />
+
+<section class="content consistent-look">
+    <div class="container-fluid">
+        <div class="row">
+
+
+            <div class="col-md-6 pr-0">
+                <div class="card">
+                    <div class="card-header px-2">
+                        <partial name="_Toolbars" model="new ToobarModel() { Title = Model.Breadcrumb, Code = Model.Code, Name = Model.Setup.HolidayCode }" />
+                    </div>
+                    <div class="card-body px-2">
+
+                        <form asp-action="Setup" method="post" id="HrmHolidayInformation-form" asp-controller="HrmAtdHolidayInformation">
+
+
+                            <partial name="_Setup" model="Model.Setup" />
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body p-2 pt-3">
+                        <div class="js-HrmHolidayInformation-grid-container">
+                            @await Html.PartialAsync("_Grid", Model.HrmAdtHolidayList)
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+
+
+
+<partial name="_BottomNavigation" />
+    </div>
+</section>
+<partial name="DeleteModal" />
+<partial name="QuickAddModal" />
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="~/js/pages/hrmAdtHoliday.js"></script>
+    <script type="text/javascript">
+        var options = {
+            baseUrl: '@Url.Action("", "HrmAtdHolidayInformation")'
+        };
+        options.load = () => {
+        };
+
+        $.hrmAdtHoliday(options);
+
+        //
+        
+        //
+    </script>
+}
+

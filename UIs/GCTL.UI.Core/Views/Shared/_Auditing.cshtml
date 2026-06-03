@@ -1,0 +1,21 @@
+﻿@model BaseViewModel
+@if (Model.Id > 0)
+{
+    <hr />
+    <div class="form-group row">
+        <div class="col-lg-6">
+            @if (Model.Ldate.HasValue)
+            {
+                <label>Creation Date: </label>
+                <label>@Model.Ldate.Value.ToString(ApplicationConstants.DateFormat)</label>
+            }
+        </div>
+        <div class="col-lg-6">
+            @if (Model.ModifyDate.HasValue)
+            {
+                <label>Last Update Date: </label>
+                <label>@Model.ModifyDate.Value.ToString(ApplicationConstants.DateFormat)</label>
+            }
+        </div>
+    </div>
+}

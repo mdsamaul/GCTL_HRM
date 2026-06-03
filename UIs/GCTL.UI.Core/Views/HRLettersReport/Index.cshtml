@@ -1,0 +1,355 @@
+﻿@model GCTL.UI.Core.ViewModels.HRLettersReportSetupViewModel.HRLettersReportSetupViewModel
+
+@{
+
+    Model.PageTitle = "HR Letters Report";
+    Model.Breadcrumb = "HR Letters Report";
+}
+
+    <style>
+        /* body { background: #f4f6f9; font-family: 'Source Sans Pro', 'Segoe UI', sans-serif; padding: 20px; margin: 0; font-size: 14px; color: #444; } */
+        .box { background: #fff;}
+       
+        .info-panel {
+        background: linear-gradient(to right, #f4f4f4, #ffffff);
+          border: 1px solid #bce8f1;
+          border-radius: 4px;
+          padding: 12px 18px 14px;
+          margin-bottom: 14px;
+        }
+        .info-panel .row > div { margin-bottom: 6px; }
+        .info-panel label {
+          font-weight: 600;
+          font-size: 13px;
+          color: #333;
+          margin-bottom: 2px;
+          display: block;
+        }
+        .info-panel .field-val {
+          font-size: 13px;
+          color: #555;
+          display: block;
+          min-height: 18px;
+        }
+        .info-panel select, .info-panel input {
+          height: 30px;
+          font-size: 13px;
+            border: 1px solid #80bdff;
+          border-radius: 3px;
+          padding: 3px 8px;
+          background: #fff;
+          color: #333;
+          width: 100%;
+        }
+        .info-panel select:disabled {
+          background: #eee;
+          color: #666;
+        }
+
+        /* Section title like AdminLTE */
+        .section-label {
+          font-size: 13px;
+          font-weight: 600;
+          color: #333;
+          border-bottom: 1px solid #ddd;
+          padding-bottom: 6px;
+          margin-bottom: 12px;
+        }
+
+        /* Form controls */
+        .ctrl-label {
+          font-size: 13px;
+          font-weight: 600;
+          color: #333;
+          text-align: right;
+          padding-top: 6px;
+        }
+        .req { color: red; }
+        .form-control-sm-custom {
+          height: 30px;
+          font-size: 13px;
+          border: 1px solid #ccc;
+          border-radius: 3px;
+          padding: 3px 8px;
+          background: #fff;
+          color: #333;
+          width: 100%;
+        }
+        .form-control-sm-custom::placeholder { color: #aaa; font-style: italic; }
+        .form-control-sm-custom:disabled { background: #eee; color: #666; }
+        select.form-control-sm-custom { appearance: auto; }
+
+        .btn-common {
+border-radius: 14px !important;
+padding: .375rem 1.35rem !important;
+box-shadow: 0px 2px 6px #e9e9e9;
+margin-left: 5px;
+color: black !important;
+}
+    .btn-common:hover {
+color: #28a745 !important;
+    }
+   .btn-default {
+border-color: #ddd !important;
+}
+
+.form-control[readonly] {
+   background-color: #e9ecef !important;
+
+    }
+.form-control[readonly]:focus {
+        box-shadow: none;
+      border-color: inherit;
+
+    }
+
+
+
+    .form-control:focus:not(:disabled):not([readonly]) {
+    --bs-focus-ring-width: 0.2rem;
+    --bs-focus-ring-color: rgba(0, 123, 255, 0.25);
+    border-color: #80bdff;
+    /* box-shadow: 0 0 0 0 rgba(13, 110, 253, .25); */
+
+    }
+
+    #btnPreviewPdf, #downloadReport {
+        transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        min-width: 120px;
+        min-height: 25px;
+        position: relative;
+        overflow: visible;
+    }
+
+        #btnPreviewPdf:hover,
+        #downloadReport:hover {
+            background-color: rgba(173, 255, 47, 0.2) !important;
+            color: #1e90ff !important;
+            border-color: #1e90ff !important;
+            box-shadow: 0 4px 10px rgba(30, 144, 255, 0.5) !important;
+        }
+
+
+        #btnPreviewPdf i,
+        #btnPreviewPdf span,
+        #downloadReport i,
+        #downloadReport span {
+            transition: transform 0.3s ease;
+            display: inline-block;
+            transform: scale(1);
+            margin-right: 2px;
+        }
+
+        #btnPreviewPdf:hover i,
+        #downloadReport:hover i {
+            transform: scale(1.3);
+        }
+
+        .row-gap { margin-bottom: 8px; }
+        .anim-box {
+            transition: all 0.3s ease-in-out;
+        }
+        .hide {
+            opacity: 0;
+            transform: translateY(-10px);
+            pointer-events: none;
+            height: 0;
+            overflow: hidden;
+        }
+        .show {
+            opacity: 1;
+            transform: translateY(0);
+            height: auto;
+        }
+    </style>
+        <div class="container">
+            <partial name="_PageHeader" model="Model" />
+      
+    <div class="rounded-sm mb-1" style="background: linear-gradient(to right, #f4f4f4, #ffffff); ">
+            <div class="card-header">
+                <partial name="_Toolbars" model="new ToobarModel() { Title = Model.Breadcrumb, Code = Model.Code, Name = Model.Setup.id }" />
+            </div>
+        </div>
+        
+
+    <div class="box">
+        <div class="box-body">
+            <!-- ── Top info panel ── -->
+            <div class="info-panel">
+                <div class="row">
+                    <!-- Left col -->
+                    <div class="col-md-6">
+                        <div class="row row-gap align-items-center">
+                            <div class="col-4 text-end pr-0">
+                                <label>Company <span class="req">*</span></label>
+                            </div>
+                            <div class="col-7 pl-1  gc-inline-select2">
+                                <select id="companySelect" class="gc-select2">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row row-gap align-items-center">
+                            <div class="col-4 text-end pr-0">
+                                <label>Employee <span class="req">*</span></label>
+                            </div>
+                            <div class="col-7 pl-1 gc-inline-select2">
+                                <select id="employeeSelect" class="form-control form-control-sm gc-select2" data-placeholder="Select Employee">
+                                    <option value=""></option>
+                                    </select>
+                            </div>
+                        </div>
+                        <div class="row row-gap align-items-center">
+                            <div class="col-4 text-end pr-0"><label>Department:</label></div>
+                            <div class="col-7 pl-1"><span class="field-val" id="iDept"></span></div>
+                        </div>
+                        <div class="row row-gap align-items-center">
+                            <div class="col-4 text-end pr-0"><label>Joining Date:</label></div>
+                            <div class="col-7 pl-1"><span class="field-val" id="iJoin"></span></div>
+                        </div>
+                        <div class="row align-items-center iSrvleft" style="display:none;">
+                            <div class="col-4 text-end pr-0"><label>Service Length:</label></div>
+                            <div class="col-7 pl-1"><span class="field-val" id="iSrvValLeft"></span></div>
+                        </div>
+                        <div class="row align-items-center iNidLeft">
+                            <div class="col-4 text-end pr-0"><label>National ID:</label></div>
+                            <div class="col-7 pl-1"><span class="field-val" id="iNidValLeft"></span></div>
+                        </div>
+                    </div>
+
+                    <!-- Right col -->
+                    <div class="col-md-6">
+                        <div class="row row-gap align-items-center">
+                            <div class="col-4 text-end pr-0">
+                                <label>HR Letter Type</label>
+                            </div>
+                            <div class="col-7 pl-1 gc-inline-select2">                               
+                                <select id="hrLetterTypeSelect" class="form-select form-select-sm gc-select2" asp-items="ViewBag.hrletters as SelectList">
+                                    <option value=""></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row row-gap align-items-center">
+                            <div class="col-4 text-end pr-0"><label>Name:</label></div>
+                            <div class="col-7 pl-1"><span class="field-val" id="iName"></span></div>
+                        </div>
+                        <div class="row row-gap align-items-center">
+                            <div class="col-4 text-end pr-0"><label>Designation:</label></div>
+                            <div class="col-7 pl-1"><span class="field-val" id="iDesig"></span></div>
+                        </div>
+                        <div class="row row-gap align-items-center terminationDate" style="display:none;">
+                            <div class="col-4 text-end pr-0"><label>Termination Date:</label></div>
+                            <div class="col-7 pl-1"><span class="field-val" id="showTerminationDate"></span></div>
+                        </div>
+                        <div class="row align-items-center iSrvRight">
+                            <div class="col-4 text-end pr-0"><label>Service Length:</label></div>
+                            <div class="col-7 pl-1"><span class="field-val" id="iSrvValRight"></span></div>
+                        </div>
+                        <div class="row align-items-center iNidRight" style="display:none;">
+                            <div class="col-4 text-end pr-0"><label>National ID:</label></div>
+                            <div class="col-7 pl-1"><span class="field-val" id="iNidValRight"></span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── Signature & Company Seal ── -->
+            <div class="section-label pl-3">Signature &amp; Company Seal:</div>
+
+            <div class="row row-gap align-items-center">
+                <div class="col-md-2 ctrl-label text-end pr-0">Employee ID <span class="req">*</span></div>
+                <div class="col-md-3 pl-1 gc-inline-select2">
+                    <select class="form-control-sm-custom gc-select2" id="sCEmployeeSelect">
+                        <option value=""></option>
+                       
+                    </select>
+                </div>
+                <div class="col-md-2 ctrl-label text-end pr-0">Designation</div>
+                <div class="col-md-3 pl-1">
+                    <input type="text" id="iDesigInput" class="form-control-sm-custom" placeholder="Enter Designation" />
+                </div>
+            </div>
+
+            <div class="row row-gap align-items-center">
+                <div class="col-md-2 ctrl-label text-end pr-0">Mobile</div>
+                <div class="col-md-3 pl-1">
+                    <input type="tel" id="iMobile" class="form-control-sm-custom" placeholder="" />
+                </div>
+                <div class="col-md-2 ctrl-label text-end pr-0">Telephone</div>
+                <div class="col-md-3 pl-1">
+                    <input type="tel" id="iTelephone" class="form-control-sm-custom" placeholder="" />
+                </div>
+            </div>
+
+            <div class="row row-gap align-items-center">
+                <div class="col-md-2 ctrl-label text-end pr-0">Date Applied <span class="req">*</span></div>
+                <div class="col-md-3 pl-1">
+                    <input type="text" id="iDateApplied" class="form-control-sm-custom" placeholder="dd/MM/yyyy" />
+                </div>
+            </div>
+
+            <!-- ── Report Option ── -->         
+            <div class="section-label mt-3 pl-3">Report Option:</div>
+            <div class="col-12 col-md-12 mx-auto">
+                <div class="row pb-4 ">
+                    <div class="col-12 col-md-6 py-1">
+                        <div class="row align-items-center">
+                            <label class="col-4 text-right mb-0" style="padding-right: 0px;">Format</label>
+                            <div class="col-9 col-md-6">
+                                <select id="reportText" class="form-select form-select-sm">
+                                    <option value="downloadPdf">Pdf</option>
+                                    <option value="downloadExcel">Excel</option>
+                                    <option value="downloadWord">Word</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2 col-0"></div>
+                        </div>
+                    </div>
+                   
+                    <div class="col-12 col-md-6 py-1">
+                        <div class="row justify-content-end align-items-center">
+                            <div class="col-auto px-1 d-grid">
+                                <button id="downloadReport" class="btn btn-sm common-btn btn-outline-secondary">
+                                    <i class="fas fa-file-export fa-export"></i> <span>Export Report</span>
+                                </button>
+                            </div>
+                            <div class="col-auto px-1 d-grid">
+                                <button id="btnPreviewPdf" class="btn btn-sm btn-outline-secondary common-btn px-4">
+                                    <i class="fas fa-eye preview-icon" title="Preview"></i> <span>Preview</span>
+                                </button>
+                            </div>
+
+                            <div class="col-md-2"></div>
+                        </div>
+                    </div>  
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Flatpickr CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="~/js/pages/HRLettersReport.js"></script>
+    <script type="text/javascript">
+        var options = {
+            baseUrl: '@Url.Action("", "HRLettersReport")'
+        };
+        options.load = () => {};
+        $.HRLettersReport(options);
+    </script>
+
+    <!-- Flatpickr JS -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+    <!-- Bootstrap JS — version 5.3.3 (CSS  match) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+}

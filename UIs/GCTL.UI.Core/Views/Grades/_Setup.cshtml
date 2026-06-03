@@ -1,0 +1,122 @@
+﻿@model GCTL.Core.ViewModels.Grades.GradesSetupViewModel
+
+<div style="padding-top: 10px;">
+    <div class="row">
+        <div class="col-lg-6">
+            <span id="message"></span>
+        </div>
+        <div class="col-lg-6">
+        </div>
+    </div>
+    <div class="form-group row">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <input type="hidden" id="lastCode" />
+        <input type="hidden" id="AutoId" asp-for="AutoId" />
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="Ldate" />
+        <input type="hidden" asp-for="ModifyDate" />
+        <div class="col-lg-6">
+            <label asp-for="GradeCode">Grade Id</label>
+            <div class="input-group input-group-sm">
+                <input asp-for="GradeCode" type="text" class="form-control form-control-sm js-GradeCode-code" readonly="readonly" />
+            </div>
+        </div>
+       @*  <div class="col-lg-6">
+            <label asp-for="GradeTypeId">Grade Type</label>
+            <span class="text-danger">*</span>
+            <div class="input-group">
+                <select asp-for="GradeTypeId" class="form-control form-control-sm select2HrmGradeType js-GradeTypeId" required asp-items="@ViewBag.GradeTypeDD as SelectList">
+                    <option value="">--Select Grade Type--</option>
+                </select>
+
+                 <div class="input-group-append">
+                    <button type="button" class="btn btn-sm btn-default js-quick-add input-group-textc"
+                            data-url="@Url.Action("Index", "HrmDefGradeTypes")"
+                            data-target="#GradeTypeId"
+                            data-reload-url="@Url.Action("GetGradeTypeId", "Cascading")"
+                            data-title="GradeType">
+                        +
+                    </button>
+                </div> 
+
+            </div>
+          
+        </div> *@
+        <div class="col-lg-6">
+            <label asp-for="GradeTypeId">Grade Type<span style="color:red;"></span></label>
+
+            <div class="input-group">
+                <select asp-for="GradeTypeId" class="form-control form-control-sm select2HrmGradeType" tabindex="1"
+                        asp-items="@ViewBag.GradeTypeDD as SelectList"
+                        data-placeholder="--Select Grade --">
+                    <option value="">--Select Grade--</option>
+                </select>
+
+            </div>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-lg-6">
+            <label asp-for="GradeName">Grade Name<span style="color:red">*</span> </label>
+            <input type="text" asp-for="GradeName" class="form-control form-control-sm  js-Grades-check-availability" autofocus required placeholder="Enter Grade Name" tabindex="1" />
+            @* <span asp-validation-for="DegreeName" class="text-danger"></span> *@
+
+        </div>
+        <div class="col-lg-6">
+            <label asp-for="GradeShortName">Short Name</label>
+            <input type="text" asp-for="GradeShortName" class="form-control form-control-sm" placeholder="Enter Short Name" tabindex="2" />
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-lg-6">
+            <label asp-for="FromGrossSalary">Scale From  </label>
+            <input type="number" asp-for="FromGrossSalary" class="form-control form-control-sm"  placeholder="Enter From Gross Salary" tabindex="2" />
+         
+
+        </div>
+        <div class="col-lg-6">
+            <label asp-for="ToGrossSalary">Scale To</label>
+            <input type="number" asp-for="ToGrossSalary" class="form-control form-control-sm" placeholder="Enter To Gross Salary" tabindex="2" />
+        </div>
+    </div>
+
+
+
+
+
+
+    @if (Model.AutoId > 0)
+    {
+
+        <hr />
+        <div class="form-group row" id="LdateModifyHide">
+            <div class="col-lg-6">
+                @if (Model.Ldate.HasValue)
+                {
+                    <label>Creation Date: </label>
+
+                    <label>@Model.Ldate?.ToString("dd/MM/yyyy")</label>
+                }
+            </div>
+            <div class="col-lg-6">
+                @if (Model.ModifyDate.HasValue)
+                {
+                    <label>Last Update Date: </label>
+
+                    <label>@Model.ModifyDate?.ToString("dd/MM/yyyy")</label>
+                }
+            </div>
+        </div>
+
+    }
+
+</div>
+<div class="row no-print" style="margin-top: 9px;">
+    <div class="col-12">
+        <button type="button" class="btn btn-default success-btn btn btn-outline-success btn-common btn-circle float-right js-Grades-save" data-id="@Model.GradeCode">
+            <i class="fas fa-save"></i> Save
+        </button>
+    </div>
+</div>

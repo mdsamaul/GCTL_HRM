@@ -1,0 +1,62 @@
+﻿@model GCTL.UI.Core.ViewModels.Currencies.CurrencyPageViewModel
+@{
+    ViewBag.Title = "Currencies";
+    Model.Breadcrumb = "Currency";
+    Model.PageTitle = ViewBag.Title;
+}
+
+<!-- Content Header (Page header) -->
+<partial name="_PageHeader" model="Model" />
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-7 pr-0">
+                <div class="card">
+                    <div class="card-header px-2">
+                        <partial name="_Toolbars" model="new ToobarModel() { Title = Model.Breadcrumb, Code = Model.Code, Name = Model.Setup.CurrencyName }" />
+                    </div>
+                    <div class="card-body px-2">
+                        <form asp-action="Setup" id="currency-form">
+                            <div class="js-currency-form-container">
+                                <partial name="_Setup" model="Model.Setup" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="card">
+                    <div class="card-body p-2 pt-3">
+                        <div class="js-currency-grid-container">
+                            <partial name="_Grid" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <partial name="_BottomNavigation" />
+    </div>
+</section>
+<partial name="DeleteModal" />
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="~/js/pages/currencies.js"></script>
+    <script type="text/javascript">
+        var options = {
+            baseUrl: '@Url.Action("", "Currencies")',
+            maxDecimalPlace: 3,
+            showNagativeFormat: true,
+        };
+        options.load = () => {
+        };
+
+        $.currencies(options);
+    </script>
+}
+
+
+

@@ -1,0 +1,77 @@
+﻿@model GCTL.UI.Core.ViewModels.EmployeeGeneralInfoReport.EmployeeGeneralInfoReportPageViewModel
+
+
+@{
+
+    Model.PageTitle = ViewBag.Title;
+    ViewBag.Title = "Employee General Info Report";
+    Model.Breadcrumb = "Employee General Info Report";
+}
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header border-transparent">
+
+                        <partial name="_Toolbars" model="new ToobarModel() { Title = Model.Breadcrumb, Code = Model.Code, Name = Model.Setup.ComapnyBranchName }" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+<section class="content consistent-look">
+    <div class="container-fluid">
+        <div class="row">
+
+            <div class="col-md-12 pr-0">
+                <div class="card">
+                    <div class="card-body px-2">
+                        <form asp-action="Setup"  id="EmployeeGeneralInfoReport-form" asp-controller="EmployeeGeneralInfoReport">
+
+                            <div class="js-EmployeeGeneralInfoReport-form-container">
+
+                                <partial name="_Setup" model="Model.Setup" />
+
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+</section>
+
+
+
+@section Scripts {
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+        <script src="~/js/pages/employeeGeneralInfoReport.js"></script> 
+         <script type="text/javascript">
+            var options = {
+                baseUrl: '@Url.Action("", "EmployeeGeneralInfoReport")'
+            };
+            options.load = () => {
+            };
+
+        $.employeeGeneralInfoReport(options);
+        </script>
+
+
+}
+
+
+

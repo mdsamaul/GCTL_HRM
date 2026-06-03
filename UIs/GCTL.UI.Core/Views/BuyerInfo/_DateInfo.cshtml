@@ -1,0 +1,20 @@
+﻿@model string
+
+<div class="col-md-12 d-none" id="@(Model)_DateInfo">
+    <div class="container-fluid mx-auto pb-3">
+        <div class="d-md-flex justify-content-around">
+            <div class="w-50 text-center me-3">
+                <hr class="border border-2 text-dark mb-0">
+                <p class="mb-0">
+                    Entry Date: <span name="@(Model)_LDate" id="@(Model)_LDate"></span>
+                </p>
+            </div>
+            <div class="w-50 text-center">
+                <hr class="border border-2 text-dark mb-0">
+                <p class="mb-0">
+                    Last Update Date: <span name="@(Model)_ModifyDate" id="@(Model)_ModifyDate"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

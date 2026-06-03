@@ -1,0 +1,118 @@
+﻿@model GCTL.Core.ViewModels.LeaveTypes.LeaveTypeSetupViewModel
+
+<div style="padding-top: 10px;">
+    <div class="row">
+        <div class="col-lg-6">
+            <span id="message"></span>
+        </div>
+        <div class="col-lg-6">
+        </div>
+    </div>
+    <div class="form-group row">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <input type="hidden" id="lastCode" />
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="Ldate" />
+        <input type="hidden" asp-for="ModifyDate" />
+        <div class="col-lg-6">
+            <label asp-for="LeaveTypeCode">Leave Type Id</label>
+            <div class="input-group input-group-sm">
+                <input asp-for="LeaveTypeCode" type="text" class="form-control form-control-sm js-leaveType-code" readonly="readonly" />
+            </div>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-lg-6">
+            <label asp-for="Name">Name<span style="color:red">*</span> </label>
+            <input type="text" asp-for="Name" class="form-control form-control-sm js-leaveTyp-check-duplicateName" autofocus placeholder="Enter Name" tabindex="1" />
+          
+
+        </div>
+        <div class="col-lg-6">
+            <label asp-for="ShortName">Short Name</label>
+            <input type="text" asp-for="ShortName" class="form-control form-control-sm" placeholder="Enter Short Name"  tabindex="2"/>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-lg-12">
+            <label asp-for="RulePolicy">Rule/Policy </label>
+            <span class="text-danger"></span>
+            <textarea type="text" class="form-control form-control-sm" placeholder="Enter  Rule/Policy" asp-for="RulePolicy" tabindex="3" rows="2" ></textarea>
+        </div>
+       
+    </div>
+
+    <div class="form-group row">
+        <div class="col-lg-4">
+            <label asp-for="NoOfDay">No. of Days </label>
+            <span class="text-danger"></span>
+            <input type="number"  asp-for="NoOfDay" class="form-control form-control-sm" tabindex="4"/>
+        </div>
+        <div class="col-lg-4">
+          
+            <label asp-for="For">For </label>
+            <span class="text-danger"></span>
+            <input type="number"  class="form-control form-control-sm"  asp-for="For" tabindex="5">
+           
+        </div>
+        <div class="col-lg-4">
+            <label asp-for="Ymwd">YMWD </label>
+          
+             <select class="form-control form-control-sm selectpickerLeaveTYpe" asp-for="Ymwd" asp-items="@(ViewBag.YmwdOptions as SelectList)"
+                     tabindex="6">
+               
+            </select> 
+   
+        </div>
+    </div>
+
+ 
+
+    <div class="form-group row">
+        <div class="col-lg-6">
+             <label asp-for="Wef">W.E.F <span style="color:red">*</span> </label>
+
+            
+            <input type="hidden" id="WefHidden" name="Wef" />
+           <input type="text" id="WefDate" placeholder="dd/MM/yyyy"   asp-for="Wef" class="form-control form-control-sm datepicker" required tabindex="7" />
+         
+        </div>
+        <div class="col-lg-6">
+         
+        </div>
+    </div>
+    <hr />
+    @if (Model.AutoId > 0)
+    {
+
+      
+        <div class="form-group row" id="LdateModifyHide">
+            <div class="col-lg-6">
+                @if (Model.Ldate.HasValue)
+                {
+                    <label>Creation Date: </label>
+
+                    <label>@Model.Ldate?.ToString("dd/MM/yyyy")</label>
+                }
+            </div>
+            <div class="col-lg-6">
+                @if (Model.ModifyDate.HasValue)
+                {
+                    <label>Last Update Date: </label>
+
+                    <label>@Model.ModifyDate?.ToString("dd/MM/yyyy")</label>
+                }
+            </div>
+        </div>
+
+    }    
+   
+</div>
+<div class="row no-print" style="margin-top: 9px;">
+    <div class="col-12">
+        <button type="button" class="btn btn-default success-btn btn btn-outline-success btn-common btn-circle float-right js-leaveType-save" data-id="@Model.LeaveTypeCode">
+            <i class="fas fa-save"></i> Save
+        </button>
+    </div>
+</div>

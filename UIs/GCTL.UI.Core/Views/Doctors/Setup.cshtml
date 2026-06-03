@@ -1,0 +1,481 @@
+﻿@model GCTL.Core.ViewModels.Doctors.DoctorSetupViewModel
+@{
+    ViewBag.Title = "Save Doctor";
+    Model.PageTitle = "Doctors";
+    Model.Breadcrumb = "Doctor Setup";
+}
+
+<!-- Content Header (Page header) -->
+<section class="content-header" style="padding-bottom: 0;">
+    <div class="container-fluid">
+        <div class="calloutx callout-info" style="height: 30px;">
+            <div class="row">
+                <div class="col-md-8 row">
+                    <ol class="breadcrumb float-sm-right">
+                    </ol>
+                </div>
+                <div class="col-md-4">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="/Dashboard">Home</a></li>
+                        <li class="breadcrumb-item"><a href="/Doctors">Doctor Info</a></li>
+                        <li class="breadcrumb-item active">Doctor Setup</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+
+<section class="content">
+    <form asp-action="Setup" id="doctorForm" enctype="multipart/form-data">
+        <div class="container-fluid">
+            <div class="form-group row">
+                <div class="col-md-9">
+                    <div class="card">
+                        <div class="card-body">
+                            <div style="padding-top: 10px;">
+                                <div class="form-group row">
+                                    <div class="col-lg-4">
+                                        <label asp-for="DoctorTypeCode"> Doctor Type</label>
+                                        <span class="text-danger"></span>
+                                        <div class="input-group">
+                                            <select asp-for="DoctorTypeCode" class="form-control form-control-sm selectpicker" asp-items="@ViewBag.DoctorTypes as SelectList"
+                                                    data-placeholder="Select Doctor Type">
+                                                <option></option>
+                                            </select>
+                                            <div class="input-group-append">
+                                                <button type="button" class="btn btn-sm btn-default js-quick-add input-group-textc"
+                                                        data-url="@Url.Action("Index", "DoctorTypes")"
+                                                        data-target="#DoctorTypeCode"
+                                                        data-reload-url="@Url.Action("GetDoctorTypes", "Cascading")"
+                                                        data-title="Doctor Type">
+                                                    +
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <span asp-validation-for="DoctorTypeCode" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-lg-4">
+                                        <label asp-for="DoctorCode">Doctor ID</label>
+                                        <input asp-for="DoctorCode" class="form-control form-control-sm js-code" readonly="readonly" />
+                                        <span asp-validation-for="DoctorCode" class="text-danger"></span>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label asp-for="DoctorName">Name</label>
+                                        <span class="text-danger">*</span>
+                                        <input asp-for="DoctorName" class="form-control form-control-sm js-check-availability" placeholder="Enter Name" />
+                                        <span asp-validation-for="DoctorName" class="text-danger"></span>
+                                    </div>
+                                     <div class="col-lg-4">
+                                        <label asp-for="BanglaDoctorName">Name (বাংলা)</label>
+                                        <span class="text-danger"></span>
+                                        <input asp-for="BanglaDoctorName" class="form-control form-control-sm" />                                       
+                                    </div>
+
+                                </div>
+                                <div class="form-group row">
+                                      <div class="col-lg-4">
+                                        <label asp-for="DateOfBirth">Date Of Birth</label>
+                                        <span class="text-danger"></span>
+                                        <input asp-for="DateOfBirth" class="form-control form-control-sm datepicker" placeholder="Enter Date Of Birth" />
+                                        <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label asp-for="SexCode">Gender</label>
+                                        <span class="text-danger"></span>
+                                        <select asp-for="SexCode" class="form-control form-control-sm selectpicker" asp-items="@ViewBag.Sexes as SelectList"
+                                                data-placeholder="Select Gender">
+                                            <option></option>
+                                        </select>
+                                        <span asp-validation-for="SexCode" class="text-danger"></span>
+                                    </div>
+
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-lg-4">
+                                        <label asp-for="PresentAddress">Address</label>
+                                        <span class="text-danger"></span>
+                                        <textarea asp-for="PresentAddress" class="form-control form-control-sm" placeholder="Enter Address"></textarea>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label asp-for="Phone">Mobile No.</label>
+                                        <span class="text-danger"></span>
+                                        <input asp-for="Phone" class="form-control form-control-sm" maxlength="14" placeholder="Enter Mobile No." />
+                                        <span asp-validation-for="Phone" class="text-danger" />
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label asp-for="Email">Email</label>
+                                        <span class="text-danger"></span>
+                                        <input asp-for="Email" class="form-control form-control-sm" placeholder="Enter Email" />
+                                        <span asp-validation-for="Email" class="text-danger" />
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-lg-4">
+                                        <label asp-for="NationalIdNo">NID</label>
+                                        <span class="text-danger"></span>
+                                        <input asp-for="NationalIdNo" class="form-control form-control-sm" placeholder="Enter NID" />
+                                    </div>
+                                     <div class="col-lg-4">
+                                              <label asp-for="WorkingPlaceCode">Working Place</label>
+                                        <span class="text-danger"></span>
+                                       <div class="input-group">
+                                            <select asp-for="WorkingPlaceCode" class="form-control form-control-sm selectpicker"
+                                                    asp-items="@ViewBag.workingPlaceCode as SelectList"
+                                                    data-placeholderX="Select Working Place">
+                                                <option value="">Select Working Place</option>
+                                            </select>
+                                            <div class="input-group-append">
+                                                <button type="button" class="btn btn-sm btn-default js-quick-add input-group-textc"
+                                                        data-url="@Url.Action("Index", "DoctorWorkingPlace")"
+                                                        data-target="#WorkingPlaceCode"
+                                                        data-reload-url="@Url.Action("GetDoctorWorkingPlace", "Cascading")"
+                                                        data-title="WorkingPlaceCode">
+                                                    +
+                                                </button>
+                                            </div>
+                                        </div>
+                                      </div>
+
+                                                <div class="col-lg-4">
+                                        <label asp-for="BMDCRegNo">BMDC Reg. No.</label>
+                                        <span class="text-danger"></span>
+                                        <input asp-for="BMDCRegNo" class="form-control form-control-sm" placeholder="Enter BMDC Reg. No." />
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-lg-4">
+                                        <label asp-for="DepartmentCode">Department</label>
+                                        <span class="text-danger"></span>
+                                        <div class="input-group">
+                                            <select asp-for="DepartmentCode" class="form-control form-control-sm selectpicker"
+                                                    asp-items="@ViewBag.Departments as SelectList"
+                                                    data-placeholder="Select Department">
+                                                <option></option>
+                                            </select>
+                                            <div class="input-group-append">
+                                                <button type="button" class="btn btn-sm btn-default js-quick-add input-group-textc"
+                                                        data-url="@Url.Action("Index", "Departments")"
+                                                        data-target="#DepartmentCode"
+                                                        data-reload-url="@Url.Action("GetDepartments", "Cascading")"
+                                                        data-title="Department">
+                                                    +
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <span asp-validation-for="DepartmentCode" class="text-danger" />
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label asp-for="SpecialityCode">Specialist</label>
+                                            <span class="text-danger"></span>
+                                            <div class="input-group">
+                                                <select asp-for="SpecialityCode" class="form-control form-control-sm selectpicker"
+                                                        asp-items="@ViewBag.Specialities as SelectList"
+                                                        data-placeholder="Select Speciality">
+                                                    <option></option>
+                                                </select>
+                                                <div class="input-group-append">
+                                                    <button type="button" class="btn btn-sm btn-default js-quick-add input-group-textc"
+                                                            data-url="@Url.Action("Index", "Specialities")"
+                                                            data-target="#SpecialityCode"
+                                                            data-reload-url="@Url.Action("GetSpecialities", "Cascading")"
+                                                            data-title="Speciality">
+                                                        +
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <span asp-validation-for="SpecialityCode" class="text-danger" />
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label asp-for="DesignationCode">Designation</label>
+                                        <span class="text-danger"></span>
+                                        <div class="input-group">
+                                            <select asp-for="DesignationCode" class="form-control form-control-sm selectpicker"
+                                                    asp-items="@ViewBag.Designations as SelectList"
+                                                    data-placeholder="Select Designation">
+                                                <option></option>
+                                            </select>
+                                            <div class="input-group-append">
+                                                <button type="button" class="btn btn-sm btn-default js-quick-add input-group-textc"
+                                                        data-url="@Url.Action("Index", "Designations")"
+                                                        data-target="#DesignationCode"
+                                                        data-reload-url="@Url.Action("GetDesignations", "Cascading")"
+                                                        data-title="Designation">
+                                                    +
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <span asp-validation-for="DesignationCode" class="text-danger" />
+                                    </div>
+
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-lg-4">
+                                        <label asp-for="QualificationCode">Qualification</label>
+                                        <span class="text-danger"></span>
+                                        <div class="input-group">
+                                            <select asp-for="QualificationCode" class="form-control form-control-sm selectpicker"
+                                                    asp-items="@ViewBag.Qualifications as SelectList"
+                                                    data-placeholder="Select Qualification">
+                                                <option></option>
+                                            </select>
+                                            <div class="input-group-append">
+                                                <button type="button" class="btn btn-sm btn-default js-quick-add input-group-textc"
+                                                        data-url="@Url.Action("Index", "Qualifications")"
+                                                        data-target="#QualificationCode"
+                                                        data-reload-url="@Url.Action("GetQualifications", "Cascading")"
+                                                        data-title="Qualification">
+                                                    +
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <span asp-validation-for="QualificationCode" class="text-danger" />
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label asp-for="Salary">Salary</label>
+                                        <span class="text-danger"></span>
+                                        <input asp-for="Salary" class="form-control form-control-sm" placeholder="Enter Salary" />
+                                        <span asp-validation-for="Salary" class="text-danger"></span>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label asp-for="ShiftCode">Shift</label>
+                                        <span class="text-danger"></span>
+                                        <div class="input-group">
+                                            <select asp-for="ShiftCode" class="form-control form-control-sm selectpicker"
+                                                    asp-items="@ViewBag.Shifts as SelectList"
+                                                    data-placeholder="Select Shift">
+                                                <option></option>
+                                            </select>
+                                            <div class="input-group-append">
+                                                <button type="button" class="btn btn-sm btn-default js-quick-add input-group-textc"
+                                                        data-url="@Url.Action("Index", "Shifts")"
+                                                        data-target="#ShiftCode"
+                                                        data-reload-url="@Url.Action("GetShifts", "Cascading")"
+                                                        data-title="Shift">
+                                                    +
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <span asp-validation-for="ShiftCode" class="text-danger" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <div class="col-lg-4">
+                                        <label asp-for="JoiningDate">Joining Date</label>
+                                        <span class="text-danger"></span>
+                                        <input asp-for="JoiningDate" class="form-control form-control-sm datepicker" placeholder="Enter Joining Date" />
+                                        <span asp-validation-for="JoiningDate" class="text-danger"></span>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label asp-for="ActivityStatus">Activity Status</label>
+                                        <span class="text-danger"></span>
+                                        <select asp-for="ActivityStatus" class="form-control form-control-sm selectpicker"
+                                                asp-items="@ViewBag.ActivityStatuses as SelectList"
+                                                data-placeholder="Select Activity Status">
+                                            <option></option>
+                                        </select>
+                                        <span asp-validation-for="ActivityStatus" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-lg-4">
+                                        <label asp-for="VisitingFee">Visiting Fee</label>
+                                        <span class="text-danger"></span>
+                                        <input asp-for="VisitingFee" class="form-control form-control-sm" placeholder="Enter Visiting Fee" />
+                                          <span asp-validation-for="VisitingFee" class="text-danger"></span>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label asp-for="ReportShowingFee">Report Showing Fee</label>
+                                        <input asp-for="ReportShowingFee" class="form-control form-control-sm" placeholder="Enter Report Showing Fee" />
+                                          <span asp-validation-for="ReportShowingFee" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-lg-4">
+                                        <label asp-for="SecondVisitingFee">Second Visiting Fee</label>
+                                        <span class="text-danger"></span>
+                                        <input asp-for="SecondVisitingFee" class="form-control form-control-sm" placeholder="Enter Second Visiting Fee" />
+                                          <span asp-validation-for="SecondVisitingFee" class="text-danger"></span>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label asp-for="DurationWithin"></label>
+                                        <input asp-for="DurationWithin" type="text" class="form-control form-control-sm" placeholder="Enter Duration Within Day(s)" />
+                                    </div>
+                                </div>
+                                <hr />
+                                <h3>Appointments</h3>
+
+                                <div class="form-group row">
+                                    <div class="col-lg-9">
+                                        <div class="form-group">
+                                            <label asp-for="AppointmentDays"> Appointment Days</label>
+                                            <span class="text-danger"></span>
+                                            <select asp-for="AppointmentDays"
+                                                    class="form-control form-control-sm selectpicker"
+                                                    multiple="multiple">
+                                                <option value="">Select Appointment Days</option>
+                                                <option>Saturday</option>
+                                                <option>Sunday</option>
+                                                <option>Monday</option>
+                                                <option>Tuesday</option>
+                                                <option>Wednesday</option>
+                                                <option>Thursday</option>
+                                                <option>Friday</option>
+                                            </select>
+                                            <span asp-validation-for="AppointmentDays" class="text-danger" />
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <div class="form-group">
+                                            <label asp-for="VisitingTimeFrom" class="text-center" style="width:80% !important;"> Visiting Time</label>
+                                            <div class="d-flex">
+                                                <input asp-for="VisitingTimeFrom" class="form-control form-control-sm timepicker" />
+                                                <span asp-validation-for="VisitingTimeFrom" class="text-danger"></span>
+                                                <span style="margin:auto 2px !important;">-</span>
+                                                <input asp-for="VisitingTimeTo" class="form-control form-control-sm timepicker" />
+                                                <button type="button" class="btn btn-sm btn-success js-add" style="margin-left:5px !important;" id="addAppointment" title="Add Appointment">
+                                                    <i class="fas fa-plus"></i>
+                                                </button>
+                                                <span asp-validation-for="VisitingTimeTo" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-md-12">
+                                        <table class="table table-sm table-hover table-bordered" id="appointmentTable" style="width:100% !important">
+                                            <thead>
+                                                <tr>
+                                                    <th>Appointment Days</th>
+                                                    <th>Visiting Time From</th>
+                                                    <th>Visiting Time To</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @for (int i = 0; i < Model.Appointments.Count; i++)
+                                                {
+                                                        <tr>
+                                                            <td>
+                                                            @Model.Appointments[i].AppointmentDays
+                                                                <input type="hidden" asp-for="@Model.Appointments[i].AppointmentDays" />
+                                                            </td>
+                                                            <td>
+                                                            @Model.Appointments[i].VisitingTimeFrom
+                                                                <input type="hidden" asp-for="@Model.Appointments[i].VisitingTimeFrom" />
+                                                            </td>
+                                                            <td>
+                                                            @Model.Appointments[i].VisitingTimeTo
+                                                                <input type="hidden" asp-for="@Model.Appointments[i].VisitingTimeTo" />
+                                                            </td>
+                                                            <td><button type="button" class="btn btn-sm btn-danger js-remove-appointment"><i class="fa fa-times"></i></button></td>
+                                                        </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-12">
+                                        <a href='@Url.Action("Index")' class="btn btn-default btn-common btn-circle"><i class="fas fa-arrow-alt-circle-left">&nbsp;</i>Back To List</a>
+                                        <button type="submit" value="Save" class="btn btn-default btn-common btn-circle float-right">
+                                            <i class="fas fa-save"></i> Save
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="form-group row">
+                                <div class="col-md-12">
+                                    <div class="img-preview">
+                                        <h3>Photo</h3>
+                                        @if (String.IsNullOrEmpty(@Model.PhotoUrl))
+                                        {
+                                                <img id="photoPreview" class="img-fluid img-thumbnail img-rounded js-file-chooser" data-target="#Photo" src="@Url.Content("~/Images/Images.png")" />
+                                        }
+                                        else
+                                        {
+                                                <img id="photoPreview" class="img-fluid img-thumbnail img-rounded js-file-chooser" data-target="#Photo" src="@Url.Content("~/Uploads/Images/Doctors/"+ @Model.PhotoUrl)" />
+                                        }
+
+                                        <input type="hidden" asp-for="IsClearPhoto" />
+                                        <div class="form-group row">
+                                            <button type="button" class="btn btn-secondary btn-circle js-file-chooser" data-target="#Photo">Browse Photo</button>
+                                            <button type="button" class="btn btn-danger btn-circle js-clear-file" data-file="#photoPreview" data-tag="#IsClearPhoto">Clear</button>
+                                        </div>
+
+                                        <div class="custom-file d-none">
+                                            <input type="hidden" asp-for="PhotoUrl" />
+                                            <input type="file" name="Photo" class="custom-file-input form-control form-control-sm js-file" data-target="#photoPreview" id="Photo">
+                                            <label class="custom-file-label" for="Photo">Choose file</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row mt-2">
+                                <div class="col-md-12">
+                                    <div class="img-preview">
+                                        <h3>Signature</h3>
+                                        @if (String.IsNullOrEmpty(@Model.DigitalSignatureUrl))
+                                        {
+                                                <img id="signaturePreview" class="img-fluid img-thumbnail img-rounded js-file-chooser" data-target="#Signature" src="@Url.Content("~/Images/signature.jpg")" />
+                                        }
+                                        else
+                                        {
+                                                <img id="signaturePreview" class="img-fluid img-thumbnail img-rounded js-file-chooser" data-target="#Signature" src="@Url.Content("~/Uploads/Images/Doctors/"+ @Model.DigitalSignatureUrl)" />
+                                        }
+
+                                        <input type="hidden" asp-for="IsClearSignature" />
+                                        <div class="form-group row">
+                                            <button type="button" class="btn btn-secondary btn-circle js-file-chooser" data-target="#Signature">Browse Signature</button>
+                                            <button type="button" class="btn btn-danger btn-circle js-clear-file" data-file="#signaturePreview" data-tag="#IsClearSignature">Clear</button>
+                                        </div>
+
+                                        <div class="custom-file d-none">
+                                            <input type="hidden" asp-for="DigitalSignatureUrl" />
+                                            <input type="file" name="Signature" class="custom-file-input form-control form-control-sm js-file" data-target="#signaturePreview" id="Signature">
+                                            <label class="custom-file-label" for="Signature">Choose Signature</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+            </div>
+            <partial name="_BottomNavigation" />
+        </div>
+    </form>
+</section>
+<partial name="DeleteModal" />
+<partial name="QuickAddModal" />
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script src="~/js/pages/doctors.js"></script>
+    <script type="text/javascript">
+        var options = {
+            baseUrl: '@Url.Action("", "Doctors")'
+        };
+        options.load = () => {
+        };
+
+        $.doctors(options);
+    </script>
+}
+

@@ -1,0 +1,45 @@
+﻿
+<style>
+	.label-right {
+		text-align: right;
+		width: 150px; /* Adjust the width to match the longest label text */
+		white-space: nowrap; /* Ensures the label text doesn't wrap to the next line */
+	}
+</style>
+<hr / class="my-1">
+<div class="row g-3 rounded-sm border mx-0 ">
+	<input type="hidden" id="hiddenPFAssignId" value="" />
+	<input type="hidden" id="PFAutoIdDelete" value="" />
+	<input type="hidden" id="PFEmployeeId" value="" />
+	<!-- PF Approved Status-->
+	<div class="col-md-6 mt-2">
+		<div class="d-flex align-items-center">
+			<label for="PFApprovedStatusSelect" class="col-md-3 mb-0 pr-1 label-right">PF Approved Status : </label>
+			<select id="PFApprovedStatusSelect" class="form-control form-control-sm col-md-5">
+				<option value="Confirm">Confirm</option>
+				<option value="Cancel">Cancel</option>
+			</select>
+		</div>		
+	</div>
+	
+	<div class="col-md-6"></div>
+	<!-- Remarks (full-width input aligned with others) -->
+	<div class="col-md-9 mt-2">
+		<div class="d-flex align-items-center">
+			<label for="remarks" class="col-md-2 mb-0 pr-1 label-right">Approval Remarks : </label>
+			<textarea id="remarks" class="form-control col-md-8" placeholder="Remarks"></textarea>
+		</div>
+	</div>
+	<!-- Date -->
+	<div class="col-md-6 mt-2 pb-2">
+		<div class="d-flex align-items-center">
+			<label for="WEFDatePicker" class="col-md-3 mb-0 pr-1 label-right">W.E.F : <sup class="text-danger"><span style="font-size:20px;">*</span></sup></label>
+			@* <input type="number" id="grantedLeavDay" class="form-control col-md-5 cursor-pointer" placeholder="Granted Leave Day" /> *@
+			<input type="text" id="WEFDatePicker" class="form-control form-control-sm  col-md-5 cursor-pointer" placeholder="Pick a date">
+		</div>
+		<div id="pfAssignDate" style="display: none; color: red; font-weight: bold;" class="form-text text-center col-md-8  fs-6 row w-100">
+			Please Select Date
+		</div>
+	</div>	
+	<div class="col-md-6"></div>
+</div>

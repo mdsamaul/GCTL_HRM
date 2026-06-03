@@ -1,0 +1,55 @@
+﻿@model List<GCTL.Core.ViewModels.HrmEmployeeOfficialInfo.HrmEmployeeOfficialInfoSetupViewModel>
+
+<div class="table-responsive">
+    <table id="officialInfo-grid" class="table table-striped table-bordered table-hover table-sm table-common">
+        <thead>
+            <tr class="text-center text-middle" style="width: 5%;">
+                <th>
+                    Select <br /> <input type="checkbox" id="officialInfo-check-all" />
+                </th>
+                <th class ="text-center text-middle" style="width: 9%;">Employee ID</th>
+                <th class ="text-center text-middle" style="width: 30%;">Name</th>
+                <th class ="text-center text-middle" style="width: 20%;">Department</th>
+                <th class ="text-center text-middle" style="width: 20%;">Designation</th>
+                <th class ="text-center text-middle" style="width: 8%;">Joining Date</th>
+                <th class ="text-center text-middle" style="width: 7%;">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if(Model == null || !Model.Any())
+            {
+                <tr class="text-center text-middle">
+                    <td colspan="7">No data available!</td>
+                </tr>
+            }
+            else
+            {
+                @foreach(var item in Model)
+                {
+                    <tr class="text-center text-middle">
+                        <td>
+                            <input type="checkbox" class="text-center text-middle checkBox" data-id="@item.EmployeeId" value="@item.EmployeeId" />
+                        </td>
+                        <td>@item.EmployeeId</td>
+                        <td class="text-left">@($"{item.FirstName} {item.LastName}")</td>
+                        <td>@item.DepartmentName</td>
+                        <td>@item.DesignationName</td>
+                        <td>@(item.JoiningDate.HasValue? item.JoiningDate.Value.ToString("dd/MM/yyyy") : " ")</td>
+                        @* <td>@(DateTime.TryParse(item.JoiningDate, out var parsedDate) ? parsedDate.ToString("dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture) : "-")</td> *@
+                       @*  <td>
+                            @(DateTime.TryParse(item.JoiningDate.ToString(), out var parsedDate) ? parsedDate.ToString("dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture) : "-")
+                        </td> *@
+                        <td>
+                            <a href="@Url.Action("Setup", "OfficialInfo", new { id = item.EmployeeId })" class="btn btn-sm" title="Edit @($"{item.FirstName} {item.LastName}")">
+                                <i class="fas fa-pencil-alt"></i>
+                            </a>
+                            <button type="button" title="Delete @($"{item.FirstName} {item.LastName}")" class="btn  btn-sm js-officialInfo-delete-confirm">
+                                <i class="fas fa-trash fa-sm">&nbsp;</i>
+                            </button>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>

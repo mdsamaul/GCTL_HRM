@@ -1,0 +1,636 @@
+﻿@model GCTL.UI.Core.ViewModels.AdvanceLoanAdjustment.AdvanceLoanAdjustmentViewModel
+@{
+	Model.Breadcrumb = "AdvanceLoanAdjustment";
+	Model.PageTitle = "Advance Loan Adjustment";
+}
+<style>
+     #stickyHeader{
+         position: sticky;
+         top: 0px;
+         z-index: 1020;
+         min-height: 50px;
+         background: linear-gradient(to right, #fff, white);
+         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+         transition: box-shadow 0.3s ease-in-out;
+         transition: all 0.5s ease-in-out;
+     }
+
+     .adjustmentTypeBody{
+         background: linear-gradient(to right, #fff, white);
+         /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+         border-radius:10px;
+         border:1px solid rgba(0,0,0,0.3); */
+     }
+
+     .adjustmentIdBody {
+         background:  white;
+         /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+         border-radius:10px;
+         border:1px solid rgba(0,0,0,0.3); */
+     }
+
+         #stickyHeader.scrolled {
+             /* box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4); */
+             padding-top: 7px;
+             padding-bottom: 7px;
+             transition: all 0.5s ease-in-out;
+         }
+
+     .custom-multiselect {
+         position: relative;
+         width: 100%;
+     }
+
+     .multiselect-input {
+         width: 100%; 
+         padding: 8px 40px 8px 12px;
+         border: 1px solid #ced4da;
+         border-radius: 4px;
+         background-color: white;
+         cursor: pointer;
+         font-size: 14px;
+         color: #495057;
+         transition: all 0.2s ease;
+         min-height: 38px; 
+     }
+
+         .multiselect-input:hover {
+             border-color: #86b7fe;
+         }
+
+         .multiselect-input:focus {
+             outline: none;
+             border-color: #86b7fe;
+             box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+         }
+
+     .multiselect-arrow {
+         position: absolute;
+         right: 12px;
+         top: 50%;
+         transform: translateY(-50%);
+         color: #6c757d;
+         font-size: 14px;
+         transition: transform 0.3s ease;
+         pointer-events: none;
+     }
+
+         .multiselect-arrow.rotated {
+             transform: translateY(-50%) rotate(180deg);
+         }
+
+     .multiselect-dropdown {
+         position: absolute;
+         top: 100%;
+         left: 0;
+         right: 0;
+         width: 100%; 
+         background: white;
+         border: 1px solid #ced4da;
+         border-top: none;
+         border-radius: 0 0 4px 4px;
+         max-height: 200px;
+         overflow-y: auto;
+         z-index: 1050;
+         display: none;
+         box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+     }
+
+         .multiselect-dropdown.show {
+             display: block;
+         }
+
+     .multiselect-option {
+         padding: 8px 12px;
+         cursor: pointer;
+         border-bottom: 1px solid #f8f9fa;
+         transition: background-color 0.2s ease;
+         white-space: nowrap; 
+     }
+
+         .multiselect-option:hover {
+             background-color: #f8f9fa;
+         }
+
+         .multiselect-option:last-child {
+             border-bottom: none;
+         }
+
+         .multiselect-option input[type="checkbox"] {
+             margin-right: 8px;
+         }
+
+         .multiselect-option.selected {
+             background-color: #e7f3ff;
+         }
+
+     .selected-count {
+         color: #6c757d;
+         font-size: 12px;
+         margin-left: 5px;
+     }
+
+
+     .employee-list-item div:hover {
+         background-color: #f2f2f2;
+         transition: 0.2s ease;
+     }
+
+    @@media (max-width: 768px) {
+         .multiselect-input
+
+     {
+         font-size: 16px; 
+         padding: 10px 40px 10px 12px;
+     }
+
+     .multiselect-option {
+         padding: 10px 12px;
+     }
+
+     }
+
+    @@media (max-width: 576px) {
+         .multiselect-dropdown
+
+     {
+         max-height: 150px;
+     }
+
+     }
+
+   
+     .col-md-custom {
+         width: 66.66667% !important;
+         max-width: 66.66667% !important;
+     }
+
+    @@media (min-width: 1400px) {
+         .col-md-custom
+
+     {
+         width: 50% !important ;
+         max-width: 50% !important;
+     }
+   }
+
+     .custom-remarks-textarea {
+         width: 105.5% !important;
+     }
+
+     .disable {
+         pointer-events: none;
+         opacity: 0.6;
+         cursor: not-allowed !important;
+     }
+
+     .enable {
+         pointer-events: auto;
+         opacity: 1;
+         cursor: pointer;
+     }
+
+    #advancePayTable_filter{
+        margin-bottom:0px !important;
+    }
+
+    #advancePayTable_length{
+        display:inline !important;
+    }
+
+
+    #advancePayTable_wrapper .dataTables_info,
+    #advancePayTable_wrapper .dataTables_paginate {
+        display: inline-flex !important;
+        align-items: center;
+        margin: 0 !important;
+    }
+
+    #advancePayTable_wrapper .dataTables_paginate {
+        float: right;
+    }
+
+  
+</style>
+<div class="container-fluid">
+    <partial name="_PageHeader" model="Model"></partial>
+</div>
+
+<div class="container-fluid">
+    <div id="stickyHeader" class="card-header px-2 sticky-top rounded-bottom"
+         style="min-height: 50px; z-index: 1020;">  
+                <partial name="_Toolbars" model="new ToobarModel(){Title=Model.Breadcrumb, Code=Model.Code , Name=Model.Setup.AdvancePayId}" />
+            </div>
+
+    <div class="container-fluid pt-2">
+        <div class="row adjustmentTypeBody py-2">
+            <div class="col-12 col-md-6 ">
+                <div class="row ">
+                    <div class="col-12 col-sm-4 text-sm-end d-flex justify-content-end align-center align-items-center text-start  p-1">
+                        <b style="white-space:nowrap;">Adjustment Type <span class="text-danger fs-6">*</span></b>
+                    </div>
+                    <div class="col-12 col-sm-7 p-1">        
+                        <input type="hidden" id="advancePayCodeId" value="0"/>
+                 <div class="custom-multiselect" style="position:relative;">
+                            <input type="text" class="multiselect-input form-control-sm" id="multiselectInput" placeholder="~~Select Adjustment Type~~" readonly>
+                            <i class="fas fa-chevron-down multiselect-arrow" id="multiselectArrow"></i>
+                            <div class="multiselect-dropdown" id="multiselectDropdown" style="position:absolute; width: 100%; z-index:1000; background:#fff; border: 1px solid #ccc; max-height: 250px; overflow-y: auto;"></div>
+                        </div>
+                       
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 "></div>
+            <div class="col-12 col-md-6 ">
+                <div class="row ">
+                    <div class="col-12 col-sm-4 text-sm-end d-flex justify-content-end align-center align-items-center text-start  p-1">
+                        <b style="white-space:nowrap;">Company <span class="text-danger fs-6">*</span></b>
+                    </div>
+                    <div class="col-12 col-sm-7 p-1 ">
+                     
+                            <div class="custom-multiselect">
+                                <input type="text" class="multiselect-input form-control-sm" id="companyMultiselectInput" placeholder="Search companies...">
+                                <i class="fas fa-chevron-down multiselect-arrow" id="companyMultiselectArrow"></i>
+
+                                <div class="multiselect-dropdown" id="companyMultiselectDropdown" style="position:absolute; z-index:1000; background:#fff; border:1px solid #ccc; width:100%; max-height:250px; overflow-y:auto;"></div>
+                            </div>
+
+                    </div>
+                   
+                </div>
+                <div class="col-md-12">
+                    <hr class="col-md-11" style="height: 2px;background-color: #000;border: none;margin-bottom: 0px;padding-right: 5px;margin-top: 0px;">
+                </div>
+            </div>
+            <div class="col-12 col-md-6 "></div>
+            <div class="col-12 col-md-6">
+                <div class="row">
+                    <div class="col-12 col-sm-4 text-sm-end d-flex justify-content-end align-center align-items-center text-start  p-1">
+                        <b style="white-space:nowrap;">Employee ID <span class="text-danger fs-6">*</span></b>
+                    </div>
+                    <div class="col-12 col-sm-7 p-1 ">
+                        <div class="custom-multiselect">
+                            <input type="text" class="multiselect-input form-control-sm" id="employeeMultiselectInput" placeholder="Select options...">
+                            <i class="fas fa-chevron-down multiselect-arrow" id="employeeMultiselectArrow"></i>
+                            <div class="multiselect-dropdown" id="employeeMultiselectDropdown" style="position:absolute; z-index:1000; background:#fff; border:1px solid #ccc; width:100%; max-height:250px; overflow-y:auto;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 ">
+                <div class="row ">
+                    <div class="col-12 col-sm-4 text-sm-end d-flex justify-content-end align-center align-items-center text-start  p-1">
+                        <b style="white-space:nowrap;">Loan ID </b>
+                    </div>
+                    <div class="col-12 col-sm-7 p-1 ">
+                        <div class="custom-multiselect">
+                            <input type="text" class="multiselect-input form-control-sm" id="loanSelectInput" placeholder="--Select Loan--" readonly>
+                            <i class="fas fa-chevron-down multiselect-arrow" id="loanArrow"></i>
+                            <div class="multiselect-dropdown" id="loanSelectItem" style="position:absolute; z-index:1000; background:#fff; border:1px solid #ccc; width:100%; max-height:250px; overflow-y:auto;" >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+           
+            <div class="col-12 col-md-6 ">
+                <div class="row ">
+                    <div class="col-12 col-sm-4 text-sm-end d-flex justify-content-end align-center align-items-center text-start  p-1">
+                        <b style="white-space:nowrap;">Name: </b>
+                    </div>
+                    <div class="col-12 col-sm-7 p-1 ">
+                      <span class="EmployeeShowName"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6"> </div>
+            <div class="col-12 col-md-6 ">
+                <div class="row ">
+                    <div class="col-12 col-sm-4 text-sm-end d-flex justify-content-end align-center align-items-center text-start  p-1">
+                        <b style="white-space:nowrap;">Designation: </b>
+                    </div>
+                    <div class="col-12 col-sm-7 p-1 ">
+                        <span class="EmployeeShowDesignation"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 ">
+                <div class="row ">
+                    <div class="col-12 col-sm-4 text-sm-end d-flex justify-content-end align-center align-items-center text-start  p-1">
+                        <b style="white-space:nowrap;">Department: </b>
+                    </div>
+                    <div class="col-12 col-sm-7 p-1 ">
+                        <span class="EmployeeShowDepartment"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 ">
+                <div class="row ">
+                    <div class="col-12 col-sm-4 text-sm-end d-flex justify-content-end align-center align-items-center text-start  p-1">
+                        <b style="white-space:nowrap;">Joining Date: </b>
+                    </div>
+                    <div class="col-12 col-sm-7 p-1 ">
+                        <span class="EmployeeShowJoiningDate"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6"> </div>
+            <div class="col-12 col-md-6 ">
+                <div class="row ">                    
+                    <div class="col-12 col-sm-4 text-sm-end d-flex justify-content-end align-center align-items-center text-start  p-1">
+                        <b style="white-space:nowrap; color:#b8860b; font-weight:bold; font-size:16px;">Loan Info: </b>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6"> </div>
+            <div class="col-12 col-md-6 ">
+                <div class="row ">
+                    <div class="col-12 col-sm-4 text-sm-end d-flex justify-content-end align-center align-items-center text-start  p-1">
+                        <b style="white-space:nowrap;">Loan ID: </b>
+                    </div>
+                    <div class="col-12 col-sm-7 p-1 ">
+                       <span class="loanId"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 ">
+                <div class="row ">
+                    <div class="col-12 col-sm-4 text-sm-end d-flex justify-content-end align-center align-items-center text-start  p-1">
+                        <b style="white-space:nowrap;">Loan Date: </b>
+                    </div>
+                    <div class="col-12 col-sm-7 p-1 ">
+                        <span class="loanDate"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 ">
+                <div class="row ">
+                    <div class="col-12 col-sm-4 text-sm-end d-flex justify-content-end align-center align-items-center text-start  p-1">
+                        <b style="white-space:nowrap;">Loan Type: </b>
+                    </div>
+                    <div class="col-12 col-sm-7 p-1 ">
+                        <span class="loanType"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 ">
+                <div class="row ">
+                    <div class="col-12 col-sm-4 text-sm-end d-flex justify-content-end align-center align-items-center text-start  p-1">
+                        <b style="white-space:nowrap;">Loan Amount: </b>
+                    </div>
+                    <div class="col-12 col-sm-7 p-1 ">
+                        <span class="loanAmount"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 ">
+                <div class="row ">
+                    <div class="col-12 col-sm-4 text-sm-end d-flex justify-content-end align-center align-items-center text-start  p-1">
+                        <b style="white-space:nowrap;">Inst. Start-End Date: </b>
+                    </div>
+                    <div class="col-12 col-sm-7 p-1 ">
+                        <span class="loanStartEndDate"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 ">
+                <div class="row ">
+                    <div class="col-12 col-sm-4 text-sm-end d-flex justify-content-end align-center align-items-center text-start  p-1">
+                        <b style="white-space:nowrap;">No. of Installment: </b>
+                    </div>
+                    <div class="col-12 col-sm-7 p-1 ">
+                        <span class="loanInstallment"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr class="my-0"/>
+         <div class="row adjustmentIdBody py-2">
+            <div class="col-12 col-md-6 ">
+                <div class="row ">
+                    <div class="col-12 col-sm-4 text-sm-end d-flex justify-content-end align-center align-items-center text-start  p-1">
+                        <b style="white-space:nowrap;">Adjustment Id</b>
+                    </div>
+                    <div class="col-12 col-sm-7 p-1 ">
+                        <div class="custom-multiselect">
+                            <input type="text" class="multiselect-input form-control-sm" id="AdjustmentAutoId" placeholder="0000001" readonly>
+                        </div>                       
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 "></div>
+            <div class="col-12 col-md-6 ">
+                <div class="row ">
+                    <div class="col-12 col-sm-4 text-sm-end d-flex justify-content-end align-center align-items-center text-start  p-1">
+                        <b style="white-space:nowrap;">Duration Selected </b>
+                    </div>
+                    <div class="col-12 col-sm-7 p-1">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="filterType" id="byDate" value="By Date" checked>
+                            <label class="form-check-label" for="byDate">By Date</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="filterType" id="byMonth" value="By Month">
+                            <label class="form-check-label" for="byMonth">By Month</label>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-12 col-md-6 "> </div>
+            <div class="col-12 col-md-6 ">
+                <div class="row ">
+                    <div class="col-12 col-sm-4 text-sm-end d-flex justify-content-end align-center align-items-center text-start  p-1">
+                        <b style="white-space:nowrap;">Date From </b>
+                    </div>
+                    <div class="col-12 col-sm-7 p-1 ">
+                        <div class="custom-multiselect">
+                            <input type="text" class="multiselect-input form-control-sm" id="dateFrom" placeholder="Date From">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 ">
+                <div class="row ">
+                    <div class="col-12 col-sm-4 text-sm-end d-flex justify-content-end align-center align-items-center text-start  p-1">
+                        <b style="white-space:nowrap;">To</b>
+                    </div>
+                    <div class="col-12 col-sm-7 p-1 ">
+                        <div class="custom-multiselect">
+                            <input type="text" class="multiselect-input form-control-sm" id="toDate" placeholder="To Date">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 ">
+                <div class="row ">
+                    <div class="col-12 col-sm-4 text-sm-end d-flex justify-content-end align-center align-items-center text-start  p-1">
+                        <b style="white-space:nowrap;">Month </b>
+                    </div>
+                    <div class="col-12 col-sm-7 p-1 ">
+                        <div class="custom-multiselect">
+                            @* <input type="text" class="multiselect-input form-control-sm month" placeholder="Month"> *@
+                            <select class="multiselect-input form-control-sm month">
+                                <option value="">--Select Month--</option>                               
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 ">
+                <div class="row ">
+                    <div class="col-12 col-sm-4 text-sm-end d-flex justify-content-end align-center align-items-center text-start  p-1">
+                        <b style="white-space:nowrap;">Year</b>
+                    </div>
+                    <div class="col-12 col-sm-7 p-1 ">
+                        <div class="custom-multiselect">
+                            <input type="number" class="multiselect-input form-control-sm year" value="2025"  placeholder="Year" >
+                        </div>
+                    </div>
+                </div>
+            </div>
+             <div class="col-12 col-md-6 ">
+                <div class="row ">
+                    <div class="col-12 col-sm-4 text-sm-end d-flex justify-content-end align-center align-items-center text-start  p-1">
+                        <b style="white-space:nowrap;">Adv/Loan Amount <span class="text-danger fs-6">*</span></b>
+                    </div>
+                    <div class="col-12 col-sm-7 p-1 ">
+                        <div class="custom-multiselect">
+                            <input type="number" class="multiselect-input form-control-sm loanAmount" placeholder="Loan Amount">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 ">
+                <div class="row ">
+                    <div class="col-12 col-sm-4 text-sm-end d-flex justify-content-end align-center align-items-center text-start  p-1">
+                        <b style="white-space:nowrap;">No. of Installment(s)</b>
+                    </div>
+                    <div class="col-12 col-sm-7 p-1 ">
+                        <div class="custom-multiselect">
+                            <input type="text" class="multiselect-input form-control-sm loanInstallment" placeholder="No. of Installment(s)">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 ">
+                <div class="row ">
+                    <div class="col-12 col-sm-4 text-sm-end d-flex justify-content-end align-center align-items-center text-start  p-1">
+                        <b style="white-space:nowrap;">Month Deduction </b>
+                    </div>
+                    <div class="col-12 col-sm-7 p-1 ">
+                        <div class="custom-multiselect">
+                            <input type="text" class="multiselect-input form-control-sm monthDeduction" placeholder="Month Deduction" >
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 ">
+                <div class="row ">
+                    <div class="col-12 col-sm-4 text-sm-end d-flex justify-content-end align-center align-items-center text-start  p-1">
+                        <b style="white-space:nowrap;">Deduction Head</b>
+                    </div>
+                    <div class="col-12 col-sm-7 p-1 ">
+                        <div class="custom-multiselect">
+                            @* <input type="text" class="multiselect-input form-control-sm deductionHead" placeholder="Deduction Head" > *@                         
+                            <select class="multiselect-input form-control-sm deductionHead">
+                                <option value="">--Select Deduction Head--</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>          
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-12 col-sm-2 text-sm-end d-flex justify-content-end align-center align-items-center text-start  p-1">
+                        <b style="white-space:nowrap;">Remarks</b>
+                    </div>
+                    <div class="col-12 col-sm-9 p-1 ">
+                        <div class="custom-multiselect">
+                            <textarea rows="2" class="multiselect-input custom-remarks-textarea"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 d-flex flex-column justify-content-center align-items-center text-center">
+                <div class="w-100 d-flex flex-column align-items-center">
+                    <hr class="w-75" style="height: 2px; background-color: #000; border: none; margin-bottom: 5px;">
+                    <b style="white-space: nowrap;">Create Date: <span id="createDateShow"></span></b>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 d-flex flex-column justify-content-center align-items-center text-center">
+                <div class="w-100 d-flex flex-column align-items-center">
+                    <hr class="w-75" style="height: 2px; background-color: #000; border: none; margin-bottom: 5px;">
+                    <b style="white-space: nowrap;">Modify Date: <span id="modifyDateshow"></span></b>
+                </div>
+            </div>
+
+         </div>
+
+         <hr class="my-0"/>
+        <!-- Demo section for testing -->
+        <div class="row bg-white">
+            <div class="col-12 px-0 pt-2">
+               
+                        <partial name="_Grid"></partial>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<!-- jQuery (DataTables ) -->
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+<!-- DataTables JS -->
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap4.min.js"></script>
+
+
+@section Scripts {
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
+	<!-- Bootstrap JS -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.bundle.min.js"></script>
+	<!-- Bootstrap Multiselect CSS -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/1.1.2/css/bootstrap-multiselect.min.css">
+	<!-- Bootstrap Multiselect JS -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/1.1.2/js/bootstrap-multiselect.min.js"></script>
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+
+	<!-- DataTable JS -->
+	<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+	<script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+
+    <!--flat picker-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/material_blue.css">
+
+	<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+	<!-- Load the plugin -->
+	<script src="~/js/pages/AdvanceLoanAdjustment.js"></script>
+
+	<!-- Initialize the plugin -->
+	<script type="text/javascript">
+		$(function () {
+			$.patientTypes({
+				baseUrl: '@Url.Action("Index", "AdvanceLoanAdjustment")',
+				load: function () {
+					console.log("Custom load logic called from Razor view");
+				}
+			});
+		});
+			if (typeof pdfjsLib !== 'undefined') {
+			pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
+		}
+	</script>
+}

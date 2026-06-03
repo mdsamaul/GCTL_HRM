@@ -1,0 +1,46 @@
+﻿@model List<GCTL.Core.ViewModels.FebricTest.FebricTestSetupViewModel>
+
+<table id="FebricTest-grid" class="table table-striped  table-bordered table-sm table-hover table-common">
+    <thead class="row-border">
+        <tr class="table row-border">
+            <th class="text-center text-middle" style="width: 10%;">
+                Select <br /> <input type="checkbox" id="FebricTest-check-all" />
+            </th>
+            <th class="text-center text-middle" style="width: 10%;">ID</th>
+            <th class="text-center text-middle" style="width: 40%;"> Febric Test Name</th>
+            <th class="text-center text-middle" style="width: 40%;">Details</th>
+
+        </tr>
+    </thead>
+    <tbody>
+
+        @if (Model == null || !Model.Any())
+        {
+            <tr class="text-center text-middle">
+            </tr>
+        }
+        else
+        {
+            @foreach (var item in Model.OrderByDescending(x => x.FebricTestD))
+            {
+                <tr>
+                    <td class="text-center">
+                        <input type="checkbox" class="text-center text-middle checkBox" data-id="@item.FebricTestD" value="@item.FebricTestD" />
+                    </td>
+                    <td>
+                        <a href="#" class='btn js-FebricTest-edit'
+                           style="text-decoration: underline; color: rebeccapurple;"
+                           data-id="@item.FebricTestD" title="Edit">
+                            @item.FebricTestD
+                        </a>
+                    </td>
+
+                    <td class="text-center text-middle">@item.FebricTestName</td>
+                    <td class="text-center text-middle">@item.Details</td>
+
+                </tr>
+            }
+        }
+
+    </tbody>
+</table>

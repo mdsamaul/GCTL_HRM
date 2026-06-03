@@ -1,0 +1,47 @@
+﻿@model List<GCTL.Core.ViewModels.ColorInformation.ColorInformationSetupViewModel>
+
+<table id="ColorInformation-grid" class="table table-striped  table-bordered table-sm table-hover table-common">
+    <thead class="row-border">
+        <tr class="table row-border">
+            <th class="text-center text-middle" style="width: 10%;">
+                Select <br /> <input type="checkbox" id="ColorInformation-check-all" />
+            </th>
+            <th class="text-center text-middle" style="width: 10%;">ID</th>
+            <th class="text-center text-middle" style="width: 40%;"> Color</th>
+            <th class="text-center text-middle" style="width: 40%;"> Color Code/ Articale </th>
+
+        </tr>
+    </thead>
+    <tbody>
+
+        @if (Model == null || !Model.Any())
+        {
+            <tr class="text-center text-middle">
+                <td colspan="8">No Data Available.</td>
+            </tr>
+        }
+        else
+        {
+            @foreach (var item in Model.OrderByDescending(x => x.ColorId))
+            {
+                <tr>
+                    <td class="text-center">
+                        <input type="checkbox" class="text-center text-middle checkBox" data-id="@item.ColorId" value="@item.ColorId" />
+                    </td>
+                    <td>
+                        <a href="#" class='btn js-ColorInformation-edit'
+                           style="text-decoration: underline; color: rebeccapurple;"
+                           data-id="@item.ColorId" title="Edit">
+                            @item.ColorId
+                        </a>
+                    </td>
+
+                    <td class="text-center text-middle">@item.Color</td>
+                    <td class="text-center text-middle">@item.Detail</td>
+
+                </tr>
+            }
+        }
+
+    </tbody>
+</table>

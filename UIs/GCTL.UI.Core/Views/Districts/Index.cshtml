@@ -1,0 +1,69 @@
+﻿@model GCTL.UI.Core.ViewModels.Districts.DistrictsPageViewModel
+
+
+@{
+
+    Model.PageTitle = ViewBag.Title;
+    ViewBag.Title = "District Info ";
+    Model.Breadcrumb = "District Info ";
+}
+
+
+<!-- Content Header (Page header) -->
+<partial name="_PageHeader" model="Model" />
+
+<section class="content consistent-look">
+    <div class="container-fluid">
+        <div class="row">
+
+
+            <div class="col-md-6 pr-0">
+                <div class="card">
+                    <div class="card-header px-2">
+                        <partial name="_Toolbars" model="new ToobarModel() { Title = Model.Breadcrumb, Code = Model.Code, Name = Model.Setup.DistrictId }" />
+                    </div>
+                    <div class="card-body px-2">
+
+                        <form asp-action="Setup" method="post" id="District-form" asp-controller="District">
+
+
+                            <partial name="_Setup" model="Model.Setup" />
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body p-2 pt-3">
+                        <div class="js-District-grid-container">
+
+                            @await Html.PartialAsync("_Grid", Model.DistrictList)
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        <partial name="_BottomNavigation" />
+    </div>
+</section>
+<partial name="DeleteModal" />
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="~/js/pages/districts.js"></script>
+    <script type="text/javascript">
+        var options = {
+            baseUrl: '@Url.Action("", "District")'
+        };
+        options.load = () => {
+        };
+
+        $.districts(options);
+    </script>
+}

@@ -1,0 +1,207 @@
+body {
+    font-family: 'Source Sans Pro', sans-serif;
+}
+
+.sidenav {
+    height: 100%;
+    width: 200px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    /*   overflow-x: hidden;*/
+    transition: 0.3s;
+    /*padding-top: 5px;*/
+}
+
+    .sidenav a {
+        padding: 8px 8px 8px 32px;
+        text-decoration: none;
+        color: #818181;
+        display: block;
+        transition: 0.3s;
+    }
+
+        .sidenav a:hover {
+            color: #f1f1f1;
+        }
+
+    .sidenav .closebtn {
+        position: absolute;
+        top: 0;
+        right: 25px;
+        font-size: 36px;
+        margin-left: 50px;
+    }
+
+#main_area {
+    margin-left: 200px;
+}
+
+#main-content {
+    background:#ffffff !important;
+    margin-left: 200px;
+}
+
+#main_area {
+    transition: margin-left .3s;
+    padding: 16px;
+}
+
+#main-content {
+    transition: margin-left .3s;
+  /*  padding: 16px;*/
+}
+
+#left_menu_open_close {
+    cursor: pointer;
+}
+
+.mini_sidebar {
+    display: block;
+    position: absolute;
+    left: 49px;
+    z-index: 999999999;
+    top: 0;
+    min-width: 200px;
+}
+
+
+/* Desktop Screen*/
+@media only screen and (min-width:992px) and (max-width:1199px) {
+    #left_menu {
+        width: 228px;
+        overflow-x: hidden;
+    }
+}
+
+/*Tablet Screen*/
+@media only screen and (min-width:768px) and (max-width:991px) {
+
+    #left_menu {
+        width: 50px;
+        overflow-x: visible;
+    }
+
+    #main_area {
+        margin-left: 30px;
+    }
+
+    .sidebar-menu li a span, .sidebar-menu li a small, .sidebar-menu li a i:last-child {
+        display: none;
+    }
+
+    .sidebar-menu li ul {
+        display: block;
+        position: absolute;
+        left: 49px;
+        z-index: 999999999;
+        top: 0;
+        min-width: 200px;
+    }
+
+        .sidebar-menu li ul ul {
+            display: inherit;
+            position: inherit;
+            z-index: 999999999;
+            min-width: auto;
+        }
+
+    .sidebar-menu ul li a span, .sidebar-menu ul li a small, .sidebar-menu ul li a i:last-child {
+        display: block;
+    }
+}
+
+
+/*Small Mobile Screen*/
+@media only screen and (max-width:767px) {
+    #left_menu {
+        width: 50px;
+        overflow-x: visible;
+    }
+
+    #main_area {
+        margin-left: 30px;
+    }
+
+    .sidebar-menu li a span, .sidebar-menu li a small, .sidebar-menu li a i:last-child {
+        display: none;
+    }
+
+    .sidebar-menu li ul {
+        display: block;
+        position: absolute;
+        left: 49px;
+        z-index: 999999999;
+        top: 0;
+        min-width: 200px;
+    }
+
+        .sidebar-menu li ul ul {
+            display: inherit;
+            position: inherit;
+            z-index: 999999999;
+            min-width: auto;
+        }
+
+    .sidebar-menu ul li a span, .sidebar-menu ul li a small, .sidebar-menu ul li a i:last-child {
+        display: block;
+    }
+}
+
+
+.sidebar-collapse #left_menu {
+    width: 120px !important;
+}
+
+.sidebar-collapse .sidebar-menu {
+    text-align: center;
+}
+
+    .sidebar-collapse .sidebar-menu > li > a {
+        padding-left: 0 !important;
+    }
+
+
+    .sidebar-collapse .sidebar-menu > li > a span {
+        display: block !important;
+    }
+
+    .sidebar-collapse .sidebar-menu > li > a i {
+    }
+
+.sidebar-collapse .mini_sidebar {
+    left: 119px;
+}
+
+.sidebar-collapse .sidebar-menu .sidebar-submenu > li > a {
+    padding: 5px !important;
+}
+
+@media (min-width: 768px) {
+    body:not(.sidebar-mini-md) .content-wrapper, body:not(.sidebar-mini-md) .main-footer, body:not(.sidebar-mini-md) .main-header {
+        transition: margin-left .3s ease-in-out;
+        margin-left: 200px;
+    }
+    /* body:not(.sidebar-mini-md) .content-wrapper, body:not(.sidebar-mini-md) .main-footer, body:not(.sidebar-mini-md) .main-header {
+        transition: margin-left .3s ease-in-out;
+        margin-left: 50px !important;
+    }*/
+}
+
+@media (min-width: 992px) {
+    .sidebar-mini.sidebar-collapse .content-wrapper, .sidebar-mini.sidebar-collapse .main-footer, .sidebar-mini.sidebar-collapse .main-header {
+        transition: margin-left .3s ease-in-out;
+        margin-left: 120px !important;
+    }
+}
+
+.sidenav {
+    background-color: #222d32;
+}
+
+/* Show on hover */
+.sidebar-collapse .sidebar-menu > li:hover > ul.mini_sidebar {
+    display: block !important;
+}

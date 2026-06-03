@@ -1,0 +1,79 @@
+﻿@model GCTL.UI.Core.ViewModels.ManualAttendanceBulk.ManualAttendanceBulkPageViewModel
+@{
+    ViewBag.Title = "Manual Attendance Bulk List";
+    Model.PageTitle = ViewBag.Title;
+    Model.Breadcrumb = "Manual Attendance Bulk List";
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="calloutx callout-info" style="height: 35px;">
+            <div class="row">
+                <div class="col-md-8 row">
+                    <ol class="breadcrumb float-sm-right">
+                    </ol>
+                </div>
+                <div class="col-md-4">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="/Dashboard">Home</a></li>
+                        <li class="breadcrumb-item"><a href="/ManualAttendanceBulk/Index">Manual Attendance Bulk</a></li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-body p-2 pt-3">
+                        <div class="row">
+                            <div class="col-sm-9">
+                                <div class="">
+                                    <partial name="Setup" model="Model.Setup" />
+                                </div>
+
+                                <div class="js-manualAttendanceBulk-grid-container px-2">
+                                    @await Html.PartialAsync("_Grid", Model.ListTableData)
+                                </div>
+                            </div>
+
+                            <div class="col-sm-3" style="margin-top: 42px;">
+                                <div class="js-manualAttendanceEmployee-grid-container">
+                                    @await Html.PartialAsync("_EmployeeList", Model.ListTableData)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <partial name="_BottomNavigation" />
+    </div>
+</section>
+
+<partial name="DeleteModal" />
+<partial name="QuickAddModal" />
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.js"></script>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="~/js/pages/manualAttendanceBulk.js"></script>
+    <script type="text/javascript">
+        var options = {
+            baseUrl: '@Url.Action("", "ManualAttendanceBulk")'
+        };
+        options.load = () => {
+        };
+
+        $.manualAttendanceBulk(options);
+    </script>
+}

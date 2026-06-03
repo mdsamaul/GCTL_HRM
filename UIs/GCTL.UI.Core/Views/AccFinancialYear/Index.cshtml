@@ -1,0 +1,93 @@
+﻿@model GCTL.UI.Core.ViewModels.AccFinancialYears.AccFinancialYearPageViewModel
+
+@{
+
+    Model.PageTitle = ViewBag.Title;
+    ViewBag.Title = "Financial Year";
+    Model.Breadcrumb = "Financial Year";
+}
+
+<style>
+    .card-header {
+        min-height: 50px;
+    }
+
+    #FinancialYear-grid tbody tr td:first-child {
+        width: 5%;
+        padding: 0;
+    }
+
+    #FinancialYear-grid thead th:first-child {
+        width: 5%;
+    }
+
+    th.no-sort::after,
+    th.no-sort::before {
+        display: none !important;
+    }
+
+    #AccDeleteModalBodyHeightFeixd{
+    height:11vh !important;
+    }
+
+</style>
+
+<partial name="_PageHeader" model="Model" />
+
+<section class="content consistent-look">
+    <div class="container-fluid">
+        <div class="row">
+
+            <div class="col-md-12">
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-white py-2">
+                        <partial name="_Toolbars" model="new ToobarModel() { Title = Model.Breadcrumb, Code = Model.Code, Name = Model.Setup.FinancialCodeNo }" />
+                    </div>
+                    <div class="card-body">
+
+                        <form asp-action="Setup" method="post" id="FinancialYear-form" asp-controller="AccFinancialYear">
+
+                            <div class="js-FinancialYear-form-container">
+                                <partial name="_Setup" model="Model.Setup" />
+                            </div>
+
+                        </form>
+
+                        <div>
+                            <div class="card-body p-2 pt-3">
+                                <div class="js-FinancialYear-grid-container">
+                                    @await Html.PartialAsync("_Grid", Model.FinancialYearList)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+
+
+        <partial name="_BottomNavigation" />
+    </div>
+</section>
+<partial name="DeleteModal" />
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="~/js/pages/accFinancialYears.js"></script>
+    <script type="text/javascript">
+        var options = {
+            baseUrl: '@Url.Action("", "AccFinancialYear")'
+        };
+        options.load = () => {
+        };
+
+        $.financialYear(options);
+    </script>
+}
+

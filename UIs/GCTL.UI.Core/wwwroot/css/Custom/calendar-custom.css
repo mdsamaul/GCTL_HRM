@@ -1,0 +1,170 @@
+﻿/* 🔴 Holiday Styling */
+.flatpickr-day.holiday-day {
+    background: #e74c3c !important;
+    color: #fff !important;
+    border-radius: 4px;
+}
+
+/* Hide dates from previous/next months but keep grid alignment */
+.flatpickr-day.prevMonthDay,
+.flatpickr-day.nextMonthDay {
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+/* Optional: prevent empty space where hidden dates were */
+.flatpickr-calendar .flatpickr-days {
+    width: auto !important;
+}
+
+/* 🟡 Weekend Styling */
+.flatpickr-day.weekend-day {
+    background: #ff9800 !important;
+    color: #000 !important;
+    border-radius: 4px;
+}
+
+/* Hover Effect */
+.flatpickr-day:hover {
+    font-weight: bold;
+    background: #e6e6e6;
+    border-radius: 4px;
+}
+
+/* Selected Day - applies to ALL selected days */
+.flatpickr-day.selected,
+.flatpickr-day.holiday-day.selected,
+.flatpickr-day.weekend-day.selected {
+    background: #4f99ff !important;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    color: #fff !important;
+    border-color: #e6e6e6 !important;
+    border-radius: 4px;
+}
+
+/* Today Indicator */
+.flatpickr-day.today {
+    border-radius: 4px;
+    border: 2px solid #4f99ff;
+}
+
+/* ✨ Bootstrap-style Separated Dates */
+.flatpickr-day {
+    border: 1px solid #e9ecef !important;
+    border-radius: 4px !important;
+    box-sizing: border-box !important;
+}
+
+/* Add gap between dates using CSS gap property */
+.flatpickr-days .dayContainer {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 3px !important;
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: 100% !important;
+    padding: 3px !important; /* Space around the grid */
+}
+
+.flatpickr-day {
+    flex: 0 0 calc((100% - 18px) / 7) !important; /* 18px = 6 gaps × 3px */
+    width: calc((100% - 18px) / 7) !important;
+    max-width: calc((100% - 18px) / 7) !important;
+}
+
+/* Add spacing to the days container wrapper */
+.flatpickr-days {
+    padding: 0 3px 3px 3px !important; /* Top padding handled by month header spacing */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* 🔴 Holiday Styling */
+/*.flatpickr-day.holiday-day {
+    background: #e74c3c !important;
+    color: #fff !important;
+    border-radius: 12%;
+}*/
+
+
+/* Hide dates from previous/next months but keep grid alignment */
+/*.flatpickr-day.prevMonthDay,
+.flatpickr-day.nextMonthDay {
+    visibility: hidden !important;
+    pointer-events: none !important;
+}*/
+
+/* Optional: prevent empty space where hidden dates were */
+/*.flatpickr-calendar .flatpickr-days {
+    width: auto !important;
+}
+
+.flatpickr-day.holiday-day.selected {
+    background: #4f99ff !important;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    color: #fff;
+    border-color: #e74c3c !important;
+    border-radius: 12%;
+}*/
+
+/* 🟡 Weekend Styling */
+/*.flatpickr-day.weekend-day {
+    background: #ff9800 !important;
+    color: #000 !important;
+    border-radius: 12%;
+}
+
+    .flatpickr-day.weekend-day.selected {
+        background: #4f99ff !important;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        color: #fff !important;
+        border-color: #ff9800 !important;
+        border-radius: 12%;
+    }*/
+
+/* Hover Effect */
+/*.flatpickr-day:hover {
+    font-weight: bold;
+}*/
+
+/* Selected Day */
+/*.flatpickr-day.selected {
+    background: #4f99ff;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    color: #fff;
+    border-color: #e6e6e6 !important;
+    border-radius: 12%;
+}*/
+
+/* Today Indicator */
+/*.flatpickr-day.today {
+    border-radius: 12%;
+}*/

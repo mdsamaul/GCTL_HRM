@@ -1,0 +1,381 @@
+﻿@using GCTL.Core.ViewModels.HrmEmployeeEducations
+
+@model GCTL.Core.ViewModels.HrmEmployeeEducations.HrmEmployeeEducationsSetupViewModel
+@{
+
+  var list = ViewData["List"] as List<HrmEmployeeEducationsSetupViewModel>;
+
+}
+
+<div id="customLoadingOverlay" style="
+        display: flex;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 9999;
+        justify-content: center;
+        align-items: center;">
+    <div style="
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+            text-align: center;">
+        <div class="spinner-border text-primary" role="status">
+            <span class="sr-only"></span>
+        </div>
+        <p style="margin-top: 10px; margin-bottom: 0;"></p>
+    </div>
+</div>
+
+<div style="padding-top:1px;">
+
+    <div class="row">
+        <div class="col-lg-6">
+            <span id="message"></span>
+        </div>
+        <div class="col-lg-6">
+        </div>
+    </div>
+
+
+ @*    <div class="card">
+        <div class="card-body"> *@
+
+            <div style="padding-top: 1px;">
+                <div class="row">
+                    <div class="col-lg-12">
+    
+                        <input type="hidden" asp-for="Id" />
+                        <input type="hidden" asp-for="Ldate" />
+                        <input type="hidden" asp-for="ModifyDate" />
+                        <input type="hidden" asp-for="AutoId" />
+                        <input asp-for="EmpEduCode" type="hidden" />
+
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+
+                                    <div class="col-lg-6">
+                                        <div class="form-group d-flex align-items-center justify-content-between">
+                                            <label class="d-flex justify-content-end form-label col-form-label-sm required" asp-for="CompanyCode">Comapny</label>
+                                            <div class="input-wrapper">
+                                        <select asp-for="CompanyCode" tabindex="1" data-placeholder="Select Company" required class="form-control form-control-sm selectpickerEmpEducation js-" asp-items="@ViewBag.CoreCompanyDD as SelectList">
+                                                    <option value=""></option>
+                                                </select>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="form-group d-flex align-items-center justify-content-between">
+                                            <label class="d-flex justify-content-end form-label col-form-label-sm required" asp-for="EmployeeId">Employee Id </label>
+                                            <div class="input-wrapper">
+                                        <select asp-for="EmployeeId" tabindex="2" data-placeholder="Select Employee" required class="form-control form-control-sm selectpickerEmpEducation" asp-items="@ViewBag.EmployeeDD as SelectList">
+                                                    <option value=""></option>
+                                        </select>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-group d-flex align-items-center justify-content-between">
+                                            <label class="d-flex justify-content-end form-label col-form-label-sm" asp-for="EmployeeName">Employee Name:</label>
+                                            <div class="input-wrapper">
+                                                <span id="FullName" style="text-align: left; display: block;">@Model.EmployeeName</span>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="form-group d-flex align-items-center justify-content-between">
+                                            <label class="d-flex justify-content-end form-label col-form-label-sm" asp-for="DesignationName">Designation:</label>
+                                            <div class="input-wrapper">
+
+                                                <span id="DesignationName" style="text-align: left; display: block;">@Model.DesignationName</span> <!-- Right aligned -->
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6">
+                                        <div class="form-group d-flex align-items-center justify-content-between">
+                                            <label class="d-flex justify-content-end form-label col-form-label-sm" asp-for="DepartmentName">Department:</label>
+                                            <div class="input-wrapper">
+                                                <span id="DepartmentName" style="text-align: left; display: block;">@Model.DepartmentName</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                                      <div style="display:none">Table List</div>
+                                         <div class="js-HrmEmployeeEducations-grid-container">
+                                            @*  <partial name="_Grid" /> *@
+                                            @await Html.PartialAsync("_Grid",list)
+                                         </div>
+                                    
+                                
+
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+
+                                    <div class="col-lg-4 ">
+                                      <label asp-for="DegreeCode" class="required">Degree</label>
+                                        <div class="input-group">
+                                    <select asp-for="DegreeCode" data-placeholder="Select Degree" tabindex="3" class="form-control form-control-sm selectpickerEmpEducation required" required asp-items="@ViewBag.DegreeDD as SelectList">
+                                                <option value=""></option>
+                                            </select>
+
+                                            <div class="input-group-append">
+                                                <button type="button" class="btn btn-sm btn-default js-quick-add input-group-textc"
+                                                        data-url="@Url.Action("Index", "HrmDefDegrees")"
+                                                        data-target="#DegreeCode"
+                                                        data-reload-url="@Url.Action("GetDegree", "Cascading")"
+                                                        data-title="Degree">
+                                                    +
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                   <label asp-for="ExamTitleCode" class="required">Exam Title</label>
+                                        <div class="input-group">
+                                    <select asp-for="ExamTitleCode" data-placeholder="Select Exam title" tabindex="4" class="form-control form-control-sm selectpickerEmpEducation required" required asp-items="@ViewBag.ExamTitleDD as SelectList">
+                                                <option value=""></option>
+                                            </select>
+                                            <div class="input-group-append">
+                                                <button type="button" class="btn btn-sm btn-default js-quick-add input-group-textc"
+                                                        data-url="@Url.Action("Index", "HRMDefExamTitles")"
+                                                        data-target="#ExamTitleCode"
+                                                        data-reload-url="@Url.Action("GetExamTitle", "Cascading")"
+                                                        data-title="ExamTitle">
+                                                    +
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-4">
+                                    <label asp-for="InstitueCode" class="required">Institue</label>
+                                        <div class="input-group">
+                                    <select asp-for="InstitueCode" data-placeholder="Select  Institute" tabindex="4" class="form-control form-control-sm selectpickerEmpEducation required" required asp-items="@ViewBag.InstituteDD as SelectList">
+                                                <option value=""></option>
+                                            </select>
+                                            <div class="input-group-append">
+                                                <button type="button" class="btn btn-sm btn-default js-quick-add input-group-textc"
+                                                        data-url="@Url.Action("Index", "HrmDefInstitutes")"
+                                                        data-target="#InstitueCode"
+                                                        data-reload-url="@Url.Action("GetInstitute", "Cascading")"
+                                                        data-title="Institue">
+                                                    +
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-4 ">
+                                <label asp-for="BoardCode" class="required">Board/Country</label>
+                                        <div class="input-group">
+                                    <select asp-for="BoardCode" data-placeholder="Select Board" tabindex="6" class="form-control form-control-sm selectpickerEmpEducation required" required asp-items="@ViewBag.BoardDD as SelectList">
+                                                <option value=""></option>
+                                            </select>
+                                            <div class="input-group-append">
+                                                <button type="button" class="btn btn-sm btn-default js-quick-add input-group-textc"
+                                                        data-url="@Url.Action("Index", "HRMDefBoardCountryNames")"
+                                                        data-target="#BoardCode"
+                                                        data-reload-url="@Url.Action("GetBoard", "Cascading")"
+                                                        data-title="Board">
+                                                    +
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                <label asp-for="GroupCode" class="required">Major/Group</label>
+                                        <div class="input-group">
+                                    <select asp-for="GroupCode" data-placeholder="Select Group" tabindex="7" class="form-control form-control-sm selectpickerEmpEducation required" required asp-items="@ViewBag.ExamGroupDD as SelectList">
+                                                <option value=""></option>
+                                            </select>
+                                            <div class="input-group-append">
+                                                <button type="button" class="btn btn-sm btn-default js-quick-add input-group-textc"
+                                                        data-url="@Url.Action("Index", "HrmDefExamGroupInfos")"
+                                                        data-target="#GroupCode"
+                                                        data-reload-url="@Url.Action("GetGroup", "Cascading")"
+                                                        data-title="Group">
+                                                    +
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                <label asp-for="ResultDivision" >Result(Division/CGPA)</label>
+                                        <input asp-for="ResultDivision" class="form-control form-control-sm"  placeholder="Enter Result(Division)" tabindex="8" />
+                                    </div>
+                                </div>
+
+
+                                <div class="row">
+                                    <div class="col-lg-4 ">
+                                <label asp-for="CgpaMarks" class="required">CGPA/Marks</label>
+                                        <input asp-for="CgpaMarks" class="form-control form-control-sm required" required placeholder="Enter  CGPA Marks" tabindex="9" />
+                                    </div>
+                                    <div class="col-lg-4">
+                                <label asp-for="ScaleOf" class="required">Scale/Out of</label>
+                                        <input asp-for="ScaleOf" class="form-control form-control-sm required" required placeholder="Enter Scale of" tabindex="10" />
+                                    </div>
+                                    <div class="col-lg-4">
+                                <label asp-for="YearofPasssing" class="required">Year of Passing</label>
+                                        <span class="text-danger"></span>
+                                        <input asp-for="YearofPasssing" class="form-control form-control-sm  required" required placeholder="Enter Year of Passing" tabindex="11" />
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <div class="row">
+
+                                            <div class="col-md-6">
+                                        <label asp-for="Dueration" class="required">Duration</label>
+                                                <input asp-for="Dueration" tabindex="12" class="form-control form-control-sm required" required placeholder="Enter Duration" />
+                                            </div>
+
+
+                                            <div class="col-md-6">
+                                        <label asp-for="DuratioinType" class="required">Duratioin Type</label>
+                                        <select asp-for="DuratioinType" data-placeholder="Select Duration Type" tabindex="13" class="form-control form-control-sm selectpickerEmpEducation  required" required asp-items="@ViewBag.BakBranchDD as SelectList">
+                                                    <option value=""></option>
+                                                    <option selected value="Year">Year</option>
+                                                    <option value="Month">Month</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-4">
+                                        <label asp-for="Achievment">Achievement</label>
+                                        <input asp-for="Achievment" tabindex="14" class="form-control form-control-sm" placeholder="Enter Achievement" />
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label asp-for="Remarks">Remarks</label>
+                                        <input asp-for="Remarks" tabindex="15" class="form-control form-control-sm" placeholder="Enter Remarks" />
+                                    </div>
+                                </div>
+                               
+                                @if (Model.AutoId > 0)
+                                {
+                                    <hr />
+                                    <div class="form-group row" id="LdateModifyHide">
+                                      
+
+                                            <div class="col-6">
+                                                <div class="form-group d-flex align-items-center justify-content-between">
+                                                    @if (Model.Ldate.HasValue)
+                                                    {
+                                                        <label class="d-flex justify-content-end form-label col-form-label-sm" asp-for="Ldate">Creation Date:</label>
+                                                        <div class="input-wrapper">
+                                                            <span style="text-align: left; display: block;">@Model.Ldate?.ToString("dd/MM/yyyy hh:mm tt")</span>
+                                                        </div>
+                                                    }
+
+                                                </div>
+                                            </div>
+
+
+                                          <div class="col-6">
+                                              <div class="form-group d-flex align-items-center justify-content-between">
+                                                  @if(Model.ModifyDate.HasValue)
+                                                  {
+                                                      <label class="d-flex justify-content-end form-label col-form-label-sm" asp-for="ModifyDate">Last Update Date:</label>
+                                                      <div class="input-wrapper">
+                                                <span style="text-align: left; display: block;">@Model.ModifyDate?.ToString("dd/MM/yyyy hh:mm tt")</span>
+                                                      </div>
+                                                  }
+                                                 
+                                              </div>
+                                          </div>
+
+                                    </div>
+                                }
+
+
+
+                                <div class="row no-print" style="margin-top: 9px;">
+
+                                    <div class="col-12">
+                                    @*  <a href='@Url.Action("Index")' class="btn btn-default btn-common btn-circle"><i class="fas fa-arrow-alt-circle-left">&nbsp;</i>Back To List</a> *@
+                                        <button type="button" class="btn btn-default success-btn btn btn-outline-success btn-common btn-circle float-right js-HrmEmployeeEducations-save" data-id="@Model.EmpEduCode">
+                                            <i class="fas fa-save"></i> Save
+                                        </button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                </div>
+            </div>
+            <partial name="_BottomNavigation" />
+        </div>
+   @*  </div>
+
+
+</div> *@
+
+
+
+ 
+
+
+<style>
+   
+    .required::after {
+        content: '*';
+        color: red;
+        margin-left: 5px;
+    }
+
+
+
+    .form-group label {
+        margin-right: .5rem;
+        min-width: 150px;
+    }
+
+    .form-group input {
+        flex: 1;
+        max-width: 100%; /*150px*/
+    }
+
+    .input-wrapper {
+        position: relative;
+        width: 100%; /* Set wrapper width to 100% */
+    }
+
+        .input-wrapper span {
+            width: 100%; /* Set input width to 100% */
+        }
+
+</style>
+

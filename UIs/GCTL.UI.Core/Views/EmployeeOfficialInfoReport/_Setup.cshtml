@@ -1,0 +1,592 @@
+﻿@model GCTL.Core.ViewModels.EmployeeOfficialInfoReport.EmployeeOfficialInfoReportSetupViewModel
+
+<style>
+    .multiselect-container {
+        width: 100% !important;
+    }
+    .multiselect{
+        text-align:left !important;
+    }
+    input[type=radio] {       
+        display: none;
+    }
+
+    #btnPreviewPdf, #downloadReport {
+        transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        min-width: 120px;
+        min-height: 25px;
+        position: relative;
+        overflow: visible;
+    }
+
+        #btnPreviewPdf:hover,
+        #downloadReport:hover {
+            background-color: rgba(173, 255, 47, 0.2) !important;
+            color: #1e90ff !important;
+            border-color: #1e90ff !important;
+            box-shadow: 0 4px 10px rgba(30, 144, 255, 0.5) !important;
+        }
+
+
+        #btnPreviewPdf i,
+        #btnPreviewPdf span,
+        #downloadReport i,
+        #downloadReport span {
+            transition: transform 0.3s ease;
+            display: inline-block;
+            transform: scale(1);
+            margin-right: 2px;
+        }
+
+        #btnPreviewPdf:hover i,
+        #downloadReport:hover i {
+            transform: scale(1.3);
+        }
+
+</style>
+
+
+<div class="row">
+    <div class="col-md-6 ms-5">
+        <div class="row">
+            <div class="col-sm-4 text-end" style="text-align: right;">
+                <div class="form-group">
+                    <label asp-for="CompanyName" class="col-form-label-sm">Company</label>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="form-group shefu-multi-select-dropdown">                
+                    <select asp-for="CompanyCode" id="CompanyCode" class="form-control form-control-sm" title="---- Select Company ----" multiple>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="row">
+            <div class="col-sm-4 text-end" style="text-align: right;">
+                <div class="form-group">
+                    <label asp-for="DepartmentName" class="col-form-label-sm">Department</label>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="form-group shefu-multi-select-dropdown">
+                    @* <select asp-for="DepartmentName" multiple class="form-control form-control-sm multiselectCustom" title="---- Select Department ----">
+                    </select> *@
+                    <select asp-for="DepartmentName" id="DepartmentName" multiple class="form-control form-control-sm multiselectCustom" title="---- Select Department ----">
+                    </select>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-sm-4 text-end" style="text-align: right;">
+                <div class="form-group">
+                    <label asp-for="EmployeeType" class="col-form-label-sm">Employee Type</label>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <select asp-for="EmployeeType" class="form-control form-control-sm selectpickerReport">
+                        <option value="" disabled selected>~~ Employee Type ~~</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-4 text-end" style="text-align: right;">
+                <div class="form-group">
+                    <label asp-for="EmployeeName" class="col-form-label-sm">Employee</label>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="form-group shefu-multi-select-dropdown">
+                    <select asp-for="EmployeeCode" multiple class="form-control form-control-sm multiselectCustom" title="---- Select Employee----">
+                    </select>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="row">
+            <div class="col-sm-4 text-end" style="text-align: right;">
+                <div class="form-group">
+                    <label asp-for="NationalID" class="col-form-label-sm">National ID</label>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <select asp-for="NationalID" class="form-control form-control-sm selectpickerReport">
+                        <option value="" disabled selected>~~ National ID ~~</option>
+                        @* @foreach (var item in ViewBag.NationalDD)
+                        {
+                            <option value="@item.NationalIdno">@item.NationalIdno</option>
+                        } *@
+                    </select>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-sm-4 text-end" style="text-align: right;">
+                <div class="form-group">
+                    <label asp-for="DrivingLicense" class="col-form-label-sm">Driving License</label>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <select asp-for="DrivingLicense" class="form-control form-control-sm selectpickerReport">
+                        <option value="" disabled selected>~~ Driving License ~~</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-4 text-end" style="text-align: right;">
+                <div class="form-group">
+                    <label asp-for="ImmediateSupervisor" class="col-form-label-sm">Immediate Supervisor</label>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <select asp-for="ImmediateSupervisorCode" class="form-control form-control-sm selectpickerReport">
+                        <option value="" disabled selected>~~ Immediate Supervisor ~~</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-4 text-end" style="text-align: right;">
+                <div class="form-group">
+                    <label asp-for="Shift" class="col-form-label-sm">Shift</label>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <select asp-for="Shift" class="form-control form-control-sm selectpickerReport">
+                        <option value="" disabled selected>~~ Shift ~~</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-sm-4 text-end" style="text-align: right;">
+                <div class="form-group">
+                    <label class="col-form-label-sm">Gross Salary Range From</label>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <input asp-for="GrossSalaryRangeFrom" placeholder="Gross Salary Range From" class="form-control form-control-sm" />
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-4 text-end" style="text-align: right;">
+                <div class="form-group">
+                    <label class="col-form-label-sm">Appoinment Date From</label>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <input asp-for="AppoinmentDateFrom" placeholder="Appoinment Date From" class="form-control form-control-sm Datepicker" />
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-sm-4 text-end" style="text-align: right;">
+                <div class="form-group">
+                    <label class="col-form-label-sm">Joining Date From</label>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <input asp-for="JoiningDateFrom" placeholder="Joining Date From" class="form-control form-control-sm Datepicker" />
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-sm-4 text-end" style="text-align: right;">
+                <div class="form-group">
+                    <label class="col-form-label-sm">Termination Date From</label>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <input asp-for="TerminationDateFrom" placeholder="Termination Date From" class="form-control form-control-sm Datepicker" />
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <div class="row">
+            <div class="col-sm-4 text-end" style="text-align:right;">
+                <div class="form-group">
+                    <label class="col-form-label-sm">Probation Date From</label>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <input asp-for="ProbationDateFrom" placeholder="Probation Date From" class="form-control form-control-sm Datepicker" />
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-4 text-end" style="text-align:right;">
+                <div class="form-group">
+                    <label class="col-form-label-sm">Confirmation Date From</label>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <input asp-for="ConfirmationDateFrom" placeholder="Confirmation Date From" class="form-control form-control-sm Datepicker" />
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-sm-4 text-end" style="text-align: right;">
+                <div class="form-group">
+                    <label class="col-form-label-sm">Report Export Format</label>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <select id="exportFormatDropdown" asp-for="ExportPdfXL" class="form-control form-control-sm exportFormatDropdownclass selectpickerReport">
+                        <option value="">----Select Report Export Format----</option>
+                        <option value="Excel">Excel</option>
+                        <option value="PDF">PDF</option>
+                    </select>
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+
+    <div class="col-md-6">
+
+        <div class="row">
+            <div class="col-sm-4 text-end" style="text-align: right;">
+                <div class="form-group">
+                    <label asp-for="ComapnyBranchName" class="col-form-label-sm">Branch</label>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="form-group shefu-multi-select-dropdown">
+                    <select asp-for="BranchCode" multiple class="form-control form-control-sm">
+                       
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-4 text-end" style="text-align: right;">
+                <div class="form-group">
+                    <label asp-for="Designation" class="col-form-label-sm">Designation</label>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="form-group shefu-multi-select-dropdown">
+                    <select asp-for="DesignationCode" multiple class="form-control form-control-sm multiselectCustom" title="----Select Designation----">
+                        
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-4 text-end" style="text-align: right;">
+                <div class="form-group">
+                    <label asp-for="EmploymentNature" class="col-form-label-sm">Employment Nature</label>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <select asp-for="EmploymentNature" class="form-control form-control-sm selectpickerReport">
+                        <option value="" disabled selected>~~ Employee Nature ~~</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="row">
+            <div class="col-sm-4 text-end" style="text-align: right;">
+                <div class="form-group">
+                    <label asp-for="IsExpatriate" class="col-form-label-sm">Is Expatriate</label>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <select asp-for="IsExpatriate" class="form-control form-control-sm selectpickerReport">
+                        <option value="" disabled selected>~~ Is Expatriate ~~</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-sm-4 text-end" style="text-align: right;">
+                <div class="form-group">
+                    <label asp-for="TIN" class="col-form-label-sm">TIN</label>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <select asp-for="TIN" class="form-control form-control-sm selectpickerReport">
+                        <option value="" disabled selected>~~ TINe ~~</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-4 text-end" style="text-align: right;">
+                <div class="form-group">
+                    <label asp-for="PassportNo" class="col-form-label-sm">Passport No</label>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <select asp-for="PassportNo" class="form-control form-control-sm selectpickerReport">
+                        <option value="" disabled selected>~~ Passport No ~~</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-4 text-end" style="text-align: right;">
+                <div class="form-group">
+                    <label asp-for="HeadOfDepartment" class="col-form-label-sm">Head Of Department</label>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <select asp-for="HeadOfDepartmentCode" class="form-control form-control-sm selectpickerReport">
+                        <option value="" disabled selected>~~ Head Of Department ~~</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-4 text-end" style="text-align: right;">
+                <div class="form-group">
+                    <label asp-for="EmployeeStatus" class="col-form-label-sm">Employee Status</label>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <select asp-for="EmployeeStatusCode" class="form-control form-control-sm selectpickerReport">
+                        <option value="" disabled selected>~~ Employee Status ~~</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-sm-4 text-end" style="text-align: right;">
+                <div class="form-group">
+                    <label class="col-form-label-sm"> To</label>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <input asp-for="GrossSalaryRangeTo" placeholder="Select Gross Salary Range To" class="form-control form-control-sm" />
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-sm-4 text-end" style="text-align: right;">
+                <div class="form-group">
+                    <label class="col-form-label-sm"> To</label>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <input asp-for="AppoinmentDateTo" placeholder=" Select Appoinment Date To" class="form-control form-control-sm Datepicker" />
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-sm-4 text-end" style="text-align: right;">
+                <div class="form-group">
+                    <label class="col-form-label-sm"> To</label>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <input asp-for="JoiningDateTo" placeholder="Select Joining Date To" class="form-control form-control-sm Datepicker" />
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-sm-4 text-end" style="text-align: right;">
+                <div class="form-group">
+                    <label class="col-form-label-sm"> To</label>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <input asp-for="TerminationDateTo" placeholder=" Select Termination Date To" class="form-control form-control-sm Datepicker" />
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-4 text-end" style="text-align:right;">
+                <div class="form-group">
+                    <label class="col-form-label-sm"> To</label>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <input asp-for="ProbationDateTo" placeholder="Select Probation Date To" class="form-control form-control-sm Datepicker" />
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-4 text-end" style="text-align:right;">
+                <div class="form-group">
+                    <label class="col-form-label-sm"> To</label>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <input asp-for="ConfirmationDateTo" placeholder="Select Confirmation Date To" class="form-control form-control-sm Datepicker" />
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+
+
+            <div class="col-sm-4 text-end" style="text-align:right;">
+                <div class="form-group">
+                    <label class="col-form-label-sm"> </label>
+                </div>
+            </div>
+
+            @* <div class="col-sm-6">
+                <div class="button-container">
+
+                    <button type="button" class="accent-light exportReportBtnclass" id="exportReportBtn">
+                        <i class="fas fa-print"></i> Export Report
+                    </button>
+
+                    <button type="button" class="accent-light" id="previewReportBtn">
+                        <i class="fas fa-eye"></i> Preview
+                    </button>
+
+                </div>
+
+            </div> *@
+            <div class=" py-1 mx-auto">
+                <div class="row justify-content-end align-items-center" style="padding-right: 10px;">
+                    <div class="col-auto px-1 d-grid">
+                        <button type="button" id="downloadReport" class="btn btn-sm common-btn btn-outline-secondary exportReportBtnclass">
+                            <i class="fas fa-file-export fa-export"></i> <span>Export Report</span>
+                        </button>
+                    </div>
+                    <div class="col-auto px-1 d-grid">
+                        <button type="button" id="btnPreviewPdf" class="btn btn-sm btn-outline-secondary common-btn px-4">
+                            <i class="fas fa-eye preview-icon" title="Preview"></i> <span>Preview</span>
+                        </button>
+                    </div>
+
+                    <div class="col-md-3"></div>
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+</div>
+
+
+
+
+<div>
+    <iframe id="pdfPreviewFrame" style="width:85vw;height:100vh;display:none"></iframe>
+</div>
+
+
+
+
+<style>
+
+    .button-container {
+        display: flex;
+        gap: 10px;
+        justify-content: flex-end;
+    }
+
+    .accent-light, .btn-close-white {
+        flex: 1;
+        max-width: 150px;
+    }
+
+</style>

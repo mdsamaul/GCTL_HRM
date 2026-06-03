@@ -1,0 +1,89 @@
+﻿ @model GCTL.Core.ViewModels.HRMTransportAssignEntry.HRMTransportAssignEntrySetupViewModel
+<!-- Hidden field for AutoId in Edit -->
+<input type="hidden" asp-for="AutoId" />
+<div class="row">
+    <div class="col-12 col-md-6">
+        <div class="d-flex align-items-center">
+            <div class="transportLeft text-right">ID <span class="text-danger">*</span></div>
+            <div class="transportRight">
+                <input asp-for="TAID" class="form-control-sm form-control" readonly />
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-md-6"> </div>
+</div>
+
+<div class="row py-2">
+    <div class="col-12 col-md-6">
+        <div class="d-flex align-items-center">
+            <div class="transportLeft text-right">Transport No. <span class="text-danger">*</span></div>
+            <div class="transportRight gc-inline-select2">
+                <select asp-for="TransportNoId" asp-items=" ViewBag.TransportList as SelectList" data-placeholder="Select Transport" class="form-select-sm form-select searchable-select gc-select2">
+                    <option value=""></option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-md-6">
+        <div class="d-flex align-items-center">
+            <div class="transportLeft text-right">Transport Type</div>
+            <div class="transportRight  dropdown-wrapper">
+                @* <input asp-for="TransportTypeId" class="form-control-sm form-control" /> *@
+                <select asp-for="TransportTypeId"
+                        asp-items="ViewBag.TransportTypeList as SelectList"
+                        class="form-control-sm form-control form-select-sm form-select searchable-select gc-multiselect" data-placeholder="Transport Type"
+                        disabled>
+                    <option value="">Transport Type</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row py-2">
+    <div class="col-12 col-md-6">
+        <div class="d-flex align-items-center">
+            <div class="transportLeft text-right">Helper Name</div>
+            <div class="transportRight gc-inline-select2">
+                <select asp-for="HelperId" class="form-select-sm form-select searchable-select gc-select2" data-placeholder="Select Helper" asp-items="ViewBag.EmpList as SelectList">
+                    <option value="">--Select Helper--</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-md-6">
+        <div class="d-flex align-items-center">
+            <div class="transportLeft text-right">User <span class="text-danger">*</span></div>
+            <div class="transportRight dropdown-wrapper">
+                <select asp-for="TransportUser" class="form-select-sm form-select searchable-select gc-multiselect" id="UserSelectEmpId" data-placeholder="Select User" asp-items="ViewBag.EmpList as SelectList" multiple="multiple">
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="row py-2">
+    <div class="col-12 col-md-6">
+            <div class="d-flex align-items-center">
+          
+                <div class="transportLeft text-right">Effective Date <span class="text-danger">*</span></div>
+                <div class="transportRight">
+                    <input asp-for="EffectiveDate" class="form-control-sm form-control" />
+                </div>
+            </div>
+    </div>
+    <div class="col-12 col-md-6">
+        <div class="d-flex align-items-center">
+        <div class="transportLeft text-right">Active</div>
+        <input type="checkbox" asp-for="Active" name="name" value="" />
+    </div>
+    </div>
+</div>
+
+
+

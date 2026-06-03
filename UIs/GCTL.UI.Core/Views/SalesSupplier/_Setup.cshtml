@@ -1,0 +1,256 @@
+﻿ @model GCTL.Core.ViewModels.SalesSupplier.SalesSupplierSetupViewModel
+
+<!-- Hidden field for AutoId in Edit -->
+<input type="hidden" asp-for="AutoId" />
+
+<div class="row">
+    <div class="col-12 col-md-6">
+        <div class="d-flex align-items-center">
+            <div class="supplierTypeLeft text-right">Supplier ID <span class="text-danger">*</span></div>
+            <div class="supplierTypeRight">
+                <input asp-for="SupplierID" class="form-control-sm form-control" readonly placeholder="Auto generated" />
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-md-6">
+        <div class="d-flex align-items-center">
+            <div class="supplierTypeLeft text-right">Supplier <span class="text-danger">*</span></div>
+            <div class="supplierTypeRight">
+                <input asp-for="SupplierName" class="form-control-sm form-control" placeholder="Enter supplier name" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row pt-2">
+    <div class="col-12 col-md-6">
+        <div class="d-flex align-items-center">
+            <div class="supplierTypeLeft text-right">Supplier Type </div>
+            <div class="supplierTypeRight btn-group">
+                <select class="form-control-sm form-control dropdownSupplierType" asp-items="ViewBag.SupplirTypeList as SelectList">
+                    <option value="">Select Supplier Type</option>
+                </select>
+                <button class="btn btn-outline-success supplierTypeBtn rounded-md d-flex justify-content-center align-items-center"
+                        style="width: 31px; height: 31px; font-size: 9px; line-height: 1; margin-left:2px;"
+                        data-bs-toggle="modal" data-bs-target="#supplierTypeModal">
+                    <i class="fas fa-plus"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-md-6">
+        <div class="d-flex align-items-center">
+            <div class="supplierTypeLeft text-right">Address <span class="text-danger">*</span></div>
+            <div class="supplierTypeRight">
+                <textarea asp-for="SupplierAddress" class="form-control-sm form-control" placeholder="Enter full address"></textarea>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row pb-2">
+    <div class="col-12 col-md-6">
+        <div class="d-flex align-items-center">
+            <div class="supplierTypeLeft text-right">Country</div>
+            <div class="supplierTypeRight btn-group">
+                <select class="form-control-sm form-control dropdownSupplierCountry" asp-items="ViewBag.CountryAll as SelectList">
+                    <option value="">Select Country</option>
+                </select>
+                <button class="btn btn-outline-success supplierTypeCountryBtn rounded-md d-flex justify-content-center align-items-center"
+                        style="width: 31px; height: 31px; font-size: 9px; line-height: 1; margin-left:2px;"
+                        data-bs-toggle="modal" data-bs-target="#supplierTypeCountryModal">
+                    <i class="fas fa-plus"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-md-6"></div>
+</div>
+
+<div class="row">
+    <div class="col-12 col-md-6">
+        <div class="d-flex align-items-center">
+            <div class="supplierTypeLeft text-right">Phone</div>
+            <div class="supplierTypeRight">
+                <input asp-for="Phone" type="number" class="form-control-sm form-control" placeholder="Enter Phone Number" />
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-md-6">
+        <div class="d-flex align-items-center">
+            <div class="supplierTypeLeft text-right">Email</div>
+            <div class="supplierTypeRight">
+                <input asp-for="Email" type="email" class="form-control-sm form-control" placeholder="Enter Email" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row py-2">
+    <div class="col-12 col-md-6">
+        <div class="d-flex align-items-center">
+            <div class="supplierTypeLeft text-right">Fax</div>
+            <div class="supplierTypeRight">
+                <input asp-for="FAX" class="form-control-sm form-control" placeholder="Enter fax number" />
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-md-6">
+        <div class="d-flex align-items-center">
+            <div class="supplierTypeLeft text-right">URL</div>
+            <div class="supplierTypeRight">
+                <input asp-for="URL" type="url" class="form-control-sm form-control" placeholder="Enter URL" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12 col-md-6">
+        <div class="d-flex align-items-center">
+            <div class="supplierTypeLeft text-right">BIN</div>
+            <div class="supplierTypeRight">
+                <input asp-for="BinNo" class="form-control-sm form-control" placeholder="Enter BIN number" />
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-md-6">
+        <div class="d-flex align-items-center">
+            <div class="supplierTypeLeft text-right">VAT Reg No.</div>
+            <div class="supplierTypeRight">
+                <input asp-for="VatRegNo" class="form-control-sm form-control" placeholder="Enter VAT registration number" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row py-2">
+    <div class="col-12 col-md-6">
+        <div class="d-flex align-items-center">
+            <div class="supplierTypeLeft text-right">TIN</div>
+            <div class="supplierTypeRight">
+                <input asp-for="Tin" class="form-control-sm form-control" placeholder="Enter TIN number" />
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-md-6"></div>
+</div>
+
+<div class="row">
+    <div class="col-12 col-md-6">
+        <div class="d-flex align-items-center">
+            <div class="supplierTypeLeft text-right">Contact Person 1</div>
+            <div class="supplierTypeRight">
+                <input asp-for="ContatPerson1" class="form-control-sm form-control" placeholder="Enter contact person name" />
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-md-6">
+        <div class="d-flex align-items-center">
+            <div class="supplierTypeLeft text-right">Designation</div>
+            <div class="supplierTypeRight">
+                <input asp-for="Designation1" class="form-control-sm form-control" placeholder="Enter Designation" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row py-2">
+    <div class="col-12 col-md-6">
+        <div class="d-flex align-items-center">
+            <div class="supplierTypeLeft text-right">Phone</div>
+            <div class="supplierTypeRight">
+                <input asp-for="Phone1" type="number" class="form-control-sm form-control" placeholder="Enter Phone Numnber" />
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-md-6">
+        <div class="d-flex align-items-center">
+            <div class="supplierTypeLeft text-right">Email</div>
+            <div class="supplierTypeRight">
+                <input asp-for="Email1" type="email" class="form-control-sm form-control" placeholder="Enter Email" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12 col-md-6">
+        <div class="d-flex align-items-center">
+            <div class="supplierTypeLeft text-right">Contact Person 2</div>
+            <div class="supplierTypeRight">
+                <input asp-for="ContatPerson2" class="form-control-sm form-control" placeholder="Enter contact person name" />
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-md-6">
+        <div class="d-flex align-items-center">
+            <div class="supplierTypeLeft text-right">Designation</div>
+            <div class="supplierTypeRight">
+                <input asp-for="Designation2" class="form-control-sm form-control" placeholder="Enter Designation" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row py-2">
+    <div class="col-12 col-md-6">
+        <div class="d-flex align-items-center">
+            <div class="supplierTypeLeft text-right">Phone</div>
+            <div class="supplierTypeRight">
+                <input asp-for="Phone2" type="number" class="form-control-sm form-control" placeholder="Enter Phone Number" />
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-md-6">
+        <div class="d-flex align-items-center">
+            <div class="supplierTypeLeft text-right">Email</div>
+            <div class="supplierTypeRight">
+                <input asp-for="Email2" type="email" class="form-control-sm form-control" placeholder="Enter Email" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12 col-md-6">
+        <div class="d-flex align-items-center">
+            <div class="supplierTypeLeft text-right">Remarks</div>
+            <div class="supplierTypeRight">
+                <textarea asp-for="Remarks" rows="2" class="form-control-sm form-control" style="resize:none;" placeholder="Enter remarks"></textarea>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-md-6"></div>
+</div>
+<!-- Supplier Modal -->
+@* <div class="modal fade" id="supplierTypeModal" tabindex="-1" aria-labelledby="supplierTypeModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="supplierTypeModalLabel">Supplier Type</h5>
+                <button type="button" class="btn-close closesupplierTypeModel" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div id="supplierTypeContainer"></div>
+            </div>
+        </div>
+    </div>
+</div> *@
+
+
+<!-- Country supplierTypeCountryModal Modal -->
+@*  <div class="modal fade" id="supplierTypeCountryModal" tabindex="-1" aria-labelledby="supplierTypeModalCountryLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Country</h5>
+                <button type="button" class="btn-close closeCompanyTypeModel" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div id="supplierCountryContainer">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>  *@

@@ -1,0 +1,410 @@
+﻿@model GCTL.UI.Core.ViewModels.BuyerInfos.BuyerInfoPageViewModel
+<form id="buyerForm" method="post" enctype="multipart/form-data">
+    @Html.AntiForgeryToken()
+
+    <input type="text" asp-for="Setup.Tc" hidden value=0 />
+
+    <div class="row col-md-12">
+        <div class="d-flex gap-3">
+            <div class="card col-md-10">
+                <!--Buyer ID-->
+                <div class="container-fluid mx-auto py-2">
+                    <div class="row align-items-center">
+                        <div class="col-md-6">
+                            <div class="row align-items-center">
+                                <div class="col-md-4 text-end">
+                                    Buyer ID
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="input-group input-group-sm">
+                                        <div style="flex: 1; min-width: 0;">
+                                            <input type="text" asp-for="Setup.BuyerId" class="form-control form-control-sm" aria-label="BuyerId" placeholder="Enter @Html.DisplayNameFor(m => m.Setup.BuyerId)" />
+                                        </div>
+                                        <button type="button" id="Setup_BuyerSearch" class="btn btn-outline-secondary btn-sm">
+                                            <i class="fas fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                        </div>
+                    </div>
+                </div>
+
+                <!--Buyer Name, Company-->
+                <div class="container-fluid mx-auto py-2">
+                    <div class="row align-items-center">
+                        <div class="col-md-6">
+                            <div class="row align-items-center">
+                                <div class="col-md-4 text-end">
+                                    Buyer Name<span class="text-danger">*</span>
+                                </div>
+                                <div class="col-md-8">
+                                    <input type="text" asp-for="Setup.BuyerName" class="form-control form-control-sm" aria-label="BuyerName" placeholder="Enter @Html.DisplayNameFor(m => m.Setup.BuyerName)" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row align-items-center">
+                                <div class="col-md-4 text-end">
+                                    Buyer Company
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="input-group input-group-sm">
+                                        <div style="flex: 1; min-width: 0;">
+                                            <select asp-items="ViewBag.Company as SelectList" class="form-select form-select-sm buyerSelect searchable-select" asp-for="Setup.CompanyId">
+                                                <option value="">--Select Company--</option>
+                                            </select>
+                                        </div>
+                                        <button type="button"
+                                                class="btn btn-outline-secondary js-quick-add"
+                                                data-url="@Url.Action("Index", "CompanyInfo")"
+                                                data-target="#Setup_CompanyId"
+                                                data-reload-url="@Url.Action("GetBuyerCompany", "Cascading")"
+                                                data-title="Company">
+                                            <i class="fa fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--Head Office Address-->
+                <div class="container-fluid mx-auto py-2">
+                    <div class="row align-items-center">
+                        <div class="col-md-12">
+                            <div class="row align-items-center">
+                                <div class="col-md-2 text-end">
+                                    Head Office Address
+                                </div>
+                                <div class="col-md-10">
+                                    <textarea asp-for="Setup.Address" class="form-control form-control-sm" rows="1" placeholder="Enter @Html.DisplayNameFor(m => m.Setup.Address)"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--Local Office Address-->
+                <div class="container-fluid mx-auto py-2">
+                    <div class="row align-items-center">
+                        <div class="col-md-12">
+                            <div class="row align-items-center">
+                                <div class="col-md-2 text-end">
+                                    Local Office Address
+                                </div>
+                                <div class="col-md-10">
+                                    <textarea asp-for="Setup.LocalOfficeAddress" class="form-control form-control-sm" rows="1" placeholder="Enter @Html.DisplayNameFor(m => m.Setup.LocalOfficeAddress)"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--Buyer Department, Country-->
+                <div class="container-fluid mx-auto py-2">
+                    <div class="row align-items-center">
+                        <div class="col-md-6">
+                            <div class="row align-items-center">
+                                <div class="col-md-4 text-end">
+                                    Buyer Department
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="input-group input-group-sm">
+                                        <div style="flex: 1; min-width: 0;">
+                                            <select asp-items="ViewBag.Department as SelectList" class="form-select form-select-sm buyerSelect searchable-select" asp-for="Setup.BuyerDepartmentId">
+                                                <option value="">--Select Buyer Department--</option>
+                                            </select>
+                                        </div>
+                                        <button type="button"
+                                                class="btn btn-outline-secondary js-quick-add"
+                                                data-url="@Url.Action("Index", "BuyerDepartment")"
+                                                data-target="#Setup_BuyerDepartmentId"
+                                                data-reload-url="@Url.Action("GetBuyerDepartment", "Cascading")"
+                                                data-title="Buyer Department">
+                                            <i class="fa fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="row align-items-center">
+                                <div class="col-md-4 text-end">
+                                    Country
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="input-group input-group-sm">
+                                        <div style="flex: 1; min-width: 0;">
+                                            <select asp-items="ViewBag.Country as SelectList"
+                                                    class="form-select buyerSelect searchable-select"
+                                                    asp-for="Setup.CountryId">
+                                                <option value="">--Select Country--</option>
+                                            </select>
+                                        </div>
+                                        <button type="button"
+                                                class="btn btn-outline-secondary js-quick-add"
+                                                data-url="@Url.Action("Index", "Country")"
+                                                data-target="#Setup_CountryId"
+                                                data-reload-url="@Url.Action("GetCountries", "Cascading")"
+                                                data-title="Country">
+                                            <i class="fa fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--Phone, Fax-->
+                <div class="container-fluid mx-auto py-2">
+                    <div class="row align-items-center">
+                        <div class="col-md-6">
+                            <div class="row align-items-center">
+                                <div class="col-md-4 text-end">
+                                    Phone
+                                </div>
+                                <div class="col-md-8">
+                                    <input type="text" asp-for="Setup.Phone" class="form-control form-control-sm" aria-label="Phone" placeholder="Enter @Html.DisplayNameFor(m => m.Setup.Phone)" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row align-items-center">
+                                <div class="col-md-4 text-end">
+                                    Fax
+                                </div>
+                                <div class="col-md-8">
+                                    <input type="text" asp-for="Setup.Fax" class="form-control form-control-sm" aria-label="Fax" placeholder="Enter @Html.DisplayNameFor(m => m.Setup.Fax)" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--Email, URL-->
+                <div class="container-fluid mx-auto py-2">
+                    <div class="row align-items-center">
+                        <div class="col-md-6">
+                            <div class="row align-items-center">
+                                <div class="col-md-4 text-end">
+                                    Email
+                                </div>
+                                <div class="col-md-8">
+                                    <input type="text" asp-for="Setup.Email" class="form-control form-control-sm" aria-label="Email" placeholder="Enter @Html.DisplayNameFor(m => m.Setup.Email)" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row align-items-center">
+                                <div class="col-md-4 text-end">
+                                    URL
+                                </div>
+                                <div class="col-md-8">
+                                    <input type="text" asp-for="Setup.Url" class="form-control form-control-sm" aria-label="Url" placeholder="Enter @Html.DisplayNameFor(m => m.Setup.Url)" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--Contact Person-->
+                <div class="container-fluid mx-auto py-2">
+                    <div class="row align-items-center">
+                        <div class="col-md-6">
+                            <div class="row align-items-center">
+                                <div class="col-md-4 text-end">
+                                    Contact Person
+                                </div>
+                                <div class="col-md-8">
+                                    <input type="hidden" asp-for="Setup.ContatPerson1">
+
+                                    <div class="input-group input-group-sm">
+                                        <div style="flex: 1; min-width: 0;">
+                                            <!-- Multi-select dropdown -->
+                                            <div class="multi-select-dropdown" id="contactPersonDropdown">
+                                                <div class="multi-select-button border rounded bg-white px-2 py-1" id="contactPersonButton">
+                                                    <span class="selected-text">--Select Contact Person--</span>
+                                                    <div class="d-flex align-items-center">
+                                                        <button type="button" class="clear-selection text-muted me-2" id="clearSelection" style="display: none;">
+                                                            <i class="fas fa-times"></i>
+                                                        </button>
+                                                        <i class="fas fa-chevron-down"></i>
+                                                    </div>
+                                                </div>
+
+                                                <div class="multi-select-dropdown-menu bg-white border rounded shadow" id="contactPersonMenu" style="display: none;">
+                                                    <div class="p-2 border-bottom">
+                                                        <input type="text" id="cpSearch" class="form-control form-control-sm"
+                                                               placeholder="Search contacts...">
+                                                    </div>
+                                                    <table class="contact-table table table-bordered table-hover table-condensed table-sm mb-0">
+                                                        <thead class="table-light">
+                                                            <tr>
+                                                                <th class="text-center p-2">
+                                                                    Select <br />
+                                                                    <input type="checkbox" id="selectAllCP" title="Select All">
+                                                                </th>
+                                                                <th class="text-center align-middle">Name</th>
+                                                                <th class="text-center align-middle">Designation</th>
+                                                                <th class="text-center align-middle">Phone</th>
+                                                                <th class="text-center align-middle">Email</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="contactPersonTableBody">
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button type="button"
+                                                class="btn btn-outline-secondary js-quick-add"
+                                                data-url="@Url.Action("Index", "ContactPersonInfo")"
+                                                data-title="Contact Person">
+                                            <i class="fa fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                        </div>
+                    </div>
+                </div>
+
+                <!--Type, Sales Person-->
+                <div class="container-fluid mx-auto py-2">
+                    <div class="row align-items-center">
+                        <div class="col-md-6">
+                            <div class="row align-items-center">
+                                <div class="col-md-4 text-end">
+                                    Type
+                                </div>
+                                <div class="col-md-8">
+                                    <select class="form-select form-select-sm buyerSelect searchable-select" asp-for="Setup.BuyerTypeId">
+                                        <option value="General" selected>General</option>
+                                        <option value="InHouse">In House</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row align-items-center">
+                                <div class="col-md-4 text-end">
+                                    Sales Person
+                                </div>
+                                <div class="col-md-8">
+                                    <select asp-items="ViewBag.SalesPerson as SelectList" class="form-select form-select-sm buyerSelect searchable-select" asp-for="Setup.SalesPersonId">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--Remarks, Buyer Photo-->
+                <div class="container-fluid mx-auto py-2">
+                    <div class="row align-items-center">
+                        <div class="col-md-6">
+                            <div class="row align-items-center">
+                                <div class="col-md-4 text-end">
+                                    Remarks
+                                </div>
+                                <div class="col-md-8">
+                                    <textarea asp-for="Setup.Remarks" class="form-control form-control-sm" rows="2" placeholder="Enter @Html.DisplayNameFor(m => m.Setup.Remarks)"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row align-items-center">
+                                <div class="col-md-4 text-end">
+                                    Buyer Photo
+                                </div>
+                                <div class="col-md-8">
+                                    <input type="file" asp-for="Setup.BuyerPhoto" class="form-control form-control-sm" aria-label="Photo" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--Active Status-->
+                <div class="container-fluid mx-auto py-2">
+                    <div class="row align-items-center">
+                        <div class="col-md-6">
+                            <div class="row align-items-center">
+                                <div class="col-md-4 text-end">
+                                    Active Status
+                                </div>
+                                <div class="col-md-8">
+
+                                    <select asp-items="ViewBag.ActiveStatus as SelectList" class="form-select form-select-sm buyerSelect searchable-select" asp-for="Setup.Active">
+                                        <option value="Y">Yes</option>
+                                        <option value="N">No</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                        </div>
+                    </div>
+                </div>
+
+                <partial name="_DateInfo" model='"Setup"' />
+
+            </div>
+            <!--Buyer Photo Preview and Remove Button-->
+            <div class="col-md-2 p-0 border-0">
+                <div class="position-relative mx-auto rounded-3 border border-2"
+                     style="width: 100%; padding-bottom: 100%; overflow: hidden;">
+                    <img id="buyerPhotoPreview"
+                         src=""
+                         alt="Buyer Photo"
+                         class="position-absolute top-0 start-0 w-100 h-100 rounded-3"
+                         style="object-fit: contain; object-position: center; display: none; transition: opacity 0.3s ease;">
+                    <div id="photoPlaceholder"
+                         class="position-absolute top-50 start-50 translate-middle text-center text-muted w-100 px-3">
+                        <i class="fas fa-image mb-2" style="font-size: 2.5rem; opacity: 0.3; color: #adb5bd;"></i>
+                        <p class="mb-0 small fw-semibold" style="letter-spacing: 0.3px;">No Photo</p>
+                    </div>
+                    <button type="button"
+                            id="btnDeleteBuyerPhoto"
+                            class="btn btn-light rounded-circle position-absolute shadow"
+                            style="top: 10px; right: 10px; display: none; width: 32px; height: 32px; padding: 0; line-height: 1; transition: all 0.2s ease; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(8px); border: none;">
+                        <i class="fas fa-times text-danger" style="font-size: 14px; transition: color 0.2s ease;"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<div class="row col-md-12">
+    <div class="d-flex">
+        <div class="card col-md-10 py-2">
+            <table id="buyer-grid" class="table table-bordered table-striped table-hover align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th class="text-center align-middle no-sort" style="width: 5%;">
+                            <label for="buyer-check-all" class="form-label m-0">Select</label><br />
+                            <input type="checkbox" id="buyer-check-all" />
+                        </th>
+                        <th class="text-center align-middle text-break">ID</th>
+                        <th class="text-center align-middle text-break">Buyer Name</th>
+                        <th class="text-center align-middle text-break">Address</th>
+                        <th class="text-center align-middle">Country</th>
+                        <th class="text-center align-middle">Phone</th>
+                        <th class="text-center align-middle">Email</th>
+                        <th class="text-center align-middle text-break">Contact Person</th>
+                    </tr>
+                </thead>
+                <tbody id="buyer-grid-body"></tbody>
+            </table>
+        </div>
+    </div>
+</div>

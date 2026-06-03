@@ -1,0 +1,211 @@
+﻿@model GCTL.Core.ViewModels.ExcessTDSForLastIncomeYear.ExcessTDSForLastIncomeYearSetupViewModel
+
+@{
+    ViewData["Title"] = "Excess TDS For Last Income Year";
+}
+
+<style>
+
+    .form-group label {
+        margin-right: .5rem;
+        min-width: 150px;
+    }
+
+    .form-group input {
+        flex: 1;
+        max-width: 100%;
+    }
+
+    .input-wrapper {
+        position: relative;
+        width: 100%;
+    }
+
+    .input-wrapper span {
+        width: 100%;
+    }
+
+    .required::after {
+        content: '*';
+        color: red;
+        margin-left: 5px;
+    }
+
+    .custom-checkbox {
+        width: 15px;
+        height: 15px;
+    }
+
+    .select2-selection__clear{
+        display:none !important; 
+    }
+   
+</style>
+
+<form id="ExcessTDSForLastIncomeYear-form" asp-action="Setup" asp-controller="ExcessTDSForLastIncomeYear" method="post">
+
+    <div class="row">
+        <div class="col-lg-6">
+            <span id="message"></span>
+        </div>
+        <div class="col-lg-6"></div>
+    </div>
+
+    <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="Ldate" />
+    <input type="hidden" asp-for="ModifyDate" />
+    <input type="hidden" asp-for="AutoId" value="0" />
+    <input asp-for="EmployeeId" type="hidden" />
+
+    <div class="card">
+        <div class="card-body">
+
+            <div class="row pe-2">
+                <div class="col-12 col-md-6">
+                    <div class="row">
+                        <div class="col-12 col-md-4 text-right p-0">
+                            <label asp-for="Etdsliyid" class="form-label col-form-label-sm d-flex justify-content-end" style="white-space:nowrap;">ID</label>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="input-wrapper">
+                                <input asp-for="Etdsliyid" type="text" class="form-control form-control-sm js-Etdsliyid-code" readonly />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6"> </div>
+            </div>
+
+            <div class="row py-2">
+                <div class="col-12 col-md-6">
+                    <div class="row">
+                        <div class="col-12 col-md-4 text-right p-0">
+                            <label asp-for="FinancialCodeNo" class="form-label col-form-label-sm d-flex justify-content-end" style="white-space:nowrap;">
+                                Financial Year
+                                <span class="text-danger">*</span>
+                            </label>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="input-wrapper">
+                                <div class="input-group-prepend">
+                                    <input type="hidden" id="DefaultFinancialCodeNo" value="@ViewBag.FinancialDD?.SelectedValue" />
+                                    <select asp-for="FinancialCodeNo" data-placeholder="Select Financial Year" class="form-control form-control-sm selectpickers2" tabindex="1" asp-items="@(ViewBag.FinancialDD as SelectList)">
+                                        <option value=""></option>
+                                    </select>
+                                    <button type="button" class="btn btn-outline-secondary ms-2 js-quick-add input-group-textc"
+                                            data-url="@Url.Action("Index", "AccFinancialYear")"
+                                            data-target="#FinancialCodeNo"
+                                            data-reload-url="@Url.Action("GetFinancialYear", "Cascading")"
+                                            data-title="Financial Year">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="row">
+                        <div class="col-12 col-md-4 text-right p-0">
+                            <label asp-for="EffectiveDate" class="form-label col-form-label-sm d-flex justify-content-end" style="white-space:nowrap;">
+                                Effective Date
+                                <span class="text-danger">*</span>
+                            </label>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="input-wrapper">
+                                <input asp-for="EffectiveDate" class="form-control form-control-sm flatpickr" placeholder="Enter Effective Date" tabindex="2" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row py-2">
+                <div class="col-12 col-md-6">
+                    <div class="row">
+                        <div class="col-12 col-md-4 text-right p-0">
+                            <label asp-for="Tdsamount" class="form-label col-form-label-sm d-flex justify-content-end" style="white-space:nowrap;">
+                                TDS Amount
+                                <span class="text-danger">*</span>
+                            </label>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="input-wrapper">
+                                <input asp-for="Tdsamount" class="form-control form-control-sm" type="number" placeholder="Enter TDS Amount" tabindex="3" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="row align-items-center">
+                        <div class="col-12 col-md-4 text-right p-0">
+                            <label asp-for="IsfullAmountAdjust" class="form-label col-form-label-sm d-flex justify-content-end" style="white-space:nowrap;">
+                                Is Full Adj. In Effective Month
+                            </label>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="input-wrapper">
+                                <input asp-for="IsfullAmountAdjust" class="form-control form-control-sm custom-checkbox" type="checkbox" autofocus placeholder="Enter TDS Amount" tabindex="4" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row pe-2 mb-2">
+                <div class="col-12">
+                    <div class="row">
+                        <div class="col-12 col-md-2 text-right p-0">
+                            <label asp-for="Remark" class="form-label col-form-label-sm d-flex justify-content-end" style="white-space:nowrap;">
+                                Remarks
+                            </label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <div class="input-wrapper">
+                                <textarea asp-for="Remark" class="form-control form-control-sm" rows="1" placeholder="Enter Remark" tabindex="5"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <hr id="sectionBreak" />
+
+            <div class="form-group row" id="LdateModifyHide">
+
+                <div class="col-6">
+                    <div class="form-group d-flex align-items-center justify-content-between">
+                        <label class="form-label col-form-label-sm d-flex justify-content-end">Creation Date:</label>
+                        <div class="input-wrapper">
+                            <span id="creationDateSpan">
+                                @(Model.Ldate.HasValue? Model.Ldate?.ToString("dd/MM/yyyy hh:mm tt") : "")
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-6">
+                    <div class="form-group d-flex align-items-center justify-content-between">
+                        <label class="form-label col-form-label-sm d-flex justify-content-end">Last Update:</label>
+                        <div class="input-wrapper">
+                            <span id="modifyDateSpan">
+                                @(Model.ModifyDate.HasValue? Model.ModifyDate?.ToString("dd/MM/yyyy hh:mm tt") : "")
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row no-print mt-3">
+                <div class="col-12">
+                    <button type="button" class="btn btn-outline-success btn-common btn-circle float-right js-ExcessTDSForLastIncomeYear-save" data-id="@Model.Etdsliyid">
+                        <i class="fas fa-save"></i> Save
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</form>

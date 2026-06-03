@@ -1,0 +1,66 @@
+﻿@model List<GCTL.Core.ViewModels.HrmEmployeeFamilys.HrmEmployeeFamilysSetViewModel>
+
+
+<div class="card">
+    <div class="card-body">
+        <table id="HrmEmployeeFamilys-gridTT" class="table table-striped  table-bordered table-sm table-hover table-common">
+
+            <thead class="row-border">
+                <tr class="table row-border">
+                    <th class="text-center text-middle" style="width:5%">
+                        Select <br/> <input type="checkbox" id="HrmEmployeeFamilys-check-all" />
+                    </th>
+                    <th class="text-center text-middle" style="width:6%"> Id</th>
+                    <th class="text-center text-middle" style="width:25%">Name</th>
+                    <th class="text-center text-middle" style="width:13%">Relationship</th>
+                    <th class="text-center text-middle" style="width:13%">Occupations</th>
+                    <th class="text-center text-middle" style="width:20%">Address</th>
+                    <th class="text-center text-middle" style="width:10%">Phone</th>
+                    <th class="text-center text-middle" style="width:8%">Birthdate</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @if (Model == null || !Model.Any())
+                {
+                    <tr class="text-center text-middle">
+                        <td colspan="13">No Data Available.</td>
+                    </tr>
+                }
+                else
+                {
+                    @foreach (var item in Model.OrderByDescending(x => x.EmpFamilyId))
+                    {
+                        <tr>
+                            <td class="text-center">
+                                <input type="checkbox" class="text-center text-middle checkBox" data-id="@item.EmpFamilyId" value="@item.EmpFamilyId" />
+                            </td>
+                            <td>
+                                <a href="#" class='btn js-HrmEmployeeFamilys-edit'
+                                   style="text-decoration: underline; color: rebeccapurple;" data-id="@item.EmpFamilyId" data-id2="@item.EmployeeId"
+                                    title="Edit">
+                                    @item.EmpFamilyId
+                                </a>
+                            </td>
+
+                            <td class="text-left">@item.Name</td>
+                            <td class="text-center text-middle">@item.RelationShipName</td>
+                            <td class="text-center text-middle">@item.OccupationName</td>
+                            <td class="text-center text-middle">@item.AddressDetails</td>
+                            <td class="text-center text-middle">@item.Phone</td>
+                            <td class="text-center text-middle">@item.DateOfBirth</td>
+                            @* <td class="text-center text-middle">
+                                @(DateTime.TryParse(item.DateOfBirth.ToString(), out var parsedDate) ? parsedDate.ToString("dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture) : "-")
+                            </td> *@
+                         
+
+                        </tr>
+                    }
+                }
+
+
+            </tbody>
+        </table>
+
+    </div>
+</div>

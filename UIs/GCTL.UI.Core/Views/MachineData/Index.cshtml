@@ -1,0 +1,1556 @@
+﻿@* @model GCTL.UI.Core.ViewModels.HrmAtdMachineData.HrmAtdMachineDataPageViewModel
+
+@{
+    ViewData["Title"] = "Machine Data";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+
+</head>
+<body>
+    <div class="container my-5 js-machineData-grid-container">
+        <h2>Machine Data</h2>
+        <table id="machineDataTable" class="display" style="width:100%">
+            <thead>
+                <tr>
+                    <th>FingerPrint ID</th>
+                    <th>Machine ID</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            $('#machineDataTable').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    url: '/MachineData/GetDataTableData',
+                    type: 'POST',
+                    dataType: 'json'
+                },
+                columns: [
+                    { data: 'fingerPrintId', title: 'FingerPrint ID' },
+                    { data: 'machineId', title: 'Machine ID' },
+                    {
+                        data: 'date',
+                        title: 'Date',
+                        render: function (data) {
+                            if (data) {
+                                const date = new Date(data);
+                                return date.toLocaleDateString('en-GB');
+                            }
+                            return '';
+                        }
+                    },
+                    {
+                        data: 'time',
+                        title: 'Time',
+                        render: function (data) {
+                            if (data) {
+                                const timePart = new Date(data).toTimeString().split(' ')[0];
+                                return timePart;
+                            }
+                            return '';
+                        }
+                    }
+                ],
+                order: [[2, 'desc']],
+                language: {
+                    processing: "Loading..."
+                },
+                pageLength: 25,
+                lengthMenu: [25, 50, 75, 100]
+            });
+        });
+    </script>
+</body>
+</html> *@
+
+
+@model GCTL.UI.Core.ViewModels.HrmAtdMachineData.HrmAtdMachineDataPageViewModel
+
+@{
+    ViewData["Title"] = "Machine Data";
+}
+@* 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        .filter-container {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .filter-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+            .filter-group label {
+                font-weight: 600;
+                font-size: 0.9em;
+                color: #333;
+            }
+
+            .filter-group input, .filter-group select {
+                padding: 8px 12px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                font-size: 14px;
+            }
+
+        .filter-type-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .filter-type-tab {
+            padding: 10px 20px;
+            border: 2px solid #007bff;
+            background: white;
+            color: #007bff;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+            .filter-type-tab.active {
+                background: #007bff;
+                color: white;
+            }
+
+        .filter-section {
+            display: none;
+        }
+
+            .filter-section.active {
+                display: block;
+            }
+
+        .btn-export {
+            padding: 10px 25px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+            .btn-export:hover {
+                background: #218838;
+            }
+
+            .btn-export:disabled {
+                background: #6c757d;
+                cursor: not-allowed;
+            }
+    </style>
+</head>
+<body>
+    <div class="container my-5">
+        <h2>Machine Data & Attendance Report</h2>
+
+        <!-- Filter Container -->
+        <div class="filter-container">
+            <h4>Export Filters</h4>
+
+            <!-- Filter Type Tabs -->
+            <div class="filter-type-tabs">
+                <button class="filter-type-tab active" data-filter="date">Date Range</button>
+                <button class="filter-type-tab" data-filter="month">Month-Year Range</button>
+            </div>
+
+            <!-- Employee IDs (Common) -->
+            <div class="filter-row">
+                <div class="filter-group" style="flex: 1;">
+                    <label for="employeeIdsInput">Employee IDs (comma separated)</label>                   
+
+                    <select class="form-control form-control-sm" id="employeeIdsInput" asp-items=" ViewBag.EmployeeList as SelectList">
+                        <option value=""></option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Date Range Filter -->
+            <div class="filter-section active" id="dateFilter">
+                <div class="filter-row">
+                    <div class="filter-group">
+                        <label for="fromDateInput">From Date</label>
+                        <input type="date" id="fromDateInput" />
+                    </div>
+                    <div class="filter-group">
+                        <label for="toDateInput">To Date</label>
+                        <input type="date" id="toDateInput" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Month-Year Range Filter -->
+            <div class="filter-section" id="monthFilter">
+                <div class="filter-row">
+                    <div class="filter-group">
+                        <label for="fromMonthInput">From Month</label>
+                        <select id="fromMonthInput">
+                            <option value="">Select Month</option>
+                            <option value="1">January</option>
+                            <option value="2">February</option>
+                            <option value="3">March</option>
+                            <option value="4">April</option>
+                            <option value="5">May</option>
+                            <option value="6">June</option>
+                            <option value="7">July</option>
+                            <option value="8">August</option>
+                            <option value="9">September</option>
+                            <option value="10">October</option>
+                            <option value="11">November</option>
+                            <option value="12">December</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="fromYearInput">From Year</label>
+                        <input type="number"
+                               id="fromYearInput"
+                               placeholder="e.g., 2024"
+                               min="2000"
+                               max="2100" />
+                    </div>
+                    <div class="filter-group">
+                        <label for="toMonthInput">To Month</label>
+                        <select id="toMonthInput">
+                            <option value="">Select Month</option>
+                            <option value="1">January</option>
+                            <option value="2">February</option>
+                            <option value="3">March</option>
+                            <option value="4">April</option>
+                            <option value="5">May</option>
+                            <option value="6">June</option>
+                            <option value="7">July</option>
+                            <option value="8">August</option>
+                            <option value="9">September</option>
+                            <option value="10">October</option>
+                            <option value="11">November</option>
+                            <option value="12">December</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="toYearInput">To Year</label>
+                        <input type="number"
+                               id="toYearInput"
+                               placeholder="e.g., 2024"
+                               min="2000"
+                               max="2100" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Export Button -->
+            <div class="filter-row">
+                <button class="btn-export" id="btnExport">
+                    📊 Export to Excel
+                </button>
+            </div>
+        </div>
+
+        <!-- DataTable -->
+        <table id="machineDataTable" class="display" style="width:100%">
+            <thead>
+                <tr>
+                    <th>FingerPrint ID</th>
+                    <th>Machine ID</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            // Initialize DataTable
+            $('#machineDataTable').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    url: '/MachineData/GetDataTableData',
+                    type: 'POST',
+                    dataType: 'json'
+                },
+                columns: [
+                    { data: 'fingerPrintId', title: 'FingerPrint ID' },
+                    { data: 'machineId', title: 'Machine ID' },
+                    {
+                        data: 'date',
+                        title: 'Date',
+                        render: function (data) {
+                            if (data) {
+                                const date = new Date(data);
+                                return date.toLocaleDateString('en-GB');
+                            }
+                            return '';
+                        }
+                    },
+                    {
+                        data: 'time',
+                        title: 'Time',
+                        render: function (data) {
+                            if (data) {
+                                const timePart = new Date(data).toTimeString().split(' ')[0];
+                                return timePart;
+                            }
+                            return '';
+                        }
+                    }
+                ],
+                order: [[2, 'desc']],
+                language: {
+                    processing: "Loading..."
+                },
+                pageLength: 25,
+                lengthMenu: [25, 50, 75, 100]
+            });
+
+            // Filter Type Toggle
+            $('.filter-type-tab').on('click', function() {
+                const filterType = $(this).data('filter');
+
+                // Update active tab
+                $('.filter-type-tab').removeClass('active');
+                $(this).addClass('active');
+
+                // Show/hide filter sections
+                $('.filter-section').removeClass('active');
+                if (filterType === 'date') {
+                    $('#dateFilter').addClass('active');
+                    // Clear month fields
+                    $('#fromMonthInput, #fromYearInput, #toMonthInput, #toYearInput').val('');
+                } else {
+                    $('#monthFilter').addClass('active');
+                    // Clear date fields
+                    $('#fromDateInput, #toDateInput').val('');
+                }
+            });
+
+            // Export Button Click
+            $('#btnExport').on('click', function() {
+                exportExcel();
+            });
+
+            function exportExcel() {
+                const activeFilter = $('.filter-type-tab.active').data('filter');
+
+                let data = {
+                    employeeIds: $('#employeeIdsInput').val().trim() || null
+                };
+
+                if (activeFilter === 'date') {
+                    data.fromDate = $('#fromDateInput').val() || null;
+                    data.toDate = $('#toDateInput').val() || null;
+                    data.fromMonth = null;
+                    data.fromYear = null;
+                    data.toMonth = null;
+                    data.toYear = null;
+
+                    if (!data.fromDate && !data.toDate) {
+                        alert('Please select at least one date (From or To)');
+                        return;
+                    }
+                } else {
+                    data.fromDate = null;
+                    data.toDate = null;
+                    data.fromMonth = $('#fromMonthInput').val() || null;
+                    data.fromYear = $('#fromYearInput').val() || null;
+                    data.toMonth = $('#toMonthInput').val() || null;
+                    data.toYear = $('#toYearInput').val() || null;
+
+                    if (!data.fromMonth || !data.fromYear || !data.toMonth || !data.toYear) {
+                        alert('Please select complete month-year range (From Month, From Year, To Month, To Year)');
+                        return;
+                    }
+                }
+
+                // Disable button and show loading
+                const $btn = $('#btnExport');
+                $btn.prop('disabled', true).text('⏳ Generating...');
+
+                $.ajax({
+                    url: '/MachineData/ExportAttendanceToExcel',
+                    type: 'POST',
+                    data: data,
+                    xhrFields: {
+                        responseType: 'blob'
+                    },
+                    success: function (response, status, xhr) {
+                        // Get filename from Content-Disposition header or use default
+                        let filename = 'Attendance_Report.xlsx';
+                        const disposition = xhr.getResponseHeader('Content-Disposition');
+                        if (disposition && disposition.indexOf('filename=') !== -1) {
+                            const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+                            const matches = filenameRegex.exec(disposition);
+                            if (matches != null && matches[1]) {
+                                filename = matches[1].replace(/['"]/g, '');
+                            }
+                        }
+
+                        // Create download link
+                        const url = window.URL.createObjectURL(response);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = filename;
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        window.URL.revokeObjectURL(url);
+
+                        alert('✅ Excel file downloaded successfully!');
+                    },
+                    error: function (xhr) {
+                        let errorMsg = 'Error generating Excel file';
+                        if (xhr.responseText) {
+                            try {
+                                const reader = new FileReader();
+                                reader.onload = function() {
+                                    errorMsg = reader.result;
+                                    alert('❌ ' + errorMsg);
+                                };
+                                reader.readAsText(xhr.response);
+                            } catch (e) {
+                                alert('❌ ' + errorMsg);
+                            }
+                        } else {
+                            alert('❌ ' + errorMsg);
+                        }
+                    },
+                    complete: function() {
+                        // Re-enable button
+                        $btn.prop('disabled', false).text('📊 Export to Excel');
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html> *@
+@* 
+<style>
+    .filter-container {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+    }
+
+    .filter-row {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 15px;
+        align-items: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .filter-group {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        min-width: 250px;
+    }
+
+        .filter-group label {
+            font-weight: 600;
+            font-size: 0.9em;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .filter-group input, .filter-group select {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+    .filter-type-tabs {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    .filter-type-tab {
+        padding: 10px 20px;
+        border: 2px solid #007bff;
+        background: white;
+        color: #007bff;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.3s;
+    }
+
+        .filter-type-tab.active {
+            background: #007bff;
+            color: white;
+        }
+
+    .filter-section {
+        display: none;
+    }
+
+        .filter-section.active {
+            display: block;
+        }
+
+    .btn-export {
+        padding: 10px 25px;
+        background: #28a745;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+
+        .btn-export:hover {
+            background: #218838;
+        }
+
+        .btn-export:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+        }
+
+    /* Bootstrap Multiselect Custom Styling */
+    .multiselect-container {
+        max-height: 400px;
+        overflow-y: auto;
+        width: 100%;
+    }
+
+        .multiselect-container > li {
+            padding: 0;
+        }
+
+            .multiselect-container > li > a {
+                padding: 5px 20px;
+            }
+
+                .multiselect-container > li > a > label {
+                    margin: 0;
+                    height: 100%;
+                    cursor: pointer;
+                    font-weight: normal;
+                    padding-left: 20px;
+                }
+
+                    .multiselect-container > li > a > label > input[type="checkbox"] {
+                        margin-right: 10px;
+                    }
+
+        .multiselect-container .multiselect-group {
+            background-color: #e9ecef;
+            font-weight: bold;
+            padding: 8px 15px;
+            margin: 0;
+        }
+
+            .multiselect-container .multiselect-group label {
+                font-weight: bold;
+                color: #495057;
+            }
+
+        .multiselect-container .multiselect-group-clickable label {
+            cursor: pointer;
+        }
+
+    .btn-group {
+        width: 100%;
+    }
+
+    .multiselect {
+        width: 100% !important;
+        text-align: left;
+        background-color: white;
+        border: 1px solid #ced4da;
+        padding: 8px 12px;
+    }
+
+    .multiselect-container li.multiselect-item {
+        padding: 0;
+    }
+
+    .multiselect-container li.multiselect-filter {
+        padding: 10px;
+    }
+
+    .multiselect-search {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+
+    .caret {
+        float: right;
+        margin-top: 8px;
+    }
+</style>
+
+<div class="container-fluid my-4">
+    <h2 class="mb-4">Machine Data & Attendance Report</h2>
+
+    <!-- Filter Container -->
+    <div class="filter-container">
+        <h4 class="mb-3">Export Filters</h4>
+
+        <!-- Filter Type Tabs -->
+        <div class="filter-type-tabs">
+            <button class="filter-type-tab active" data-filter="date">Date Range</button>
+            <button class="filter-type-tab" data-filter="month">Month-Year Range</button>
+        </div>
+
+        <!-- Employee IDs with Bootstrap Multiselect -->
+        <div class="filter-row col-4">
+            <div class="filter-group" style="flex: 1;">
+                <label for="employeeIdsInput">Select Employees</label>
+                <select class="form-control" id="employeeIdsInput" multiple="multiple">
+                    @if (ViewBag.EmployeeList != null)
+                    {
+                        var employeeList = ViewBag.EmployeeList as Dictionary<string, List<SelectListItem>>;
+                        if (employeeList != null)
+                        {
+                            foreach (var group in employeeList)
+                            {
+                                <optgroup label="@group.Key">
+                                    @foreach (var employee in group.Value)
+                                    {
+                                        <option value="@employee.Value">@employee.Text</option>
+                                    }
+                                </optgroup>
+                            }
+                        }
+                    }
+                </select>
+            </div>
+        </div>
+
+        <!-- Date Range Filter -->
+        <div class="filter-section active" id="dateFilter">
+            <div class="filter-row">
+                <div class="filter-group">
+                    <label for="fromDateInput">From Date</label>
+                    <input type="date" id="fromDateInput" class="form-control" />
+                </div>
+                <div class="filter-group">
+                    <label for="toDateInput">To Date</label>
+                    <input type="date" id="toDateInput" class="form-control" />
+                </div>
+            </div>
+        </div>
+
+        <!-- Month-Year Range Filter -->
+        <div class="filter-section" id="monthFilter">
+            <div class="filter-row">
+                <div class="filter-group">
+                    <label for="fromMonthInput">From Month</label>
+                    <select id="fromMonthInput" class="form-control">
+                        <option value="">Select Month</option>
+                        <option value="1">January</option>
+                        <option value="2">February</option>
+                        <option value="3">March</option>
+                        <option value="4">April</option>
+                        <option value="5">May</option>
+                        <option value="6">June</option>
+                        <option value="7">July</option>
+                        <option value="8">August</option>
+                        <option value="9">September</option>
+                        <option value="10">October</option>
+                        <option value="11">November</option>
+                        <option value="12">December</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="fromYearInput">From Year</label>
+                    <input type="number"
+                           id="fromYearInput"
+                           class="form-control"
+                           placeholder="e.g., 2024"
+                           min="2000"
+                           max="2100" />
+                </div>
+                <div class="filter-group">
+                    <label for="toMonthInput">To Month</label>
+                    <select id="toMonthInput" class="form-control">
+                        <option value="">Select Month</option>
+                        <option value="1">January</option>
+                        <option value="2">February</option>
+                        <option value="3">March</option>
+                        <option value="4">April</option>
+                        <option value="5">May</option>
+                        <option value="6">June</option>
+                        <option value="7">July</option>
+                        <option value="8">August</option>
+                        <option value="9">September</option>
+                        <option value="10">October</option>
+                        <option value="11">November</option>
+                        <option value="12">December</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="toYearInput">To Year</label>
+                    <input type="number"
+                           id="toYearInput"
+                           class="form-control"
+                           placeholder="e.g., 2024"
+                           min="2000"
+                           max="2100" />
+                </div>
+            </div>
+        </div>
+
+        <!-- Export Button -->
+        <div class="filter-row">
+            <button class="btn-export" id="btnExport">
+                📊 Export to Excel
+            </button>
+        </div>
+    </div>
+
+    <!-- DataTable -->
+    <div class="table-responsive">
+        <table id="machineDataTable" class="display table table-striped table-bordered" style="width:100%">
+            <thead>
+                <tr>
+                    <th>FingerPrint ID</th>
+                    <th>Machine ID</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <!-- Bootstrap Multiselect CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/1.1.2/css/bootstrap-multiselect.min.css">
+
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+
+    <!-- Bootstrap Multiselect JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/1.1.2/js/bootstrap-multiselect.min.js"></script>
+
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            console.log('Initializing page...');
+
+            // Initialize Bootstrap Multiselect
+            try {
+                $('#employeeIdsInput').multiselect({
+                    includeSelectAllOption: true,
+                    selectAllText: 'Select All',
+                    selectAllValue: 'all',
+                    enableFiltering: true,
+                    enableCaseInsensitiveFiltering: true,
+                    filterPlaceholder: 'Search employees...',
+                    nonSelectedText: 'Select Employees',
+                    nSelectedText: ' selected',
+                    allSelectedText: 'All Selected',
+                    numberDisplayed: 3,
+                    maxHeight: 400,
+                    buttonWidth: '100%',
+                    buttonClass: 'btn btn-default multiselect',
+                    includeResetOption: true,
+                    includeResetDivider: true,
+                    resetText: 'Clear Selection',
+                    enableClickableOptGroups: true,
+                    enableCollapsibleOptGroups: true,
+                    collapseOptGroupsByDefault: false,
+                    onChange: function(option, checked, select) {
+                        var values = $('#employeeIdsInput').val();
+                        console.log('Selected employees:', values ? values.length : 0);
+                    },
+                    onSelectAll: function() {
+                        console.log('All employees selected');
+                    },
+                    onDeselectAll: function() {
+                        console.log('All employees deselected');
+                    }
+                });
+                console.log('Multiselect initialized successfully');
+            } catch (e) {
+                console.error('Error initializing multiselect:', e);
+            }
+
+            // Initialize DataTable
+            try {
+                var table = $('#machineDataTable').DataTable({
+                    processing: true,
+                    serverSide: true,
+                    ajax: {
+                        url: '/MachineData/GetDataTableData',
+                        type: 'POST',
+                        dataType: 'json',
+                        error: function(xhr, error, code) {
+                            console.log('DataTable Error:', error, code);
+                        }
+                    },
+                    columns: [
+                        { data: 'fingerPrintId', title: 'FingerPrint ID' },
+                        { data: 'machineId', title: 'Machine ID' },
+                        {
+                            data: 'date',
+                            title: 'Date',
+                            render: function (data) {
+                                if (data) {
+                                    const date = new Date(data);
+                                    return date.toLocaleDateString('en-GB');
+                                }
+                                return '';
+                            }
+                        },
+                        {
+                            data: 'time',
+                            title: 'Time',
+                            render: function (data) {
+                                if (data) {
+                                    const timePart = new Date(data).toTimeString().split(' ')[0];
+                                    return timePart;
+                                }
+                                return '';
+                            }
+                        }
+                    ],
+                    order: [[2, 'desc']],
+                    language: {
+                        processing: "Loading data..."
+                    },
+                    pageLength: 25,
+                    lengthMenu: [25, 50, 75, 100],
+                    responsive: true
+                });
+                console.log('DataTable initialized successfully');
+            } catch (e) {
+                console.error('Error initializing DataTable:', e);
+            }
+
+            // Filter Type Toggle
+            $('.filter-type-tab').on('click', function() {
+                const filterType = $(this).data('filter');
+
+                // Update active tab
+                $('.filter-type-tab').removeClass('active');
+                $(this).addClass('active');
+
+                // Show/hide filter sections
+                $('.filter-section').removeClass('active');
+                if (filterType === 'date') {
+                    $('#dateFilter').addClass('active');
+                    // Clear month fields
+                    $('#fromMonthInput, #fromYearInput, #toMonthInput, #toYearInput').val('');
+                } else {
+                    $('#monthFilter').addClass('active');
+                    // Clear date fields
+                    $('#fromDateInput, #toDateInput').val('');
+                }
+            });
+
+            // Export Button Click
+            $('#btnExport').on('click', function() {
+                exportExcel();
+            });
+
+            function exportExcel() {
+                const activeFilter = $('.filter-type-tab.active').data('filter');
+
+                // Get selected employee IDs
+                const selectedEmployees = $('#employeeIdsInput').val();
+                const employeeIds = selectedEmployees && selectedEmployees.length > 0
+                    ? selectedEmployees.join(',')
+                    : null;
+
+                let data = {
+                    employeeIds: employeeIds
+                };
+
+                if (activeFilter === 'date') {
+                    data.fromDate = $('#fromDateInput').val() || null;
+                    data.toDate = $('#toDateInput').val() || null;
+                    data.fromMonth = null;
+                    data.fromYear = null;
+                    data.toMonth = null;
+                    data.toYear = null;
+
+                    if (!data.fromDate && !data.toDate) {
+                        alert('⚠️ Please select at least one date (From or To)');
+                        return;
+                    }
+                } else {
+                    data.fromDate = null;
+                    data.toDate = null;
+                    data.fromMonth = $('#fromMonthInput').val() || null;
+                    data.fromYear = $('#fromYearInput').val() || null;
+                    data.toMonth = $('#toMonthInput').val() || null;
+                    data.toYear = $('#toYearInput').val() || null;
+
+                    if (!data.fromMonth || !data.fromYear || !data.toMonth || !data.toYear) {
+                        alert('⚠️ Please select complete month-year range');
+                        return;
+                    }
+                }
+
+                // Disable button and show loading
+                const $btn = $('#btnExport');
+                const originalText = $btn.text();
+                $btn.prop('disabled', true).text('⏳ Generating...');
+
+                $.ajax({
+                    url: '/MachineData/ExportAttendanceToExcel',
+                    type: 'POST',
+                    data: data,
+                    xhrFields: {
+                        responseType: 'blob'
+                    },
+                    success: function (response, status, xhr) {
+                        // Get filename from Content-Disposition header
+                        let filename = 'Attendance_Report.xlsx';
+                        const disposition = xhr.getResponseHeader('Content-Disposition');
+                        if (disposition && disposition.indexOf('filename=') !== -1) {
+                            const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+                            const matches = filenameRegex.exec(disposition);
+                            if (matches != null && matches[1]) {
+                                filename = matches[1].replace(/['"]/g, '');
+                            }
+                        }
+
+                        // Create download link
+                        const url = window.URL.createObjectURL(response);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = filename;
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        window.URL.revokeObjectURL(url);
+
+                        alert('✅ Excel file downloaded successfully!');
+                    },
+                    error: function (xhr) {
+                        let errorMsg = 'Error generating Excel file';
+                        if (xhr.responseText) {
+                            try {
+                                const reader = new FileReader();
+                                reader.onload = function() {
+                                    errorMsg = reader.result;
+                                    alert('❌ ' + errorMsg);
+                                };
+                                reader.readAsText(xhr.response);
+                            } catch (e) {
+                                alert('❌ ' + errorMsg);
+                            }
+                        } else {
+                            alert('❌ ' + errorMsg);
+                        }
+                    },
+                    complete: function() {
+                        // Re-enable button
+                        $btn.prop('disabled', false).text(originalText);
+                    }
+                });
+            }
+        });
+    </script>
+} *@
+
+
+
+
+<style>
+    .filter-container {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+    }
+
+    .filter-row {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 15px;
+        align-items: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .filter-group {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        min-width: 250px;
+    }
+
+        .filter-group label {
+            font-weight: 600;
+            font-size: 0.9em;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .filter-group input, .filter-group select {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+    .filter-type-tabs {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    .filter-type-tab {
+        padding: 10px 20px;
+        border: 2px solid #007bff;
+        background: white;
+        color: #007bff;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.3s;
+    }
+
+        .filter-type-tab.active {
+            background: #007bff;
+            color: white;
+        }
+
+    .filter-section {
+        display: none;
+    }
+
+        .filter-section.active {
+            display: block;
+        }
+
+    .btn-export {
+        padding: 10px 25px;
+        background: #28a745;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+
+        .btn-export:hover {
+            background: #218838;
+        }
+
+        .btn-export:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+        }
+
+    /* Bootstrap Multiselect Custom Styling */
+    .multiselect-container {
+        max-height: 400px;
+        overflow-y: auto;
+        width: 100%;
+    }
+
+        .multiselect-container > li {
+            padding: 0;
+        }
+
+            .multiselect-container > li > a {
+                padding: 5px 20px;
+            }
+
+                .multiselect-container > li > a > label {
+                    margin: 0;
+                    height: 100%;
+                    cursor: pointer;
+                    font-weight: normal;
+                    padding-left: 20px;
+                }
+
+                    .multiselect-container > li > a > label > input[type="checkbox"] {
+                        margin-right: 10px;
+                    }
+
+        .multiselect-container .multiselect-group {
+            background-color: #e9ecef;
+            font-weight: bold;
+            padding: 8px 15px;
+            margin: 0;
+        }
+
+            .multiselect-container .multiselect-group label {
+                font-weight: bold;
+                color: #495057;
+            }
+
+        .multiselect-container .multiselect-group-clickable label {
+            cursor: pointer;
+        }
+
+    .btn-group {
+        width: 100%;
+    }
+
+    .multiselect {
+        width: 100% !important;
+        text-align: left !important;
+        background-color: white;
+        border: 1px solid #ced4da;
+        padding: 8px 12px;
+    }
+
+    .multiselect-container li.multiselect-item {
+        padding: 0;
+    }
+
+    .multiselect-container li.multiselect-filter {
+        padding: 10px;
+    }
+
+    .multiselect-search {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+
+    .caret {
+        float: right;
+        margin-top: 8px;
+    }
+
+</style>
+
+<div class="container-fluid my-4">
+    <h2 class="mb-4">Machine Data & Attendance Report</h2>
+
+    <!-- Filter Container -->
+    <div class="filter-container">
+        <h4 class="mb-3">Export Filters</h4>
+
+        <!-- Filter Type Tabs -->
+        <div class="filter-type-tabs d-none">
+            <button class="filter-type-tab active" data-filter="date">Date Range</button>
+            <button class="filter-type-tab" data-filter="month">Month-Year Range</button>
+        </div>
+
+        <!-- Employee IDs with Bootstrap Multiselect -->
+        <div class="filter-row col-3">
+            <div class="filter-group" style="flex: 1;">
+                <label for="employeeIdsInput">Select Employees</label>
+                <select class="form-control" id="employeeIdsInput" multiple="multiple">
+                    @if (ViewBag.EmployeeList != null)
+                    {
+                        var employeeList = ViewBag.EmployeeList as Dictionary<string, List<SelectListItem>>;
+                        if (employeeList != null)
+                        {
+                            foreach (var group in employeeList)
+                            {
+                                <optgroup label="@group.Key">
+                                    @foreach (var employee in group.Value)
+                                    {
+                                        <option value="@employee.Value">@employee.Text</option>
+                                    }
+                                </optgroup>
+                            }
+                        }
+                    }
+                </select>
+            </div>
+        </div>
+
+        <!-- Date Range Filter -->
+        <div class="filter-section active d-none" id="dateFilter">
+            <div class="filter-row">
+                <div class="filter-group">
+                    <label for="fromDateInput">From Date</label>
+                    <input type="date" id="fromDateInput" class="form-control" />
+                </div>
+                <div class="filter-group">
+                    <label for="toDateInput">To Date</label>
+                    <input type="date" id="toDateInput" class="form-control" />
+                </div>
+            </div>
+        </div>
+
+        <!-- Month-Year Range Filter -->
+        <div class="filter-section d-none" id="monthFilter">
+            <div class="filter-row">
+                <div class="filter-group">
+                    <label for="fromMonthInput">From Month</label>
+                    <select id="fromMonthInput" class="form-control">
+                        <option value="">Select Month</option>
+                        <option value="1">January</option>
+                        <option value="2">February</option>
+                        <option value="3">March</option>
+                        <option value="4">April</option>
+                        <option value="5">May</option>
+                        <option value="6">June</option>
+                        <option value="7">July</option>
+                        <option value="8">August</option>
+                        <option value="9">September</option>
+                        <option value="10">October</option>
+                        <option value="11">November</option>
+                        <option value="12">December</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="fromYearInput">From Year</label>
+                    <input type="number"
+                           id="fromYearInput"
+                           class="form-control"
+                           placeholder="e.g., 2024"
+                           min="2000"
+                           max="2100" />
+                </div>
+                <div class="filter-group">
+                    <label for="toMonthInput">To Month</label>
+                    <select id="toMonthInput" class="form-control">
+                        <option value="">Select Month</option>
+                        <option value="1">January</option>
+                        <option value="2">February</option>
+                        <option value="3">March</option>
+                        <option value="4">April</option>
+                        <option value="5">May</option>
+                        <option value="6">June</option>
+                        <option value="7">July</option>
+                        <option value="8">August</option>
+                        <option value="9">September</option>
+                        <option value="10">October</option>
+                        <option value="11">November</option>
+                        <option value="12">December</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="toYearInput">To Year</label>
+                    <input type="number"
+                           id="toYearInput"
+                           class="form-control"
+                           placeholder="e.g., 2024"
+                           min="2000"
+                           max="2100" />
+                </div>
+            </div>
+        </div>
+
+        <!-- Export Button -->
+        <div class="filter-row">
+            <button class="btn-export" id="btnExport">
+                 Export to Excel
+            </button>
+        </div>
+    </div>
+
+    <!-- DataTable -->
+    <div class="table-responsive">
+        <table id="machineDataTable" class="display table table-striped table-bordered" style="width:100%">
+            <thead>
+                <tr>
+                    <th>FingerPrint ID</th>
+                    <th>Machine ID</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <!-- Bootstrap Multiselect CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/1.1.2/css/bootstrap-multiselect.min.css">
+
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+
+    <!-- Bootstrap Multiselect JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/1.1.2/js/bootstrap-multiselect.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            console.log('Initializing page...');
+                   var fromDatePicker = flatpickr("#fromDateInput", {
+            dateFormat: "Y-m-d",        
+            altInput: true,            
+            altFormat: "d/m/Y",        
+            allowInput: true,
+            onChange: function(selectedDates, dateStr, instance) {
+                if (dateStr) {
+                    toDatePicker.set('minDate', dateStr);
+                }
+            }
+        });
+
+        var toDatePicker = flatpickr("#toDateInput", {
+            dateFormat: "Y-m-d",      
+            altInput: true,
+            altFormat: "d/m/Y",       
+            allowInput: true,
+            onChange: function(selectedDates, dateStr, instance) {
+                if (dateStr) {
+                    fromDatePicker.set('maxDate', dateStr);
+                }
+            }
+        });
+
+            // Initialize Bootstrap Multiselect
+            try {
+                $('#employeeIdsInput').multiselect({
+                    includeSelectAllOption: true,
+                    selectAllText: 'Select All',
+                    selectAllValue: 'all',
+                    enableFiltering: true,
+                    enableCaseInsensitiveFiltering: true,
+                    filterPlaceholder: 'Search employees...',
+                    nonSelectedText: 'Select Employees',
+                    nSelectedText: ' selected',
+                    allSelectedText: 'All Selected',
+                    numberDisplayed: 3,
+                    maxHeight: 400,
+                    buttonWidth: '100%',
+                    buttonClass: 'btn btn-default multiselect',
+                    includeResetOption: true,
+                    includeResetDivider: true,
+                    resetText: 'Clear Selection',
+                    enableClickableOptGroups: true,
+                    enableCollapsibleOptGroups: true,
+                    collapseOptGroupsByDefault: false,
+                    onChange: function(option, checked, select) {
+                        var values = $('#employeeIdsInput').val();
+                        console.log('Selected employees:', values ? values.length : 0);
+                    },
+                    onSelectAll: function() {
+                        console.log('All employees selected');
+                    },
+                    onDeselectAll: function() {
+                        console.log('All employees deselected');
+                    }
+                });
+                console.log('Multiselect initialized successfully');
+            } catch (e) {
+                console.error('Error initializing multiselect:', e);
+            }
+
+            // Initialize DataTable
+            try {
+                var table = $('#machineDataTable').DataTable({
+                    processing: true,
+                    serverSide: true,
+                    ajax: {
+                        url: '/MachineData/GetDataTableData',
+                        type: 'POST',
+                        dataType: 'json',
+                        error: function(xhr, error, code) {
+                            console.log('DataTable Error:', error, code);
+                        }
+                    },
+                    columns: [
+                        { data: 'fingerPrintId', title: 'FingerPrint ID' },
+                        { data: 'machineId', title: 'Machine ID' },
+                        {
+                            data: 'date',
+                            title: 'Date',
+                            render: function (data) {
+                                if (data) {
+                                    const date = new Date(data);
+                                    return date.toLocaleDateString('en-GB');
+                                }
+                                return '';
+                            }
+                        },
+                        {
+                            data: 'time',
+                            title: 'Time',
+                            render: function (data) {
+                                if (data) {
+                                    const timePart = new Date(data).toTimeString().split(' ')[0];
+                                    return timePart;
+                                }
+                                return '';
+                            }
+                        }
+                    ],
+                    order: [[2, 'desc']],
+                    language: {
+                        processing: "Loading data..."
+                    },
+                    pageLength: 25,
+                    lengthMenu: [25, 50, 75, 100],
+                    responsive: true
+                });
+                console.log('DataTable initialized successfully');
+            } catch (e) {
+                console.error('Error initializing DataTable:', e);
+            }
+
+            // Filter Type Toggle
+            $('.filter-type-tab').on('click', function() {
+                const filterType = $(this).data('filter');
+
+                // Update active tab
+                $('.filter-type-tab').removeClass('active');
+                $(this).addClass('active');
+
+                // Show/hide filter sections
+                $('.filter-section').removeClass('active');
+                if (filterType === 'date') {
+                    $('#dateFilter').addClass('active');
+                    // Clear month fields
+                    $('#fromMonthInput, #fromYearInput, #toMonthInput, #toYearInput').val('');
+                } else {
+                    $('#monthFilter').addClass('active');
+                    // Clear date fields
+                    $('#fromDateInput, #toDateInput').val('');
+                }
+            });
+
+            // Export Button Click
+            $('#btnExport').on('click', function() {
+                exportExcel();
+            });
+
+            function exportExcel() {
+                const activeFilter = $('.filter-type-tab.active').data('filter');
+
+                // Get selected employee IDs
+                const selectedEmployees = $('#employeeIdsInput').val();
+                const employeeIds = selectedEmployees && selectedEmployees.length > 0
+                    ? selectedEmployees.join(',')
+                    : null;
+
+                let data = {
+                    employeeIds: employeeIds
+                };
+
+                if (activeFilter === 'date') {
+                    data.fromDate = $('#fromDateInput').val() || null;
+                    data.toDate = $('#toDateInput').val() || null;
+                    data.fromMonth = null;
+                    data.fromYear = null;
+                    data.toMonth = null;
+                    data.toYear = null;
+
+                    // if (!data.fromDate && !data.toDate) {
+                    //     alert('⚠️ Please select at least one date (From or To)');
+                    //     return;
+                    // }
+                } else {
+                    data.fromDate = null;
+                    data.toDate = null;
+                    data.fromMonth = $('#fromMonthInput').val() || null;
+                    data.fromYear = $('#fromYearInput').val() || null;
+                    data.toMonth = $('#toMonthInput').val() || null;
+                    data.toYear = $('#toYearInput').val() || null;
+
+                    // if (!data.fromMonth || !data.fromYear || !data.toMonth || !data.toYear) {
+                    //     alert('⚠️ Please select complete month-year range');
+                    //     return;
+                    // }
+                }
+
+                // Disable button and show loading
+                const $btn = $('#btnExport');
+                const originalText = $btn.text();
+                $btn.prop('disabled', true).text('⏳ Generating...');
+
+                $.ajax({
+                    url: '/MachineData/ExportAttendanceToExcel',
+                    type: 'POST',
+                    data: data,
+                    xhrFields: {
+                        responseType: 'blob'
+                    },
+                    success: function (response, status, xhr) {
+                        // Get filename from Content-Disposition header
+                        let filename = 'Attendance_Report.xlsx';
+                        const disposition = xhr.getResponseHeader('Content-Disposition');
+                        if (disposition && disposition.indexOf('filename=') !== -1) {
+                            const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+                            const matches = filenameRegex.exec(disposition);
+                            if (matches != null && matches[1]) {
+                                filename = matches[1].replace(/['"]/g, '');
+                            }
+                        }
+
+                        // Create download link
+                        const url = window.URL.createObjectURL(response);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = filename;
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        window.URL.revokeObjectURL(url);
+
+                        alert('✅ Excel file downloaded successfully!');
+                    },
+                    error: function (xhr) {
+                        let errorMsg = 'Error generating Excel file';
+                        if (xhr.responseText) {
+                            try {
+                                const reader = new FileReader();
+                                reader.onload = function() {
+                                    errorMsg = reader.result;
+                                    alert('❌ ' + errorMsg);
+                                };
+                                reader.readAsText(xhr.response);
+                            } catch (e) {
+                                alert('❌ ' + errorMsg);
+                            }
+                        } else {
+                            alert('❌ ' + errorMsg);
+                        }
+                    },
+                    complete: function() {
+                        // Re-enable button
+                        $btn.prop('disabled', false).text(originalText);
+                    }
+                });
+            }
+        });
+    </script>
+}

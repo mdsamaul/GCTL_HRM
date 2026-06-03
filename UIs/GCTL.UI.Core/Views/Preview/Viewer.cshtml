@@ -1,0 +1,19 @@
+﻿@model GCTL.Core.Reports.PreviewModel
+
+@{
+    ViewBag.Title = "Report Preview";
+}
+
+
+<section class="content">
+    <div class="container-fluid">
+        <object type="application/pdf" width="100%" height="620" data="@Url.Content("~/PDFViewer/"+ Model.Name + ".pdf")"></object>
+    </div>
+</section>
+
+@section Scripts {
+    
+}
+
+
+

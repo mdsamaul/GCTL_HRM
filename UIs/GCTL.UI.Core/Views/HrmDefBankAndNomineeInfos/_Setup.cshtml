@@ -1,0 +1,373 @@
+﻿@using GCTL.Core.ViewModels.HrmDefBankAndNomineeInfos
+
+@model GCTL.Core.ViewModels.HrmDefBankAndNomineeInfos.HrmDefBankAndNomineeInfosSetupViewModel
+@{
+
+    var list = ViewData["List"] as List<HrmDefBankAndNomineeInfosSetupViewModel>;
+
+}
+
+
+
+<style>
+
+    .required::after
+    {
+        content: '*';
+        color: red;
+        margin-left: 5px;
+    }
+
+    .form-group label 
+    {
+        margin-right: .5rem;
+        min-width: 150px;
+    }
+
+    .form-group input
+    {
+        flex: 1;
+        max-width: 100%; /*150px*/
+    }
+
+    .input-wrapper
+    {
+        position: relative;
+        width: 100%; /* Set wrapper width to 100% */
+    }
+
+        .input-wrapper span 
+        {
+            width: 100%; /* Set input width to 100% */
+        }
+
+
+</style>
+
+
+<div id="customLoadingOverlay" style="
+        display: flex;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 9999;
+        justify-content: center;
+        align-items: center;">
+    <div style="
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+            text-align: center;">
+        <div class="spinner-border text-primary" role="status">
+            <span class="sr-only"></span>
+        </div>
+        <p style="margin-top: 10px; margin-bottom: 0;"></p>
+    </div>
+</div>
+
+
+<div style="padding-top:1px;">
+
+    <div class="row">
+        <div class="col-lg-6">
+            <span id="message"></span>
+        </div>
+        <div class="col-lg-6">
+        </div>
+    </div>
+
+
+    <div style="padding-top: 1px;">
+        <div class="row">
+            <div class="col-lg-12">
+
+                <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="Ldate" />
+                <input type="hidden" asp-for="ModifyDate" />
+                <input type="hidden" asp-for="AutoId" />
+                <input type="hidden" asp-for="BankAndNomineeId" />
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+
+                            <div class="col-lg-6">
+                                <div class="form-group d-flex align-items-center justify-content-between">
+                                    <label class="d-flex justify-content-end form-label col-form-label-sm required" asp-for="CompanyCode">Comapny</label>
+                                    <div class="input-wrapper">
+                                        <select asp-for="CompanyCode" data-placeholder="Select Company" tabindex="1" required class="form-control form-control-sm HrmDefBankAndNomineeInfosselectpicker" asp-items="@ViewBag.CompanyDD as SelectList">
+                                            <option value=""></option>
+                                        </select>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group d-flex align-items-center justify-content-between">
+                                    <label class="d-flex justify-content-end form-label col-form-label-sm" asp-for="BranchCode">Branch</label>
+                                    <div class="input-wrapper">
+                                        <select asp-for="BranchCode" data-placeholder="Select Branch" tabindex="2" class="form-control form-control-sm HrmDefBankAndNomineeInfosselectpicker" asp-items="@ViewBag.BranchDD as SelectList">
+                                            <option value="" ></option>
+                                        </select>
+
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group d-flex align-items-center justify-content-between">
+                                    <label class="d-flex justify-content-end form-label col-form-label-sm required" asp-for="EmployeeId">Employee Id </label>
+                                    <div class="input-wrapper">
+                                        <select asp-for="EmployeeId" data-placeholder="Select Employee" tabindex="2" required class="form-control form-control-sm HrmDefBankAndNomineeInfosselectpicker" asp-items="@ViewBag.EmpDD as SelectList">
+                                            <option value="" ></option>
+                                        </select>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group d-flex align-items-center justify-content-between">
+                                    <label class="d-flex justify-content-end form-label col-form-label-sm" asp-for="EmployeeName">Employee Name:</label>
+                                    <div class="input-wrapper">
+                                        <span id="FullName" style="text-align: left; display: block;">@Model.EmployeeName</span>
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group d-flex align-items-center justify-content-between">
+                                    <label class="d-flex justify-content-end form-label col-form-label-sm" asp-for="DesignationName">Designation:</label>
+                                    <div class="input-wrapper">
+
+                                        <span id="DesignationName" style="text-align: left; display: block;">@Model.DesignationName</span> <!-- Right aligned -->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-6">
+                                <div class="form-group d-flex align-items-center justify-content-between">
+                                    <label class="d-flex justify-content-end form-label col-form-label-sm" asp-for="DepartmentName">Department:</label>
+                                    <div class="input-wrapper">
+                                        <span id="DepartmentName" style="text-align: left; display: block;">@Model.DepartmentName</span>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+                <div style="display:none">Table List</div>
+                <div class="js-HrmDefBankAndNomineeInfos-grid-container">
+                    @*  <partial name="_Grid" /> *@
+                    @await Html.PartialAsync("_Grid", list)
+                </div>
+
+
+                <div class="card">
+                    <div class="card-body">
+
+                        <div class="row">
+                            <div class="col-lg-9">
+                                <div class="row">
+                                    <div class="col-lg-4">
+
+                                        <label asp-for="BankId" class="required">Bank</label>
+                                        <div class="input-group">
+                                            <select asp-for="BankId" data-placeholder="Select Bank" tabindex="4" class="form-control form-control-sm HrmDefBankAndNomineeInfosselectpicker" asp-items="@ViewBag.BankDD as SelectList">
+                                                <option value=""></option>
+                                            </select>
+                                            <div class="input-group-append">
+                                                <button type="button" class="btn btn-sm btn-default js-quick-add input-group-textc"
+                                                        data-url="@Url.Action("Index", "BankInformations")"
+                                                        data-target="#BankId"
+                                                        data-reload-url="@Url.Action("GetBank", "Cascading")"
+                                                        data-title="Bank">
+                                                    +
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+
+                                        <label asp-for="BankBranchId" class="required">Branch</label>
+                                        <div class="input-group">
+                                            <select asp-for="BankBranchId" data-placeholder="Select Bank" tabindex="5" class="form-control form-control-sm HrmDefBankAndNomineeInfosselectpicker" asp-items="@ViewBag.BankBranchDD as SelectList">
+                                                <option value=""></option>
+                                            </select>
+                                            <div class="input-group-append">
+                                                <button type="button" class="btn btn-sm btn-default js-quick-add input-group-textc"
+                                                        data-url="@Url.Action("Index", "BankBranchInformations")"
+                                                        data-target="#BankBranchId"
+                                                        data-reload-url="@Url.Action("GetBankBranch", "Cascading")"
+                                                        data-title="Branch">
+                                                    +
+                                                </button>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-lg-4">
+                                        <label asp-for="BranchAddress">Address</label>
+                                        <input asp-for="BranchAddress" class="form-control form-control-sm" placeholder="Enter Branch Address" tabindex="6" />
+
+                                    </div>
+
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <label asp-for="BankAccountName" class="required">Bank A/C Name</label>
+                                        <input asp-for="BankAccountName" class="form-control form-control-sm " placeholder="Enter Bank Account Name" tabindex="7" />
+
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label asp-for="BankAccountNo" class="required">Bank A/C No</label>
+                                        <input asp-for="BankAccountNo" class="form-control form-control-sm " placeholder="Enter BankAccount No" tabindex="8" />
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label asp-for="AtmcardNo">ATM Card No</label>
+                                        <input asp-for="AtmcardNo" class="form-control form-control-sm " placeholder="Enter ATM Card No" tabindex="9" />
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <label asp-for="NomineeName" class="required">Nominee Name</label>
+                                        <input asp-for="NomineeName" class="form-control form-control-sm " placeholder="Enter Nominee Name" tabindex="10" />
+
+                                    </div>
+                                    <div class="col-lg-4">
+
+                                        <label asp-for="Relation" class="required">Relation</label>
+                                        <div class="input-group">
+                                            
+                                            <select asp-for="Relation" data-placeholder="Select Relation" tabindex="11" class="form-control form-control-sm HrmDefBankAndNomineeInfosselectpicker" asp-items="@ViewBag.RelationDD as SelectList">
+                                                <option value="" ></option>
+                                            </select>
+                                            <div class="input-group-append">
+                                                <button type="button" class="btn btn-sm btn-default js-quick-add input-group-textc"
+                                                        data-url="@Url.Action("Index", "Relationships")"
+                                                        data-target="#Relation"
+                                                        data-reload-url="@Url.Action("GetRelationship", "Cascading")"
+                                                        data-title="Relation">
+                                                    +
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <label asp-for="PresentAddress" class="required">Present Address</label>
+                                        <input asp-for="PresentAddress" class="form-control form-control-sm " placeholder="Enter Present Address" tabindex="14" />
+
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label asp-for="ParmanentAddress">Permanent Address</label>
+                                        <input asp-for="ParmanentAddress" class="form-control form-control-sm " placeholder="Enter Permanent Address" tabindex="15" />
+                                    </div>
+
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <label asp-for="NomineePhoto">Nominee Photo</label>
+                                        <input type="file" asp-for="NomineePhoto" name="NomineePhoto" class="form-control form-control-sm js-file" accept="image/*" tabindex="16" data-target="#previewPhoto" />
+                                      
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label asp-for="NomineeSignature">Nominee Signature</label>
+                                        <input type="file" asp-for="NomineeSignature" name="NomineeSignature" class="form-control form-control-sm js-file" tabindex="17" data-target="#previewSignature" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 mt-2">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="d-flex flex-column align-items-center">
+                                            <img id="previewPhoto" height="120" width="120" src="@(!string.IsNullOrEmpty(Model.NomineePhotoUrl) ? Model.NomineePhotoUrl : "/images/0001.jpg")" />
+                                            <input type="hidden" asp-for="IsClearPhoto" />
+                                            <button type="button" class="btn btn-outline-success btn-sm js-clear-file mt-2" data-file="#previewPhoto" data-tag="[name='IsClearPhoto']">Clear</button>
+                                        </div>
+                                       
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="d-flex flex-column align-items-center">
+                                            <img id="previewSignature" height="120" width="120" src="@(!string.IsNullOrEmpty(Model.NomineeSignatureUrl) ? Model.NomineeSignatureUrl : "/images/signature.jpg")" />
+                                            <input type="hidden" asp-for="IsClearSignature" />
+                                            <button type="button" class="btn btn-outline-success btn-sm js-clear-file mt-2" data-file="#previewSignature" data-tag="[name='IsClearSignature']">Clear</button>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+
+                        @if (Model.AutoId > 0)
+                        {
+                            <hr />
+                            <div class="form-group row" id="LdateModifyHide">
+                                <div class="col-6">
+                                    <div class="form-group d-flex align-items-center justify-content-between">
+                                        @if (Model.Ldate.HasValue)
+                                        {
+                                            <label class="d-flex justify-content-end form-label col-form-label-sm" asp-for="Ldate">Creation Date:</label>
+                                            <div class="input-wrapper">
+                                                <span style="text-align: left; display: block;">@Model.Ldate?.ToString("dd/MM/yyyy hh:mm tt")</span>
+                                            </div>
+                                        }
+
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group d-flex align-items-center justify-content-between">
+                                        @if (Model.ModifyDate.HasValue)
+                                        {
+                                            <label class="d-flex justify-content-end form-label col-form-label-sm" asp-for="ModifyDate">Last Update Date:</label>
+                                            <div class="input-wrapper">
+                                                <span style="text-align: left; display: block;">@Model.ModifyDate?.ToString("dd/MM/yyyy hh:mm tt")</span>
+                                            </div>
+                                        }
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        }
+
+                        <div class="row no-print" style="margin-top: 9px;">
+                            <div class="col-12">
+                                <button type="button" class="btn btn-default success-btn btn btn-outline-success btn-common btn-circle float-right js-HrmDefBankAndNomineeInfos-save" data-id="@Model.BankAndNomineeId">
+                                    <i class="fas fa-save"></i> Save
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<partial name="_BottomNavigation" />
+

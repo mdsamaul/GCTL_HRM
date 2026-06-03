@@ -1,0 +1,138 @@
+﻿ @model GCTL.UI.Core.ViewModels.HrmAtdShifts.HrmAtdShiftPageViewModel
+ 
+@{
+
+    Model.PageTitle = "Shift Information";
+    // ViewBag.Title = "Shift Information";
+    Model.Breadcrumb = "Shift Information";
+}
+<style>
+    .card {
+        height: auto !important;
+    }
+
+
+        .btn-common {
+                        border-radius: 14px !important;
+                        padding: .375rem 1.35rem !important;
+                        box-shadow: 0px 2px 6px #e9e9e9;
+                        margin-left: 5px;
+                        color: black !important;
+
+    }
+
+
+
+             .btn-common:hover {
+                        color: #28a745 !important;
+
+    }
+
+
+
+             .btn-default {
+                        border-color: #ddd !important;
+
+    }
+
+
+
+        .form-control[readonly] {
+                        background-color: #e9ecef !important;
+
+    }
+
+
+
+                 .form-control[readonly]:focus {
+                            box-shadow: none;
+                            border-color: inherit;
+
+    }
+
+
+
+        .form-control:focus:not(:disabled):not([readonly]) {
+                    --bs-focus-ring-width: 0.2rem;
+                    --bs-focus-ring-color: rgba(0, 123, 255, 0.25);
+                    border-color: #80bdff;
+                    box-shadow: 0 0 0 0 rgba(13, 110, 253, .25);
+
+    }
+
+
+</style>
+<div class="container">
+<partial name="_PageHeader" model="Model" />
+</div>
+<!-- Content Header (Page header) -->
+
+<section class="content  consistent-look">
+    <div class="row" style="margin-right: 0px; margin-left: 0px;">
+            <div class="col-md-9 mx-auto pr-0">
+                <div class="card ">
+                    <div class="card-header px-2">
+                        <partial name="_Toolbars" model="new ToobarModel() { Title = Model.Breadcrumb, Code = Model.Code, Name = Model.Setup.ShiftName }" />
+                    </div> 
+    <div class="container-fluid">
+                    <div class="card-body py-0 px-2">
+
+                        <form asp-action="Setup" method="post" id="hRMATDShifts-form" asp-controller="HRMATDShifts">
+
+
+                            <partial name="_Setup" model="Model.Setup" />
+
+                        </form> 
+                    </div>
+                </div>
+            </div>
+        </div> 
+        <div class="col-md-12 container-fluid">
+            <div class="bg-white">
+                <div class="card-body p-2 pt-3">
+                    <div class="js-hRMATDShifts-grid-container">
+                        @await Html.PartialAsync("_Grid", Model.HrmAttendenceShiftList)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<div class="container">
+    <partial name="_BottomNavigation" />
+    <partial name="DeleteModal" />
+</div>
+
+<!-- Flatpickr CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+<!-- Optional: Theme (You can use this if you want a theme for Flatpickr) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/material_blue.css">
+
+<!-- Bootstrap (Optional, if you need it for layout styling) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="~/js/pages/hrmAtdShift.js"></script>
+    <script type="text/javascript">
+        var options = {
+            baseUrl: '@Url.Action("", "HRMATDShifts")'
+        };
+        options.load = () => {
+        };
+
+        $.hrmAtdShift(options);
+    </script>
+
+    <!-- Flatpickr JS -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+    <!-- Bootstrap JS (only if you need it for Bootstrap-based features like modals, dropdowns, etc.) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+}
+
+ 

@@ -1,0 +1,441 @@
+﻿@model GCTL.Core.ViewModels.ManualAttendanceBulk.ManualAttendanceBulkSetupViewModel
+@{
+    ViewBag.Title = "Manual Attendance Entry (Bulk)";
+    Model.PageTitle = ViewBag.Title;
+    Model.Breadcrumb = "Manual Attendance Entry (Bulk)";
+}
+
+
+<style>
+
+    body {
+        background-color: #f5f7fa;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .card {
+        margin-bottom: 15px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .card-header {
+        background-color: #fff;
+        color: #000;
+        font-weight: 600;
+        border-radius: 8px 8px 0 0;
+    }
+
+    .form-label {
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+    }
+
+    .required::after {
+        content: "*";
+        color: red;
+        margin-left: 3px;
+    }
+
+    /* Flatpickr inline calendar */
+    .flatpickr-calendar.inline {
+        position: relative;
+        display: block;
+        margin: 0px 0;
+        width: 100% !important;
+        max-width: 390px !important;
+        border-radius: 6px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+        background-color: #fff !important;
+    }
+
+    .flatpickr-time input:hover {
+        background-color: #fff !important;
+    }
+    /* Time picker styling */
+    .flatpickr-time {
+        height: auto !important;
+        padding: 15px 10px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+        .flatpickr-time .numInputWrapper {
+            height: 50px;
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 0 4px;
+        }
+
+        .flatpickr-time input.numInput {
+            font-size: 15px !important;
+            height: 50px !important;
+            line-height: 50px !important;
+            padding: 0 5px !important;
+            text-align: center !important;
+        }
+
+    .flatpickr-time-separator {
+        font-size: 15px !important;
+        line-height: 50px !important;
+        height: 50px !important;
+        display: inline-flex;
+        align-items: center;
+    }
+
+    .flatpickr-time .flatpickr-am-pm {
+        height: 50px !important;
+        line-height: 50px !important;
+        font-size: 13px !important;
+        background-color: #fff !important;
+        color: #000 !important;
+        border-radius: 6px;
+        font-weight: 600;
+        cursor: pointer;
+        padding: 0 0px !important;
+    }
+
+    .numInputWrapper .arrowUp,
+    .numInputWrapper .arrowDown {
+        height: 25px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+    }
+
+    .numInputWrapper .arrowUp {
+        padding-bottom: 0;
+    }
+
+    .numInputWrapper .arrowDown {
+        padding-top: 0;
+    }
+
+    /* Hide the input field */
+    .timepicker {
+        display: none !important;
+    }
+
+    .fp-ui-disabled {
+        opacity: 0.4;
+        pointer-events: none;
+        user-select: none;
+    }
+
+    .dataTables_filter {
+                margin-right: 0px;
+
+    }
+
+    #DataTables_Table_0_filter input {
+        width: 7vw !important;
+    }
+</style>
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                    <div class="border-transparent py-0 pb-2 pl-1 shadow-none">
+                        <partial name="_Toolbars" model="new ToobarModel() { Title = Model.Breadcrumb, Code = Model.Code, Name = Model.EmployeeId }" />
+                    </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<form asp-action="Setup" asp-controller="ManualAttendanceBulk" method="post" id="manualAttendanceBulk-form" enctype="multipart/form-data">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="row border-box p-4 rounded shadow-sm"
+                         style="
+                                    border: 1px solid #ddd;
+                                    background: linear-gradient(to right, #E0E0E0, #ffffff);
+                                    position:relative;
+                                    margin:0 8px 0 8px;
+                                    padding: 0.5rem !important;
+                                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+                        @* background: linear-gradient(to right, rgba(0, 123, 255, 0.8), rgba(255, 255, 255, 0.8)); Custome *@
+                        @* background: linear-gradient(135deg, #ffffff, #f0f5f9); For Left*@
+                        <input type="hidden" asp-for="AutoId" />
+                        <div class="title">
+                            @* <h5 style="background-color: #fff; padding:0 10px; position:absolute; top:-10px; left:10px;"><strong>Choose Employee</strong></h5> *@
+                        </div>
+
+                        <div class="col-sm-2 text-end p-0" style="text-align: right;">
+                            <div class="form-group">
+                                <label class="col-form-label-sm" asp-for="CompanyCode">Company <span style="color: red;">*</span></label><br />
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-form-label-sm" asp-for="DepartmentCode">Department</label><br />
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="ListTypeCode" class="col-form-label-sm">List Type: </label>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4 gc-inline-select2">
+                            <div class="form-group">
+                                <select asp-for="CompanyCode" class="form-control form-control-sm selectpickermanualAttendanceBulk gc-select2" data-placeholder="---- Select Company ----" asp-items="@ViewBag.CompanyDD as SelectList">
+                                    <option value=""></option>
+                                </select>
+                            </div>
+
+                            @* <div class="form-group">
+                                <select asp-for="DepartmentCode" class="form-control form-control-sm selectpickermanualAttendanceBulk gc-select2" data-placeholder="---- Select Department ----" asp-items="@ViewBag.DepartmentDD as SelectList">
+                                    <option value=""></option>
+                                </select>
+                            </div> *@
+                           
+                          <div class="form-group dropdown-wrapper">
+                                <select asp-for="DepartmentCode"  class="form-control form-control-sm gc-department" multiple="multiple" data-placeholder="---- Select Department ----">
+                                    <option value=""></option>
+                                </select>
+                            </div> 
+
+                            <div class="form-group">
+                                <select asp-for="ListTypeCode" class="form-control form-control-sm selectpickermanualAttendanceBulk gc-select2" data-placeholder="---- Select List Type ----" asp-items="@ViewBag.ListTypeDD as SelectList">
+                                    <option value=""></option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-2 text-end p-0" style="text-align: right;">
+                            <div class="form-group">
+                                <label class="col-form-label-sm" asp-for="BranchCode">Branch</label><br />
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-form-label-sm" asp-for="DesignationCode">Designation</label><br />
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="ActivityStatusCode" class="col-form-label-sm">Activity Status: </label>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4 gc-inline-select2">
+                            <div class="form-group">
+                                <select asp-for="BranchCode" class="form-control form-control-sm selectpickermanualAttendanceBulk gc-select2" data-placeholder="---- Select Branch ----" asp-items="@ViewBag.BranchDD as SelectList">
+                                    <option value=""></option>
+                                </select>
+                            </div>
+
+                            <div class="form-group dropdown-wrapper">
+                                <select asp-for="DesignationCode" class="form-control form-control-sm gc-designation" multiple="multiple" data-placeholder="---- Select Designation ----">
+                                    <option value=""></option>
+                                </select>
+                                @* <select asp-for="DesignationCode" class="form-control form-control-sm gc-designation" multiple="multiple" data-placeholder="---- Select Designation ----" asp-items="@ViewBag.DesignationDD as SelectList">
+                                    <option value=""></option>
+                                </select> *@
+                            </div>
+
+                            <div class="form-group">
+                                <select asp-for="ActivityStatusCode" class="form-control form-control-sm selectpickermanualAttendanceBulk gc-select2" asp-items="@ViewBag.ActivityStatusDD as SelectList">
+                                    
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row border-box" style="border: 1px solid #ccc; padding:10px; border-radius:5px; position:relative; margin:8px;">
+                        <div class="title">
+                            @* <h5 style="background-color: #fff; padding:0 10px; position:absolute; top:-10px; left:10px;"><strong>Employee Information</strong></h5> *@
+                        </div>
+
+                        <div class="col-sm-12">
+                            <div class="row">
+                                <div class="col-sm-2 text-end p-0" style="text-align: right;">
+                                    <div class="form-group">
+                                        <label asp-for="AttendanceTypeCode" class="col-form-label-sm">Attendance Type <span style="color: red;">*</span></label>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <select asp-for="AttendanceTypeCode" class="form-control form-control-sm selectpickermanualAttendanceBulk gc-select2" data-placeholder="---- Select Attendance Type ----" asp-items="@ViewBag.AttendanceTypeDD as SelectList">
+                                            <option value=""></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-2 text-end p-0" style="text-align: right;">
+                                    <div class="form-group">
+                                        <label class="col-form-label-sm" asp-for="DateFrom">From Date <span style="color: red;">*</span></label>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <input type="text" asp-for="DateFrom" class="form-control form-control-sm datepicker" placeholder="dd/MM/yyyy" />
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-2 text-end p-0" style="text-align: right;">
+                                    <div class="form-group">
+                                        <label class="col-form-label-sm" asp-for="DateTo">To Date <span style="color: red;">*</span></label>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <input type="text" asp-for="DateTo" class="form-control form-control-sm datepicker" placeholder="dd/MM/yyyy" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                @* <div class="col-sm-2 text-end p-0" style="text-align: right;">
+                                    <div class="form-group">
+                                        <label asp-for="EntryTime" class="col-form-label-sm">Time <span style="color: red;">*</span></label>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <input type="text" asp-for="EntryTime" class="form-control form-control-sm timepicker" placeholder="hh:mm:ss" />
+                                    </div>
+                                </div> *@
+
+                                <div class="col-sm-2 text-end p-0" style="text-align: right;">
+                                    <div class="form-group">
+                                        <label asp-for="EntryTime" class="col-form-label-sm">
+                                            Time <span style="color: red;">*</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <!-- Wrapper for flatpickr inline display -->
+
+                                        <input type="text"
+                                               id="EntryTime"
+                                               class="timepicker"
+                                               style="display: none;"
+                                               readonly />
+                                        <input type="hidden"
+                                               asp-for="EntryTime"
+                                               id="EntryTimeHidden" />
+                                    </div>
+                                </div>
+
+
+                                <div class="col-sm-3 text-end" style="text-align: right;">
+                                    <div class="form-group">
+                                        <label class="col-form-label-sm">Remarks</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <input type="text" asp-for="Remarks" class="form-control form-control-sm" placeholder="Enter Remarks" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12 gc-inline-select2">
+                            <hr class="my-2" />
+                            <div class="row">
+                                <div class="col-sm-2 text-end p-0" style="text-align: right;">
+                                    <div class="form-group">
+                                        <label asp-for="ISBothInOutEntry" class="col-form-label-sm">Is Both In-Out Entry</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <input type="checkbox" asp-for="ISBothInOutEntry" class="form-check-inline pt-3" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-2 text-end p-0" style="text-align: right;">
+                                    <div class="form-group">
+                                        <label asp-for="AttendanceTypeCodeTwo" class="col-form-label-sm">Attendance Type <span style="color: red;">*</span></label>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <select asp-for="AttendanceTypeCodeTwo" class="form-control form-control-sm selectpickermanualAttendanceBulk gc-select2" data-placeholder="---- Select Attendance Type ----" asp-items="@ViewBag.AttendanceTypeDDTwo as SelectList" disabled>
+                                            <option value=""></option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                @* <div class="col-sm-2 text-end p-0" style="text-align: right;">
+                                    <div class="form-group">
+                                        <label asp-for="ExitTime" class="col-form-label-sm">Time <span style="color: red;">*</span></label>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <input type="text" asp-for="ExitTime" class="form-control form-control-sm timepicker" placeholder="hh:mm:ss" disabled />
+                                    </div>
+                                </div> *@
+
+                                <div class="col-sm-2 text-end p-0 ExitTimeLabel" style="text-align: right;">
+                                    <div class="form-group" style="margin-top: 8px;">
+                                        <label asp-for="ExitTime" class="col-form-label-sm">
+                                            Time <span style="color: red;">*</span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <input type="text"
+                                               id="ExitTime"
+                                               class="timepicker"
+                                               style="display:none;"
+                                               readonly />
+
+                                        <input type="hidden"
+                                               asp-for="ExitTime"
+                                               id="ExitTimeHidden" />
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script src="~/js/pages/manualAttendanceBulk.js"></script>
+    <script type="text/javascript">
+        var options = {
+            baseUrl: '@Url.Action("", "ManualAttendanceBulk")'
+        };
+        options.load = () => {
+        };
+
+        $.manualAttendanceBulk(options);
+    </script>
+}
+

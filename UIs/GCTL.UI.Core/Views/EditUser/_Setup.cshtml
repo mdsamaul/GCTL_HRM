@@ -1,0 +1,286 @@
+﻿@model GCTL.Core.ViewModels.EditUserVM.EditUserSetupViewModel
+
+<style>
+    .dataTables_filter {
+        margin-right: 0px;
+    }
+
+    .form-label {
+        text-align: right;
+    }
+
+    input::-ms-reveal,
+    input::-ms-clear {
+        display: none;
+    }
+
+    .password-wrapper {
+        position: relative;
+    }
+
+    .password-toggle {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 5px;
+        display: none;
+        color: #6c757d;
+        z-index: 10;
+    }
+
+        .password-toggle:hover {
+            color: #495057;
+        }
+
+        .password-toggle svg {
+            width: 16px;
+            height: 16px;
+            display: block;
+        }
+
+    .password-wrapper input {
+        padding-right: 40px;
+    }
+
+    .password-tooltip {
+        position: absolute;
+        left: 100%;
+        top: 50%;
+        transform: translateY(-50%);
+        margin-left: 15px;
+        background: #6FA8DC;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 8px 12px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        white-space: nowrap;
+        z-index: 1000;
+        display: none;
+    }
+
+        .password-tooltip::before {
+            content: '';
+            position: absolute;
+            right: 100%;
+            top: 50%;
+            transform: translateY(-50%);
+            border: 6px solid transparent;
+            border-right-color: #6FA8DC;
+        }
+
+        .password-tooltip::after {
+            content: '';
+            position: absolute;
+            right: 100%;
+            top: 50%;
+            transform: translateY(-50%);
+            border: 5px solid transparent;
+            border-right-color: #6FA8DC;
+            margin-right: -1px;
+        }
+
+        .password-tooltip.show {
+            display: block;
+        }
+
+    .tooltip-white {
+        color: #fff;
+    }
+</style>
+
+<form id="editUserForm">
+    @Html.AntiForgeryToken()
+    <input asp-for="UserId" value=0 hidden />
+
+    <table style="width:100%; table-layout:fixed; border-collapse:collapse;">
+        <colgroup>
+            <col style="width:14%;" />
+            <col style="width:25%;" />
+            <col style="width:4%;" />
+            <col style="width:14%;" />
+            <col style="width:25%;" />
+            <col style="width:18%;" />
+        </colgroup>
+
+        <!-- Row 1: Username | Password -->
+        <tr>
+            <td style="padding:4px 4px 4px 0; vertical-align:middle; text-align:right;">
+                <label asp-for="Username" class="form-label mb-0">User Name</label>
+            </td>
+            <td style="padding:4px 0; vertical-align:bottom;">
+                <input type="text" asp-for="Username"
+                       class="form-control form-control-sm bg-white"
+                       readonly
+                       style="width:100%;" />
+            </td>
+            <td></td>
+            <td style="padding:4px 4px 4px 0; vertical-align:middle; text-align:right;">
+                <label asp-for="Password" class="form-label mb-0">Password</label>
+            </td>
+            <td style="padding:4px 0; vertical-align:bottom;">
+                <div class="password-wrapper">
+                    <input type="password" asp-for="Password"
+                           class="form-control form-control-sm"
+                           placeholder="Enter password"
+                           autocomplete="off"
+                           style="width:100%;" />
+                    <button type="button" class="password-toggle" id="toggleBtn">
+                        <i id="eyeIcon" class="fas fa-light fa-eye fa-lg"></i>
+                    </button>
+                    <div id="passwordTooltip" class="password-tooltip">
+                        Your notification text goes here
+                    </div>
+                </div>
+            </td>
+            <td></td>
+        </tr>
+
+        <!-- Row 2: Secure Code -->
+        <tr>
+            <td style="padding:4px 4px 4px 0; vertical-align:middle; text-align:right;">
+                <label asp-for="SecureCode" class="form-label mb-0">Secure Code</label>
+            </td>
+            <td style="padding:4px 0; vertical-align:bottom;">
+                <input type="text" asp-for="SecureCode"
+                       class="form-control form-control-sm bg-white"
+                       placeholder="Enter Security Code"
+                       style="width:100%;" />
+            </td>
+            <td colspan="3"></td>
+            <td></td>
+        </tr>
+
+        <!-- Row 3: First Name | Last Name -->
+        <tr>
+            <td style="padding:4px 4px 4px 0; vertical-align:middle; text-align:right;">
+                <label asp-for="FirstName" class="form-label mb-0">First Name</label>
+            </td>
+            <td style="padding:4px 0; vertical-align:bottom;">
+                <input type="text" asp-for="FirstName"
+                       class="form-control form-control-sm bg-white"
+                       readonly
+                       style="width:100%;" />
+            </td>
+            <td></td>
+            <td style="padding:4px 4px 4px 0; vertical-align:middle; text-align:right;">
+                <label asp-for="LastName" class="form-label mb-0">Last Name</label>
+            </td>
+            <td style="padding:4px 0; vertical-align:bottom;">
+                <input type="text" asp-for="LastName"
+                       class="form-control form-control-sm bg-white"
+                       readonly
+                       style="width:100%;" />
+            </td>
+            <td></td>
+        </tr>
+
+        <!-- Row 4: Employee ID | Date of Birth -->
+        <tr>
+            <td style="padding:4px 4px 4px 0; vertical-align:middle; text-align:right;">
+                <label asp-for="EmployeeId" class="form-label mb-0">Employee ID</label>
+            </td>
+            <td style="padding:4px 0; vertical-align:bottom;">
+                <input type="text" asp-for="EmployeeId"
+                       class="form-control form-control-sm bg-white"
+                       readonly
+                       style="width:100%;" />
+            </td>
+            <td></td>
+            <td style="padding:4px 4px 4px 0; vertical-align:middle; text-align:right;">
+                <label asp-for="Dob" class="form-label mb-0">Date of Birth</label>
+            </td>
+            <td style="padding:4px 0; vertical-align:bottom;">
+                <input type="text" asp-for="Dob"
+                       class="form-control form-control-sm bg-white"
+                       readonly
+                       placeholder="dd/mm/yyyy"
+                       style="width:100%;" />
+            </td>
+            <td></td>
+        </tr>
+
+        <!-- Row 5: Official Phone | Personal Phone -->
+        <tr>
+            <td style="padding:4px 4px 4px 0; vertical-align:middle; text-align:right;">
+                <label asp-for="OffPhone" class="form-label mb-0">Official Phone</label>
+            </td>
+            <td style="padding:4px 0; vertical-align:bottom;">
+                <input type="text" asp-for="OffPhone"
+                       class="form-control form-control-sm bg-white"
+                       readonly
+                       style="width:100%;" />
+            </td>
+            <td></td>
+            <td style="padding:4px 4px 4px 0; vertical-align:middle; text-align:right;">
+                <label asp-for="PerPhone" class="form-label mb-0">Personal Phone</label>
+            </td>
+            <td style="padding:4px 0; vertical-align:bottom;">
+                <input type="text" asp-for="PerPhone"
+                       class="form-control form-control-sm bg-white"
+                       readonly
+                       style="width:100%;" />
+            </td>
+            <td></td>
+        </tr>
+
+        <!-- Row 6: Official Email | Personal Email -->
+        <tr>
+            <td style="padding:4px 4px 4px 0; vertical-align:middle; text-align:right;">
+                <label asp-for="OffEmail" class="form-label mb-0">Official Email</label>
+            </td>
+            <td style="padding:4px 0; vertical-align:bottom;">
+                <input type="text" asp-for="OffEmail"
+                       class="form-control form-control-sm bg-white"
+                       readonly
+                       style="width:100%;" />
+            </td>
+            <td></td>
+            <td style="padding:4px 4px 4px 0; vertical-align:middle; text-align:right;">
+                <label asp-for="PerEmail" class="form-label mb-0">Personal Email</label>
+            </td>
+            <td style="padding:4px 0; vertical-align:bottom;">
+                <input type="text" asp-for="PerEmail"
+                       class="form-control form-control-sm bg-white"
+                       readonly
+                       style="width:100%;" />
+            </td>
+            <td></td>
+        </tr>
+
+        <!-- Row 7: Work Station | Screen Regulation -->
+        <tr>
+            <td style="padding:4px 4px 4px 0; vertical-align:middle; text-align:right;">
+                <label asp-for="WorkStation" class="form-label mb-0">Work Station</label>
+            </td>
+            <td style="padding:4px 0; vertical-align:bottom;">
+                <input type="text" asp-for="WorkStation"
+                       class="form-control form-control-sm bg-white"
+                       readonly
+                       style="width:100%;" />
+            </td>
+            <td></td>
+            <td style="padding:4px 4px 4px 0; vertical-align:middle; text-align:right;">
+                <label asp-for="Regulation" class="form-label mb-0">Screen Regulation</label>
+            </td>
+            <td style="padding:4px 0; vertical-align:bottom;">
+                <input type="text" asp-for="Regulation"
+                       class="form-control form-control-sm bg-white"
+                       readonly
+                       style="width:100%;" />
+            </td>
+            <td></td>
+        </tr>
+
+        <!-- Row 8: Date Info Partial -->
+        <tr>
+            <td colspan="6" style="padding:0;">
+                <partial name="_DateInfo" model='"editUser"' />
+            </td>
+        </tr>
+
+    </table>
+</form>
