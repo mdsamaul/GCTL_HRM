@@ -1,4 +1,4 @@
-﻿@* @model GCTL.UI.Core.ViewModels.LoginPageViewModel
+﻿@model GCTL.UI.Core.ViewModels.LoginPageViewModel
 
 @{
     ViewData["Title"] = "Login Page";
@@ -9,441 +9,357 @@
 <html lang="en">
 <head>
     <link rel="shortcut icon" href="~/images/CoIcon.ico" />
-    <title>Login</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>HRM &amp; Payroll Management System - Login</title>
 
-    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet">
-
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-
-    <link href="~/FrontEnd/Login/css/style.css" rel="stylesheet" />
-  
-</head>
-
-<body>
-    <div class="animated-bg">
-        <span class="floating-dot d1"></span>
-        <span class="floating-dot d2"></span>
-        <span class="floating-dot d3"></span>
-        <span class="floating-dot d4"></span>
-        <span class="floating-dot d5"></span>
-        <span class="floating-dot d6"></span>
-        <span class="floating-dot d7"></span>
-        <span class="floating-dot d8"></span>
-        <span class="floating-dot d9"></span>
-        <span class="floating-dot d10"></span>
-        <span class="floating-dot d11"></span>
-        <span class="floating-dot d12"></span>
-    </div>
-    <section class="ftco-section">
-        <div class="container">
-            <form asp-action="Login" asp-controller="Accounts">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="row justify-content-center">
-                    <div class="col-md-10 col-lg-8">
-                        <div class="wrap d-md-flex">
-                        <div class="wrap d-md-flex">
-                                <div class="img" style="background-image: url(images/hrm-login-img.png);">
-                            </div>
-                            <div class="login-wrap p-4 p-md-5">
-                                <div class="d-flex">
-                                    <div class="w-100">
-                                        <h3 class="mb-4">Sign In</h3>
-                                    </div>
-                                    <div class="w-100">
-                                        <p class="social-media d-flex justify-content-end">
-                                            <a href="#" class="social-icon d-flex align-items-center justify-content-center"><span class="fa fa-facebook"></span></a>
-                                            <a href="#" class="social-icon d-flex align-items-center justify-content-center"><span class="fa fa-twitter"></span></a>
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="form-group mb-3">
-                                    <label class="label" for="name">Username</label>
-                                    @Html.TextBoxFor(model => model.Username, new { @id = "txtusername", @class = "form-control", @placeholder = "Username" })
-
-                                    @Html.ValidationMessageFor(model => model.Username)
-                                </div>
-                                <div class="form-group mb-3">
-                                    <label class="label" for="password">Password</label>
-                                    @Html.PasswordFor(model => model.Password, new { @id = "txtUserPassword", @class = "form-control", @placeholder = "Password" })
-                                    @Html.ValidationMessageFor(model => model.Password)
-                                </div>
-                                <div class="form-group">
-                                    <button type="submit" class="form-control btn btn-primary rounded submit px-3">Sign In</button>
-                                </div>
-                                <div class="form-group d-md-flex">
-                                    <div class="w-50 text-left">
-                                        <label class="checkbox-wrap checkbox-primary mb-0">
-                                            Remember Me
-                                            <input type="checkbox" checked>
-                                            <span class="checkmark"></span>
-                                        </label>
-                                    </div>
-                                    <div class="w-50 text-md-right">
-                                        <a href="#">Forgot Password</a>
-                                    </div>
-                                </div>
-                                <p class="text-center">Not a member? <a data-toggle="tab" href="#signup">Sign Up</a></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                </div>
-            </form>
-        </div>
-    </section>
-
-    <script src="~/FrontEnd/Login/js/jquery.min.js"></script>
-    <script src="~/FrontEnd/Login/js/popper.js"></script>
-    <script src="~/FrontEnd/Login/js/bootstrap.min.js"></script>
-    <script src="~/FrontEnd/Login/js/main.js"></script>
-
-</body>
-</html>
-
-
-
-
-<style type="text/css">
-
-</style>
-
-@section Scripts {
-    @{
-    await Html.RenderPartialAsync("_ValidationScriptsPartial");
-}
-} *@
-
-@model GCTL.UI.Core.ViewModels.LoginPageViewModel
-
-@{
-    ViewData["Title"] = "Login Page";
-    Layout = null;
-}
-
-<!doctype html>
-<html lang="en">
-<head>
-    <link rel="shortcut icon" href="~/images/CoIcon.ico" />
-    <title>Login</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link href="~/FrontEnd/Login/css/style.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 
     <style>
-
-        /* ── Floating dots container ── */
-        .animated-bg {
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            z-index: 0;
-            overflow: hidden;
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;
         }
 
-        .floating-dot {
-            position: absolute;
-            border-radius: 50%;
-            opacity: 0;
-            animation: dotRise linear infinite;
+        body{
+            height:100vh;
+            background:#f4f7fb;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            overflow:hidden;
         }
 
-        .d1 {
-            width: 10px;
-            height: 10px;
-            left: 4%;
-            background: rgba(100,183,238,0.55);
-            animation-duration: 9s;
-            animation-delay: 0s;
+        .container{
+            width:90vw;
+            height:100vh;
+            background:#fff;
+            border-radius:2px;
+            overflow:hidden;
+            display:flex;
+            box-shadow:0 20px 50px rgba(0,0,0,.35);
         }
 
-        .d2 {
-            width: 14px;
-            height: 14px;
-            left: 11%;
-            background: rgba(77,208,225,0.50);
-            animation-duration: 11s;
-            animation-delay: 1.3s;
+        .left-panel{
+            width:58%;
+            position:relative;
+            background:linear-gradient(rgba(11,52,112,.82),rgba(20,87,190,.82)), url('https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=800&q=60') center center;
+            background-size:cover;
         }
 
-        .d3 {
-            width: 8px;
-            height: 8px;
-            left: 20%;
-            background: rgba(247,189,69,0.55);
-            animation-duration: 8.5s;
-            animation-delay: 2.7s;
+        .overlay{
+            position:absolute;
+            top:0;
+            left:0;
+            width:100%;
+            height:100%;
+            padding:60px;
+            color:white;
+            display:flex;
+            flex-direction:column;
+            justify-content:center;
         }
 
-        .d4 {
-            width: 16px;
-            height: 16px;
-            left: 30%;
-            background: rgba(129,196,132,0.50);
-            animation-duration: 12s;
-            animation-delay: 0.6s;
+        .logo{
+            font-size:36px;
+            font-weight:700;
+            margin-bottom:20px;
         }
 
-        .d5 {
-            width: 9px;
-            height: 9px;
-            left: 41%;
-            background: rgba(100,183,238,0.55);
-            animation-duration: 9.5s;
-            animation-delay: 3.2s;
+        .logo i{
+            color:#38bdf8;
+            margin-right:10px;
         }
 
-        .d6 {
-            width: 12px;
-            height: 12px;
-            left: 52%;
-            background: rgba(206,147,216,0.50);
-            animation-duration: 10s;
-            animation-delay: 1.8s;
+        .hero-title{
+            font-size:32px;
+            font-weight:700;
+            line-height:1.3;
+            margin-bottom:20px;
         }
 
-        .d7 {
-            width: 7px;
-            height: 7px;
-            left: 62%;
-            background: rgba(77,208,225,0.55);
-            animation-duration: 8s;
-            animation-delay: 0.4s;
+        .hero-title span{
+            color:#38bdf8;
         }
 
-        .d8 {
-            width: 15px;
-            height: 15px;
-            left: 72%;
-            background: rgba(247,189,69,0.50);
-            animation-duration: 13s;
-            animation-delay: 2.1s;
+        .hero-text{
+            font-size:17px;
+            line-height:1.8;
+            opacity:.95;
+            margin-bottom:30px;
         }
 
-        .d9 {
-            width: 10px;
-            height: 10px;
-            left: 81%;
-            background: rgba(100,183,238,0.55);
-            animation-duration: 9.2s;
-            animation-delay: 4.1s;
+        .features{
+            display:grid;
+            grid-template-columns:1fr 1fr;
+            gap:20px;
         }
 
-        .d10 {
-            width: 11px;
-            height: 11px;
-            left: 89%;
-            background: rgba(129,196,132,0.50);
-            animation-duration: 10.5s;
-            animation-delay: 1.6s;
+        .feature{
+            display:flex;
+            align-items:center;
+            gap:15px;
+            font-size:15px;
         }
 
-        .d11 {
-            width: 8px;
-            height: 8px;
-            left: 7%;
-            background: rgba(206,147,216,0.50);
-            animation-duration: 7.8s;
-            animation-delay: 3.6s;
+        .feature i{
+            width:45px;
+            height:45px;
+            background:#38bdf8;
+            border-radius:50%;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            font-size:18px;
         }
 
-        .d12 {
-            width: 13px;
-            height: 13px;
-            left: 95%;
-            background: rgba(77,208,225,0.55);
-            animation-duration: 11.5s;
-            animation-delay: 0.9s;
+        .right-panel{
+            width:42%;
+            background:white;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            padding:40px;
         }
 
-        @@keyframes dotRise {
-            0% {
-                bottom: -20px;
-                opacity: 0;
-                transform: translateX(0px) scale(0.6);
+        .login-box{
+            width:100%;
+            max-width:400px;
+        }
+
+        .login-header{
+            text-align:center;
+            margin-bottom:35px;
+        }
+
+        .login-header h2{
+            font-size:32px;
+            color:#0f172a;
+            margin-bottom:10px;
+        }
+
+        .login-header p{
+            color:#64748b;
+        }
+
+        .input-group{
+            margin-bottom:20px;
+            position:relative;
+        }
+
+        .input-group i{
+            position:absolute;
+            left:15px;
+            top:16px;
+            color:#64748b;
+        }
+
+        .input-group input{
+            width:100%;
+            padding:14px 15px 14px 45px;
+            border:1px solid #dbe4ee;
+            border-radius:10px;
+            font-size:15px;
+            outline:none;
+            transition:.3s;
+        }
+
+        .input-group input:focus{
+            border-color:#0ea5e9;
+            box-shadow:0 0 10px rgba(14,165,233,.2);
+        }
+
+        .field-validation-error {
+            color:#d9534f;
+            font-size:0.9rem;
+            margin-top:6px;
+        }
+
+        .validation-summary-errors {
+            color:#d9534f;
+            margin-bottom:12px;
+        }
+
+        .options{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            margin-bottom:25px;
+            font-size:14px;
+        }
+
+        .options a{
+            text-decoration:none;
+            color:#0284c7;
+            font-weight:600;
+        }
+
+        .login-btn{
+            width:100%;
+            padding:15px;
+            background:linear-gradient(135deg,#0284c7,#0ea5e9);
+            border:none;
+            color:white;
+            font-size:16px;
+            font-weight:600;
+            border-radius:10px;
+            cursor:pointer;
+            transition:.3s;
+        }
+
+        .login-btn:hover{
+            transform:translateY(-2px);
+            box-shadow:0 10px 20px rgba(14,165,233,.3);
+        }
+
+        .footer-text{
+            text-align:center;
+            margin-top:25px;
+            font-size:13px;
+            color:#64748b;
+        }
+
+        .version{
+            margin-top:20px;
+            text-align:center;
+            font-size:12px;
+            color:#94a3b8;
+        }
+
+        @@media(max-width:992px){
+            .container{
+                width:95%;
+                height:auto;
+                flex-direction:column;
             }
 
-            8% {
-                opacity: 0.75;
+            .left-panel,
+            .right-panel{
+                width:100%;
             }
 
-            40% {
-                transform: translateX(18px) scale(1);
+            .left-panel{
+                height:450px;
             }
 
-            70% {
-                transform: translateX(-14px) scale(1);
-                opacity: 0.5;
-            }
-
-            95% {
-                opacity: 0.15;
-            }
-
-            100% {
-                bottom: 105vh;
-                opacity: 0;
-                transform: translateX(8px) scale(0.5);
+            .hero-title{
+                font-size:30px;
             }
         }
-
-        /* ── Sign In button soft animation ── */
-        .submit {
-            position: relative;
-            overflow: hidden;
-            transition: transform 0.25s ease, box-shadow 0.25s ease !important;
-            animation: btnPulse 3s ease-in-out infinite;
-        }
-
-            .submit::after {
-                content: '';
-                position: absolute;
-                inset: 0;
-                background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.22) 50%, transparent 100%);
-                transform: translateX(-100%);
-                animation: btnSweep 3s ease-in-out infinite;
-            }
-
-        @@keyframes btnPulse {
-            0%, 100% {
-                box-shadow: 0 4px 14px rgba(26,107,191,0.25);
-            }
-
-            50% {
-                box-shadow: 0 8px 24px rgba(26,107,191,0.42);
-            }
-        }
-
-        @@keyframes btnSweep {
-            0%, 65% {
-                transform: translateX(-100%);
-            }
-
-            82% {
-                transform: translateX(100%);
-            }
-
-            100% {
-                transform: translateX(100%);
-            }
-        }
-
-        .submit:hover {
-            transform: translateY(-2px) !important;
-            box-shadow: 0 10px 28px rgba(26,107,191,0.38) !important;
-        }
-
-        .submit:active {
-            transform: translateY(0px) !important;
-        }
-
-        /* ── Horizontal & Vertical Center ── */
-        html, body {
-            height: 100%;
-        }
-
-        .ftco-section {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-            .ftco-section .container {
-                width: 100%;
-            }
-
     </style>
-
 </head>
-
 <body>
-    <div class="animated-bg">
-        <span class="floating-dot d1"></span>
-        <span class="floating-dot d2"></span>
-        <span class="floating-dot d3"></span>
-        <span class="floating-dot d4"></span>
-        <span class="floating-dot d5"></span>
-        <span class="floating-dot d6"></span>
-        <span class="floating-dot d7"></span>
-        <span class="floating-dot d8"></span>
-        <span class="floating-dot d9"></span>
-        <span class="floating-dot d10"></span>
-        <span class="floating-dot d11"></span>
-        <span class="floating-dot d12"></span>
-    </div>
+    <div class="container">
+        <div class="left-panel">
+            <div class="overlay">
+                <div class="logo">                   
+                    <img src="/images/gctl_infosys.jpg" alt="GCTL Infosys" width="280" height="80" style="object-fit:cover;border-radius:2px;display:inline-block;vertical-align:middle;margin-bottom:8px;opacity:0.6;" />
+                    <br/>
+                    HRM &amp; Payroll
+                </div>
 
-    <section class="ftco-section">
-        <div class="container">
-            <form asp-action="Login" asp-controller="Accounts">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="row justify-content-center">
-                    <div class="col-md-10 col-lg-8">
-                        <div class="wrap d-md-flex">
-                            <div class="wrap d-md-flex">
-                                <div class="img" style="background-image: url(images/hrm-login-img.png);">
-                                </div>
-                                <div class="login-wrap p-4 p-md-5">
-                                    <div class="d-flex">
-                                        <div class="w-100">
-                                            <h3 class="mb-4">Sign In</h3>
-                                        </div>
-                                        <div class="w-100">
-                                            <p class="social-media d-flex justify-content-end">
-                                                <a href="#" class="social-icon d-flex align-items-center justify-content-center"><span class="fa fa-facebook"></span></a>
-                                                <a href="#" class="social-icon d-flex align-items-center justify-content-center"><span class="fa fa-twitter"></span></a>
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="form-group mb-3">
-                                        <label class="label" for="name">Username</label>
-                                        @Html.TextBoxFor(model => model.Username, new { @id = "txtusername", @class = "form-control", @placeholder = "Username" })
-                                        @Html.ValidationMessageFor(model => model.Username)
-                                    </div>
-                                    <div class="form-group mb-3">
-                                        <label class="label" for="password">Password</label>
-                                        @Html.PasswordFor(model => model.Password, new { @id = "txtUserPassword", @class = "form-control", @placeholder = "Password" })
-                                        @Html.ValidationMessageFor(model => model.Password)
-                                    </div>
-                                    <div class="form-group">
-                                        <button type="submit" class="form-control btn btn-primary rounded submit px-3">Sign In</button>
-                                    </div>
-                                    <div class="form-group d-md-flex">
-                                        <div class="w-50 text-left">
-                                            <label class="checkbox-wrap checkbox-primary mb-0">
-                                                Remember Me
-                                                <input type="checkbox" checked>
-                                                <span class="checkmark"></span>
-                                            </label>
-                                        </div>
-                                        <div class="w-50 text-md-right">
-                                            <a href="#">Forgot Password</a>
-                                        </div>
-                                    </div>
-                                    <p class="text-center">Not a member? <a data-toggle="tab" href="#signup">Sign Up</a></p>
-                                </div>
-                            </div>
+                <div class="hero-title">
+                    ERP Based Attendance, Leave &amp; Payroll Solution for Modern Intelligent Businesses
+                </div>
+
+                <div class="hero-text">
+                    Manage employee attendance from biometric devices, mobile apps,
+                    GPS attendance tracking, shift scheduling, leave management,
+                    salary processing, tax calculation, payroll workflow approval,
+                    employee self-service and management reporting from a single platform.
+                </div>
+
+                <div class="features">
+                    <div class="feature">
+                        <i class="fas fa-fingerprint"></i>
+                        <div>
+                            <b>Attendance Device</b><br />
+                            Biometric Integration
+                        </div>
+                    </div>
+
+                    <div class="feature">
+                        <i class="fas fa-mobile-screen"></i>
+                        <div>
+                            <b>Mobile Attendance</b><br />
+                            GPS &amp; Self Service App
+                        </div>
+                    </div>
+
+                    <div class="feature">
+                        <i class="fas fa-file-invoice-dollar"></i>
+                        <div>
+                            <b>Payroll Workflow</b><br />
+                            Salary &amp; Tax Automation
+                        </div>
+                    </div>
+
+                    <div class="feature">
+                        <i class="fas fa-laptop"></i>
+                        <div>
+                            <b>Management Dashboard</b><br />
+                            Real-Time Analytics
                         </div>
                     </div>
                 </div>
-            </form>
+            </div>
         </div>
-    </section>
 
-    <script src="~/FrontEnd/Login/js/jquery.min.js"></script>
-    <script src="~/FrontEnd/Login/js/popper.js"></script>
-    <script src="~/FrontEnd/Login/js/bootstrap.min.js"></script>
-    <script src="~/FrontEnd/Login/js/main.js"></script>
+        <div class="right-panel">
+            <div class="login-box">
+                <div class="login-header">
+                    <div class="logo">
+                        <i class="fas fa-users-cog"></i> 
+                    </div>
+                    <h2>Welcome Back</h2>
+                    <p>Sign in to access your HRM &amp; Payroll System</p>
+                </div>
 
+                <form asp-action="Login" asp-controller="Accounts" method="post">
+                    <div asp-validation-summary="ModelOnly" class="validation-summary-errors"></div>
+
+                    <div class="input-group">
+                        <i class="fas fa-user"></i>
+                        @Html.TextBoxFor(m => m.Username, new { @class = "form-control", placeholder = "Username", @id = "txtusername", autocomplete = "username" })
+                        @Html.ValidationMessageFor(m => m.Username, "", new { @class = "field-validation-error" })
+                    </div>
+
+                    <div class="input-group">
+                        <i class="fas fa-lock"></i>
+                        @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Password", @id = "txtUserPassword", autocomplete = "current-password" })
+                        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "field-validation-error" })
+                    </div>
+
+                    <div class="options">
+                        <label>
+                            <input type="checkbox" name="RememberMe" /> Remember Me
+                        </label>
+
+                        <a href="#">Forgot Password?</a>
+                    </div>
+
+                    <button type="submit" class="login-btn">
+                        <i class="fas fa-right-to-bracket"></i>&nbsp; Sign In
+                    </button>
+                </form>
+
+                <div class="footer-text">
+                    Attendance • Leave • Payroll • Employee Self-Service
+                </div>
+
+                <div class="version">
+                    HRM &amp; Payroll Management System Version 2026
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @section Scripts {
+        @{
+            await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        }
+    }
 </body>
 </html>
-
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-}
