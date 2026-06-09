@@ -29,6 +29,7 @@ using GCTL.Service.CoreBranches;
 using GCTL.Service.Country;
 using GCTL.Service.CourseTitle;
 using GCTL.Service.Currencies;
+using GCTL.Service.DashboardAttendance;
 using GCTL.Service.DeleteHistories;
 using GCTL.Service.DeliveryPeriods;
 using GCTL.Service.Departments;
@@ -241,6 +242,7 @@ namespace GCTL.UI.Core.Extensions
             services.AddScoped<IAdvanceLoanAdjustmentServices, AdvanceLoanAdjustmentServices>();
             services.AddScoped<IHRMPayrollLoanService, HRMPayrollLoanService>();
             services.AddScoped<IReportService, ReportService>();
+            services.AddScoped<IDashboardAttendanceService, DashboardAttendanceService>();
 
             services.AddScoped<IINV_CatagoryService, INV_CatagoryService>();
             services.AddScoped<IHRM_BrandService, HRM_BrandService>();

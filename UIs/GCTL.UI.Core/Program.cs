@@ -1,43 +1,61 @@
-using Serilog;
+﻿using GCTL.UI.Core.BackgroundServices;
 using GCTL.UI.Core.Extensions;
-using System.ComponentModel;
-using System.Globalization;
+using GCTL.UI.Core.Hubs;
 using QuestPDF.Infrastructure;
+using Serilog;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.ConfigureContext(builder.Configuration); // Application connection
+// =====================
+// Services Registration
+// =====================
+
+// DB + Services + AutoMapper
+builder.Services.ConfigureContext(builder.Configuration);
 builder.Services.ConfigureServices();
 builder.Services.ConfigureMapper();
-builder.Services.AddControllersWithViews();
-//
-QuestPDF.Settings.License = LicenseType.Community;
-var cultureInfo = CultureInfo.InvariantCulture;
 
+// MVC
+builder.Services.AddControllersWithViews();
+
+// SignalR
+builder.Services.AddSignalR();
+builder.Services.AddHostedService<AttendanceSqlWatcher>();
+
+// Session
+builder.Services.ConfigureSession();
+
+// App Config
+builder.Services.ReadConfiguration(builder.Configuration);
+
+// QuestPDF License
+QuestPDF.Settings.License = LicenseType.Community;
+
+// Culture Setting (Invariant)
+var cultureInfo = CultureInfo.InvariantCulture;
 CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
 CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 
-//
-builder.Services.ConfigureSession();
+// Serilog Bootstrap
+Log.Logger = new LoggerConfiguration()
+    .CreateBootstrapLogger();
 
-builder.Services.ReadConfiguration(builder.Configuration);
-
-Log.Logger = new LoggerConfiguration().CreateBootstrapLogger();
 builder.Host.UseSerilog((ctx, lc) =>
 {
     lc.MinimumLevel.Warning();
     lc.ReadFrom.Configuration(ctx.Configuration);
-
 });
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// =====================
+// Middleware Pipeline
+// =====================
+
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
@@ -48,9 +66,18 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseSession();
+
 app.UseAuthorization();
 
-app.UseSession();
+// =====================
+// SignalR Hub Mapping
+// =====================
+app.MapHub<AttendanceHub>("/attendanceHub");
+
+// =====================
+// Custom Routes
+// =====================
 
 app.MapControllerRoute(
     name: "preview",

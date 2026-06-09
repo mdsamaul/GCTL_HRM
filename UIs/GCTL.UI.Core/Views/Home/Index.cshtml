@@ -2,12 +2,14 @@
     ViewData["Title"] = "Home Page";
 }
 
+
+
 <!-- Font Awesome -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
     :root {
-        --bg-color: #ffffff;
+        --bg-color: red;
         --white: #ffffff;
         --present: #4caf50;
         --absent: #f44336;
@@ -23,7 +25,7 @@
         background-color: var(--bg-color);
         color: var(--text-dark);
         margin: 0;
-        padding: 20px;
+        padding: 0px;
     }
 
     .dashboard-container {
@@ -36,20 +38,30 @@
         justify-content: space-between;
         align-items: center;
         /* margin-bottom: 20px; */
-        padding:20px;
+        padding:10px;
     }
 
     h2 { margin: 0; font-weight: 600; display: flex; align-items: center; gap: 10px; }
 
     .search-bar {
         background: var(--white);
-        padding: 15px;
-        border-radius: 12px;
+        padding: 10px 10px 0px 20px;
         display: flex;
         gap: 15px;
         align-items: center;
         box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        margin-bottom: 20px;
+        margin-bottom: 5px;
+        flex-wrap: wrap;
+    }
+
+    .search-bar_leave {
+        background: var(--white);
+        padding: 10px 10px 8px 20px;
+        display: flex;
+        gap: 15px;
+        align-items: center;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        margin-bottom: 5px;
         flex-wrap: wrap;
     }
 
@@ -71,9 +83,7 @@
 
     .section-card {
         background: var(--white);
-        border-radius: 15px;
         padding: 20px;
-        margin-bottom: 25px;
         box-shadow: 0 4px 20px rgba(0,0,0,0.05);
     }
 
@@ -85,16 +95,16 @@
 
     .metrics-container {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(125px, 1fr));
         gap: 15px;
         margin-bottom: 20px;
     }
 
     .metric-card {
         padding: 15px;
-        border-radius: 12px;
+        border-radius: 8px;
         text-align: center;
-        border: 1px solid rgba(255,255,255,0.6);
+        border: 1px solid var(--border);        
         background: rgba(255,255,255,0.70);
         backdrop-filter: blur(4px);
         -webkit-backdrop-filter: blur(4px);
@@ -224,13 +234,171 @@
         .layout-grid { grid-template-columns: 1fr; }
         .chart-box { border-left: none; padding-left: 0; margin-top: 20px; }
     }
+
+    .live, .dot {
+        font-weight: 800;
+        color: #000; /* base black */
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        animation: liveBlink 1.4s infinite;
+    }
+
+    /* smooth black ↔ light (white/gray) pulse */
+@@keyframes liveBlink {
+        0%
+
+    {
+        color: #000;
+        opacity: 1;
+    }
+
+    50% {
+        color: #333333;
+        opacity: 0.6;
+    }
+
+    100% {
+        color: #000;
+        opacity: 1;
+    }
+
+    }
+
+  
+
+    /* Add these rules inside the existing <style> block (make selects fixed width; responsive on small screens) */
+    .gc-inline-select2 {
+        flex: 0 0 220px; /* fixed width: change 220px to desired width */
+        max-width: 220px;
+        min-width: 220px;
+        box-sizing: border-box;
+    }
+
+    .gc-inline-select2 .form-control {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+    }
+
+    /* when layout is narrow, allow selects to expand to full width */
+    @@media (max-width: 768px) {
+        .gc-inline-select2 {
+            flex: 1 1 auto;
+            width: 100% !important;
+            max-width: 100% !important;
+        }
+    }
+
+    /* Disable all metric-card animations / transitions (paste into the existing <style> block) */
+    .metric-card,
+    .metric-card i,
+    .metric-card:hover,
+    .metric-card:hover i {
+        transition: none !important;
+        animation: none !important;
+        transform: none !important;
+        box-shadow: none !important;
+    }
+
+    .text-dark {
+        color: #343a40 !important;
+        font-size: large !important;
+    }
+    #attendanceTable_filter{
+        margin:0px !important;
+    }
+
+    .table thead th {
+        vertical-align: middle;
+        border-bottom: 2px solid #dee2e6;
+    }
+
+    .table td, .table th {
+        vertical-align: middle;
+        border-top: 1px solid #dee2e6;
+    }
+
+    /* Add inside the existing <style> block in Index.cshtml — borders only for Leave Summary table,
+       header group colors and data column text color. Attendance table remains borderless. */
+
+    /* Remove borders from attendance table (explicit) */
+    #attendanceTable,
+    #attendanceTable th,
+    #attendanceTable td {
+        border: none !important;
+        box-shadow: none !important;
+    }
+
+    /* Leave Summary table borders */
+    #leaveSummaryTable {
+        border: 1px solid #e6eef6;
+        border-collapse: collapse;
+        width: 100%;
+        background: #fff;
+    }
+
+    #leaveSummaryTable th,
+    #leaveSummaryTable td {
+        border: 1px solid #e6eef6;
+        padding: 8px 10px;
+        vertical-align: middle;
+        white-space: nowrap;
+        text-align: center;
+    }
+
+    /* Group header colors (top-row group headers already have classes) */
+    #leaveSummaryTable thead th.head-granted { background: #e8f5e9; color: #2e7d32; }
+    #leaveSummaryTable thead th.head-availed { background: #e3f2fd; color: #1565c0; }
+    #leaveSummaryTable thead th.head-balanced { background: #f3e5f5; color: #7b1fa2; }
+
+    /* Individual second-row headers (ensure readable) */
+    #leaveSummaryTable thead tr + tr th.head-granted { background: #f6fbf6; color: #2e7d32; font-weight:600; }
+    #leaveSummaryTable thead tr + tr th.head-availed { background: #f3f8ff; color: #1565c0; font-weight:600; }
+    #leaveSummaryTable thead tr + tr th.head-balanced { background: #fbf7fb; color: #7b1fa2; font-weight:600; }
+
+    /* Color data cells by column ranges
+       Granted: columns 4..11, Availed: 12..19, Balanced: 20..27 */
+    #leaveSummaryTable tbody td:nth-child(n+4):nth-child(-n+11) { color: #2e7d32; }   /* granted */
+    #leaveSummaryTable tbody td:nth-child(n+12):nth-child(-n+19) { color: #1565c0; }  /* availed */
+    #leaveSummaryTable tbody td:nth-child(n+20):nth-child(-n+27) { color: #7b1fa2; }  /* balanced */
+
+    /* Keep names and ID left-aligned */
+    #leaveSummaryTable tbody td:nth-child(1),
+    #leaveSummaryTable tbody td:nth-child(2),
+    #leaveSummaryTable tbody td:nth-child(3) {
+        text-align: left;
+        color: #0f172a;
+    }
+
+    /* Small screens: make horizontally scrollable */
+    @@media (max-width: 980px) {
+        #leaveSummaryTable th,
+        #leaveSummaryTable td {
+            font-size: 12px;
+            padding: 6px 8px;
+        }
+    }
+
+    #leaveSummaryTable_filter{
+        margin-right:0px !important;
+    }
 </style>
 
 <div class="dashboard-container">
 
     <!-- Attendance Section -->
     <div class="header">
-        <h2><i class="fa-solid fa-calendar-check" style="color: var(--primary-blue);"></i> Attendance Dashboard</h2>
+
+
+        <div class="text-dark" style="font-weight:700; flex-wrap:wrap;">
+                <span>
+                    <i class="fa-solid fa-calendar-check" style="color: var(--primary-blue);"></i>
+                </span>
+                Attendance Dashboard
+         </div
+        >
+
         <div style="text-align:right;">
             <span id="currentTime" class="current-time">--:--:-- AM</span>
             <span id="currentDate" class="current-date">-- -- ----</span>
@@ -238,28 +406,98 @@
     </div>
 
     <div class="search-bar">
-        <span>Search By:</span>
-        <select><option>Select Company</option></select>
-        <select><option>Select Branch</option></select>
-        <select><option>Select Department</option></select>
-    </div>
+        <span style="margin-bottom: 10px;">Search By:</span>
 
+        <div class="form-group gc-inline-select2">
+            <select id="companySelect" class="form-control form-control-sm gc-select2" data-placeholder="Select Company">
+                <option value=""></option>
+            </select>
+        </div>
+
+        <div class="form-group gc-inline-select2">
+            <select id="branchSelect" class="form-control form-control-sm gc-select2" data-placeholder="Select Branch">
+                <option value=""></option>
+            </select>
+        </div>
+
+        <div class="form-group gc-inline-select2">
+            <select id="departmentSelect" class="form-control form-control-sm gc-select2" data-placeholder="Select Department">
+                <option value=""></option>
+            </select>
+        </div>
+    </div>
     <div class="section-card">
         <div class="layout-grid">
             <div>
+                <!-- Metric Cards -->
                 <div class="metrics-container">
-                    <div class="metric-card m-total"><i class="fa fa-users"></i><p>Total Employee</p><h3>125</h3></div>
-                    <div class="metric-card m-present"><i class="fa fa-user-check"></i><p>Present</p><h3>86</h3><small>68.8%</small></div>
-                    <div class="metric-card m-absent"><i class="fa fa-user-xmark"></i><p>Absent</p><h3>20</h3><small>16.0%</small></div>
-                    <div class="metric-card m-late"><i class="fa fa-clock"></i><p>Late</p><h3>10</h3><small>8.0%</small></div>
-                    <div class="metric-card m-leave"><i class="fa fa-umbrella-beach"></i><p>On Leave</p><h3>9</h3><small>7.2%</small></div>
+                    <div class="metric-card m-total">
+                        <i class="fa fa-users"></i>
+                        <p>Total Employee</p>
+                        <h3 id="totalEmployee">0</h3>
+                    </div>
+                    <div class="metric-card m-present">
+                        <i class="fa fa-user-check"></i>
+                        <p>Present</p>
+                        <h3 id="presentCount">0</h3>
+                        <small id="presentPct">0%</small>
+                    </div>
+                    <div class="metric-card m-absent">
+                        <i class="fa fa-user-xmark"></i>
+                        <p>Absent</p>
+                        <h3 id="absentCount">0</h3>
+                        <small id="absentPct">0%</small>
+                    </div>
+                    <div class="metric-card m-late">
+                        <i class="fa fa-clock"></i>
+                        <p>Late</p>
+                        <h3 id="lateCount">0</h3>
+                        <small id="latePct">0%</small>
+                    </div>
+                    <div class="metric-card m-leave">
+                        <i class="fa fa-umbrella-beach"></i>
+                        <p>On Leave</p>
+                        <h3 id="onLeaveCount">0</h3>
+                        <small id="onLeavePct">0%</small>
+                    </div>
                 </div>
 
-                <h4>Employee Attendance Movement Register (Live)</h4>
+                <!-- LIVE / Not-live heading -->
+                <div style="font-weight:700; margin-bottom:8px; display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+
+                    <!-- LIVE (today) -->
+                    <div class="text-dark">
+                        <span class="live" role="status" aria-live="polite" aria-atomic="true">
+                            <span class="dot" aria-hidden="true">●</span>
+                            <span class="live-text">LIVE </span>
+                        </span>
+                        Employee Attendance Movement Register
+                    </div>
+
+                    <!-- Not live (old date) -->
+                    @* <span id="notLiveIndicator" style="display:none;align-items:center;">
+                        <i class="fa fa-clock" style="color:#ff9800;font-size:18px;margin-right:6px;"></i>
+                        <span style="font-weight:900;color:#ff9800;font-size:15px;letter-spacing:0.6px;">HISTORICAL</span>
+                    </span>
+
+                    <span style="font-size:16px;color:#0f172a;font-weight:700;">
+                        Employee Attendance Movement Register
+                    </span> *@
+                </div>
+
+                <!-- DataDate notice -->
+                <div id="dataDateNotice"
+                     style="display:none;background:#fff3cd;color:#856404;
+                        padding:8px 14px;border-radius:8px;
+                        margin-bottom:12px;font-size:13px;border-left:4px solid #ff9800;">
+                </div>
+
+                <!-- Table -->
                 <div class="table-responsive">
-                    <table>
+                    <table id="attendanceTable" class="display nowrap" style="width:100%">
                         <thead>
                             <tr>
+                                @* <th>#</th> *@
                                 <th>Emp ID</th>
                                 <th>Name</th>
                                 <th>Designation</th>
@@ -269,148 +507,136 @@
                                 <th>Movement (Punch Time)</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>EMP001</td>
-                                <td class="emp-profile"><img src="https://i.pravatar.cc/150?u=1" alt=""> John Doe</td>
-                                <td>Software Engineer</td>
-                                <td style="color: var(--present); font-weight: 600;">09:01 AM</td>
-                                <td style="color: var(--present); font-weight: 600;">06:05 PM</td>
-                                <td><span class="status-badge" style="background: var(--present);">Present</span></td>
-                                <td>09:01 AM, 01:02 PM, 06:05 PM</td>
-                            </tr>
-                            <tr>
-                                <td>EMP002</td>
-                                <td class="emp-profile"><img src="https://i.pravatar.cc/150?u=2" alt=""> Sarah Smith</td>
-                                <td>HR Executive</td>
-                                <td style="color: var(--present); font-weight: 600;">09:15 AM</td>
-                                <td style="color: var(--present); font-weight: 600;">06:10 PM</td>
-                                <td><span class="status-badge" style="background: var(--present);">Present</span></td>
-                                <td>09:15 AM, 01:05 PM, 06:10 PM</td>
-                            </tr>
-                        </tbody>
+                        <tbody></tbody>
                     </table>
                 </div>
             </div>
 
+            <!-- Chart -->
             <div class="chart-box">
-                <p style="font-weight: 600; margin-bottom: 10px;">Attendance Overview (Today)</p>
-                <canvas id="attendanceChart" width="250" height="250"></canvas>
+                <p style="font-weight:600;margin-bottom:10px;">Attendance Overview</p>
+                <canvas id="attendanceChart" width="240" height="240"></canvas>
+                <div id="chartDataDate"
+                     style="margin-top:8px;font-size:11px;color:#94a3b8;text-align:center;"></div>
             </div>
         </div>
     </div>
 
     <!-- Leave Section -->
-    <div class="header" style="margin-top: 40px;">
-        <h2><i class="fa-solid fa-plane-departure" style="color: var(--leave);"></i> Leave Dashboard</h2>
+    <div class="header">
+        @* <h2><i class="fa-solid fa-plane-departure" style="color: var(--leave);"></i> Leave Dashboard</h2> *@
+        <div class="text-dark" style="font-weight:700; flex-wrap:wrap;">
+            <span>
+                <i class="fa-solid fa-plane-departure" style="color: var(--leave);"></i>
+            </span>
+            Leave Dashboard
+        </div>
     </div>
 
-    <div class="search-bar">
-        <span>Search By:</span>
-        <select><option>Select Company</option></select>
-        <select><option>Select Branch</option></select>
-        <select><option>Select Department</option></select>
+    <div class="search-bar_leave">
+        <span style="margin-bottom: 10px;">Search By:</span>       
+
+        <div class="form-group gc-inline-select2">
+            <select id="companySelectLeave" class="form-control form-control-sm gc-select2" data-placeholder="Select Company">
+                <option value=""></option>
+            </select>
+        </div>
+
+        <div class="form-group gc-inline-select2">
+            <select id="branchSelectLeave" class="form-control form-control-sm gc-select2" data-placeholder="Select Branch">
+                <option value=""></option>
+            </select>
+        </div>
+
+        <div class="form-group gc-inline-select2">
+            <select id="departmentSelectLeave" class="form-control form-control-sm gc-select2" data-placeholder="Select Department">
+                <option value=""></option>
+            </select>
+        </div>
+      
+        <div class="form-group gc-inline-select2">
+            <select id="getYearLeave" class="form-control form-control-sm gc-select2">
+            </select>
+        </div>
     </div>
 
     <div class="section-card">
+     
         <div class="metrics-container" style="grid-template-columns: repeat(4, 1fr);">
-            <div class="metric-card" style="background:#f3e5f5; color:#7b1fa2;"><i class="fa fa-file-lines"></i><p>Total Applied</p><h3>42</h3></div>
-            <div class="metric-card m-present"><i class="fa fa-circle-check"></i><p>Approved</p><h3>25</h3></div>
-            <div class="metric-card m-absent"><i class="fa fa-circle-xmark"></i><p>Cancelled</p><h3>8</h3></div>
-            <div class="metric-card m-late"><i class="fa fa-hourglass-half"></i><p>Pending</p><h3>9</h3></div>
+            <div class="metric-card" style="background:#f3e5f5; color:#7b1fa2;">
+                <i class="fa fa-file-lines"></i>
+                <p>Total Applied</p>
+                <h3 id="lvTotalApplied">0</h3>
+            </div>
+            <div class="metric-card m-present">
+                <i class="fa fa-circle-check"></i>
+                <p>Approved</p>
+                <h3 id="lvApproved">0</h3>
+            </div>
+            <div class="metric-card m-absent">
+                <i class="fa fa-circle-xmark"></i>
+                <p>Canceled</p>
+                <h3 id="lvCanceled">0</h3>
+            </div>
+            <div class="metric-card m-late">
+                <i class="fa fa-hourglass-half"></i>
+                <p>Pending</p>
+                <h3 id="lvPending">0</h3>
+            </div>
+        </div>
+      
+        <div class="header">
+
+
+            <div class="text-dark" style="font-weight:700; flex-wrap:wrap;">
+                <span>
+                    <i class="fa-solid fa-calendar-check" style="color: var(--primary-blue);"></i>
+                </span>
+                Leave Summary
+            </div>
+
+            <div style="text-align:right;">
+                <div style="font-size:11px;color:#94a3b8;margin-top:10px;line-height:1.8;">
+                    <span><b>CL</b>: Casual (Yearly) Leave</span> |
+                    <span><b>SL</b>: Sick Leave</span> |
+                    <span><b>UL</b>: Unpaid Leave</span> |
+                    <span><b>ML</b>: Maternity Leave</span> |
+                    <span><b>PL</b>: Paternity Leave</span> |
+                    <span><b>MarL</b>: Marriage Leave</span> |
+                    <span><b>HL</b>: Hajj Leave</span> |
+                    <span><b>UmrL</b>: Umrah Leave</span>
+                </div>
+            </div>
         </div>
 
-        <h4>Leave Summary</h4>
         <div class="table-responsive">
-            <table>
+            <table id="leaveSummaryTable" class="table table-sm">
                 <thead>
-                    <tr>
-                        <th rowspan="2">Emp ID</th>
-                        <th rowspan="2">Name</th>
-                        <th rowspan="2">Joining Date</th>
-                        <th colspan="4" class="head-granted">Granted Leave</th>
-                        <th colspan="4" class="head-availed">Availed Leave</th>
-                        <th colspan="4" class="head-balanced">Balanced Leave</th>
-                    </tr>
-                    <tr style="font-size: 11px;">
-                        <th class="head-granted">CL</th><th class="head-granted">SL</th><th class="head-granted">UL</th><th class="head-granted">EL</th>
-                        <th class="head-availed">CL</th><th class="head-availed">SL</th><th class="head-availed">UL</th><th class="head-availed">EL</th>
-                        <th class="head-balanced">CL</th><th class="head-balanced">SL</th><th class="head-balanced">UL</th><th class="head-balanced">EL</th>
-                    </tr>
+                  
                 </thead>
+
                 <tbody>
-                    <tr>
-                        <td>EMP001</td>
-                        <td class="emp-profile"><img src="https://i.pravatar.cc/150?u=1" alt=""> John Doe</td>
-                        <td>10 Jan 2022</td>
-                        <td class="text-center">12</td><td class="text-center">12</td><td class="text-center">15</td><td class="text-center">10</td>
-                        <td class="text-center">3</td><td class="text-center">2</td><td class="text-center">1</td><td class="text-center">0</td>
-                        <td class="text-center">9</td><td class="text-center">10</td><td class="text-center">14</td><td class="text-center">10</td>
-                    </tr>
+                   <!-- Example row — server should render rows here -->
+                  
                 </tbody>
             </table>
         </div>
-        <p style="font-size: 11px; color: #94a3b8; margin-top: 10px;">CL: Casual Leave | SL: Sick Leave | UL: Unpaid Leave | EL: Earned Leave</p>
+
+       
     </div>
 
 </div>
 
 @section Scripts {
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        // live time (AM/PM) and date with seconds, updates each second
-        (function () {
-            function updateDateTime() {
-                const now = new Date();
-                const timeEl = document.getElementById('currentTime');
-                const dateEl = document.getElementById('currentDate');
-                if (timeEl) {
-                    timeEl.textContent = now.toLocaleTimeString('en-US', {
-                        hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true
-                    });
-                }
-                if (dateEl) {
-                    dateEl.textContent = now.toLocaleDateString('en-GB', {
-                        day: 'numeric', month: 'short', year: 'numeric'
-                    });
-                }
-            }
-            updateDateTime();
-            setInterval(updateDateTime, 1000);
-        })();
 
-        // Chart initialization (keeps your existing chart logic)
-        (function () {
-            const ctx = document.getElementById('attendanceChart') && document.getElementById('attendanceChart').getContext('2d');
-            if (!ctx) return;
-            new Chart(ctx, {
-                type: 'pie',
-                data: {
-                    labels: ['Present', 'Absent', 'Late', 'On Leave'],
-                    datasets: [{
-                        data: [86, 20, 10, 9],
-                        backgroundColor: ['#4caf50', '#f44336', '#ff9800', '#9c27b0'],
-                        borderWidth: 2,
-                        borderColor: '#ffffff'
-                    }]
-                },
-                options: {
-                    responsive: false,
-                    plugins: {
-                        legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 11 } } },
-                        tooltip: {
-                            callbacks: {
-                                label: function (context) {
-                                    let total = context.dataset.data.reduce((a, b) => a + b, 0);
-                                    let value = context.raw;
-                                    let percentage = ((value / total) * 100).toFixed(1);
-                                    return ` Total: ${value} (${percentage}%)`;
-                                }
-                            }
-                        }
-                    }
-                }
-            });
-        })();
+    <!-- ↓ এই line টা যোগ করো -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.min.js"></script>
+
+    <script src="~/js/pages/DashboardIndex.js"></script>
+    <script>
+        $.DashboardIndex({ baseUrl: '@Url.Action("", "Dashboard")' });
     </script>
 }

@@ -811,14 +811,28 @@ async function s2_LoadAllThenSelectAll(selector, url) {
     } catch (e) { }
 }
 
-async function s2_AutoSelectCompany(code) {
-    const selector = "#companySelect";
+//async function s2_AutoSelectCompany(code) {
+//    const selector = "#companySelect";
+//    const $sel = $(selector);
+//    const url = gcUrlMap.get(selector);
+//    if ($sel.find(`option[value="${code}"]`).length === 0 && url)
+//        await s2_LoadNext(selector, url);
+//    if ($sel.find(`option[value="${code}"]`).length > 0)
+//        $sel.val([code]).trigger('change');
+//}
+
+async function s2_AutoSelectCompany(code, selector = "#companySelect") {
+
     const $sel = $(selector);
     const url = gcUrlMap.get(selector);
-    if ($sel.find(`option[value="${code}"]`).length === 0 && url)
+
+    if ($sel.find(`option[value="${code}"]`).length === 0 && url) {
         await s2_LoadNext(selector, url);
-    if ($sel.find(`option[value="${code}"]`).length > 0)
-        $sel.val([code]).trigger('change');
+    }
+
+    if ($sel.find(`option[value="${code}"]`).length > 0) {
+        $sel.val(code).trigger("change");
+    }
 }
 
 /**

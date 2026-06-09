@@ -46,8 +46,9 @@
             width:58%;
             position:relative;
             /* background:linear-gradient(rgba(11,52,112,.82),rgba(20,87,190,.82)), url('https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=800&q=60') center center; */
-            background: linear-gradient(rgba(11,52,112,.82),rgba(20,87,190,.82)), url('/images/LoginPageImage.PNG') center center;
-            background-size:cover;
+            background: linear-gradient(rgba(11,52,112,.82),rgba(20,87,190,.82)), url('/images/lbg.jpg') center center;
+            background-size:contain;
+            background-repeat:no-repeat;
         }
 
         .overlay{
@@ -257,76 +258,11 @@
             <div class="overlay">
                 <div class="logo">                   
                     <img src="/images/GCTL_Infosys_lg.png" alt="GCTL Infosys" height="80" style="object-fit:cover;display:inline-block;vertical-align:middle;margin-bottom:8px;" />
-                   
-                    @* HRM &amp; Payroll *@
                 </div>
 
                 <div class="hero-title">
-                    HRM Software
-                    <span id="rotating-text" style="color:#ffffff; margin-left:8px;"></span>
-                    <span id="rotating-cursor" style="display:inline-block; margin-left:6px;">|</span>
+                    ERP Based HRM &amp; Finance Solution for Modern Businesses.
                 </div>
-                @* <div class="hero-title">
-                    ERP Based HRM &amp; Finance Solution for Modern Intelligent Businesses.
-                </div> *@
-
-                <script type="text/javascript">
-                (function () {
-                    // texts to show one-by-one (edit as needed)
-                    const texts = [
-                        "Attendance • Leave • Payroll.",
-                        "Employee Self-Service.",
-                        "Biometric & Mobile Attendance.",
-                        "Payroll Automation & Tax."
-                    ];
-
-                    const el = document.getElementById('rotating-text');
-                    const cursor = document.getElementById('rotating-cursor');
-
-                    const typeSpeed = 80;
-                    const eraseSpeed = 50;
-                    const pauseAfterTyped = 1400;
-
-                    let textIndex = 0;
-                    let charIndex = 0;
-                    let typing = true;
-
-                    function tick() {
-                        const current = texts[textIndex];
-
-                        if (typing) {
-                            charIndex++;
-                            el.textContent = current.substring(0, charIndex);
-
-                            if (charIndex === current.length) {
-                                typing = false;
-                                setTimeout(tick, pauseAfterTyped);
-                            } else {
-                                setTimeout(tick, typeSpeed);
-                            }
-                        } else {
-                            charIndex--;
-                            el.textContent = current.substring(0, charIndex);
-
-                            if (charIndex === 0) {
-                                typing = true;
-                                textIndex = (textIndex + 1) % texts.length;
-                                setTimeout(tick, 300);
-                            } else {
-                                setTimeout(tick, eraseSpeed);
-                            }
-                        }
-                    }
-
-                    // cursor blink
-                    setInterval(function () {
-                        cursor.style.opacity = (cursor.style.opacity === '0' ? '1' : '0');
-                    }, 500);
-
-                    // start
-                    tick();
-                })();
-                </script>
 
                 <div class="hero-text">
                     Manage employee attendance from biometric devices, mobile apps,
