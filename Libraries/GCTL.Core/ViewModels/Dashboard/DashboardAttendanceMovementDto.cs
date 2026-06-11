@@ -15,5 +15,7 @@
         public int StatusOrder { get; set; }  // 1=Present 2=Late 3=OnLeave 4=Absent
         public string Status { get; set; }    // "Present" | "Late" | "On Leave" | "Absent"
         public DateTime DataDate { get; set; }
+        public string Remarks { get; set; }
+        public object LateByMinutes { get; set; }
     }
 }

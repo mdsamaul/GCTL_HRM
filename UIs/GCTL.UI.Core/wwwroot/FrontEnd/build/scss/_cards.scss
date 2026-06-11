@@ -207,7 +207,7 @@ html.maximized-card {
 
 // Box header
 .card-header {
-  background-color: transparent;
+  background-color: red;
   border-bottom: 1px solid $card-border-color;
   padding: (($card-spacer-y / 2) * 2) $card-spacer-x;
   position: relative;

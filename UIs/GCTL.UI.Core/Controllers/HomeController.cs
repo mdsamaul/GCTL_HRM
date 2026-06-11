@@ -1,6 +1,4 @@
-﻿// Controllers/HomeController.cs — পুরো file replace করো
-
-using GCTL.Service.Common;
+﻿using GCTL.Service.Common;
 using GCTL.Service.DashboardAttendance;
 using GCTL.UI.Core.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -66,12 +64,14 @@ namespace GCTL.UI.Core.Controllers
                     checkIn = x.CheckIn ?? "",
                     checkOut = x.CheckOut ?? "",
                     movement = x.Movement ?? "",
+                    remarks = x.Remarks ?? "",    // ← নতুন
                     status = x.Status ?? "",
                     statusOrder = x.StatusOrder,
+                    lateByMinutes = x.LateByMinutes,          // ← নতুন
                     dataDate = x.DataDate.ToString("dd MMM yyyy"),
                     photoSrc = x.Photo != null && x.Photo.Length > 0
-                                    ? $"data:{x.ImgType};base64,{Convert.ToBase64String(x.Photo)}"
-                                    : (string?)null
+                                        ? $"data:{x.ImgType};base64,{Convert.ToBase64String(x.Photo)}"
+                                        : (string?)null
                 }).ToList();
 
                 var summaryOut = new
@@ -118,6 +118,7 @@ namespace GCTL.UI.Core.Controllers
                 var branchCode = Request.Form["branchCode"].FirstOrDefault();
                 var departmentCode = Request.Form["departmentCode"].FirstOrDefault();
                 var yearStr = Request.Form["year"].FirstOrDefault();
+                var employeeId = Request.Form["employeeId"].FirstOrDefault();   // ← নতুন
 
                 if (length < 5) length = 5;
                 int page = (start / length) + 1;
@@ -131,7 +132,8 @@ namespace GCTL.UI.Core.Controllers
                     year,
                     page,
                     pageSize,
-                    string.IsNullOrWhiteSpace(search) ? null : search.Trim()
+                    string.IsNullOrWhiteSpace(search) ? null : search.Trim(),
+                    string.IsNullOrWhiteSpace(employeeId) ? null : employeeId.Trim()  // ← নতুন
                 );
 
                 return Json(new

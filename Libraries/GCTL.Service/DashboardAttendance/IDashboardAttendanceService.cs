@@ -11,13 +11,13 @@ namespace GCTL.Service.DashboardAttendance
                 string companyCode, string branchCode, string departmentCode,
                 DateTime forDate, int page, int pageSize, string search = null);
         Task<LeaveDashboardResponseDto> GetLeaveDashboardAsync(
-     string companyCode,
-     string branchCode,
-     string departmentCode,
-     int year,
-     int page,
-     int pageSize,
-     string search
- );
+            string companyCode,
+            string branchCode,
+            string departmentCode,
+            int year,
+            int page,
+            int pageSize,
+            string search,
+            string employeeId = null);
     }
 }

@@ -4,8 +4,8 @@
         var settings = $.extend({ baseUrl: "/" }, options);
         var chart = null;
         var dataTable = null;
-        var leaveTable = null;       // ← Leave DataTable instance
-        var _leaveTypes = [];         // ← RS2 cache (column headers এর জন্য)
+        var leaveTable = null;
+        var _leaveTypes = [];
         var DEFAULT_PHOTO = "/images/default-avatar.png";
         var _connection = null;
         var _reloadPending = false;
@@ -61,15 +61,30 @@
             return src || DEFAULT_PHOTO;
         }
 
-        function statusBadge(status) {
+        //function statusBadge(status) {
+        //    switch ((status || "").toLowerCase()) {
+        //        case "present": return '<span class="status-badge" style="background:#4caf50;">Present</span>';
+        //        case "late": return '<span class="status-badge" style="background:#ff9800;">Late</span>';
+        //        case "on leave": return '<span class="status-badge" style="background:#9c27b0;">On Leave</span>';
+        //        default: return '<span class="status-badge" style="background:#f44336;">Absent</span>';
+        //    }
+        //}
+
+        function statusBadge(status, row) {
             switch ((status || "").toLowerCase()) {
-                case "present": return '<span class="status-badge" style="background:#4caf50;">Present</span>';
-                case "late": return '<span class="status-badge" style="background:#ff9800;">Late</span>';
-                case "on leave": return '<span class="status-badge" style="background:#9c27b0;">On Leave</span>';
-                default: return '<span class="status-badge" style="background:#f44336;">Absent</span>';
+                case "present":
+                    return '<span class="status-badge" style="background:#4caf50;">Present</span>';
+                case "late":
+                    var tip = (row && row.lateByMinutes > 0) ? lateTooltipText(row.lateByMinutes) : "";
+                    return '<span class="status-badge" style="background:#ff9800;cursor:help;" ' +
+                        (tip ? 'data-bs-toggle="tooltip" data-bs-placement="top" title="' + tip + '"' : '') +
+                        '>Late</span>';
+                case "on leave":
+                    return '<span class="status-badge" style="background:#9c27b0;">On Leave</span>';
+                default:
+                    return '<span class="status-badge" style="background:#f44336;">Absent</span>';
             }
         }
-
         function checkInColor(status) {
             switch ((status || "").toLowerCase()) {
                 case "late": return "#ff9800";
@@ -77,6 +92,17 @@
                 case "on leave": return "#9c27b0";
                 default: return "#f44336";
             }
+        }
+
+        // ── Late duration tooltip text: "X hr Y min late" / "X hrs Y min late" ──
+        function lateTooltipText(minutes) {
+            if (!minutes || minutes <= 0) return "";
+            var h = Math.floor(minutes / 60);
+            var m = minutes % 60;
+            var parts = [];
+            if (h > 0) parts.push(h + (h === 1 ? " hr" : " hrs"));
+            if (m > 0) parts.push(m + " min");
+            return parts.join(" ") + "";
         }
 
         function initChart() {
@@ -180,7 +206,7 @@
                         }
                     },
                     {
-                        data: "checkIn", width: "95px",
+                        data: "checkIn", width: "110px",
                         render: function (d, t, row) {
                             if (!d) {
                                 var color = row.status === "On Leave" ? "#9c27b0" : "#f44336";
@@ -188,7 +214,7 @@
                             }
                             return '<span style="color:' + checkInColor(row.status) + ';font-weight:600;">' + d + '</span>';
                         }
-                    },
+                    }, 
                     {
                         data: "checkOut", width: "95px",
                         render: function (d) {
@@ -198,9 +224,10 @@
                     },
                     {
                         data: "status", width: "80px", className: "text-center",
-                        render: function (d) { return statusBadge(d); }
-                    },
+                        render: function (d, t, row) { return statusBadge(d, row); }
+                    }, 
                     {
+                        // ── Movement column ──────────────────────────────────────
                         data: "movement",
                         render: function (d, t, row) {
                             if (!d || d.trim() === "") {
@@ -215,18 +242,46 @@
                                 return '<span style="display:inline-block;background:#f1f5f9;color:#334155;' +
                                     'border-radius:4px;padding:2px 6px;margin:2px;font-size:11px;">' + txt + '</span>';
                             }
-                            if (items.length <= 2) return items.map(badge).join(", ");
-                            var visible = items.slice(0, 2).map(badge).join(", ");
+                            if (items.length <= 2) return items.map(badge).join(" ");
+                            var visible = items.slice(0, 2).map(badge).join(" ");
                             return visible +
                                 '<span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" title="' +
                                 items.join(", ") + '">' +
                                 '<span style="cursor:pointer;color:#0d6efd;font-weight:600;">+' +
                                 (items.length - 2) + '</span></span>';
                         }
+                    },
+                    {
+                        // ── Remarks column (Manual entry এর remarks) ────────────
+                        data: "remarks", width: "130px",
+                        render: function (d) {
+                            if (!d || d.trim() === "")
+                                return '<span style="color:#94a3b8;font-size:12px;">—</span>';
+
+                            var items = d.split(",").map(function (x) { return x.trim(); }).filter(Boolean);
+                            if (items.length === 1) {
+                                // single remark: সরাসরি দেখাও, দীর্ঘ হলে tooltip-এ
+                                var txt = items[0];
+                                if (txt.length <= 20) {
+                                    return '<span style="font-size:12px;color:#334155;">' + txt + '</span>';
+                                }
+                                return '<span style="font-size:12px;color:#334155;cursor:help;" ' +
+                                    'data-bs-toggle="tooltip" data-bs-placement="top" title="' + txt + '">' +
+                                    txt.substring(0, 18) + '…</span>';
+                            }
+
+                            // Multiple remarks: প্রথমটা দেখাও, বাকি '+N' tooltip-এ
+                            var first = items[0].length <= 15 ? items[0] : items[0].substring(0, 13) + '…';
+                            return '<span style="font-size:12px;color:#334155;">' + first + '</span> ' +
+                                '<span data-bs-toggle="tooltip" data-bs-placement="top" title="' +
+                                items.join(", ") + '" style="cursor:pointer;color:#0d6efd;font-weight:600;font-size:11px;">' +
+                                '+' + (items.length - 1) + '</span>';
+                        }
                     }
                 ],
                 drawCallback: function () {
-                    $('[data-bs-toggle="tooltip"]').tooltip();
+                    // Bootstrap tooltip সব জায়গায় init করো
+                    $('[data-bs-toggle="tooltip"]').tooltip({ trigger: 'hover' });
                 }
             });
         }
@@ -304,7 +359,8 @@
                 companyCode: $("#companySelectLeave").val() || "",
                 branchCode: $("#branchSelectLeave").val() || "",
                 departmentCode: $("#departmentSelectLeave").val() || "",
-                year: $("#getYearLeave").val() || new Date().getFullYear()
+                year: $("#getYearLeave").val() || new Date().getFullYear(),
+                employeeId: $("#employeeSelectLeave").val() || ""   // ← নতুন
             };
         }
 
@@ -316,15 +372,13 @@
             animateCount("#lvPending", s.pending);
         }
 
-        // ── Build dynamic columns (called once on first load / leaveTypes change) ──
+        // ── Build dynamic columns ──────────────────────────────
         function buildLeaveColumns(leaveTypes) {
-            // Destroy existing table first
             if (leaveTable && $.fn.DataTable.isDataTable("#leaveSummaryTable")) {
                 leaveTable.destroy();
                 leaveTable = null;
             }
 
-            // thead rebuild
             var $thead = $("#leaveSummaryTable thead");
             $thead.empty();
             var n = leaveTypes.length;
@@ -347,7 +401,6 @@
             $thead.html(r1 + r2);
             $("#leaveSummaryTable tbody").empty();
 
-            // Build columns array for DataTable
             var cols = [
                 {
                     data: "employeeId", className: "text-center",
@@ -355,13 +408,13 @@
                         return '<span style="font-weight:600;font-size:12px;">' + (d || '') + '</span>';
                     }
                 },
-                
                 {
                     data: "name",
                     render: function (d) {
                         return '<span style="font-size:13px;">' + (d || '') + '</span>';
                     }
-                }, {
+                },
+                {
                     data: "designation",
                     render: function (d) {
                         return '<span style="font-size:12px;color:#475569;">' + (d || '—') + '</span>';
@@ -375,7 +428,6 @@
                 }
             ];
 
-            // Granted columns
             leaveTypes.forEach(function (lt) {
                 cols.push({
                     data: null, className: "text-center",
@@ -386,7 +438,6 @@
                 });
             });
 
-            // Availed columns
             leaveTypes.forEach(function (lt) {
                 cols.push({
                     data: null, className: "text-center",
@@ -397,7 +448,6 @@
                 });
             });
 
-            // Balanced columns
             leaveTypes.forEach(function (lt) {
                 cols.push({
                     data: null, className: "text-center",
@@ -412,8 +462,6 @@
             return cols;
         }
 
-        // flat rows → grouped map: empId → { leaveTypeCode: { grantedDays, availedDays, balancedDays } }
-        // DataTable এর জন্য pivot করে একটা row per employee বানাই
         function pivotRows(flatRows) {
             var empMap = {};
             var empOrder = [];
@@ -446,7 +494,6 @@
 
         function fmtDay(val) {
             var n = parseFloat(val) || 0;
-            // decimal হলে 2 digit, integer হলে clean
             return n % 1 === 0 ? n.toString() : n.toFixed(2);
         }
 
@@ -462,8 +509,6 @@
                 pageLength: 10,
                 lengthMenu: [[10, 25, 50, 100], [10, 25, 50, 100]],
                 autoWidth: false,
-                //scrollY: "450px",   
-                //scrollCollapse: true,
                 language: {
                     processing: '<span><i class="fa fa-spinner fa-spin"></i> Loading...</span>',
                     emptyTable: "No leave data found",
@@ -482,24 +527,21 @@
                         d.branchCode = f.branchCode;
                         d.departmentCode = f.departmentCode;
                         d.year = f.year;
+                        d.employeeId = f.employeeId;   // ← নতুন
                         return d;
                     },
                     dataSrc: function (json) {
-                        // Summary cards update
                         renderLeaveSummary(json.summary);
 
-                        // LeaveTypes পরিবর্তন হলে table rebuild
                         var newTypes = json.leaveTypes || [];
                         if (JSON.stringify(newTypes) !== JSON.stringify(_leaveTypes)) {
                             _leaveTypes = newTypes;
-                            // next tick এ rebuild করে reload
                             setTimeout(function () {
                                 initLeaveTable(_leaveTypes);
                             }, 0);
                             return [];
                         }
 
-                        // Pivot flat rows → 1 row per employee
                         return pivotRows(json.data || []);
                     },
                     error: function (xhr, err) {
@@ -519,33 +561,38 @@
                 s2_InitSingle("#companySelect", "/GcFilters/company", "Select Company", "company", ["#branchSelect", "#departmentSelect"]);
                 s2_InitSingle("#branchSelect", "/GcFilters/branch", "Select Branch", "branch", ["#departmentSelect"]);
                 s2_InitSingle("#departmentSelect", "/GcFilters/department", "Select Department", "department");
+
                 s2_InitSingle("#companySelectLeave", "/GcFilters/company", "Select Company", "company", ["#branchSelectLeave", "#departmentSelectLeave"]);
                 s2_InitSingle("#branchSelectLeave", "/GcFilters/branch", "Select Branch", "branch", ["#departmentSelectLeave"]);
                 s2_InitSingle("#departmentSelectLeave", "/GcFilters/department", "Select Department", "department");
+                s2_InitSingle("#employeeSelectLeave", "/GcFilters/employee", "Select Employee", "employee");
+
+                // Employee ID dropdown for Leave filter — /GcFilters/employee এ route থাকলে
+                // otherwise plain text input হিসেবে কাজ করবে
+                //if (typeof s2_InitEmployee === "function") {
+                //    s2_InitEmployee("#employeeSelectLeave", "Select Employee");
+                //}
             }
 
-            // ── Attendance filter — শুধু attendance reload ──────
+            // ── Attendance filter ──────────────────────────────
             $("#companySelect, #branchSelect, #departmentSelect")
                 .off("change.atd")
                 .on("change.atd", function () {
                     if (dataTable) dataTable.ajax.reload(null, false);
                 });
 
-            // ── Leave filter — শুধু leave reload ────────────────
-            $("#companySelectLeave, #branchSelectLeave, #departmentSelectLeave, #getYearLeave")
+            // ── Leave filter (company/branch/dept/year/employeeId) ──
+            $("#companySelectLeave, #branchSelectLeave, #departmentSelectLeave, #getYearLeave, #employeeSelectLeave")
                 .off("change.leave")
                 .on("change.leave", function () {
                     if (leaveTable) leaveTable.ajax.reload(null, false);
                 });
 
-            // ── Default company select ───────────────────────────
+            // ── Default company ────────────────────────────────
             if (typeof s2_AutoSelectCompany === "function") {
-                //await s2_AutoSelectCompany("001");
                 await s2_AutoSelectCompany("001", "#companySelect");
                 await s2_AutoSelectCompany("001", "#companySelectLeave");
             }
-
-           
         }
 
         // ════════════════════════════════════════════════════════

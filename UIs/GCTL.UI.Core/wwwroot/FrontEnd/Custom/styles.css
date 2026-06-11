@@ -283,7 +283,12 @@ p {
     p.sub {
         color: #6B6E76;
     }
-
+.card-header {
+    background: red !important;
+    background-color: red !important;
+    /* optional: ensure readable text */
+    color: #ffffff !important;
+}
 .email-wrapper {
     width: 100%;
     margin: 0;
@@ -421,4 +426,14 @@ p {
 :root {
     color-scheme: light dark;
     supported-color-schemes: light dark;
+}
+
+/* Force card headers red (override AdminLTE/Bootstrap) */
+.card > .card-header,
+.card .card-header {
+  background: #ff0000 !important;
+  background-color: #ff0000 !important;
+  background-image: none !important;
+  color: #ffffff !important; /* ensure text is readable */
+  border-bottom: 1px solid rgba(0,0,0,0.08) !important;
 }

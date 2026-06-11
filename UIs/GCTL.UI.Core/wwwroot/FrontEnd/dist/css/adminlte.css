@@ -4831,7 +4831,8 @@ input[type="button"].btn-block {
 .card-header {
   padding: 0.75rem 1.25rem;
   margin-bottom: 0;
-  background-color: rgba(0, 0, 0, 0.03);
+/*  background-color: rgba(0, 0, 0, 0.03);*/
+  background-color: red;
   border-bottom: 0 solid rgba(0, 0, 0, 0.125);
 }
 
@@ -15981,7 +15982,8 @@ textarea.form-control.is-warning {
 }
 
 .card-info:not(.card-outline) > .card-header {
-  background-color: #17a2b8;
+  background-color: red;
+/*  background-color: #17a2b8;*/
 }
 
 .card-info:not(.card-outline) > .card-header,
@@ -17748,6 +17750,13 @@ textarea.form-control.is-warning {
 .card .border-left {
   border-left: 1px solid rgba(0, 0, 0, 0.125);
 }
+/* Force all card headers to red and remove previous backgrounds */
+.card-header {
+    background: red !important;
+    background-color: red !important;
+    /* optional: ensure readable text */
+    color: #ffffff !important;
+}
 
 .card.card-tabs:not(.card-outline) > .card-header {
   border-bottom: 0;
@@ -17840,7 +17849,8 @@ html.maximized-card {
 }
 
 .card-header {
-  background-color: transparent;
+/*  background-color: transparent;*/
+  background-color: red !important;
   border-bottom: 1px solid rgba(0, 0, 0, 0.125);
   padding: 0.75rem 1.25rem;
   position: relative;

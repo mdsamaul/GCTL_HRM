@@ -43,8 +43,7 @@
 		transition: background-color 0.3s ease-in-out;
 	}
 
-	.sticky-scrolled {
-		background-color: #fff !important;
+	.sticky-scrolled {		
 		opacity: 0.95;
 		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 	}
@@ -66,7 +65,7 @@
 		<div class="col-auto col-md-12">
 			<div class="w-100 headerToobar">
 				<div class="row">
-					<div id="stickyHeader" class="col-12 py-1 px-1">
+					<div id="stickyHeader" class="card-header col-12 py-1 px-1">
 						<partial name="_Toolbars" model="new ToobarModel(){Title=Model.Breadcrumb, Code=Model.Code , Name=Model.Setup.LoanId}" />
 					</div>
 				</div>

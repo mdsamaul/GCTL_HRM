@@ -65,7 +65,6 @@ namespace GCTL.Service.DashboardAttendance
             // ── Result Set 2: Employee rows ───────────────────────
             if (await rdr.NextResultAsync())
             {
-                // SP থেকে কোন column গুলো আসছে সেটা runtime-এ detect করো
                 var schema = rdr.GetColumnSchema();
                 var colNames = schema.Select(c => c.ColumnName).ToHashSet(StringComparer.OrdinalIgnoreCase);
 
@@ -80,6 +79,10 @@ namespace GCTL.Service.DashboardAttendance
                         CheckIn = SafeStr(rdr, "CheckIn"),
                         CheckOut = SafeStr(rdr, "CheckOut"),
                         Movement = SafeStr(rdr, "Movement"),
+                        // ── নতুন columns ──────────────────────────
+                        Remarks = colNames.Contains("Remarks") ? SafeStr(rdr, "Remarks") : null,
+                        LateByMinutes = colNames.Contains("LateByMinutes") ? SafeInt(rdr, "LateByMinutes") : 0,
+                        // ──────────────────────────────────────────
                         ImgType = SafeStr(rdr, "ImgType"),
                         Status = colNames.Contains("Status") ? SafeStr(rdr, "Status") : null,
                         StatusOrder = colNames.Contains("StatusOrder") ? SafeInt(rdr, "StatusOrder") : 4,
@@ -131,7 +134,8 @@ namespace GCTL.Service.DashboardAttendance
             int year,
             int page,
             int pageSize,
-            string search)
+            string search,
+            string employeeId = null)   // ← নতুন parameter
         {
             using var con = new SqlConnection(_conn);
             await con.OpenAsync();
@@ -144,6 +148,7 @@ namespace GCTL.Service.DashboardAttendance
             param.Add("@Page", page, DbType.Int32);
             param.Add("@PageSize", pageSize, DbType.Int32);
             param.Add("@Search", string.IsNullOrEmpty(search) ? null : search, DbType.String);
+            param.Add("@EmployeeId", string.IsNullOrEmpty(employeeId) ? null : employeeId, DbType.String);  // ← নতুন
 
             using var multi = await con.QueryMultipleAsync(
                 "usp_GetLeaveDashboard",
@@ -161,7 +166,6 @@ namespace GCTL.Service.DashboardAttendance
             // RS3 — Paged flat rows
             var employees = (await multi.ReadAsync<EmployeeLeaveRowDto>()).ToList();
 
-            // TotalCount = first row এর TotalCount (unique employee count)
             int totalCount = employees.FirstOrDefault()?.TotalCount ?? 0;
 
             return new LeaveDashboardResponseDto
