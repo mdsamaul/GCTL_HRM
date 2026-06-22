@@ -98,10 +98,11 @@
     }
 </style>
 
-<partial name="_PageHeader" model="Model" />
+
 
 <div class="rounded-sm mb-1 container"
      style="background: linear-gradient(to right, #f4f4f4, #ffffff);">
+    <partial name="_PageHeader" model="Model" />
     <div class="">
         <partial name="_Toolbars"
                  model="new ToobarModel() { Title = Model.Breadcrumb, Code = Model.Code, Name = Model.Setup.NOCID }" />

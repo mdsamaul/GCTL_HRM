@@ -97,6 +97,8 @@
             gcBindRemoteMultiselect("#employeeSelect", "/GcFilters/employee", "Select Employee");
 
             bsms_InitializeMultiselects();
+
+
             bsms_BindCascade();
             bsms_Reset("#companySelect");
             await bsms_LoadNext("#companySelect", "/GcFilters/company");

@@ -2,14 +2,12 @@
     ViewData["Title"] = "Home Page";
 }
 
-
-
 <!-- Font Awesome -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
     :root {
-        --bg-color: red;
+        --bg-color: #f4f6fb;
         --white: #ffffff;
         --present: #4caf50;
         --absent: #f44336;
@@ -31,60 +29,38 @@
     .dashboard-container {
         max-width: 100%;
         margin: 0 auto;
+        width: 100%;
+        overflow-x: hidden;
+        box-sizing: border-box;
+        padding: 0 8px;
     }
 
     .header {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        /* margin-bottom: 20px; */
-        padding:10px;
-    }
-
-    h2 { margin: 0; font-weight: 600; display: flex; align-items: center; gap: 10px; }
-
-    /* .search-bar {
-        background: var(--white);
-        padding: 10px 10px 0px 20px;
-        display: flex;
-        gap: 15px;
-        align-items: center;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        margin-bottom: 5px;
+        padding-right: 5px;
+        height: 42px;
         flex-wrap: wrap;
     }
 
+    h2 {
+        margin: 0;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .search-bar,
     .search-bar_leave {
         background: var(--white);
-        padding: 10px 10px 8px 20px;
-        display: flex;
-        gap: 15px;
-        align-items: center;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        margin-bottom: 5px;
-        flex-wrap: wrap;
-    } */
-
-    .search-bar {
-        background: var(--white);
-        padding: 10px 10px 0px 20px;
+        padding: 10px 20px;
         display: flex;
         gap: 10px;
         align-items: center;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         margin-bottom: 5px;
-        flex-wrap: nowrap; 
-    }
-
-    .search-bar_leave {
-        background: var(--white);
-        padding: 10px 10px 8px 20px;
-        display: flex;
-        gap: 10px; 
-        align-items: center;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        margin-bottom: 5px;
-        flex-wrap: nowrap; 
+        flex-wrap: nowrap;
     }
 
     select, button {
@@ -106,13 +82,16 @@
     .section-card {
         background: var(--white);
         padding: 20px;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        box-sizing: border-box;
+        width: 100%;
+        overflow-x: hidden;
     }
 
     .layout-grid {
         display: grid;
-        grid-template-columns: 2fr 1fr;
+        grid-template-columns: 3fr 1fr;
         gap: 20px;
+        width: 100%;
     }
 
     .metrics-container {
@@ -126,23 +105,55 @@
         padding: 15px;
         border-radius: 8px;
         text-align: center;
-        border: 1px solid var(--border);        
+        border: 1px solid var(--border);
         background: rgba(255,255,255,0.70);
         backdrop-filter: blur(4px);
         -webkit-backdrop-filter: blur(4px);
         transition: transform .22s ease, box-shadow .22s ease, background .22s ease;
     }
 
-    .metric-card i { font-size: 24px; margin-bottom: 10px; }
-    .metric-card h3 { margin: 5px 0; font-size: 22px; }
-    .metric-card p { margin: 0; font-size: 13px; color: #64748b; }
+        .metric-card i {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
 
-    .m-total { background: #eef2ff; color: var(--primary-blue); }
-    .m-present { background: #f0fdf4; color: var(--present); }
-    .m-absent { background: #fef2f2; color: var(--absent); }
-    .m-late { background: #fffbeb; color: var(--late); }
-    .m-leave { background: #faf5ff; color: var(--leave); }
+        .metric-card h3 {
+            margin: 5px 0;
+            font-size: 22px;
+        }
 
+        .metric-card p {
+            margin: 0;
+            font-size: 13px;
+            color: #64748b;
+        }
+
+    .m-total {
+        background: #eef2ff;
+        color: var(--primary-blue);
+    }
+
+    .m-present {
+        background: #f0fdf4;
+        color: var(--present);
+    }
+
+    .m-absent {
+        background: #fef2f2;
+        color: var(--absent);
+    }
+
+    .m-late {
+        background: #fffbeb;
+        color: var(--late);
+    }
+
+    .m-leave {
+        background: #faf5ff;
+        color: var(--leave);
+    }
+
+    /* ── Chart box & wrapper ─────────────────────────────── */
     .chart-box {
         display: flex;
         flex-direction: column;
@@ -150,11 +161,33 @@
         justify-content: center;
         border-left: 1px solid var(--border);
         padding-left: 20px;
+        width: 100%;
+        box-sizing: border-box;
+        min-width: 0; /* important for grid children to shrink properly */
     }
+
+    .chart-wrapper {
+        position: relative;
+        width: 100%;
+        max-width: 50vw;
+        height: 50vh;
+        margin: 0 auto;
+    }
+   
+
+        .chart-wrapper canvas {
+            width: 100% !important;
+            height: 100% !important;
+            max-width: 100%;
+            display: block;
+        }
 
     .table-responsive {
         overflow-x: auto;
         margin-top: 15px;
+        width: 100%;
+        -webkit-overflow-scrolling: touch;
+        box-sizing: border-box;
     }
 
     table {
@@ -176,18 +209,44 @@
         border-bottom: 1px solid var(--border);
     }
 
+    /* Emp profile — image + stacked meta (name over designation) */
     .emp-profile {
         display: flex;
         align-items: center;
         gap: 10px;
+        min-width: 0;
     }
 
-    .emp-profile img {
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
-        object-fit: cover;
-    }
+        .emp-profile img {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            object-fit: cover;
+            flex: 0 0 30px;
+        }
+
+        .emp-meta {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+        }
+
+            .emp-name {
+                font-weight: 600;
+                font-size: 13px;
+                color: #0f172a;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                overflow: hidden;
+            }
+
+            .emp-designation {
+                font-size: 12px;
+                color: #94a3b8;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                overflow: hidden;
+            }
 
     .status-badge {
         padding: 4px 8px;
@@ -197,44 +256,68 @@
         color: white;
     }
 
-    .head-granted { background: #e8f5e9 !important; color: #2e7d32 !important; text-align: center; }
-    .head-availed { background: #e3f2fd !important; color: #1565c0 !important; text-align: center; }
-    .head-balanced { background: #f3e5f5 !important; color: #7b1fa2 !important; text-align: center; }
+    .head-granted {
+        background: #e8f5e9 !important;
+        color: #2e7d32 !important;
+        text-align: center;
+    }
 
-    .text-center { text-align: center; }
+    .head-availed {
+        background: #e3f2fd !important;
+        color: #1565c0 !important;
+        text-align: center;
+    }
+
+    .head-balanced {
+        background: #f3e5f5 !important;
+        color: #7b1fa2 !important;
+        text-align: center;
+    }
+
+    .text-center {
+        text-align: center;
+    }
 
     .current-datetime {
-        font-size:16px;
-        font-weight:700;
-        letter-spacing:0.2px;
+        font-size: 16px;
+        font-weight: 700;
+        letter-spacing: 0.2px;
     }
 
     .current-time {
         font-size: 20px;
-        font-weight: 800;
-        color: var(--primary-blue); /* page color */
+        font-weight: 900;
+        color: #1976d2;
         display: block;
         text-align: right;
         line-height: 1;
+        box-sizing: border-box;
     }
 
     .current-date {
-        font-size: 14px;
-        font-weight: 600;
-        color: #475569; /* subtle darker text under time */
+        font-size: 13px;
+        font-weight: 700;
+        color: #1976d2;
         display: block;
         text-align: right;
-        margin-top: 6px;
+        margin-top: 0;
+        margin-bottom: 2px;
     }
 
-    /* correct keyframes (previous had @@) and float animation */
     @@keyframes floatIcon {
-        0%   { transform: translateY(0); }
-        50%  { transform: translateY(-6px); }
-        100% { transform: translateY(0); }
+        0% {
+            transform: translateY(0);
+        }
+
+        50% {
+            transform: translateY(-6px);
+        }
+
+        100% {
+            transform: translateY(0);
+        }
     }
 
-    /* glass baseline + hover effect for metric cards (ensure visible blur + lift) */
     .metric-card:hover {
         transform: translateY(-6px);
         box-shadow: 0 18px 40px rgba(15,23,42,0.12);
@@ -253,70 +336,58 @@
     }
 
     @@media (max-width: 980px) {
-        .layout-grid { grid-template-columns: 1fr; }
-        .chart-box { border-left: none; padding-left: 0; margin-top: 20px; }
+        .layout-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .chart-box {
+            border-left: none;
+            padding-left: 0;
+            margin-top: 20px;
+        }
+    }
+    @@media (max-width: 1380px) {
+        .layout-grid {
+            grid-template-columns: 3fr 1fr;
+        }
+
+        .chart-box {
+          
+        }
     }
 
     .live, .dot {
         font-weight: 800;
-        color: #000; /* base black */
+        color: #000;
         display: inline-flex;
         align-items: center;
         gap: 6px;
         animation: liveBlink 1.4s infinite;
     }
 
-    /* smooth black ↔ light (white/gray) pulse */
-@@keyframes liveBlink {
-        0%
-
-    {
-        color: #000;
-        opacity: 1;
+    .form-group {
+        margin-bottom: 0px !important;
     }
 
-    50% {
-        color: #333333;
-        opacity: 0.6;
-    }
+    @@keyframes liveBlink {
+        0% {
+            color: #000;
+            opacity: 1;
+        }
 
-    100% {
-        color: #000;
-        opacity: 1;
-    }
+        50% {
+            color: #333333;
+            opacity: 0.6;
+        }
 
-    }
-
-  
-
-    /* Add these rules inside the existing <style> block (make selects fixed width; responsive on small screens) */
-    /* .gc-inline-select2 {
-        flex: 0 0 220px;
-        max-width: 220px;
-        min-width: 220px;
-        box-sizing: border-box;
-    }
-
-    .gc-inline-select2 .form-control {
-        width: 100%;
-        max-width: 100%;
-        min-width: 0;
-    } */
-
-    .search-bar,
-    .search-bar_leave {
-        background: var(--white);
-        padding: 10px 20px;
-        display: flex;
-        gap: 10px;
-        align-items: center;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        margin-bottom: 5px;
-        flex-wrap: nowrap;
+        100% {
+            color: #000;
+            opacity: 1;
+        }
     }
 
     .gc-inline-select2 {
-        flex: 0 0 180px; /* fixed 180px — দুটো bar-এই same */
+        flex: 0 0 180px;
         width: 180px;
         min-width: 0;
         box-sizing: border-box;
@@ -327,7 +398,6 @@
             min-width: 0;
         }
 
-    /* when layout is narrow, allow selects to expand to full width */
     @@media (max-width: 768px) {
         .gc-inline-select2 {
             flex: 1 1 auto;
@@ -336,7 +406,6 @@
         }
     }
 
-    /* Disable all metric-card animations / transitions (paste into the existing <style> block) */
     .metric-card,
     .metric-card i,
     .metric-card:hover,
@@ -351,8 +420,9 @@
         color: #343a40 !important;
         font-size: large !important;
     }
-    #attendanceTable_filter{
-        margin:0px !important;
+
+    #attendanceTable_filter {
+        margin: 0px !important;
     }
 
     .table thead th {
@@ -365,10 +435,6 @@
         border-top: 1px solid #dee2e6;
     }
 
-    /* Add inside the existing <style> block in Index.cshtml — borders only for Leave Summary table,
-       header group colors and data column text color. Attendance table remains borderless. */
-
-    /* Remove borders from attendance table (explicit) */
     #attendanceTable,
     #attendanceTable th,
     #attendanceTable td {
@@ -376,7 +442,57 @@
         box-shadow: none !important;
     }
 
-    /* Leave Summary table borders */
+    /* Make attendance table adaptive: allow wrapping in cells and fixed layout */
+    #attendanceTable {
+        table-layout: fixed;
+        width: 100%;
+    }
+
+    /* column widths for attendance table (after merging designation into name cell) */
+/*     #attendanceTable th:nth-child(1), #attendanceTable td:nth-child(1) { width: 90px; }
+    #attendanceTable th:nth-child(2), #attendanceTable td:nth-child(2) { width: 260px; } 
+    #attendanceTable th:nth-child(3), #attendanceTable td:nth-child(3) { width: 110px; } 
+    #attendanceTable th:nth-child(4), #attendanceTable td:nth-child(4) { width: 95px; } 
+    #attendanceTable th:nth-child(5), #attendanceTable td:nth-child(5) { width: 80px; }  
+    #attendanceTable th:nth-child(6), #attendanceTable td:nth-child(6) { width: auto; }  
+    #attendanceTable th:nth-child(7), #attendanceTable td:nth-child(7) { width: 110px; } */
+
+    .table-responsive {
+        overflow-x: hidden !important;
+    }
+
+    #attendanceTable {
+        width: 100% !important;
+        table-layout: auto !important;
+    }
+
+        
+        #attendanceTable th,
+        #attendanceTable td {
+            white-space: normal !important;
+            word-break: break-word;
+            overflow-wrap: break-word;
+            vertical-align: middle;
+        }
+
+    .dataTables_wrapper {
+        width: 100%;
+        overflow-x: hidden !important;
+    }
+
+    .dataTables_scrollBody {
+        overflow-x: hidden !important;
+    }
+
+    .emp-name,
+    .emp-designation {
+        white-space: normal !important;
+        word-break: break-word;
+    }
+
+    /* Allow text wrap for long cells so horizontal scroll doesn't appear */
+    #attendanceTable td { white-space: normal; word-break: break-word; }
+
     #leaveSummaryTable {
         border: 1px solid #e6eef6;
         border-collapse: collapse;
@@ -384,193 +500,409 @@
         background: #fff;
     }
 
-    #leaveSummaryTable th,
-    #leaveSummaryTable td {
-        border: 1px solid #e6eef6;
-        padding: 8px 10px;
-        vertical-align: middle;
-        white-space: nowrap;
-        text-align: center;
-    }
+    #attendanceTable td {           
+            padding: 0px 0px;
+            white-space: nowrap;
+        }
+        #leaveSummaryTable th,
+        #leaveSummaryTable td {
+            border: 1px solid #e6eef6;
+            padding: 8px 10px;
+            vertical-align: middle;
+            white-space: nowrap;
+            text-align: center;
+        }
 
-    /* Group header colors (top-row group headers already have classes) */
-    #leaveSummaryTable thead th.head-granted { background: #e8f5e9; color: #2e7d32; }
-    #leaveSummaryTable thead th.head-availed { background: #e3f2fd; color: #1565c0; }
-    #leaveSummaryTable thead th.head-balanced { background: #f3e5f5; color: #7b1fa2; }
+        #leaveSummaryTable thead th.head-granted {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
 
-    /* Individual second-row headers (ensure readable) */
-    #leaveSummaryTable thead tr + tr th.head-granted { background: #f6fbf6; color: #2e7d32; font-weight:600; }
-    #leaveSummaryTable thead tr + tr th.head-availed { background: #f3f8ff; color: #1565c0; font-weight:600; }
-    #leaveSummaryTable thead tr + tr th.head-balanced { background: #fbf7fb; color: #7b1fa2; font-weight:600; }
+        #leaveSummaryTable thead th.head-availed {
+            background: #e3f2fd;
+            color: #1565c0;
+        }
 
-    /* Color data cells by column ranges
-       Granted: columns 4..11, Availed: 12..19, Balanced: 20..27 */
-    #leaveSummaryTable tbody td:nth-child(n+4):nth-child(-n+11) { color: #2e7d32; }   /* granted */
-    #leaveSummaryTable tbody td:nth-child(n+12):nth-child(-n+19) { color: #1565c0; }  /* availed */
-    #leaveSummaryTable tbody td:nth-child(n+20):nth-child(-n+27) { color: #7b1fa2; }  /* balanced */
+        #leaveSummaryTable thead th.head-balanced {
+            background: #f3e5f5;
+            color: #7b1fa2;
+        }
 
-    /* Keep names and ID left-aligned */
-    #leaveSummaryTable tbody td:nth-child(1),
-    #leaveSummaryTable tbody td:nth-child(2),
-    #leaveSummaryTable tbody td:nth-child(3) {
-        text-align: left;
-        color: #0f172a;
-    }
+        #leaveSummaryTable thead tr + tr th.head-granted {
+            background: #f6fbf6;
+            color: #2e7d32;
+            font-weight: 600;
+        }
 
-    /* Small screens: make horizontally scrollable */
+        #leaveSummaryTable thead tr + tr th.head-availed {
+            background: #f3f8ff;
+            color: #1565c0;
+            font-weight: 600;
+        }
+
+        #leaveSummaryTable thead tr + tr th.head-balanced {
+            background: #fbf7fb;
+            color: #7b1fa2;
+            font-weight: 600;
+        }
+
+        #leaveSummaryTable tbody td:nth-child(n+4):nth-child(-n+11) {
+            color: #2e7d32;
+        }
+
+        #leaveSummaryTable tbody td:nth-child(n+12):nth-child(-n+19) {
+            color: #1565c0;
+        }
+
+        #leaveSummaryTable tbody td:nth-child(n+20):nth-child(-n+27) {
+            color: #7b1fa2;
+        }
+
+        #leaveSummaryTable tbody td:nth-child(1),
+        #leaveSummaryTable tbody td:nth-child(2),
+        #leaveSummaryTable tbody td:nth-child(3) {
+            text-align: left;
+            color: #0f172a;
+        }
+
     @@media (max-width: 980px) {
         #leaveSummaryTable th,
         #leaveSummaryTable td {
-            font-size: 12px;
-            padding: 6px 8px;
+            font-size: 10px;
+            padding: 0px 0px;
+        }
+    }
+    @@media (max-width: 1380px) {
+        #leaveSummaryTable th,
+        #leaveSummaryTable td {
+            font-size: 11px;
+            padding: 0px 0px;
         }
     }
 
-    #leaveSummaryTable_filter{
-        margin-right:0px !important;
+    /* For small screens reduce leave table padding and allow wrapping to prevent horizontal scroll */
+    @@media (max-width: 576px) {
+        #leaveSummaryTable th,
+        #leaveSummaryTable td {
+            font-size: 11px;
+            padding: 0px 0px;
+            white-space: normal;
+            word-break: break-word;
+        }
+
+        /* make attendance name/designation stack better on tiny screens */
+        .emp-profile img { width:36px; height:36px; flex: 0 0 36px; }
+        #attendanceTable th:nth-child(2), #attendanceTable td:nth-child(2) { width: 160px; }
+        th, td { padding: 6px 8px; font-size: 12px; }
     }
+
+    #leaveSummaryTable_filter {
+        margin-right: 0px !important;
+    }
+
+    .atd-live-container, .atd-leave-container {
+        border: 1px solid #e6e6e6;
+        background: #ffffff;
+        border-radius: 12px;
+        padding: 12px;
+        box-shadow: 0 6px 18px rgba(2,6,23,0.03);
+        width: 100%;
+        box-sizing: border-box;
+        overflow-x: hidden;
+    }
+
+    /* ============ RESPONSIVE FIXES ============ */
+
+    html, body {
+        overflow-x: hidden;
+    }
+
+    @@media (max-width: 768px) {
+        .header {
+            flex-direction: column;
+            align-items: flex-start;
+            height: auto;
+            gap: 6px;
+            padding: 8px 5px;
+        }
+
+            .header > div:last-child {
+                text-align: left !important;
+                width: 100%;
+            }
+
+        .current-time,
+        .current-date {
+            text-align: left !important;
+        }
+
+        .search-bar,
+        .search-bar_leave {
+            flex-wrap: wrap;
+            padding: 10px;
+        }
+
+            .search-bar > span,
+            .search-bar_leave > span {
+                width: 100%;
+                margin-bottom: 5px;
+            }
+
+        .gc-inline-select2 {
+            flex: 1 1 calc(50% - 10px);
+            width: calc(50% - 10px) !important;
+            max-width: calc(50% - 10px) !important;
+        }
+    }
+
+    @@media (max-width: 480px) {
+        .gc-inline-select2 {
+            flex: 1 1 100%;
+            width: 100% !important;
+            max-width: 100% !important;
+        }
+    }
+
+    @@media (max-width: 576px) {
+        .metrics-container {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .metric-card {
+            padding: 10px;
+        }
+
+            .metric-card h3 {
+                font-size: 18px;
+            }
+
+            .metric-card i {
+                font-size: 20px;
+            }
+
+        .section-card {
+            padding: 12px;
+        }
+
+        .metrics-container[style*="repeat(4"] {
+            grid-template-columns: repeat(2, 1fr) !important;
+        }
+
+        .chart-wrapper {
+            max-width: 200px;
+            height: 200px;
+        }
+    }
+
+    @@media (max-width: 768px) {
+        .header div[style*="text-align:right"] div[style*="font-size:11px"] {
+            white-space: normal;
+            line-height: 1.7;
+        }
+    }
+
+    /* ==========================================
+       ATTENDANCE TABLE SINGLE LINE FIX
+       ========================================== */
+
+    .table-responsive {
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    #attendanceTable {
+        width: 100% !important;
+        table-layout: auto !important;
+    }
+
+        #attendanceTable th,
+        #attendanceTable td {
+            white-space: nowrap !important;
+            word-break: normal !important;
+            overflow-wrap: normal !important;
+            vertical-align: middle !important;
+        }
+
+    /* Employee Profile */
+    .emp-profile {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: nowrap !important;
+        min-width: max-content;
+    }
+
+        .emp-profile img {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+    /* Check In / Out */
+    #attendanceTable td:nth-child(3),
+    #attendanceTable td:nth-child(4) {
+        white-space: nowrap !important;
+    }
+
+    /* Status */
+    .status-badge {
+        white-space: nowrap !important;
+    }
+
+    /* Remarks */
+    #attendanceTable td:nth-child(7) {
+        white-space: nowrap !important;
+    }
+
+    /* DataTable */
+    .dataTables_wrapper {
+        overflow-x: auto !important;
+    }
+
+    .dataTables_scrollBody {
+        overflow-x: auto !important;
+    }
+
+   
+
 </style>
 
 <div class="dashboard-container">
 
     <!-- Attendance Section -->
     <div class="header">
-
-
         <div class="text-dark" style="font-weight:700; flex-wrap:wrap;">
-                <span>
-                    <i class="fa-solid fa-calendar-check" style="color: var(--primary-blue);"></i>
-                </span>
-                Attendance Dashboard
-         </div>
+            <span>
+                <i class="fa-solid fa-calendar-check" style="color: var(--primary-blue);"></i>
+            </span>
+            Attendance Dashboard
+        </div>
 
         <div style="text-align:right;">
-            <span id="currentTime" class="current-time">--:--:-- AM</span>
             <span id="currentDate" class="current-date">-- -- ----</span>
+            <span id="currentTime" class="current-time">--:--:-- AM</span>
         </div>
     </div>
 
-    <div class="search-bar">
-        <span style="margin-bottom: 10px;">Search By:</span>
+    <div class="atd-live-container">
 
-        <div class="form-group gc-inline-select2">
-            <select id="companySelect" class="form-control form-control-sm gc-select2" data-placeholder="Select Company">
-                <option value=""></option>
-            </select>
+        <div class="search-bar">
+            <span style="margin-bottom: 10px;">Search By:</span>
+
+            <div class="form-group gc-inline-select2">
+                <select id="companySelect" class="form-control form-control-sm gc-select2" data-placeholder="Select Company">
+                    <option value=""></option>
+                </select>
+            </div>
+
+            <div class="form-group gc-inline-select2">
+                <select id="branchSelect" class="form-control form-control-sm gc-select2" data-placeholder="Select Branch">
+                    <option value=""></option>
+                </select>
+            </div>
+
+            <div class="form-group gc-inline-select2">
+                <select id="departmentSelect" class="form-control form-control-sm gc-select2" data-placeholder="Select Department">
+                    <option value=""></option>
+                </select>
+            </div>
         </div>
 
-        <div class="form-group gc-inline-select2">
-            <select id="branchSelect" class="form-control form-control-sm gc-select2" data-placeholder="Select Branch">
-                <option value=""></option>
-            </select>
-        </div>
-
-        <div class="form-group gc-inline-select2">
-            <select id="departmentSelect" class="form-control form-control-sm gc-select2" data-placeholder="Select Department">
-                <option value=""></option>
-            </select>
-        </div>
-    </div>
-    <div class="section-card">
-        <div class="layout-grid">
-            <div>
-                <!-- Metric Cards -->
-                <div class="metrics-container">
-                    <div class="metric-card m-total">
-                        <i class="fa fa-users"></i>
-                        <p>Total Employee</p>
-                        <h3 id="totalEmployee">0</h3>
-                    </div>
-                    <div class="metric-card m-present">
-                        <i class="fa fa-user-check"></i>
-                        <p>Present</p>
-                        <h3 id="presentCount">0</h3>
-                        <small id="presentPct">0%</small>
-                    </div>
-                    <div class="metric-card m-absent">
-                        <i class="fa fa-user-xmark"></i>
-                        <p>Absent</p>
-                        <h3 id="absentCount">0</h3>
-                        <small id="absentPct">0%</small>
-                    </div>
-                    <div class="metric-card m-late">
-                        <i class="fa fa-clock"></i>
-                        <p>Late</p>
-                        <h3 id="lateCount">0</h3>
-                        <small id="latePct">0%</small>
-                    </div>
-                    <div class="metric-card m-leave">
-                        <i class="fa fa-umbrella-beach"></i>
-                        <p>On Leave</p>
-                        <h3 id="onLeaveCount">0</h3>
-                        <small id="onLeavePct">0%</small>
-                    </div>
-                </div>
-
-                <!-- LIVE / Not-live heading -->
-                <div style="font-weight:700; margin-bottom:8px; display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
-
-                    <!-- LIVE (today) -->
-                    <div class="text-dark">
-                        <span class="live" role="status" aria-live="polite" aria-atomic="true">
-                            <span class="dot" aria-hidden="true">●</span>
-                            <span class="live-text">LIVE </span>
-                        </span>
-                        Employee Attendance Movement Register
+        <div class="section-card">
+            <div class="layout-grid">
+                <div style="min-width:0;">
+                    <!-- Metric Cards -->
+                    <div class="metrics-container">
+                        <div class="metric-card m-total">
+                            <i class="fa fa-users"></i>
+                            <p>Total Employee</p>
+                            <h3 id="totalEmployee">0</h3>
+                        </div>
+                        <div class="metric-card m-present">
+                            <i class="fa fa-user-check"></i>
+                            <p>Present</p>
+                            <h3 id="presentCount">0</h3>
+                            <small id="presentPct">0%</small>
+                        </div>
+                        <div class="metric-card m-absent">
+                            <i class="fa fa-user-xmark"></i>
+                            <p>Absent</p>
+                            <h3 id="absentCount">0</h3>
+                            <small id="absentPct">0%</small>
+                        </div>
+                        <div class="metric-card m-late">
+                            <i class="fa fa-clock"></i>
+                            <p>Late</p>
+                            <h3 id="lateCount">0</h3>
+                            <small id="latePct">0%</small>
+                        </div>
+                        <div class="metric-card m-leave">
+                            <i class="fa fa-umbrella-beach"></i>
+                            <p>On Leave</p>
+                            <h3 id="onLeaveCount">0</h3>
+                            <small id="onLeavePct">0%</small>
+                        </div>
                     </div>
 
-                    <!-- Not live (old date) -->
-                    @* <span id="notLiveIndicator" style="display:none;align-items:center;">
-                        <i class="fa fa-clock" style="color:#ff9800;font-size:18px;margin-right:6px;"></i>
-                        <span style="font-weight:900;color:#ff9800;font-size:15px;letter-spacing:0.6px;">HISTORICAL</span>
-                    </span>
+                    <!-- LIVE / Not-live heading -->
+                    <div style="font-weight:700; margin-bottom:8px; display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+                        <div class="text-dark">
+                            <span class="live" role="status" aria-live="polite" aria-atomic="true">
+                                <span class="dot" aria-hidden="true">●</span>
+                                <span class="live-text">LIVE </span>
+                            </span>
+                            Employee Attendance Movement Register
+                        </div>
+                    </div>
 
-                    <span style="font-size:16px;color:#0f172a;font-weight:700;">
-                        Employee Attendance Movement Register
-                    </span> *@
-                </div>
-
-                <!-- DataDate notice -->
-                <div id="dataDateNotice"
-                     style="display:none;background:#fff3cd;color:#856404;
+                    <!-- DataDate notice -->
+                    <div id="dataDateNotice"
+                         style="display:none;background: linear-gradient(90deg, rgb(206, 239, 255) 0%, rgb(255, 255, 255) 100%);
+                        ;color:#856404;
                         padding:8px 14px;border-radius:8px;
                         margin-bottom:12px;font-size:13px;border-left:4px solid #ff9800;">
+                    </div>
+
+                    <!-- Table -->
+                    <div class="table-responsive">
+                        <table id="attendanceTable" 
+                               class="table table-sm"
+                               style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>Emp ID</th>
+                                    <th>Name / Designation</th>
+                                    <th>Check In</th>
+                                    <th>Check Out</th>
+                                    <th>Status</th>
+                                    <th>Movement</th>
+                                    <th>Remarks</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
                 </div>
 
-                <!-- Table -->
-                <div class="table-responsive">
-                    <table id="attendanceTable" class="display nowrap" style="width:100%">
-                        <thead>
-                            <tr>
-                                @* <th>#</th> *@
-                                <th>Emp ID</th>
-                                <th>Name</th>
-                                <th>Designation</th>
-                                <th>Check In</th>
-                                <th>Check Out</th>
-                                <th>Status</th>
-                                <th>Movement (Punch Time)</th>
-                                <th>Remarks</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
+                <!-- Chart -->
+                <div class="chart-box">
+                    <p style="font-weight:600;margin-bottom:10px;">Attendance Overview</p>
+                    <div class="chart-wrapper">
+                        <canvas id="attendanceChart"></canvas>
+                    </div>
+                    <div id="chartDataDate"
+                         style="margin-top:8px;font-size:11px;color:#94a3b8;text-align:center;"></div>
                 </div>
-            </div>
-
-            <!-- Chart -->
-            <div class="chart-box">
-                <p style="font-weight:600;margin-bottom:10px;">Attendance Overview</p>
-                <canvas id="attendanceChart" width="240" height="240"></canvas>
-                <div id="chartDataDate"
-                     style="margin-top:8px;font-size:11px;color:#94a3b8;text-align:center;"></div>
             </div>
         </div>
+
     </div>
 
     <!-- Leave Section -->
     <div class="header">
-        @* <h2><i class="fa-solid fa-plane-departure" style="color: var(--leave);"></i> Leave Dashboard</h2> *@
         <div class="text-dark" style="font-weight:700; flex-wrap:wrap;">
             <span>
                 <i class="fa-solid fa-plane-departure" style="color: var(--leave);"></i>
@@ -579,102 +911,90 @@
         </div>
     </div>
 
-    <div class="search-bar_leave">
-        @* <span style="margin-bottom: 10px;">Search By:</span>        *@
-        <span style="margin-bottom: 10px; flex-shrink: 0; white-space: nowrap;">Search By:</span>
+    <div class="atd-leave-container">
+        <div class="search-bar_leave">
+            <span style="margin-bottom: 10px; flex-shrink: 0; white-space: nowrap;">Search By:</span>
 
-        <div class="form-group gc-inline-select2">
-            <select id="companySelectLeave" class="form-control form-control-sm gc-select2" data-placeholder="Select Company">
-                <option value=""></option>
-            </select>
-        </div>
-
-        <div class="form-group gc-inline-select2">
-            <select id="branchSelectLeave" class="form-control form-control-sm gc-select2" data-placeholder="Select Branch">
-                <option value=""></option>
-            </select>
-        </div>
-
-        <div class="form-group gc-inline-select2">
-            <select id="departmentSelectLeave" class="form-control form-control-sm gc-select2" data-placeholder="Select Department">
-                <option value=""></option>
-            </select>
-        </div>
-        <div class="form-group gc-inline-select2">
-            <select id="employeeSelectLeave" class="form-control form-control-sm gc-select2" data-placeholder="Select Employee">
-                <option value=""></option>
-            </select>
-        </div>
-      
-        <div class="form-group gc-inline-select2">
-            <select id="getYearLeave" class="form-control form-control-sm gc-select2">
-            </select>
-        </div>
-    </div>
-
-    <div class="section-card">
-     
-        <div class="metrics-container" style="grid-template-columns: repeat(4, 1fr);">
-            <div class="metric-card" style="background:#f3e5f5; color:#7b1fa2;">
-                <i class="fa fa-file-lines"></i>
-                <p>Total Applied</p>
-                <h3 id="lvTotalApplied">0</h3>
-            </div>
-            <div class="metric-card m-present">
-                <i class="fa fa-circle-check"></i>
-                <p>Approved</p>
-                <h3 id="lvApproved">0</h3>
-            </div>
-            <div class="metric-card m-absent">
-                <i class="fa fa-circle-xmark"></i>
-                <p>Canceled</p>
-                <h3 id="lvCanceled">0</h3>
-            </div>
-            <div class="metric-card m-late">
-                <i class="fa fa-hourglass-half"></i>
-                <p>Pending</p>
-                <h3 id="lvPending">0</h3>
-            </div>
-        </div>
-      
-        <div class="header">
-
-
-            <div class="text-dark" style="font-weight:700; flex-wrap:wrap;">
-               @*  <span>
-                    <i class="fa-solid fa-calendar-check" style="color: var(--primary-blue);"></i>
-                </span> *@
-                Leave Summary
+            <div class="form-group gc-inline-select2">
+                <select id="companySelectLeave" class="form-control form-control-sm gc-select2" data-placeholder="Select Company">
+                    <option value=""></option>
+                </select>
             </div>
 
-            <div style="text-align:right;">
-                <div style="font-size:11px;color:#94a3b8;margin-top:10px;line-height:1.8;">
-                    <span><b>CL</b>: Casual (Yearly) Leave</span> |
-                    <span><b>SL</b>: Sick Leave</span> |
-                    <span><b>UL</b>: Unpaid Leave</span> |
-                    <span><b>ML</b>: Maternity Leave</span> |
-                    <span><b>PL</b>: Paternity Leave</span> |
-                    <span><b>MarL</b>: Marriage Leave</span> |
-                    <span><b>HL</b>: Hajj Leave</span> |
-                    <span><b>UmrL</b>: Umrah Leave</span>
+            <div class="form-group gc-inline-select2">
+                <select id="branchSelectLeave" class="form-control form-control-sm gc-select2" data-placeholder="Select Branch">
+                    <option value=""></option>
+                </select>
+            </div>
+
+            <div class="form-group gc-inline-select2">
+                <select id="departmentSelectLeave" class="form-control form-control-sm gc-select2" data-placeholder="Select Department">
+                    <option value=""></option>
+                </select>
+            </div>
+
+            <div class="form-group gc-inline-select2">
+                <select id="employeeSelectLeave" class="form-control form-control-sm gc-select2" data-placeholder="Select Employee">
+                    <option value=""></option>
+                </select>
+            </div>
+
+            <div class="form-group gc-inline-select2">
+                <select id="getYearLeave" class="form-control form-control-sm gc-select2" style="display:none;">
+                </select>
+            </div>
+        </div>
+
+        <div class="section-card">
+            <div class="metrics-container" style="grid-template-columns: repeat(4, 1fr);">
+                <div class="metric-card" style="background:#f3e5f5; color:#7b1fa2;">
+                    <i class="fa fa-file-lines"></i>
+                    <p>Total Applied</p>
+                    <h3 id="lvTotalApplied">0</h3>
+                </div>
+                <div class="metric-card m-present">
+                    <i class="fa fa-circle-check"></i>
+                    <p>Approved</p>
+                    <h3 id="lvApproved">0</h3>
+                </div>
+                <div class="metric-card m-absent">
+                    <i class="fa fa-circle-xmark"></i>
+                    <p>Canceled</p>
+                    <h3 id="lvCanceled">0</h3>
+                </div>
+                <div class="metric-card m-late">
+                    <i class="fa fa-hourglass-half"></i>
+                    <p>Pending</p>
+                    <h3 id="lvPending">0</h3>
                 </div>
             </div>
+
+            <div class="header">
+                <div class="text-dark" style="font-weight:700; flex-wrap:wrap;">
+                    Leave Summary
+                </div>
+
+                <div style="text-align:right;">
+                    <div style="font-size:11px;color:#94a3b8;margin-top:10px;line-height:1.8;">
+                        <span><b>CL</b>: Casual (Yearly) Leave</span> |
+                        <span><b>SL</b>: Sick Leave</span> |
+                        <span><b>UL</b>: Unpaid Leave</span> |
+                        <span><b>ML</b>: Maternity Leave</span> |
+                        <span><b>PL</b>: Paternity Leave</span> |
+                        <span><b>MarL</b>: Marriage Leave</span> |
+                        <span><b>HL</b>: Hajj Leave</span> |
+                        <span><b>UmrL</b>: Umrah Leave</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table id="leaveSummaryTable" class="table table-sm">
+                    <thead></thead>
+                    <tbody></tbody>
+                </table>
+            </div>
         </div>
-
-        <div class="table-responsive">
-            <table id="leaveSummaryTable" class="table table-sm">
-                <thead>
-                  
-                </thead>
-
-                <tbody>
-                   <!-- Example row — server should render rows here -->
-                  
-                </tbody>
-            </table>
-        </div>
-
-       
     </div>
 
 </div>
@@ -683,12 +1003,11 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    <!-- ↓ এই line টা যোগ করো -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.min.js"></script>
 
     <script src="~/js/pages/DashboardIndex.js"></script>
     <script>
+        document.body.classList.add('dashboard-page');
         $.DashboardIndex({ baseUrl: '@Url.Action("", "Dashboard")' });
     </script>
 }

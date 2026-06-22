@@ -2,12 +2,18 @@
 @model IEnumerable<GCTL.Core.ViewModels.AccessCodes.AccessCodeModel>
 @inject ApplicationSettings applicationSettings
 @{
-    var controller = "Companies";
+    var currentPath = Context.Request.Path.Value?.ToLower() ?? "";
+    var isDashboardActive = currentPath == "/" || currentPath == "";
+
+    var pathSegments = currentPath.Split('/', StringSplitOptions.RemoveEmptyEntries);
+    var currentController = pathSegments.Length > 0 ? pathSegments[0] : "";
+
+    var urlPath = string.IsNullOrWhiteSpace(applicationSettings.VirtualPath)
+        ? ""
+        : $"/{applicationSettings.VirtualPath}";
 }
 
-
 <style>
-    /* Styling for the nested menu */
     .sidebar-menu li > a {
         padding: 8px 5px 8px 15px;
         display: block;
@@ -60,58 +66,112 @@
         font-size: 13px;
     }
 
-    .sidebar-menu a {
-        text-decoration: none !important;
+    /* .sidebar-menu .sidebar-submenu li > a.active {
+        color: #fff;
+    } */
+
+    /* Active link highlight — all levels */
+    .sidebar-menu li > a.active,
+    .sidebar-menu .sidebar-submenu li > a.active {
+        background: linear-gradient(to right, #f7fcff, #ffffff) !important;
+        color: #1a1f3c !important;
+        border-radius: 4px;
+        font-weight: 600;
     }
 </style>
 
 
-<!-- Main Sidebar Container -->
 <div id="left_menu" class="sidenav">
     <section class="">
         <ul class="sidebar-menu">
-            <li class="sidebar-header">
-                <img src="~/images/CoIcon.ico" alt="AdminLTE Logo" class="brand-image img-circle"
-                     style="opacity: .8">
-                <span class="brand-text font-weight-light pl-1">GCTL Software</span>
+
+            <li class="sidebar-header" style="background:#1a1f3c;">
+                <img src="~/images/CoIcon.ico" alt="AdminLTE Logo"
+                     class="brand-image img-circle elevation-3"
+                     style="opacity: .8" />
+                <span class="brand-text font-weight-light">GCTL Software</span>
             </li>
+
             <li>
-                <a href="#">
-                    <i class="fa fa-tachometer-alt"></i> <span>Dashboard</span></i>
+                <a href="/Dashboard" class="@(isDashboardActive ? "active" : "")">
+                    <i class="fa fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
                 </a>
             </li>
-            @if (Model.Any())
+
+            @foreach (var parent in Model)
             {
-                var urlPath = string.IsNullOrWhiteSpace(applicationSettings.VirtualPath) ? "" : string.Concat("/", @applicationSettings.VirtualPath);
-                foreach (var parent in Model)
-                {
-                    <li>
-                        <a href="#">
-                            <i class="@parent.Icon"></i>
-                            <span>@parent.Title</span>
+                var parentHasChildren = parent.Children.Any();
+
+                var isParentActive = !parentHasChildren
+                    && currentController == parent.ControllerName?.ToLower();
+
+                var isParentOpen = parentHasChildren && parent.Children.Any(c =>
+                    currentController == c.ControllerName?.ToLower() ||
+                    c.Children.Any(gc => currentController == gc.ControllerName?.ToLower())
+                );
+
+                <li class="@(isParentOpen ? "menu-open" : "")">
+
+                    <a href="@(parentHasChildren
+                                                       ? "#"
+                                                       : $"{urlPath}" +
+                                                         $"{(!string.IsNullOrWhiteSpace(parent.ControllerName) ? "/" + parent.ControllerName : "")}" +
+                                                         $"{(!string.IsNullOrWhiteSpace(parent.ViewName) ? "/" + parent.ViewName : "")}")"
+                       class="@(isParentActive ? "active" : "")">
+                        <i class="@parent.Icon"></i>
+                        <span>@parent.Title</span>
+                        @if (parentHasChildren)
+                        {
                             <i class="fa fa-angle-left float-right"></i>
-                        </a>
+                        }
+                    </a>
+
+                    @if (parentHasChildren)
+                    {
                         <ul class="sidebar-submenu">
                             @foreach (var child in parent.Children)
                             {
-                                <li id="@child.ControllerName.ToLower()">
-                                    <a href="@(child.Children.Any() ? "#" : $"{urlPath}/{child.ControllerName}/{child.ViewName}")"
-                                       data-selected="@child.ControllerName.ToLower()">
+                                var childHasChildren = child.Children.Any();
+
+                                var isChildActive = !childHasChildren
+                                    && currentController == child.ControllerName?.ToLower();
+
+                                var isChildOpen = childHasChildren && child.Children.Any(gc =>
+                                    currentController == gc.ControllerName?.ToLower()
+                                );
+
+                                <li id="@child.ControllerName?.ToLower()"
+                                    class="@(isChildOpen ? "menu-open" : "")">
+
+                                    <a href="@(childHasChildren ? "#" : $"{urlPath}/{child.ControllerName}/{child.ViewName}")"
+                                       data-selected="@child.ControllerName?.ToLower()"
+                                       class="@(isChildActive ? "active" : "")">
                                         <span>-</span>
                                         @child.Title
-                                        @if (child.Children.Any())
+
+                                        @if (childHasChildren)
                                         {
                                             <i class="fa fa-angle-left float-right"></i>
                                         }
                                     </a>
-                                    @if (child.Children.Any())
+
+                                    @if (childHasChildren)
                                     {
                                         <ul class="sidebar-submenu third-level">
                                             @foreach (var grandChild in child.Children)
                                             {
-                                                <li id="@grandChild.ControllerName.ToLower()">
-                                                    <a href="@(grandChild.Children.Any() ? $"{urlPath}/Menu/GreatGrandChildrenView?grandchildId={grandChild.MenuId}" : $"{urlPath}/{grandChild.ControllerName}/{grandChild.ViewName}")"
-                                                       data-selected="@grandChild.ControllerName.ToLower()">
+                                                var isGrandChildActive =
+                                                    currentController == grandChild.ControllerName?.ToLower();
+
+                                                var grandChildHref = grandChild.Children.Any()
+                                                    ? $"{urlPath}/Menu/GreatGrandChildrenView?grandchildId={grandChild.MenuId}"
+                                                    : $"{urlPath}/{grandChild.ControllerName}/{grandChild.ViewName}";
+
+                                                <li id="@grandChild.ControllerName?.ToLower()">
+                                                    <a href="@grandChildHref"
+                                                       data-selected="@grandChild.ControllerName?.ToLower()"
+                                                       class="@(isGrandChildActive ? "active" : "")">
                                                         <span>--</span>
                                                         @grandChild.Title
                                                     </a>
@@ -119,67 +179,51 @@
                                             }
                                         </ul>
                                     }
+
                                 </li>
                             }
                         </ul>
-                    </li>
-                }
+                    }
+
+                </li>
             }
+
         </ul>
     </section>
 </div>
 
 
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
-
-<script> 
-
+<script>
     $(document).ready(function () {
 
-        $('.sidebar-menu').on('click', 'li > a', function (e) {
+    $('.sidebar-menu').on('click', 'li > a', function (e) {
+    var $this   = $(this);
+    var $submenu = $this.next('.sidebar-submenu');
 
-            var $this = $(this);
-            var $submenu = $this.next('.sidebar-submenu');
+    // Only intercept clicks that have a submenu to toggle.
+    // Leaf items (no submenu sibling) fall through and navigate normally.
+    if ($submenu.length) {
+    e.preventDefault();
 
-            if ($submenu.length) {
+    if ($submenu.is(':visible')) {
+    $submenu.slideUp(300);
+    $this.parent().removeClass('menu-open');
+    } else {
+    // Collapse any open sibling at the same level first (accordion)
+    $this.closest('ul')
+    .find('.sidebar-submenu:visible')
+    .slideUp(300)
+    .parent()
+    .removeClass('menu-open');
 
-                e.preventDefault();
-
-                if ($submenu.is(':visible')) {
-
-                    $submenu.slideUp(300);
-                    $this.parent().removeClass('menu-open');
-
-                } else {
-
-                    $this.closest('ul').find('.sidebar-submenu:visible')
-                        .slideUp(300)
-                        .parent().removeClass('menu-open');
-
-                    $submenu.slideDown(300);
-                    $this.parent().addClass('menu-open');
-                }
-            }
-
-        });
-
-
-     var currentUrl = window.location.pathname.toLowerCase();
-
-    $('.sidebar-menu a').each(function () {
-
-        var linkUrl = $(this).attr('href');
-
-        if (linkUrl && linkUrl !== "#" && currentUrl.includes(linkUrl.toLowerCase())) {
-
-            $(this).addClass('active');
-
-            $(this).parents('li').addClass('menu-open');
-
-            $(this).parents('.sidebar-submenu').show();
-        }
-
+    $submenu.slideDown(300);
+    $this.parent().addClass('menu-open');
+    }
+    }
     });
 
     });
 </script>
+
+ 

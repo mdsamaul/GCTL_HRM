@@ -1,5 +1,4 @@
-﻿using DocumentFormat.OpenXml.Bibliography;
-using GCTL.Core.Data;
+﻿using GCTL.Core.Data;
 using GCTL.Core.Helpers;
 using GCTL.Core.ViewModels.Common;
 using GCTL.Core.ViewModels.DeleteHistories;
@@ -7,7 +6,6 @@ using GCTL.Core.ViewModels.ManualAttendance;
 using GCTL.Data.Models;
 using GCTL.Service.DeleteHistories;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace GCTL.Service.ManualAttendances
 {
@@ -186,7 +184,7 @@ namespace GCTL.Service.ManualAttendances
 
 
         #region SaveAsync
-       
+
 
         public async Task<(bool IsSuccess, HrmAtdManual? SavedRecord)> SaveAsync(ManualAttendanceSetupViewModel model)
         {
@@ -198,7 +196,7 @@ namespace GCTL.Service.ManualAttendances
                 var duplicate = await _manualAttendanceRepository
                     .FindByAsync(x => x.Date >= model.DateFrom.ToDate() &&
                                       x.Date <= model.DateTo.ToDate() &&
-                                      x.EmployeeId == model.EmployeeId);
+                                      x.EmployeeId == model.EmployeeId && x.AttendanceTypeCode == model.AttendanceTypeCode);
 
                 if (duplicate != null && duplicate.Any())
                 {
@@ -244,7 +242,7 @@ namespace GCTL.Service.ManualAttendances
 
                 var shiftDict = shiftTimes.ToDictionary(s => s.ShiftCode);
 
-               
+
 
                 var nextCode = await context.HrmAtdManual
     .MaxAsync(x => (int?)Convert.ToInt32(x.ManualCode)) ?? 0;
@@ -278,27 +276,27 @@ namespace GCTL.Service.ManualAttendances
                     // Entry record
                     var atdManual = new HrmAtdManual
                     {
-                        ManualCode = (startingCode + currentCodeIndex++).ToString()??"",
+                        ManualCode = (startingCode + currentCodeIndex++).ToString() ?? "",
                         BulkEntryId = model.BulkEntryId ?? string.Empty,
                         EmployeeId = model.EmployeeId ?? "",
                         AttendanceTypeCode = model.AttendanceTypeCode ?? "",
                         Date = currentDate,
-                        Remarks = model.Remarks??"",
+                        Remarks = model.Remarks ?? "",
                         Luser = model.Luser ?? "",
                         Ldate = DateTime.Now,
                         Lip = model.Lip ?? "",
                         Lmac = model.Lmac ?? "",
                         CompanyCode = model.CompanyCode ?? "",
-                        ApprovalStatus=model.ApprovalStatus??"",
-                        ApprovedBy = model.ApprovedBy?? "",
+                        ApprovalStatus = model.ApprovalStatus ?? "",
+                        ApprovedBy = model.ApprovedBy ?? "",
                         ApprovalDatetime = model.ApprovalDatetime,
-                        Latitude = model.Latitude??"",
-                        Longitude = model.Longitude??"",
-                        EntryVia = model.EntryVia??"",
-                        MonthName = currentDate.ToString("MMMM")??"",
-                        DayName = currentDate.ToString("dddd")??"",
-                        YearName = currentDate.ToString("yyyy")??"",
-                        
+                        Latitude = model.Latitude ?? "",
+                        Longitude = model.Longitude ?? "",
+                        EntryVia = model.EntryVia ?? "",
+                        MonthName = currentDate.ToString("MMMM") ?? "",
+                        DayName = currentDate.ToString("dddd") ?? "",
+                        YearName = currentDate.ToString("yyyy") ?? "",
+
                     };
 
                     if (model.AttendanceTypeCode == "3")
@@ -378,7 +376,7 @@ namespace GCTL.Service.ManualAttendances
 
 
         #region DeleteAsync
-        
+
         public async Task<(bool IsSuccess, HrmAtdManual? DeletedRecord)> DeleteAsync(
     List<string> ids,
     List<string> selectedEmployeeIds,
@@ -418,7 +416,7 @@ namespace GCTL.Service.ManualAttendances
             }
 
             var allAutoIds = await query.Select(x => x.AutoId).ToListAsync();
-            
+
             if (!allAutoIds.Any())
                 return (false, null);
 
@@ -485,7 +483,8 @@ namespace GCTL.Service.ManualAttendances
                                 join at in _attendanceTypeRepository.All().AsNoTracking() on ma.AttendanceTypeCode equals at.AttendanceTypeCode into atGroup
                                 from at in atGroup.DefaultIfEmpty()
 
-                                where ma.CompanyCode == companyId orderby ma.AutoId descending
+                                where ma.CompanyCode == companyId
+                                orderby ma.AutoId descending
 
                                 select new ManualAttendanceSetupViewModel
                                 {
@@ -518,7 +517,7 @@ namespace GCTL.Service.ManualAttendances
                                 join dep in _departmentRepository.All().AsNoTracking() on oi.DepartmentCode equals dep.DepartmentCode into depGroup
                                 from dep in depGroup.DefaultIfEmpty()
 
-                                where e.EmployeeId == id 
+                                where e.EmployeeId == id
 
                                 select new ManualAttendanceSetupViewModel
                                 {
@@ -550,7 +549,8 @@ namespace GCTL.Service.ManualAttendances
                         from e in eGroup.DefaultIfEmpty()
                         join at in _attendanceTypeRepository.All().AsNoTracking() on ma.AttendanceTypeCode equals at.AttendanceTypeCode into atGroup
                         from at in atGroup.DefaultIfEmpty()
-                        where ma.EmployeeId == employeeId orderby ma.AutoId descending
+                        where ma.EmployeeId == employeeId
+                        orderby ma.AutoId descending
                         select new ManualAttendanceSetupViewModel
                         {
                             ManualCode = ma.ManualCode,

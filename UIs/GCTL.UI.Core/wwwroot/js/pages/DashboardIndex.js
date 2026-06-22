@@ -61,15 +61,6 @@
             return src || DEFAULT_PHOTO;
         }
 
-        //function statusBadge(status) {
-        //    switch ((status || "").toLowerCase()) {
-        //        case "present": return '<span class="status-badge" style="background:#4caf50;">Present</span>';
-        //        case "late": return '<span class="status-badge" style="background:#ff9800;">Late</span>';
-        //        case "on leave": return '<span class="status-badge" style="background:#9c27b0;">On Leave</span>';
-        //        default: return '<span class="status-badge" style="background:#f44336;">Absent</span>';
-        //    }
-        //}
-
         function statusBadge(status, row) {
             switch ((status || "").toLowerCase()) {
                 case "present":
@@ -119,7 +110,9 @@
                     }]
                 },
                 options: {
-                    responsive: false, cutout: "68%",
+                    responsive: true,
+                    maintainAspectRatio: false, // wrapper-এর height/width অনুযায়ী resize হবে
+                    cutout: "68%",
                     animation: { animateRotate: true, duration: 700 },
                     plugins: {
                         legend: { position: "bottom", labels: { boxWidth: 12, font: { size: 11 }, padding: 14 } },
@@ -152,8 +145,15 @@
                 $("#attendanceTable tbody").empty();
             }
             dataTable = $("#attendanceTable").DataTable({
-                processing: true, serverSide: true,
-                searching: true, ordering: false,
+
+                processing: true,
+                serverSide: true,
+                searching: true,
+                ordering: false,
+
+                responsive: true,
+                autoWidth: false,
+
                 pageLength: 5,
                 lengthMenu: [[5, 10, 20, 50, 100], [5, 10, 20, 50, 100]],
                 language: {
@@ -183,30 +183,30 @@
                 },
                 columns: [
                     {
-                        data: "employeeId", width: "90px",
+                        data: "employeeId",
                         render: function (d) {
                             return '<span style="font-weight:600;font-size:12px;">' + (d || '') + '</span>';
                         }
                     },
                     {
+                        // Name + Designation merged into single cell (image left, stacked name/designation)
                         data: "name",
                         render: function (d, t, row) {
                             var src = getPhotoSrc(row);
-                            return '<div class="emp-profile">' +
+                            var designation = row && row.designation ? row.designation : '';
+                            var nameHtml = '<div class="emp-profile">' +
                                 '<img src="' + src + '" alt="" ' +
                                 'onerror="this.onerror=null;this.src=\'' + DEFAULT_PHOTO + '\'" ' +
-                                'style="width:32px;height:32px;border-radius:50%;object-fit:cover;">' +
-                                '<span>' + (d || '') + '</span></div>';
+                                'style="width:30px;height:30px;border-radius:50%;object-fit:cover;">' +
+                                '<div class="emp-meta">' +
+                                '<span class="emp-name" title="' + (d || '') + '">' + (d || '') + '</span>' +
+                                '<span class="emp-designation" title="' + designation + '">' + (designation || '—') + '</span>' +
+                                '</div></div>';
+                            return nameHtml;
                         }
                     },
                     {
-                        data: "designation",
-                        render: function (d) {
-                            return '<span style="font-size:12px;color:#475569;">' + (d || '—') + '</span>';
-                        }
-                    },
-                    {
-                        data: "checkIn", width: "110px",
+                        data: "checkIn",
                         render: function (d, t, row) {
                             if (!d) {
                                 var color = row.status === "On Leave" ? "#9c27b0" : "#f44336";
@@ -214,18 +214,18 @@
                             }
                             return '<span style="color:' + checkInColor(row.status) + ';font-weight:600;">' + d + '</span>';
                         }
-                    }, 
+                    },
                     {
-                        data: "checkOut", width: "95px",
+                        data: "checkOut",
                         render: function (d) {
                             if (!d) return '<span style="color:#94a3b8;">—</span>';
                             return '<span style="color:#4caf50;font-weight:600;">' + d + '</span>';
                         }
                     },
                     {
-                        data: "status", width: "80px", className: "text-center",
+                        data: "status", className: "text-center",
                         render: function (d, t, row) { return statusBadge(d, row); }
-                    }, 
+                    },
                     {
                         // ── Movement column ──────────────────────────────────────
                         data: "movement",
@@ -253,14 +253,14 @@
                     },
                     {
                         // ── Remarks column (Manual entry এর remarks) ────────────
-                        data: "remarks", width: "130px",
+                        data: "remarks", 
                         render: function (d) {
                             if (!d || d.trim() === "")
                                 return '<span style="color:#94a3b8;font-size:12px;">—</span>';
 
                             var items = d.split(",").map(function (x) { return x.trim(); }).filter(Boolean);
                             if (items.length === 1) {
-                                // single remark: সরাসরি দেখাও, দীর্ঘ হলে tooltip-এ
+                                // single remark: tooltip-এ
                                 var txt = items[0];
                                 if (txt.length <= 20) {
                                     return '<span style="font-size:12px;color:#334155;">' + txt + '</span>';
@@ -270,7 +270,7 @@
                                     txt.substring(0, 18) + '…</span>';
                             }
 
-                            // Multiple remarks: প্রথমটা দেখাও, বাকি '+N' tooltip-এ
+                            // Multiple remarks: '+N' tooltip-এ
                             var first = items[0].length <= 15 ? items[0] : items[0].substring(0, 13) + '…';
                             return '<span style="font-size:12px;color:#334155;">' + first + '</span> ' +
                                 '<span data-bs-toggle="tooltip" data-bs-placement="top" title="' +
@@ -322,22 +322,41 @@
         }
 
         // ════════════════════════════════════════════════════════
-        // ── Live clock ──────────────────────────────────────────
+        // ── Live clock (dashboard page) ─────────────────────────
         // ════════════════════════════════════════════════════════
         function startClock() {
+            function pad(n) { return n < 10 ? '0' + n : n; }
+            var days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+            var months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+            function formatDate(d) {
+                return days[d.getDay()] + ', ' + d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear();
+            }
+
+            function formatTime(d) {
+                var h = d.getHours();
+                var ampm = h >= 12 ? 'PM' : 'AM';
+                var hh = h % 12;
+                hh = hh ? hh : 12;
+                return pad(hh) + ':' + pad(d.getMinutes()) + ':' + pad(d.getSeconds()) + ' ' + ampm;
+            }
+
             function tick() {
                 var now = new Date();
                 var te = document.getElementById("currentTime");
                 var de = document.getElementById("currentDate");
-                if (te) te.textContent = now.toLocaleTimeString("en-US", {
-                    hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: true
-                });
-                if (de) de.textContent = now.toLocaleDateString("en-GB", {
-                    day: "numeric", month: "short", year: "numeric"
-                });
+                var hTe = document.getElementById("headerTime");
+                var hDe = document.getElementById("headerDate");
+
+                if (te) te.textContent = formatTime(now);
+                if (de) de.textContent = formatDate(now);
+
+                // Also update shared header center clock (keeps header in sync when visible)
+                if (hTe) hTe.textContent = formatTime(now);
+                if (hDe) hDe.textContent = formatDate(now);
             }
             tick();
-            setInterval(tick, 1000);
+            setInterval(tick, 500);
         }
 
         // ════════════════════════════════════════════════════════
@@ -384,9 +403,9 @@
             var n = leaveTypes.length;
             var r1 = '<tr>' +
                 '<th rowspan="2" style="text-align:center;">Emp ID</th>' +
-                '<th rowspan="2" style="text-align:center;">Name</th>' +
-                '<th rowspan="2" style="text-align:center;">Designation</th>' +
-                '<th rowspan="2" style="text-align:center;">Joining Date</th>' +
+                '<th rowspan="2" style="text-align:center; color:#000;">Name</th>' +
+                '<th rowspan="2" style="text-align:center;color:#000;">Designation</th>' +
+                '<th rowspan="2" style="text-align:center;color:#000;">Joining Date</th>' +
                 '<th colspan="' + n + '" class="head-granted">Granted Leave</th>' +
                 '<th colspan="' + n + '" class="head-availed">Availed Leave</th>' +
                 '<th colspan="' + n + '" class="head-balanced">Balanced Leave</th>' +
@@ -411,19 +430,19 @@
                 {
                     data: "name",
                     render: function (d) {
-                        return '<span style="font-size:13px;">' + (d || '') + '</span>';
+                        return '<span style="font-size:13px; color:#000;">' + (d || '') + '</span>';
                     }
                 },
                 {
                     data: "designation",
                     render: function (d) {
-                        return '<span style="font-size:12px;color:#475569;">' + (d || '—') + '</span>';
+                        return '<span style="font-size:12px;color:#000;">' + (d || '—') + '</span>';
                     }
                 },
                 {
                     data: "joiningDate", className: "text-center",
                     render: function (d) {
-                        return '<span style="font-size:12px;color:#475569;">' + (d || '') + '</span>';
+                        return '<span style="font-size:12px;color:#000;">' + (d || '') + '</span>';
                     }
                 }
             ];
@@ -433,7 +452,7 @@
                     data: null, className: "text-center",
                     render: function (d, t, row) {
                         var val = getLeaveVal(row, lt.leaveTypeCode, 'grantedDays');
-                        return '<span style="color:#2e7d32;">' + fmtDay(val) + '</span>';
+                        return '<span style="color:#000; ">' + fmtDay(val) + '</span>';
                     }
                 });
             });
@@ -443,7 +462,7 @@
                     data: null, className: "text-center",
                     render: function (d, t, row) {
                         var val = getLeaveVal(row, lt.leaveTypeCode, 'availedDays');
-                        return '<span style="color:#1565c0;">' + fmtDay(val) + '</span>';
+                        return '<span style="color:#000;">' + fmtDay(val) + '</span>';
                     }
                 });
             });
@@ -453,7 +472,7 @@
                     data: null, className: "text-center",
                     render: function (d, t, row) {
                         var val = getLeaveVal(row, lt.leaveTypeCode, 'balancedDays');
-                        var color = parseFloat(val) < 0 ? '#f44336' : '#7b1fa2';
+                        var color = parseFloat(val) < 0 ? '#000' : '#000';
                         return '<span style="color:' + color + ';">' + fmtDay(val) + '</span>';
                     }
                 });
@@ -527,7 +546,7 @@
                         d.branchCode = f.branchCode;
                         d.departmentCode = f.departmentCode;
                         d.year = f.year;
-                        d.employeeId = f.employeeId;   // ← নতুন
+                        d.employeeId = f.employeeId;  
                         return d;
                     },
                     dataSrc: function (json) {
@@ -568,7 +587,7 @@
                 s2_InitSingle("#employeeSelectLeave", "/GcFilters/employee", "Select Employee", "employee");
 
                 // Employee ID dropdown for Leave filter — /GcFilters/employee এ route থাকলে
-                // otherwise plain text input হিসেবে কাজ করবে
+                // otherwise plain text input
                 //if (typeof s2_InitEmployee === "function") {
                 //    s2_InitEmployee("#employeeSelectLeave", "Select Employee");
                 //}
@@ -607,7 +626,7 @@
 
             initYearDropdown();
 
-            // Leave table: প্রথমে leaveTypes fetch করে তারপর table init
+            // Leave table: প্রথমে leaveTypes fetch করে পরে table init
             $.ajax({
                 url: "/Dashboard/leave-dashboard",
                 type: "POST",

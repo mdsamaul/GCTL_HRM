@@ -163,9 +163,9 @@ $(document).ready(async function () {
 
  
     gcRegisterSelector("#activityStatusSelect", "employeeStatus");
+    bsms_InitializeMultiselects();
 
     bsms_BindCascade();
-
     bsms_Reset("#companySelect");
     await bsms_LoadNext("#companySelect", "/GcFilters/company");
     await bsms_AutoSelectCompany("001");

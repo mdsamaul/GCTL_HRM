@@ -4,43 +4,53 @@
 	<div class="col-md-5">
 		<h6 class="page-title px-3 text-black font-weight-bold" id="textLoanRecive"><b>NOC Entry</b></h6>
 	</div>
+
+<script>
+	// Attach export handlers for Bootstrap dropdown items
+	(function(){
+		document.querySelectorAll('.js-export-excel').forEach(function(btn){
+			btn.addEventListener('click', function(e){
+				var group = btn.closest('.btn-group');
+				if(group) group.dispatchEvent(new CustomEvent('export', { detail: { type: 'excel' } }));
+			});
+		});
+
+		document.querySelectorAll('.js-export-pdf').forEach(function(btn){
+			btn.addEventListener('click', function(e){
+				var group = btn.closest('.btn-group');
+				if(group) group.dispatchEvent(new CustomEvent('export', { detail: { type: 'pdf' } }));
+			});
+		});
+	})();
+</script>
 	<div class="col-md-7 px-0">
 		<div class="btn-toolbar d-flex justify-content-end">
-			<div class="btn-group">
-				<button type="button" class="btn btn-default success-btn " id="btnSave" data-toggle="tooltip" data-placement="bottom" title="Save">
-					<i class="fa fa-save">&nbsp;</i> Save
+			<div class="">
+				<button type="button" class="btn" style="background: #0ea5e9 !important; color: white !important;" id="btnSave" data-toggle="tooltip" data-placement="bottom" title="Save">
+					<i class="fas fa-save mr-1"></i> Save
 				</button>
-				<button type="button" class="btn btn-default success-btn" id="btnUpdate" data-toggle="tooltip" data-placement="bottom" title="Update">
+				<button type="button" class="btn btn-default success-btn" style="background: #0ea5e9 !important; color: white !important;" id="btnUpdate" data-toggle="tooltip" data-placement="bottom" title="Update">
 					<i class="fa fa-edit mr-1"></i> Update
 				</button>
 				<button type="button" class="btn btn-default danger-btn" id="btnDelete" data-toggle="tooltip" data-placement="bottom" title="Delete">
-					<i class="fa fa-trash">&nbsp;</i> Delete
+					<i class="fas fa-trash-alt mr-1" style="color:#ef4444;"></i>Delete
 				</button>
-				<button type="button" class="btn btn-default primary-btn " id="js-noc-entry-clear"  data-toggle="tooltip" data-placement="bottom" title="Clear">
-					<i class="fa fa-eraser">&nbsp;</i> Clear
+				<button type="button" class="btn" id="js-noc-entry-clear"  data-toggle="tooltip" data-placement="bottom" title="Clear">
+					<i class="fas fa-redo"></i> Clear
 				</button>
-				<button type="button" class="btn btn-default info-btn js-loan-entry-report-print"  data-toggle="tooltip" data-placement="bottom" title="Print">
-					<i class="fa fa-print">&nbsp;</i> Print
+				<div class="btn-group">
+					<button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-toggle="tooltip" data-placement="bottom" title="Export">
+						<i class="fa fa-download mr-1">&nbsp;</i> Export
+					</button>
+					<div class="dropdown-menu dropdown-menu-right">
+						<button class="dropdown-item d-flex align-items-center js-export-excel" type="button"><i class="fas fa-file-excel" style="color:#16a34a; margin-right:8px;"></i> Excel</button>
+						<button class="dropdown-item d-flex align-items-center js-export-pdf" type="button"><i class="fas fa-file-pdf" style="color:#dc2626; margin-right:8px;"></i> PDF</button>
+					</div>
+				</div>
+				<button type="button" class="btn btn-favorite js-loan-entry-report-favorite" data-toggle="tooltip" data-placement="bottom" title="Favorite">
+					<i class="fas fa-star"></i> Favorite
 				</button>
-				<button type="button" class="btn btn-default warning-btn js-loan-entry-report-favorite"  data-toggle="tooltip" data-placement="bottom" title="Favorite">
-					<i class="fa fa-star">&nbsp;</i> Favorite
-				</button>
-			</div>
+			</div>	
 		</div>
 	</div>
 </div>
-@* 
-<div class="container ml-0 mb-3">
-	<button type="button" class="btn btn-success btn-sm px-3 mr-1" id="btnSave">
-		<i class="fa fa-save mr-1"></i> Save
-	</button>
-	<button type="button" class="btn btn-primary btn-sm px-3 mr-1" id="btnUpdate">
-		<i class="fa fa-edit mr-1"></i> Update
-	</button>
-	<button type="button" class="btn btn-danger btn-sm px-3 mr-1" id="btnDelete">
-		<i class="fa fa-trash mr-1"></i> Delete
-	</button>
-	<button type="button" class="btn btn-secondary btn-sm px-3" id="btnNew">
-		<i class="fa fa-plus mr-1"></i> New
-	</button>
-</div> *@

@@ -6,7 +6,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>GCTL | Dashboard</title>
+    <title>GCTL | @(ViewBag.Title ?? "Dashboard")</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Font Awesome -->
@@ -20,11 +20,9 @@
     <!-- Tempusdominus Bbootstrap 4 -->
     <link rel="stylesheet" href="~/FrontEnd/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
 
-
     <!-- Bootstrap-Select CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.min.css" rel="stylesheet">
     <link href="~/select2_4.0.13/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet" />
-
 
     <!-- iCheck -->
     <link rel="stylesheet" href="~/FrontEnd/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
@@ -69,65 +67,44 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/1.1.2/css/bootstrap-multiselect.min.css">
     <link href="~/css/bootstrap-multiselect.min.css" rel="stylesheet" />
     <style>
-
-
-
-
-
-                #toast-container > .toast-warning {
-                           background-color: #fffcc4 !important;
-                           opacity: 0.90 !important;
-                           background-image: none !important;
-                             color: #142f54;
-                           border: 1px solid #fcf89e;
-                           position: relative;
-                           transition: opacity 0.2s ease;
-
-        }
-
-
-
-                    #toast-container > .toast-warning:hover {
-                                opacity: 1 !important;
-
+            #toast-container > .toast-warning {
+                background-color: #fffcc4 !important;
+                opacity: 0.90 !important;
+                background-image: none !important;
+                color: #142f54;
+                border: 1px solid #fcf89e;
+                position: relative;
+                transition: opacity 0.2s ease;
             }
 
+                #toast-container > .toast-warning:hover {
+                    opacity: 1 !important;
+                }
 
+                #toast-container > .toast-warning::before {
+                    content: '';
+                    position: absolute;
+                    left: 14px;
+                    top: 15px;
+                    width: 22px;
+                    height: 22px;
+                    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23000000'%3E%3Cpath d='M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z'/%3E%3C/svg%3E");
+                    background-size: contain;
+                    background-repeat: no-repeat;
+                }
 
-                    #toast-container > .toast-warning::before {
-                                content: '';
-                                position: absolute;
-                                left: 14px;
-                                top: 15px;
-                                  width: 22px;
-                                height: 22px;
-                                background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23000000'%3E%3Cpath d='M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z'/%3E%3C/svg%3E");
-                                background-size: contain;
-                                background-repeat: no-repeat;
+                #toast-container > .toast-warning .toast-message {
+                    color: #000000;
+                }
 
-            }
+                #toast-container > .toast-warning .toast-close-button {
+                    color: #000000;
+                    text-shadow: none;
+                }
 
-
-
-                    #toast-container > .toast-warning .toast-message {
-                            color: #000000;
-
-            }
-
-                    #toast-container > .toast-warning .toast-close-button {
-                                color: #000000;
-                                text-shadow: none;
-
-            }
-
-
-
-                    #toast-container > .toast-warning .toast-progress {
-                                background-color: #f7f176;
-
-            }
-
-
+                #toast-container > .toast-warning .toast-progress {
+                    background-color: #f7f176;
+                }
     </style>
 </head>
 <body class="hold-transition sidebar-mini sidebar-collapsex text-sm">
@@ -214,7 +191,6 @@
     <script src="~/FrontEnd/plugins/datatables/jquery.dataTables.min.js"></script>
     <script src="~/FrontEnd/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
 
-
     <!-- Bootstrap-Select JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
     <script src="~/select2_4.0.13/bootstrap-select/js/bootstrap-select.min.js"></script>
@@ -232,36 +208,35 @@
 
     <script>
         toastr.options = {
-            "closeButton": true,
-            "debug": false,
-            "newestOnTop": true,
-            "progressBar": true,
-            "positionClass": "toast-top-right", // toast-top-full-width, toast-top-center, toast-top-right
-            "preventDuplicates": true,
-            "timeOut": "10000", // 5 seconds
-            "extendedTimeOut": "10000", // 1 second
-            "showEasing": "swing",
-            "hideEasing": "linear",
-            "showMethod": "fadeIn",
-            "hideMethod": "fadeOut"
+        "closeButton": true,
+        "debug": false,
+        "newestOnTop": true,
+        "progressBar": true,
+        "positionClass": "toast-top-right", // toast-top-full-width, toast-top-center, toast-top-right
+        "preventDuplicates": true,
+        "timeOut": "10000", // 5 seconds
+        "extendedTimeOut": "10000", // 1 second
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
         };
 
         function showLoadingIndicator() {
-            if ($('#loadingIndicator').length === 0) {
-                $('body').append(`
-                            <div id="loadingIndicator" style="display:none; position: fixed; top: 35%; left: 35%; z-index: 9999;">
-                                <img src="/images/spinner4-unscreen.gif" alt="Loading..." />
-                            </div>
-                        `);
-            }
+        if ($('#loadingIndicator').length === 0) {
+        $('body').append(`
+        <div id="loadingIndicator" style="display:none; position: fixed; top: 35%; left: 35%; z-index: 9999;">
+        <img src="/images/spinner4-unscreen.gif" alt="Loading..." />
+        </div>
+        `);
+        }
 
-            $("#loadingIndicator").show();
-            // $('body').css('filter', 'blur(5px)');
+        $("#loadingIndicator").show();
+        // $('body').css('filter', 'blur(5px)');
         }
         function hideLoadingIndicator() {
-            $("#loadingIndicator").hide();
+        $("#loadingIndicator").hide();
         }
-
     </script>
 
     <script src="~/js/sidebar-menu.js"></script>
@@ -275,26 +250,75 @@
     <script src="~/js/custommultiselect/each-gc-access-multiselect.js"></script>
     <script src="~/js/custom/initializeinlinetimepicker.js"></script>
     <script src="~/FrontEnd/Custom/override-card-header.js"></script>
+    <script src="~/js/site-toolbars.js"></script>
     <script type="text/javascript">
 
         function getBaseUrl() {
-            var base_url = window.location.origin;
-            // console.log(base_url);
-            var host = window.location.host;
-            // console.log(host);
-            var pathArray = window.location.pathname.split('/');
-            if (pathArray.includes("@applicationSettings.VirtualPath")) {
-                return base_url + "/@applicationSettings.VirtualPath";
-            }
+        var base_url = window.location.origin;
+        // console.log(base_url);
+        var host = window.location.host;
+        // console.log(host);
+        var pathArray = window.location.pathname.split('/');
+        if (pathArray.includes("@applicationSettings.VirtualPath")) {
+        return base_url + "/@applicationSettings.VirtualPath";
+        }
 
-            return base_url;
+        return base_url;
         }
 
         function normalizeUrl(baseUrl) {
-            return baseUrl.replace(/\/$/, "");
+        return baseUrl.replace(/\/$/, "");
         }
     </script>
+
+    <script>
+        // Global header clock - works on all pages
+        (function () {
+        function pad(n) { return n < 10 ? '0' + n : n; }
+      
+
+        var days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+        var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+        function formatDate(d) {
+        return days[d.getDay()] + ', ' + months[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear() + ',';
+        }
+
+        function formatTime(d) {
+        var h = d.getHours();
+        var ampm = h >= 12 ? 'PM' : 'AM';
+        var hh = h % 12;
+        hh = hh ? hh : 12;
+        return pad(hh) + ':' + pad(d.getMinutes()) + ':' + pad(d.getSeconds()) + ' ' + ampm;
+        }
+
+
+        function updateHeaderClock() {
+        var now = new Date();
+        var dEl = document.getElementById('headerDate');
+        var tEl = document.getElementById('headerTime');
+        if (dEl) dEl.textContent = formatDate(now);
+        if (tEl) tEl.textContent = formatTime(now);
+
+        var container = document.querySelector('.site-header-clock-center');
+        if (container) container.classList.remove('loading');
+        }
+
+        
+
+
+        updateHeaderClock();
+        setInterval(updateHeaderClock, 500);
+
+        setTimeout(function () {
+        var container = document.getElementById('headerClockBox');
+        if (container) container.classList.add('show');
+        }, 100);
+        })();
+
+    </script>
     @RenderSection("Scripts", required: false)
+
 </body>
 
 </html>

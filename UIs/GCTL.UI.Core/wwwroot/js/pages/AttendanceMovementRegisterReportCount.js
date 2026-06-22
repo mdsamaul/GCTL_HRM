@@ -340,8 +340,8 @@
                     // Add logo on the left side
                     if (base64Logo) {
                         const logoWidth = 60;  // Adjust size as needed
-                        const logoHeight = 30; // Adjust size as needed
-                        doc.addImage(base64Logo, 'PNG', leftMargin, y-5, logoWidth, logoHeight);
+                        const logoHeight = 15; // Adjust size as needed
+                        doc.addImage(base64Logo, 'PNG', leftMargin, y-10, logoWidth, logoHeight);
                     }
 
                     doc.setFontSize(14); doc.setFont("times", "bold");

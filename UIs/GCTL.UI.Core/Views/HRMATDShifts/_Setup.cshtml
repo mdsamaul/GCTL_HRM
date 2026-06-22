@@ -51,12 +51,109 @@
         margin: 0;
     }
 
+    .time-picker-wrapper {
+        /* ensure wrapper doesn't hide parts of Flatpickr, allow overflow as needed */
+        position: relative;
+        overflow: visible;
+    }
+
     .select2-container {
         width: 100% !important;
     }
 
     .dataTables_filter {
         margin-right: 0px !important;
+    }
+
+    /*
+     * Flatpickr-specific overrides to keep time picker compact inside its column
+     * and prevent the AM/PM selector from being pushed outside at wide viewports.
+     *
+     * These are scoped to our time picker container so other flatpickr instances
+     * elsewhere are not affected.
+     */
+    .time-picker-container .flatpickr-calendar,
+    .time-picker-container .flatpickr-time {
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Make the time panel use a compact flex layout */
+    .time-picker-container .flatpickr-time {
+        display: flex !important;
+        align-items: center !important;
+        gap: 6px !important;
+        padding: 4px 6px !important;
+        justify-content: flex-start !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+    }
+
+    /* Ensure number inputs don't introduce extra internal padding */
+    .time-picker-container .flatpickr-time .numInputWrapper {
+        padding: 0 !important;
+        margin: 0 !important;
+        display: inline-flex !important;
+        align-items: center !important;
+    }
+
+    .time-picker-container .flatpickr-time input {
+        width: auto !important;
+        min-width: 36px !important;
+        padding: 4px 6px !important;
+        font-size: 0.95rem !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Keep the separator small */
+    .time-picker-container .flatpickr-time .flatpickr-time-separator {
+        padding: 0 4px !important;
+        margin: 0 !important;
+        font-size: 1rem !important;
+        line-height: 1 !important;
+    }
+
+    /* AM/PM control — make it compact and prevent wrapping */
+    .time-picker-container .flatpickr-am-pm,
+    .time-picker-container .flatpickr-am-pm input,
+    .time-picker-container .flatpickr-am-pm span {
+        min-width: 44px !important;
+        padding: 4px 6px !important;
+        margin-left: 6px !important;
+        white-space: nowrap !important;
+        box-sizing: border-box !important;
+        font-size: 0.9rem !important;
+    }
+
+    /* If flatpickr attempts absolute positioning that pushes it off-screen, allow it to anchor within container */
+    .time-picker-container .flatpickr-calendar {
+        left: auto !important;
+        right: 0 !important;
+    }
+
+    /* Tighter layout at wider screens (including your 1300px case) */
+    @@media (min-width: 1200px) {
+        .time-picker-container .flatpickr-time {
+            gap: 4px !important;
+            padding: 3px 5px !important;
+        }
+
+        .time-picker-container .flatpickr-am-pm {
+            min-width: 40px !important;
+            padding: 3px 6px !important;
+        }
+    }
+
+    /* Extremely narrow columns: allow wrapping of the time inputs rather than overflow */
+    @@media (max-width: 575.98px) {
+        .time-picker-container .flatpickr-time {
+            flex-wrap: wrap !important;
+            gap: 4px !important;
+        }
+
+        .time-picker-container .flatpickr-am-pm {
+            margin-left: 0 !important;
+        }
     }
 </style>
 
