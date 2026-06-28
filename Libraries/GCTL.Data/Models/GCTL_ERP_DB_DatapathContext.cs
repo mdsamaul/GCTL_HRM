@@ -118,6 +118,7 @@ namespace GCTL.Data.Models
         public virtual DbSet<HrmAtdManual> HrmAtdManual { get; set; }
         public virtual DbSet<HrmAtdShift> HrmAtdShift { get; set; }
         public virtual DbSet<HrmAttWorkingDayDeclaration> HrmAttWorkingDayDeclaration { get; set; }
+        public virtual DbSet<HrmAttendanceType> HrmAttendanceType { get; set; }
         public virtual DbSet<HrmBrand> HrmBrand { get; set; }
         public virtual DbSet<HrmDefBankAndNomineeInfo> HrmDefBankAndNomineeInfo { get; set; }
         public virtual DbSet<HrmDefBloodGroup> HrmDefBloodGroup { get; set; }
@@ -5068,6 +5069,51 @@ namespace GCTL.Data.Models
                 entity.Property(e => e.WorkingDayDate).HasColumnType("datetime");
             });
 
+            modelBuilder.Entity<HrmAttendanceType>(entity =>
+            {
+                entity.HasKey(e => e.AutoId)
+                    .HasName("PK__HRM_Atte__6B23290594C05823");
+
+                entity.ToTable("HRM_AttendanceType");
+
+                entity.Property(e => e.AutoId)
+                    .HasColumnType("numeric(18, 0)")
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.AttendanceTypeCode)
+                    .IsRequired()
+                    .HasMaxLength(20);
+
+                entity.Property(e => e.AttendanceTypeName)
+                    .IsRequired()
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.Ldate)
+                    .HasColumnType("smalldatetime")
+                    .HasColumnName("LDate");
+
+                entity.Property(e => e.Lip)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .HasColumnName("LIP");
+
+                entity.Property(e => e.Lmac)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .HasColumnName("LMAC");
+
+                entity.Property(e => e.Luser)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .HasColumnName("LUser");
+
+                entity.Property(e => e.ModifyDate).HasColumnType("smalldatetime");
+
+                entity.Property(e => e.ShortName)
+                    .IsRequired()
+                    .HasMaxLength(20);
+            });
+
             modelBuilder.Entity<HrmBrand>(entity =>
             {
                 entity.HasKey(e => e.AutoId)
@@ -7848,7 +7894,7 @@ namespace GCTL.Data.Models
             modelBuilder.Entity<HrmEmployeeLetters>(entity =>
             {
                 entity.HasKey(e => e.AutoId)
-                    .HasName("PK__HRM_Empl__6B2329054CE6B56F");
+                    .HasName("PK__HRM_Empl__6B232905D96596B7");
 
                 entity.ToTable("HRM_EmployeeLetters");
 

@@ -331,16 +331,18 @@
         function generatePdf(groupedData, filter, isPreview) {
             if (!groupedData || groupedData.length === 0) {
                 alert("Data not found");
-                return; 
+                return;
             }
 
-            getImageBase64FromUrl('/images/DP_logo.png', function (base64Logo) {
+            getImageBase64FromUrl('/images/DP_logo.png', function (base64Logo, natW, natH) {
+
+               
+                var targetH = 20;
+                var logoDrawWidth = (natW && natH) ? (natW / natH) * targetH : 60;
+                var logoDrawHeight = natH ? targetH : 30;
+
                 const { jsPDF } = window.jspdf;
-                const doc = new jsPDF({
-                    orientation: 'portrait',
-                    unit: 'pt',
-                    format: 'a4'
-                });
+                const doc = new jsPDF({ orientation: 'portrait', unit: 'pt', format: 'a4' });
 
                 const pageWidth = doc.internal.pageSize.getWidth();
                 const pageHeight = doc.internal.pageSize.getHeight();
@@ -366,61 +368,51 @@
 
                 let totalRecords = 0;
 
+                // ✅ drawHeader — শুধু draw করে, কোনো async নেই
                 function drawHeader(doc) {
                     if (base64Logo) {
-                        doc.addImage(base64Logo, 'PNG', leftMargin, 15, 60, 30);
+                        doc.addImage(base64Logo, 'PNG', leftMargin, 8, logoDrawWidth, logoDrawHeight);
+                        //                                          ↑y=8, height=25 → logo শেষ হয় y=33 এ
                     }
-                   
-
                     doc.setFontSize(16);
                     doc.setFont("times", "bold");
-                    doc.text(companyName, pageWidth / 2, 35, { align: 'center' });
+                    doc.text(companyName, pageWidth / 2, 22, { align: 'center' });  // 22
 
                     doc.setFontSize(12);
                     doc.setFont("times", "semibold");
-                    doc.text("Attendance Movement Register Report", pageWidth / 2, 50, { align: 'center' });
+                    doc.text("Attendance Movement Register Report", pageWidth / 2, 36, { align: 'center' }); // 36
 
                     const lineLength = contentWidth / 3;
                     const startX = (pageWidth - lineLength) / 2;
                     const endX = startX + lineLength;
                     doc.setDrawColor(0);
                     doc.setLineWidth(0.5);
-                    doc.line(startX, 54, endX, 54);
-
+                    doc.line(startX, 40, endX, 40); // 40
 
                     doc.setFontSize(9);
                     doc.setFont("times", "normal");
 
                     if (fromDate && toDate) {
                         if (fromDate === toDate) {
-                            const singleDateText = fromDate;
-                            doc.text(singleDateText, pageWidth / 2, 65, { align: 'center' });
+                            doc.text(fromDate, pageWidth / 2, 50, { align: 'center' }); // 50
                         } else {
-                            const fromToText = "Date: " + fromDate + " - " + toDate;
-                            doc.text(fromToText, pageWidth / 2, 65, { align: 'center' });
+                            doc.text("Date: " + fromDate + " - " + toDate, pageWidth / 2, 50, { align: 'center' });
                         }
-                    }
-                    else if (filter.MonthIDs && filter.YearIDs) {
-                        // Map month numbers to names
-                        const monthNames = [
-                            "January", "February", "March", "April", "May", "June",
-                            "July", "August", "September", "October", "November", "December"
-                        ];
-
+                    } else if (filter.MonthIDs && filter.YearIDs) {
+                        const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
                         const monthId = filter.MonthIDs[0];
                         const yearId = filter.YearIDs[0];
-
                         if (monthId && yearId) {
-                            const monthYearText =  monthNames[monthId - 1] + ", " + yearId;
-                            doc.text(monthYearText, pageWidth / 2, 65, { align: 'center' });
+                            doc.text(monthNames[monthId - 1] + ", " + yearId, pageWidth / 2, 50, { align: 'center' });
                         }
                     }
                 }
 
                 drawHeader(doc);
 
-                let startY = 80;
+                let startY = 65;
                 const allLocationLinks = [];
+
                 groupedData.forEach(function (dept, deptIndex) {
                     if (deptIndex > 0) startY += 15;
 
@@ -445,15 +437,6 @@
                             timeStr = `${h}:${m}:${s} ${ap}`;
                         }
 
-
-                        //const locationText = (emp.latitude && emp.longitude)
-                        //    ? `https://www.google.com/maps/dir/Current+Location/${emp.latitude},${emp.longitude}`
-                        //    : "";
-
-                        //const locationText = (emp.latitude && emp.longitude)
-                        //    ? `https://www.google.com/maps/dir//${emp.latitude},${emp.longitude}`
-                        //    : "";
-
                         const locationText = (emp.latitude && emp.longitude)
                             ? `https://www.google.com/maps/dir/?api=1&destination=${emp.latitude},${emp.longitude}&travelmode=driving`
                             : "";
@@ -471,29 +454,17 @@
                             locationText ? "View Location" : ""
                         ]);
                     });
+
                     const deptStartIndex = allLocationLinks.length - tableData.length;
+
                     doc.autoTable({
                         head: [['SN', 'Employee ID', 'Name', 'Designation', 'Branch', 'Date', 'Time', 'Machine', 'Location']],
                         body: tableData,
                         startY: startY,
                         theme: 'grid',
-                        margin: { top: 85, left: leftMargin, right: rightMargin },
-                        styles: {
-                            fontSize: 7,
-                            cellPadding: 2,
-                            lineColor: [200, 200, 200],
-                            lineWidth: 0.1,
-                            textColor: [0, 0, 0],
-                        },
-                        headStyles: {
-                            fillColor: [211, 211, 211],
-                            textColor: [0, 0, 0],
-                            fontStyle: 'bold',
-                            lineColor: [180, 180, 180],
-                            lineWidth: 0.1,
-                            halign: 'center',
-                            valign: 'middle'
-                        },
+                        margin: { top: 65, left: leftMargin, right: rightMargin }, 
+                        styles: { fontSize: 7, cellPadding: 2, lineColor: [200, 200, 200], lineWidth: 0.1, textColor: [0, 0, 0] },
+                        headStyles: { fillColor: [211, 211, 211], textColor: [0, 0, 0], fontStyle: 'bold', lineColor: [180, 180, 180], lineWidth: 0.1, halign: 'center', valign: 'middle' },
                         columnStyles: {
                             0: { cellWidth: 22, halign: 'center', valign: 'middle' },
                             1: { cellWidth: 50, halign: 'center', valign: 'middle' },
@@ -510,36 +481,19 @@
                             drawHeader(doc);
                             const pageNumber = doc.internal.getCurrentPageInfo().pageNumber;
                             const totalPages = '{total_pages_count_string}';
-
-                            let leftText = 'Print: ' + currentDate;
-                            let rightText = 'Page ' + pageNumber + ' of ' + totalPages;
-
-                            doc.setFontSize(8);
-                            doc.setTextColor(50, 50, 50);
-                            doc.setFont("times", "normal");
-
-                            doc.text(leftText, leftMargin, pageHeight - 20);
-                            doc.text(rightText, pageWidth + 70, pageHeight - 20, { align: 'right' });
+                            doc.setFontSize(8); doc.setTextColor(50, 50, 50); doc.setFont("times", "normal");
+                            doc.text('Print: ' + currentDate, leftMargin, pageHeight - 20);
+                            doc.text('Page ' + pageNumber + ' of ' + totalPages, pageWidth + 70, pageHeight - 20, { align: 'right' });
                         },
-
                         didDrawCell: function (data) {
-                            if (data.column.index === 8 && data.cell.section === 'body') {
-                                const cellText = data.cell.raw;
-                                if (cellText === "View Location") {
-                                    const url = allLocationLinks[deptStartIndex + data.row.index];
-                                    if (url) {
-                                      
-                                        doc.setFillColor(255, 255, 255);
-                                        doc.rect(data.cell.x + 1, data.cell.y + 1, data.cell.width - 2, data.cell.height - 2, 'F');
-
-                                        doc.setFontSize(7);
-                                        doc.setTextColor(0, 102, 204);
-                                        doc.textWithLink("View Location", data.cell.x + data.cell.width / 2, data.cell.y + data.cell.height / 2 + 2, {
-                                            url: url,
-                                            align: 'center'
-                                        });
-                                        doc.setTextColor(0, 0, 0);
-                                    }
+                            if (data.column.index === 8 && data.cell.section === 'body' && data.cell.raw === "View Location") {
+                                const url = allLocationLinks[deptStartIndex + data.row.index];
+                                if (url) {
+                                    doc.setFillColor(255, 255, 255);
+                                    doc.rect(data.cell.x + 1, data.cell.y + 1, data.cell.width - 2, data.cell.height - 2, 'F');
+                                    doc.setFontSize(7); doc.setTextColor(0, 102, 204);
+                                    doc.textWithLink("View Location", data.cell.x + data.cell.width / 2, data.cell.y + data.cell.height / 2 + 2, { url: url, align: 'center' });
+                                    doc.setTextColor(0, 0, 0);
                                 }
                             }
                         }
@@ -548,44 +502,24 @@
                     startY = doc.lastAutoTable.finalY;
                 });
 
-                if (typeof doc.putTotalPages === 'function') {
-                    doc.putTotalPages('{total_pages_count_string}');
-                }
+                if (typeof doc.putTotalPages === 'function') doc.putTotalPages('{total_pages_count_string}');
 
                 let finalY = doc.lastAutoTable.finalY || 200;
+                if (finalY + 20 > pageHeight - 30) { doc.addPage(); drawHeader(doc); finalY = 90; }
 
-                if (finalY + 20 > pageHeight - 30) {
-                    doc.addPage();
-                    drawHeader(doc);
-                    finalY = 90;
-                }
-
-                doc.setFontSize(9);
-                doc.setTextColor(0, 0, 0);
-                doc.setFont("times", "bold");
+                doc.setFontSize(9); doc.setTextColor(0, 0, 0); doc.setFont("times", "bold");
                 doc.text('Total Records: ' + totalRecords, leftMargin, finalY + 15);
 
                 if (isPreview) {
                     const pdfBlob = doc.output('blob');
                     const pdfUrl = URL.createObjectURL(pdfBlob);
-
-                    // Show the preview container
                     const previewContainer = document.getElementById("pdf-preview-container");
                     previewContainer.style.display = "block";
-
-                    // Clear previous content
                     previewContainer.innerHTML = "";
-
-                    // Create iframe
                     const iframe = document.createElement("iframe");
                     iframe.style.width = "100%";
                     iframe.style.height = "100%";
                     iframe.src = pdfUrl;
-
-
-
-
-                    // Append iframe to container
                     previewContainer.appendChild(iframe);
                 } else {
                     doc.save('AttendanceMovementRegister.pdf');
@@ -609,11 +543,10 @@
                 var ctx = canvas.getContext('2d');
                 ctx.drawImage(img, 0, 0);
                 var dataURL = canvas.toDataURL('image/png');
-                callback(dataURL);
+                // ✅ base64 এর সাথে natural size ও পাঠাচ্ছি
+                callback(dataURL, img.naturalWidth, img.naturalHeight);
             };
-            img.onerror = function () {
-                callback(null);
-            };
+            img.onerror = function () { callback(null, 0, 0); };
             img.src = url;
         }
 

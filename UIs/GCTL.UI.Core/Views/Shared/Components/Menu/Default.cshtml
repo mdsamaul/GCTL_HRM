@@ -9,8 +9,8 @@
     var currentController = pathSegments.Length > 0 ? pathSegments[0] : "";
 
     var urlPath = string.IsNullOrWhiteSpace(applicationSettings.VirtualPath)
-        ? ""
-        : $"/{applicationSettings.VirtualPath}";
+        ? "/HRM"
+        : $"/HRM/{applicationSettings.VirtualPath}";
 }
 
 <style>
@@ -97,7 +97,7 @@
             </li>
 
             <li>
-                <a href="/Dashboard" class="@(isDashboardActive ? "active" : "")">
+                <a href="/HRM/Dashboard" class="@(isDashboardActive ? "active" : "")">
                     <i class="fa fa-tachometer-alt"></i>
                     <span>Dashboard</span>
                 </a>

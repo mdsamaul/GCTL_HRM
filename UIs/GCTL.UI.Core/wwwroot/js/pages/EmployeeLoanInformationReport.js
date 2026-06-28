@@ -696,9 +696,30 @@
             }
         }
 
+        async function loadImageBase64(url) {
+            return new Promise((resolve) => {
+                const img = new Image();
+                img.crossOrigin = 'Anonymous';
+                img.onload = function () {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = img.naturalWidth;
+                    canvas.height = img.naturalHeight;
+                    canvas.getContext('2d').drawImage(img, 0, 0);
+                    resolve({
+                        base64: canvas.toDataURL('image/png'),
+                        natW: img.naturalWidth,
+                        natH: img.naturalHeight
+                    });
+                };
+                img.onerror = function () {
+                    resolve({ base64: null, natW: 0, natH: 0 });
+                };
+                img.src = url;
+            });
+        }
 
 
-        GeneratePdf = function (installmentData) {
+        GeneratePdf = async function (installmentData) {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF('p', 'pt', 'a4');
             const pageWidth = doc.internal.pageSize.getWidth();
@@ -709,6 +730,19 @@
                 alert("No data available for PDF");
                 return;
             }
+
+            // ★ Logo load — aspect ratio auto
+            const LOGO_TARGET_HEIGHT = 40;  // ← এই height বাড়ান/কমান
+            let logoBase64 = null;
+            let logoWidth = LOGO_TARGET_HEIGHT;
+            try {
+                const logoData = await loadImageBase64('/images/DP_logo.png');
+                logoBase64 = logoData.base64;
+                if (logoData.natH > 0) {
+                    logoWidth = (logoData.natW / logoData.natH) * LOGO_TARGET_HEIGHT;
+                }
+            } catch (e) { }
+     
 
             function drawSectionTitle(titleText) {
                 doc.setFontSize(14);
@@ -730,14 +764,25 @@
                     doc.addPage();
                     y = 35;
                 }
+                // Logo — left aligned,  y update
+                if (logoBase64) {
+                    doc.addImage(logoBase64, 'PNG', marginLeft, y, logoWidth, LOGO_TARGET_HEIGHT);
+                }
 
-                // Company Title
+                // Company name — logo 
                 doc.setFontSize(18);
                 doc.setFont(undefined, 'bold');
                 let companyText = `${loan.companyName}`;
                 let textWidth = doc.getTextWidth(companyText);
-                doc.text(companyText, (pageWidth - textWidth) / 2, y);
-                y += 25;
+
+                // Logo height  center এ text align 
+                let textY = y + (LOGO_TARGET_HEIGHT / 2) + 5; // vertically center with logo
+                doc.text(companyText, (pageWidth - textWidth) / 2, textY);
+
+                y += LOGO_TARGET_HEIGHT + 10; 
+
+
+               
 
                 // Installment Details Text
                 let installmentDetailsText = `Installments of ${FormateAmountEN(loan.monthlyDeduction)} tk per month to be deposited to designated account.`;

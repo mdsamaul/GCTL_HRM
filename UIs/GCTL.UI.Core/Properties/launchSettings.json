@@ -26,3 +26,43 @@
     }
   }
 }
+
+//{
+//  "profiles": {
+//    "Apex.Web": {
+//      "commandName": "Project",
+//      "launchBrowser": true,
+//      "environmentVariables": {
+//        "ASPNETCORE_ENVIRONMENT": "Development"
+//      },
+//      "dotnetRunMessages": true,
+//      "applicationUrl": "https://localhost:7213;http://localhost:5213"
+//    },
+//    "IIS Express": {
+//      "commandName": "IISExpress",
+//      "launchBrowser": true,
+//      "environmentVariables": {
+//        "ASPNETCORE_ENVIRONMENT": "Development"
+//      }
+//    },
+//    "WSL": {
+//      "commandName": "WSL2",
+//      "launchBrowser": true,
+//      "launchUrl": "https://localhost:7213",
+//      "environmentVariables": {
+//        "ASPNETCORE_ENVIRONMENT": "Development",
+//        "ASPNETCORE_URLS": "https://localhost:7213;http://localhost:5213"
+//      },
+//      "distributionName": ""
+//    }
+//  },
+//  "iisSettings": {
+//    "windowsAuthentication": false,
+//    "anonymousAuthentication": true,
+//    "iisExpress": {
+//      "applicationUrl": "http://localhost:46883/HRM",
+//      "sslPort": 44370
+//    }
+//  }
+//}
+ 

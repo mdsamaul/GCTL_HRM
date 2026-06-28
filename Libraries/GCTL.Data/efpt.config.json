@@ -415,6 +415,10 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[HRM_AttendanceType]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[HRM_Brand]",
          "ObjectType": 0
       },
@@ -1407,6 +1411,10 @@
          "ObjectType": 1
       },
       {
+         "Name": "[dbo].[RPT_GetDailyAttendanceSummaryReport]",
+         "ObjectType": 1
+      },
+      {
          "Name": "[dbo].[Rpt_PatientInfo]",
          "ObjectType": 1
       },
@@ -1636,6 +1644,14 @@
       },
       {
          "Name": "[dbo].[SP_HRM_AdvancePayReport]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[usp_GetAttendanceMovement]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[usp_GetLeaveDashboard]",
          "ObjectType": 1
       },
       {

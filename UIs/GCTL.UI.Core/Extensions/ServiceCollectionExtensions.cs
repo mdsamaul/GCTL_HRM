@@ -29,6 +29,8 @@ using GCTL.Service.CoreBranches;
 using GCTL.Service.Country;
 using GCTL.Service.CourseTitle;
 using GCTL.Service.Currencies;
+using GCTL.Service.DailyAttendanceDetailsReport;
+using GCTL.Service.DailyAttendanceSummaryReportService;
 using GCTL.Service.DashboardAttendance;
 using GCTL.Service.DeleteHistories;
 using GCTL.Service.DeliveryPeriods;
@@ -229,6 +231,7 @@ namespace GCTL.UI.Core.Extensions
 
             //samaul
 
+            services.AddScoped<IDailyAttendanceDetailsReportService, DailyAttendanceDetailsReportService>();
             services.AddScoped<IEmployeeWeekendDeclarationService, EmployeeWeekendDeclarationService>();
             services.AddScoped<IAdvanceLoanAdjustmentReportServices, AdvanceLoanAdjustmentReportServices>();
             services.AddScoped<IEmployeeLoanInformationReportServices, EmployeeLoanInformationReportServices>();
@@ -260,6 +263,7 @@ namespace GCTL.UI.Core.Extensions
             services.AddScoped<IGcFilterService, GcFilterService>();
             services.AddScoped<IGcAccessFilterService, GcAccessFilterService>();
             services.AddScoped<IHRLettersReportService, HRLettersReportService>();
+            services.AddScoped<IDailyAttendanceSummaryReportService, DailyAttendanceSummaryReportService>();
 
 
             services.AddScoped<IProductIssueEntryService, ProductIssueEntryService>();

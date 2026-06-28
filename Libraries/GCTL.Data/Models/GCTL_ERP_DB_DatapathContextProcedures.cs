@@ -52,7 +52,6 @@ namespace GCTL.Data.Models
             modelBuilder.Entity<EmployeeGeneralInfoReportSPResult>().HasNoKey().ToView(null);
             modelBuilder.Entity<EmployeeLoanInformationReportResult>().HasNoKey().ToView(null);
             modelBuilder.Entity<EmployeeReferenceInformationReportSPResult>().HasNoKey().ToView(null);
-            modelBuilder.Entity<FullEmployeeDetailsGetByidResult>().HasNoKey().ToView(null);
             modelBuilder.Entity<GetAdvancePayPagedWithFilterResult>().HasNoKey().ToView(null);
             modelBuilder.Entity<GetCompanyNamesBySearchResult>().HasNoKey().ToView(null);
             modelBuilder.Entity<GetDiscountDetailsResult>().HasNoKey().ToView(null);
@@ -101,6 +100,7 @@ namespace GCTL.Data.Models
             modelBuilder.Entity<QualificationReportSPResult>().HasNoKey().ToView(null);
             modelBuilder.Entity<ReferenceCommissionReportResult>().HasNoKey().ToView(null);
             modelBuilder.Entity<ReferenceCommissionSummaryResult>().HasNoKey().ToView(null);
+            modelBuilder.Entity<RPT_GetDailyAttendanceSummaryReportResult>().HasNoKey().ToView(null);
             modelBuilder.Entity<Rpt_PatientInfoResult>().HasNoKey().ToView(null);
             modelBuilder.Entity<Rpt_proc_BankReceiptVoucherResult>().HasNoKey().ToView(null);
             modelBuilder.Entity<Rpt_proc_BeforePLTotalCompanyTaxExpenseResult>().HasNoKey().ToView(null);
@@ -158,6 +158,8 @@ namespace GCTL.Data.Models
             modelBuilder.Entity<sp_GetEmployeeNonInvestmentEntriesResult>().HasNoKey().ToView(null);
             modelBuilder.Entity<SP_HRM_AdvancePayFilterDataResult>().HasNoKey().ToView(null);
             modelBuilder.Entity<SP_HRM_AdvancePayReportResult>().HasNoKey().ToView(null);
+            modelBuilder.Entity<usp_GetAttendanceMovementResult>().HasNoKey().ToView(null);
+            modelBuilder.Entity<usp_GetLeaveDashboardResult>().HasNoKey().ToView(null);
             modelBuilder.Entity<USP_TransportExpenseReportResult>().HasNoKey().ToView(null);
             modelBuilder.Entity<VoucherEntryForCollectionReceivedbankResult>().HasNoKey().ToView(null);
             modelBuilder.Entity<VoucherEntryForCollectionReceivedCashResult>().HasNoKey().ToView(null);
@@ -1168,33 +1170,6 @@ namespace GCTL.Data.Models
                 parameterreturnValue,
             };
             var _ = await _context.SqlQueryAsync<EmployeeReferenceInformationReportSPResult>("EXEC @returnValue = [dbo].[EmployeeReferenceInformationReportSP] @DepartmentCodes = @DepartmentCodes, @DesignationCodes = @DesignationCodes, @EmployeeCodes = @EmployeeCodes, @BranchCodes = @BranchCodes, @CompanyCodes = @CompanyCodes, @NationalIDNO = @NationalIDNO", sqlParameters, cancellationToken);
-
-            returnValue?.SetValue(parameterreturnValue.Value);
-
-            return _;
-        }
-
-        public virtual async Task<List<FullEmployeeDetailsGetByidResult>> FullEmployeeDetailsGetByidAsync(string EmployeeCode, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
-        {
-            var parameterreturnValue = new SqlParameter
-            {
-                ParameterName = "returnValue",
-                Direction = System.Data.ParameterDirection.Output,
-                SqlDbType = System.Data.SqlDbType.Int,
-            };
-
-            var sqlParameters = new []
-            {
-                new SqlParameter
-                {
-                    ParameterName = "EmployeeCode",
-                    Size = 100,
-                    Value = EmployeeCode ?? Convert.DBNull,
-                    SqlDbType = System.Data.SqlDbType.NVarChar,
-                },
-                parameterreturnValue,
-            };
-            var _ = await _context.SqlQueryAsync<FullEmployeeDetailsGetByidResult>("EXEC @returnValue = [dbo].[FullEmployeeDetailsGetByid] @EmployeeCode = @EmployeeCode", sqlParameters, cancellationToken);
 
             returnValue?.SetValue(parameterreturnValue.Value);
 
@@ -4062,6 +4037,46 @@ namespace GCTL.Data.Models
                 parameterreturnValue,
             };
             var _ = await _context.SqlQueryAsync<ReferenceCommissionSummaryResult>("EXEC @returnValue = [dbo].[ReferenceCommissionSummary] @CommissionReceiver = @CommissionReceiver, @CommissionReceiverId = @CommissionReceiverId, @FromDate = @FromDate, @ToDate = @ToDate", sqlParameters, cancellationToken);
+
+            returnValue?.SetValue(parameterreturnValue.Value);
+
+            return _;
+        }
+
+        public virtual async Task<List<RPT_GetDailyAttendanceSummaryReportResult>> RPT_GetDailyAttendanceSummaryReportAsync(string CompanyCode, string DepartmentCodes, DateOnly? FromDate, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
+        {
+            var parameterreturnValue = new SqlParameter
+            {
+                ParameterName = "returnValue",
+                Direction = System.Data.ParameterDirection.Output,
+                SqlDbType = System.Data.SqlDbType.Int,
+            };
+
+            var sqlParameters = new []
+            {
+                new SqlParameter
+                {
+                    ParameterName = "CompanyCode",
+                    Size = 50,
+                    Value = CompanyCode ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.VarChar,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "DepartmentCodes",
+                    Size = -1,
+                    Value = DepartmentCodes ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.NVarChar,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "FromDate",
+                    Value = FromDate ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.Date,
+                },
+                parameterreturnValue,
+            };
+            var _ = await _context.SqlQueryAsync<RPT_GetDailyAttendanceSummaryReportResult>("EXEC @returnValue = [dbo].[RPT_GetDailyAttendanceSummaryReport] @CompanyCode = @CompanyCode, @DepartmentCodes = @DepartmentCodes, @FromDate = @FromDate", sqlParameters, cancellationToken);
 
             returnValue?.SetValue(parameterreturnValue.Value);
 
@@ -6947,6 +6962,145 @@ namespace GCTL.Data.Models
                 parameterreturnValue,
             };
             var _ = await _context.SqlQueryAsync<SP_HRM_AdvancePayReportResult>("EXEC @returnValue = [dbo].[SP_HRM_AdvancePayReport] @CompanyCodes = @CompanyCodes, @BranchCodes = @BranchCodes, @DepartmentCodes = @DepartmentCodes, @DesignationCodes = @DesignationCodes, @EmployeeIDs = @EmployeeIDs, @PayHeadIDs = @PayHeadIDs, @MonthIDs = @MonthIDs, @YearIDs = @YearIDs", sqlParameters, cancellationToken);
+
+            returnValue?.SetValue(parameterreturnValue.Value);
+
+            return _;
+        }
+
+        public virtual async Task<List<usp_GetAttendanceMovementResult>> usp_GetAttendanceMovementAsync(string CompanyCode, string BranchCode, string DepartmentCode, DateOnly? FromDate, int? Page, int? PageSize, string Search, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
+        {
+            var parameterreturnValue = new SqlParameter
+            {
+                ParameterName = "returnValue",
+                Direction = System.Data.ParameterDirection.Output,
+                SqlDbType = System.Data.SqlDbType.Int,
+            };
+
+            var sqlParameters = new []
+            {
+                new SqlParameter
+                {
+                    ParameterName = "CompanyCode",
+                    Size = 50,
+                    Value = CompanyCode ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.VarChar,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "BranchCode",
+                    Size = 50,
+                    Value = BranchCode ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.VarChar,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "DepartmentCode",
+                    Size = 50,
+                    Value = DepartmentCode ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.VarChar,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "FromDate",
+                    Value = FromDate ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.Date,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "Page",
+                    Value = Page ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.Int,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "PageSize",
+                    Value = PageSize ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.Int,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "Search",
+                    Size = 100,
+                    Value = Search ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.VarChar,
+                },
+                parameterreturnValue,
+            };
+            var _ = await _context.SqlQueryAsync<usp_GetAttendanceMovementResult>("EXEC @returnValue = [dbo].[usp_GetAttendanceMovement] @CompanyCode = @CompanyCode, @BranchCode = @BranchCode, @DepartmentCode = @DepartmentCode, @FromDate = @FromDate, @Page = @Page, @PageSize = @PageSize, @Search = @Search", sqlParameters, cancellationToken);
+
+            returnValue?.SetValue(parameterreturnValue.Value);
+
+            return _;
+        }
+
+        public virtual async Task<List<usp_GetLeaveDashboardResult>> usp_GetLeaveDashboardAsync(string CompanyCode, string BranchCode, string DepartmentCode, int? Year, int? Page, int? PageSize, string Search, string EmployeeId, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
+        {
+            var parameterreturnValue = new SqlParameter
+            {
+                ParameterName = "returnValue",
+                Direction = System.Data.ParameterDirection.Output,
+                SqlDbType = System.Data.SqlDbType.Int,
+            };
+
+            var sqlParameters = new []
+            {
+                new SqlParameter
+                {
+                    ParameterName = "CompanyCode",
+                    Size = 50,
+                    Value = CompanyCode ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.VarChar,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "BranchCode",
+                    Size = 50,
+                    Value = BranchCode ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.VarChar,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "DepartmentCode",
+                    Size = 50,
+                    Value = DepartmentCode ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.VarChar,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "Year",
+                    Value = Year ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.Int,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "Page",
+                    Value = Page ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.Int,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "PageSize",
+                    Value = PageSize ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.Int,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "Search",
+                    Size = 100,
+                    Value = Search ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.VarChar,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "EmployeeId",
+                    Size = 50,
+                    Value = EmployeeId ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.VarChar,
+                },
+                parameterreturnValue,
+            };
+            var _ = await _context.SqlQueryAsync<usp_GetLeaveDashboardResult>("EXEC @returnValue = [dbo].[usp_GetLeaveDashboard] @CompanyCode = @CompanyCode, @BranchCode = @BranchCode, @DepartmentCode = @DepartmentCode, @Year = @Year, @Page = @Page, @PageSize = @PageSize, @Search = @Search, @EmployeeId = @EmployeeId", sqlParameters, cancellationToken);
 
             returnValue?.SetValue(parameterreturnValue.Value);
 

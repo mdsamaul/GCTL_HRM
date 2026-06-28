@@ -117,12 +117,21 @@
             @RenderBody()
         </div>
         <!-- /.content-wrapper -->
-        <footer class="main-footer">
-            <strong>Copyright &copy; 2020-2030 <a href="http://gctlinfosys.com">GCTL Infosys</a>.</strong>
-            All rights reserved.
-            <div class="float-right d-none d-sm-inline-block">
-                @*<b>Version</b> 3.0.4*@
+        <footer class="main-footer p-0">
+            <div class="d-flex justify-content-between align-items-center">
+                <div style="padding: .812rem;">
+                    <strong>Copyright &copy; 2020-2030 <a href="http://gctlinfosys.com">GCTL Infosys</a>.</strong>
+                    All rights reserved.
+                    <div class="float-right d-none d-sm-inline-block">
+                        @*<b>Version</b> 3.0.4*@
+                    </div>
+                </div>
+                <div class="ml-auto">
+                    <img src="~/images/gctl_b_w.png" height="35" style="opacity:.50;" />
+                </div>
+                <div class="col-1"></div>
             </div>
+            
         </footer>
 
         <!-- Control Sidebar -->
@@ -253,22 +262,41 @@
     <script src="~/js/site-toolbars.js"></script>
     <script type="text/javascript">
 
+        // function getBaseUrl() {
+        // var base_url = window.location.origin;
+        // var host = window.location.host;
+        // var pathArray = window.location.pathname.split('/');
+        // if (pathArray.includes("@applicationSettings.VirtualPath")) {
+        // return base_url + "/@applicationSettings.VirtualPath";
+        // }
+
+        // return base_url;
+        // }
+
         function getBaseUrl() {
         var base_url = window.location.origin;
-        // console.log(base_url);
-        var host = window.location.host;
-        // console.log(host);
         var pathArray = window.location.pathname.split('/');
         if (pathArray.includes("@applicationSettings.VirtualPath")) {
         return base_url + "/@applicationSettings.VirtualPath";
         }
-
-        return base_url;
+        return base_url + "/HRM"; 
         }
 
         function normalizeUrl(baseUrl) {
         return baseUrl.replace(/\/$/, "");
         }
+    </script>
+    <script>
+        // Auto HRM prefix for all AJAX calls
+        $.ajaxPrefilter(function (options) {
+        if (options.url
+        && options.url.startsWith('/')
+        && !options.url.startsWith('/HRM')
+        && !options.url.startsWith('/lib')
+        && !options.url.startsWith('/FrontEnd')) {
+        options.url = '/HRM' + options.url;
+        }
+        });
     </script>
 
     <script>
