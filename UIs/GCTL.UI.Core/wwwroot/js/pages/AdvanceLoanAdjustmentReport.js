@@ -691,50 +691,27 @@
     }
 
     
-
     async function loadImageBase64(url) {
-        try {
-            // URL validation
-            if (!url || typeof url !== 'string') {
-                throw new Error('Invalid URL provided');
-            }
-
-            // Fetch the image
-            const response = await fetch(url);
-
-            // Check if response is ok
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status} - ${response.statusText}`);
-            }
-
-            // Check if it's actually an image
-            const contentType = response.headers.get('content-type');
-            if (!contentType || !contentType.startsWith('image/')) {
-                console.warn('Content type is not an image:', contentType);
-            }
-
-            const blob = await response.blob();
-
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-
-                reader.onloadend = () => {
-                    resolve(reader.result);
-                };
-
-                reader.onerror = () => {
-                    reject(new Error('Failed to read file as base64'));
-                };
-
-                reader.readAsDataURL(blob);
-            });
-
-        } catch (error) {
-            console.error('Error loading image as base64:', error);
-            throw error; // Re-throw to let caller handle it
-        }
+        return new Promise((resolve) => {
+            const img = new Image();
+            img.crossOrigin = 'Anonymous';
+            img.onload = function () {
+                const canvas = document.createElement('canvas');
+                canvas.width = img.naturalWidth;
+                canvas.height = img.naturalHeight;
+                canvas.getContext('2d').drawImage(img, 0, 0);
+                resolve({
+                    base64: canvas.toDataURL('image/png'),
+                    natW: img.naturalWidth,
+                    natH: img.naturalHeight
+                });
+            };
+            img.onerror = function () {
+                resolve({ base64: null, natW: 0, natH: 0 });
+            };
+            img.src = url;
+        });
     }
-
     // Usage example with error handling:
     async function useLoadImageBase64() {
         try {
@@ -783,11 +760,18 @@
         const createdBy = `Print Datetime: ${formatDateTime(now)} || ${groupedResponse[0].luser}`;
         const logoUrl = '/images/DP_logo.png';
 
-        let logo = null;
-        try {
-            logo = await loadImageBase64(logoUrl);
-        } catch (e) { }
+       
+        const LOGO_TARGET_HEIGHT = 8; 
 
+        let logoBase64 = null;
+        let logoWidth = LOGO_TARGET_HEIGHT; // fallback square
+        try {
+            const logoData = await loadImageBase64(logoUrl);
+            logoBase64 = logoData.base64;
+            if (logoData.natH > 0) {
+                logoWidth = (logoData.natW / logoData.natH) * LOGO_TARGET_HEIGHT;
+            }
+        } catch (e) { }
         let currentY = 30;
         let currentDepartmentName = "";
         let isTableActive = false;
@@ -797,8 +781,8 @@
             doc.setFontSize(14);
             doc.setFont(undefined, 'bold');
 
-            if (logo) {
-                doc.addImage(logo, 'PNG', 5, 2, 40, 17);
+            if (logoBase64) {
+                doc.addImage(logoBase64, 'PNG', 10, 4, logoWidth, LOGO_TARGET_HEIGHT);
             }
 
             doc.text(companyName, pageWidth / 2, 10, { align: 'center' });

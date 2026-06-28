@@ -304,7 +304,13 @@
                 return;
             }
 
-            getImageBase64FromUrl('/images/DP_logo.png', function (base64Logo) {
+            getImageBase64FromUrl('/images/DP_logo.png', function (base64Logo, natW, natH) {
+
+             
+                var targetH = 20;
+                var logoDrawWidth = (natW && natH) ? (natW / natH) * targetH : 60;
+                var logoDrawHeight = natH ? targetH : 15;
+                
                 const { jsPDF } = window.jspdf;
                 const doc = new jsPDF({ orientation: 'portrait', unit: 'pt', format: 'a4' });
              
@@ -336,12 +342,11 @@
                 
                 function drawPageHeader(doc) {
                     let y = 20;
+                                    
 
-                    // Add logo on the left side
                     if (base64Logo) {
-                        const logoWidth = 60;  // Adjust size as needed
-                        const logoHeight = 15; // Adjust size as needed
-                        doc.addImage(base64Logo, 'PNG', leftMargin, y-10, logoWidth, logoHeight);
+                      
+                        doc.addImage(base64Logo, 'PNG', leftMargin, y - 10, logoDrawWidth, logoDrawHeight);
                     }
 
                     doc.setFontSize(14); doc.setFont("times", "bold");
@@ -517,7 +522,6 @@
             PdfPreview(); //  PdfDownload(true);
         });
         function getImageBase64FromUrl(url, callback) {
-
             var img = new Image();
             img.crossOrigin = 'Anonymous';
             img.onload = function () {
@@ -527,11 +531,10 @@
                 var ctx = canvas.getContext('2d');
                 ctx.drawImage(img, 0, 0);
                 var dataURL = canvas.toDataURL('image/png');
-                callback(dataURL);
+                // ✅ natW, natH সহ পাঠাচ্ছি
+                callback(dataURL, img.naturalWidth, img.naturalHeight);
             };
-            img.onerror = function () {
-                callback(null);
-            };
+            img.onerror = function () { callback(null, 0, 0); };
             img.src = url;
         }
 

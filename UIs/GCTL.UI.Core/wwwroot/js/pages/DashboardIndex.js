@@ -61,19 +61,53 @@
             return src || DEFAULT_PHOTO;
         }
 
+        // function statusBadge(status, row) {
+        //     switch ((status || "").toLowerCase()) {
+        //         case "present":
+        //             return '<span class="status-badge" style="background:#4caf50;">Present</span>';
+        //         case "late":
+        //             var tip = (row && row.lateByMinutes > 0) ? lateTooltipText(row.lateByMinutes) : "";
+        //             return '<span class="status-badge" style="background:#ff9800;cursor:help;" ' +
+        //                 (tip ? 'data-bs-toggle="tooltip" data-bs-placement="top" title="' + tip + '"' : '') +
+        //                 '>Late</span>';
+        //         case "on leave":
+        //             return '<span class="status-badge" style="background:#9c27b0;">On Leave</span>';
+        //         default:
+        //             return '<span class="status-badge" style="background:#f44336;">Absent</span>';
+        //     }
+        // }
         function statusBadge(status, row) {
+
+            const badgeStyle = `
+        width:55px;
+        display:inline-block;
+        text-align:center;
+        padding:4px 8px;
+        border-radius:4px;
+        color:#fff;
+        font-weight:500;
+    `;
+
             switch ((status || "").toLowerCase()) {
                 case "present":
-                    return '<span class="status-badge" style="background:#4caf50;">Present</span>';
+                    return `<span class="status-badge" style="${badgeStyle};background:#4caf50;">Present</span>`;
+
                 case "late":
-                    var tip = (row && row.lateByMinutes > 0) ? lateTooltipText(row.lateByMinutes) : "";
-                    return '<span class="status-badge" style="background:#ff9800;cursor:help;" ' +
-                        (tip ? 'data-bs-toggle="tooltip" data-bs-placement="top" title="' + tip + '"' : '') +
-                        '>Late</span>';
+                    var tip = (row && row.lateByMinutes > 0)
+                        ? lateTooltipText(row.lateByMinutes)
+                        : "";
+
+                    return `<span class="status-badge"
+                        style="${badgeStyle};background:#ffa400;cursor:help;"
+                        ${tip ? `data-bs-toggle="tooltip" data-bs-placement="top" title="${tip}"` : ""}>
+                        Late
+                    </span>`;
+
                 case "on leave":
-                    return '<span class="status-badge" style="background:#9c27b0;">On Leave</span>';
+                    return `<span class="status-badge" style="${badgeStyle};background:#9c27b0;">On Leave</span>`;
+
                 default:
-                    return '<span class="status-badge" style="background:#f44336;">Absent</span>';
+                    return `<span class="status-badge" style="${badgeStyle};background:#f55942;">Absent</span>`;
             }
         }
         function checkInColor(status) {
@@ -105,13 +139,13 @@
                     labels: ["Present", "Absent", "Late", "On Leave"],
                     datasets: [{
                         data: [0, 0, 0, 0],
-                        backgroundColor: ["#4caf50", "#FF6156", "#ff9800", "#9c27b0"],
+                        backgroundColor: ["#4caf50", "#f55942", "#ffa400", "#9c27b0"],
                         hoverOffset: 8, borderWidth: 2, borderColor: "#ffffff"
                     }]
                 },
                 options: {
                     responsive: true,
-                    maintainAspectRatio: false, // wrapper-এর height/width অনুযায়ী resize হবে
+                    maintainAspectRatio: false, 
                     cutout: "68%",
                     animation: { animateRotate: true, duration: 700 },
                     plugins: {

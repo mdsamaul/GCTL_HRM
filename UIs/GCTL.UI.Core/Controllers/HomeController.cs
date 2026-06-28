@@ -6,7 +6,7 @@ using System.Diagnostics;
 
 namespace GCTL.UI.Core.Controllers
 {
-    [Route("Dashboard")]
+    [Route("HRM/Dashboard")]
     public class HomeController : BaseController
     {
         private readonly ILogger<HomeController> _logger;

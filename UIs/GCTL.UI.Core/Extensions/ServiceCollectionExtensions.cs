@@ -29,6 +29,7 @@ using GCTL.Service.CoreBranches;
 using GCTL.Service.Country;
 using GCTL.Service.CourseTitle;
 using GCTL.Service.Currencies;
+using GCTL.Service.DailyAttendanceSummaryReportService;
 using GCTL.Service.DashboardAttendance;
 using GCTL.Service.DeleteHistories;
 using GCTL.Service.DeliveryPeriods;
@@ -260,6 +261,7 @@ namespace GCTL.UI.Core.Extensions
             services.AddScoped<IGcFilterService, GcFilterService>();
             services.AddScoped<IGcAccessFilterService, GcAccessFilterService>();
             services.AddScoped<IHRLettersReportService, HRLettersReportService>();
+            services.AddScoped<IDailyAttendanceSummaryReportService, DailyAttendanceSummaryReportService>();
 
 
             services.AddScoped<IProductIssueEntryService, ProductIssueEntryService>();
