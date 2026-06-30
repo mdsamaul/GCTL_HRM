@@ -29,7 +29,6 @@ using GCTL.Service.CoreBranches;
 using GCTL.Service.Country;
 using GCTL.Service.CourseTitle;
 using GCTL.Service.Currencies;
-using GCTL.Service.DailyAttendanceDetailsReport;
 using GCTL.Service.DailyAttendanceSummaryReportService;
 using GCTL.Service.DashboardAttendance;
 using GCTL.Service.DeleteHistories;
