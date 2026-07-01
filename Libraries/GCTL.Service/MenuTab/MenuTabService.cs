@@ -15,8 +15,8 @@ namespace GCTL.Service.MenuTab
     {
         private readonly GCTL_ERP_DB_DatapathContext _context;
         private readonly IRepository<CoreMenuTab2> _menuTabRepository;
-       // private readonly IRepository<CoreAccessCodeTest> _AccessCodeRepository;
-         private readonly IRepository<CoreAccessCode> _AccessCodeRepository;
+        // private readonly IRepository<CoreAccessCodeTest> _AccessCodeRepository;
+        private readonly IRepository<CoreAccessCode> _AccessCodeRepository;
 
         public MenuTabService(Core.Data.IRepository<CoreMenuTab2> menuTabRepository, IRepository<CoreAccessCode> accessCodeRepository, GCTL_ERP_DB_DatapathContext context)
         {
@@ -33,7 +33,7 @@ namespace GCTL.Service.MenuTab
             {
                 var result1 = await _AccessCodeRepository.All().ToListAsync();
 
-                var result = _AccessCodeRepository.All().AsEnumerable().GroupBy(a => a.AccessCodeId).Select(g => g.First()).ToList(); 
+                var result = _AccessCodeRepository.All().AsEnumerable().GroupBy(a => a.AccessCodeId).Select(g => g.First()).ToList();
 
                 return new CommonReturn
                 {
@@ -47,7 +47,7 @@ namespace GCTL.Service.MenuTab
 
                 throw;
             }
-            
+
         }
 
         #endregion
@@ -58,20 +58,14 @@ namespace GCTL.Service.MenuTab
             try
             {
                 var test = _menuTabRepository.All().ToList();
-                var test2 =  _AccessCodeRepository.All().ToList();
+                var test2 = _AccessCodeRepository.All().ToList();
                 var allMenus = await (
-                    
-                                      //  from m in _menuTabRepository.All()
-                                      //join a in _AccessCodeRepository.All()
-                                      //  on m.MenuId equals a.MenuId into accessGroup
-                                      //from a in accessGroup.DefaultIfEmpty()
-
                                       from m in _menuTabRepository.All()
                                       join a in _AccessCodeRepository.All().Where(x => x.AccessCodeId == accessCodeId)
                                       on m.MenuId equals a.MenuId into accessGroup
                                       from a in accessGroup.DefaultIfEmpty()
 
-                                      
+
                                       select new
                                       {
                                           m.MenuId,
@@ -147,28 +141,27 @@ namespace GCTL.Service.MenuTab
 
         public async Task<string> GetAccessName(string accessCodeId)
         {
-            var result = await _AccessCodeRepository.All().Where(e=>e.AccessCodeId == accessCodeId).Select(m=>m.AccessCodeName).FirstOrDefaultAsync();
-            return result; 
+            var result = await _AccessCodeRepository.All().Where(e => e.AccessCodeId == accessCodeId).Select(m => m.AccessCodeName).FirstOrDefaultAsync();
+            return result;
         }
 
 
         public CommonReturn SaveAccessMenu(MenuAccessDto dto)
         {
+            if (dto == null || dto.MenuAccessList == null || dto.MenuAccessList.Count == 0)
+            {
+                return new CommonReturn
+                {
+                    Success = false,
+                    Message = "Invalid access menu data"
+                };
+            }
+
+            _AccessCodeRepository.BeginTransactionAsync();
             try
             {
-                if (dto == null || dto.MenuAccessList == null || dto.MenuAccessList.Count == 0)
-                {
-                    return new CommonReturn
-                    {
-                        Success = false,
-                        Message = "Invalid access menu data"
-                    };
-                }
-
-
-                // Clear existing access codes for the given AccessCodeId
-                var existingAccessCodes = _AccessCodeRepository.All().Where(e => e.AccessCodeId == dto.AccessCodeId).ToList();
-                if (existingAccessCodes != null && existingAccessCodes.Count > 0)
+                var existingAccessCodes = _AccessCodeRepository.All().AsNoTracking().Where(e => e.AccessCodeId == dto.AccessCodeId).ToList();
+                if (existingAccessCodes.Any())
                 {
                     foreach (var item in existingAccessCodes)
                     {
@@ -184,14 +177,12 @@ namespace GCTL.Service.MenuTab
                 {
                     var menuData = _menuTabRepository.All().FirstOrDefault(e => e.MenuId == item.MenuId);
 
-                    
-
-                    CoreAccessCode coreAccessCode = new CoreAccessCode()
+                    accessCodesList.Add(new CoreAccessCode
                     {
                         AccessCodeId = dto.AccessCodeId,
                         MenuId = item.MenuId,
                         AccessCodeName = dto.AccessCodeName,
-                        TitleCheck = (!item.CanAdd && !item.CanEdit && !item.CanDelete && !item.CanPrint) ? false : true, 
+                        TitleCheck = (!item.CanAdd && !item.CanEdit && !item.CanDelete && !item.CanPrint) ? false : true,
                         Title = menuData.Title,
                         PageUrl = menuData.ViewName,
                         CheckAdd = item.CanAdd,
@@ -205,66 +196,83 @@ namespace GCTL.Service.MenuTab
                         ViewName = menuData.ViewName,
                         Icon = menuData.Icon,
                         IsActive = menuData.IsActive
-                    };
-
-
-
-                    accessCodesList.Add(coreAccessCode);
+                    });
                 }
-
-                
-
 
                 // Save the new access codes to the database
                 _AccessCodeRepository.Add(accessCodesList);
 
-                var checkTitleData = _AccessCodeRepository.All().Where(e => e.TitleCheck == true).ToList();
+                PropagateParentTitleCheck(dto.AccessCodeId, accessCodesList);
 
-                foreach (var item in checkTitleData)
-                {
-                    var menuData = _AccessCodeRepository.All().FirstOrDefault(e => e.MenuId == item.MenuId);
-                    if (menuData.ParentId != "0")
-                    {
-                        var parentData = _AccessCodeRepository.All().FirstOrDefault(e => e.MenuId == menuData.ParentId);
-                        parentData.TitleCheck = true;
-                        accessParentsList.Add(parentData);
-
-                        if (parentData.ParentId != "0")
-                        {
-                            var GparentData = _AccessCodeRepository.All().FirstOrDefault(e => e.MenuId == parentData.ParentId);
-                            GparentData.TitleCheck = true;
-                            accessParentsList.Add(GparentData);
-
-                            if (GparentData.ParentId != "0")
-                            {
-                                var GGparentData = _AccessCodeRepository.All().FirstOrDefault(e => e.MenuId == GparentData.ParentId);
-                                GGparentData.TitleCheck = true;
-                                accessParentsList.Add(GGparentData);
-                            }
-                        }
-
-                    }
-                }
-
-                _AccessCodeRepository.Update(accessParentsList);
-               
+                //_AccessCodeRepository.Update(accessParentsList);
+                _AccessCodeRepository.CommitTransactionAsync();
                 return new CommonReturn
                 {
                     Success = true,
                     Message = "Access menu saved successfully"
                 };
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                _AccessCodeRepository.RollbackTransactionAsync();
                 throw;
             }
-            
         }
 
+        private void PropagateParentTitleCheck(string id, List<CoreAccessCode> allRecord)
+        {
+            var recordDict = allRecord.ToDictionary(r => r.MenuId);
 
+            var toUpdate = new HashSet<string>();
+
+            foreach(var record in allRecord.Where(r=>r.TitleCheck == true))
+            {
+                var parentId = record.ParentId?.Trim();
+                while (!string.IsNullOrWhiteSpace(parentId) && parentId != "0")
+                {
+                    if (recordDict.TryGetValue(parentId, out var parent))
+                    {
+                        if (parent.TitleCheck != true)
+                        {
+                            parent.TitleCheck = true;
+                            toUpdate.Add(parent.MenuId);
+                        }
+                        parentId = parent.ParentId;
+                    }
+                    else break;
+                }
+            }
+
+            if (toUpdate.Any())
+            {
+                var toUpdateList = allRecord.Where(x => toUpdate.Contains(x.MenuId)).ToList();
+                _AccessCodeRepository.Update(toUpdateList);
+            }
+        }
 
         #endregion
+
+        public async Task<CommonReturn> DeleteAccessCodes(List<string> ids)
+        {
+            try
+            {
+                var toDelete = _AccessCodeRepository.All().AsNoTracking()
+                    .Where(e => ids.Contains(e.AccessCodeId))
+                    .ToList();
+
+                if (!toDelete.Any())
+                    return new CommonReturn { Success = false, Message = "No matching records found." };
+
+                _AccessCodeRepository.Delete(toDelete);
+
+                return new CommonReturn { Success = true, Message = "Deleted Successsfully." };
+            }
+            catch (Exception ex) 
+            {
+                return new CommonReturn { Success = false, Message = ex.Message };
+            }
+
+        }
 
         #region Delete Multiple Menu
 
@@ -307,7 +315,7 @@ namespace GCTL.Service.MenuTab
                             }
                         }
                     }
-                    
+
 
 
                     if (menuData != null)
@@ -319,7 +327,7 @@ namespace GCTL.Service.MenuTab
                 foreach (var item in accessChildList)
                 {
                     var menuData = _menuTabRepository.All().FirstOrDefault(e => e.AutoId == item.AutoId);
-                    
+
                     if (menuData != null)
                     {
                         _menuTabRepository.Delete(item);
@@ -572,11 +580,12 @@ namespace GCTL.Service.MenuTab
                 coreMenuTab2.MenuId = model.MenuId;
                 coreMenuTab2.Title = model.Title;
                 coreMenuTab2.ControllerName = model.ControllerName;
+                coreMenuTab2.TableName = model.TableName;
                 coreMenuTab2.OrderBy = model.OrderBy;
                 coreMenuTab2.ViewName = model.ViewName;
                 coreMenuTab2.IsActive = model.IsActive;
                 coreMenuTab2.Icon = model.Icon;
-                
+
 
 
 
@@ -621,16 +630,16 @@ namespace GCTL.Service.MenuTab
                         Message = "Menu tab not found"
                     };
                 }
-                
-       
+
+
                 existingMenuTab.Title = model.Title;
                 existingMenuTab.ControllerName = model.ControllerName;
-              
+                existingMenuTab.TableName = model.TableName;
                 existingMenuTab.ViewName = model.ViewName;
                 existingMenuTab.IsActive = model.IsActive;
                 existingMenuTab.Icon = model.Icon;
-               
-              
+
+
 
 
                 await _menuTabRepository.UpdateAsync(existingMenuTab);
@@ -705,7 +714,7 @@ namespace GCTL.Service.MenuTab
 
                 throw;
             }
-            
+
         }
 
         public async Task<int> GetParentsListCount()
@@ -734,7 +743,7 @@ namespace GCTL.Service.MenuTab
 
         public async Task<int> GetOrderCountByParentChildGchild(string parentId, string childId, string grandChildId)
         {
-            var menuTabs = await _menuTabRepository.All().Where(x =>  x.ParentId == grandChildId).CountAsync(); //x.ParentId == parentId && x.ParentId == childId &&
+            var menuTabs = await _menuTabRepository.All().Where(x => x.ParentId == grandChildId).CountAsync(); //x.ParentId == parentId && x.ParentId == childId &&
 
             return menuTabs++;
         }
@@ -763,6 +772,6 @@ namespace GCTL.Service.MenuTab
             };
         }
 
-        
+
     }
 }

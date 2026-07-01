@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
+using DocumentFormat.OpenXml.Wordprocessing;
 using GCTL.Core.Data;
 using GCTL.Core.ViewModels.AccessCodes;
 using GCTL.Core.ViewModels.Common;
+using GCTL.Core.ViewModels.MenuTab;
 using GCTL.Data.Models;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography.X509Certificates;
 
 namespace GCTL.Service.Users
@@ -103,7 +105,7 @@ namespace GCTL.Service.Users
 
 
                 // Build a three-level hierarchy: parent -> child -> grandchild
-                foreach (var parent in accesses.Where(x => x.ParentId == "0"))
+                foreach (var parent in accesses.Where(x => x.ParentId == "0" || x.ParentId == null))
                 {
                     var children = accesses.Where(x => x.ParentId == parent.MenuId).ToList();
                     foreach (var child in children)
@@ -318,7 +320,48 @@ namespace GCTL.Service.Users
 
         public bool HasPermission(string accessCode)
         {
-            return accessCodeRepository.All().Any(x => x.AccessCodeId == accessCode && x.Title == "Access Code" && x.TitleCheck);
+            return accessCodeRepository.All().Any(x => x.AccessCodeId == accessCode && x.Title == "Access Control" && x.TitleCheck);
+        }
+
+        public async Task<IEnumerable<ParentMenuDto>> GetParentMenus()
+        {
+            var menus = await menuRepository.FindByAsync(x => x.ParentId == null || x.ParentId == "" || x.ParentId == "0");
+            return menus.Select(x => new ParentMenuDto
+            {
+                MenuId = x.MenuId,
+                Title = x.Title
+            }).ToList();
+        }
+
+        public async Task<(bool success, string message)> AddAccessCode(AddAccessCodeDto dto)
+        {
+            var entity = new CoreAccessCode
+            {
+                AccessCodeId = dto.AccessCodeId,
+                AccessCodeName = dto.AccessCodeName
+            };
+            await accessCodeRepository.AddAsync(entity);
+
+            return (true, "Saved successfully");
+        }
+
+        public async Task<(bool success, string message)> EditAccessCode(AddAccessCodeDto model)
+        {
+            var entities = await accessCodeRepository.FindBy(x => x.AccessCodeId == model.AccessCodeId)
+                                                         .ToListAsync();
+
+            if (!entities.Any())
+                return (false, "No access code found");
+
+            foreach (var entity in entities)
+            {
+                entity.AccessCodeId = model.AccessCodeId;
+                entity.AccessCodeName = model.AccessCodeName;
+            }
+
+            await accessCodeRepository.UpdateRangeAsync(entities);
+
+            return (true, "Access code updated successfully");
         }
     }
 }

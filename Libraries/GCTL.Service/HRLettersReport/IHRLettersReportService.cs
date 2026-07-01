@@ -1,4 +1,5 @@
-﻿using GCTL.Core.ViewModels.HRLettersReportViewModel;
+﻿using GCTL.Core.ViewModels.FullEmployeeDetailsGetById;
+using GCTL.Core.ViewModels.HRLettersReportViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;

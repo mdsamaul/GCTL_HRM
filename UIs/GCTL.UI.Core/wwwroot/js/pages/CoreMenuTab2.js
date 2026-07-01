@@ -550,6 +550,7 @@ function initializeToggleLogic() {
                     $("#editMenuId").val(response.data.autoId);
                     $("#editMenuTitle").val(response.data.title);
                     $("#editMenuController").val(response.data.controllerName);
+                    $("#editMenuTable").val(response.data.tableName);
                     $("#editMenuView").val(response.data.viewName);
                     $("#editMenuIcon").val(response.data.icon);
                     $("#editMenuActive").prop("checked", response.data.isActive === true);
@@ -1053,6 +1054,10 @@ function initializeEditModal() {
                                 <input type="text" class="form-control" id="editMenuView" placeholder="Enter view/action name">
                             </div>
                             <div class="form-group">
+                                <label for="editMenuTable">Table Name</label>
+                                <input type="text" class="form-control" id="editMenuTable" placeholder="Enter table name">
+                            </div>
+                            <div class="form-group">
                                 <label for="editMenuIcon">Icon Name</label>
                                 <input type="text" class="form-control" id="editMenuIcon" placeholder="Enter Icon name">
                             </div>
@@ -1087,6 +1092,7 @@ function saveMenuChanges() {
         autoId: $("#editMenuId").val(),
         title: $("#editMenuTitle").val(),
         controllerName: $("#editMenuController").val(),
+        tableName: $("#editMenuTable").val(),
         viewName: $("#editMenuView").val(),
         icon: $("#editMenuIcon").val(),
         isActive: $("#editMenuActive").is(":checked")
@@ -1286,6 +1292,7 @@ $("#submitCoreMenuTabBtn").on("click", function (event) {
         MenuId: $("#MenuCode").val(),
         Title: $("#Title").val(),
         ControllerName: $("#ControllerName").val(),
+        TableName: $("#TableName").val(),
         OrderBy: parseInt($("#OrderBy").val()),
         ViewName: $("#ViewName").val(),
         IsActive: $("#IsActive").is(":checked"),
@@ -1346,7 +1353,7 @@ function saveMenuData(formData) {
                 getNextOrderId()
                 getNextId()
                 getParentMenuList()
-                //refreshMenuTable1()
+                refreshMenuTable()
 
             } else {
                 toastr.error(response.message || "Failed to save menu item");

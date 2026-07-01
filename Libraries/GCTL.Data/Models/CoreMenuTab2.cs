@@ -16,5 +16,6 @@ namespace GCTL.Data.Models
         public string ViewName { get; set; }
         public string Icon { get; set; }
         public bool IsActive { get; set; }
+        public string TableName { get; set; }
     }
 }

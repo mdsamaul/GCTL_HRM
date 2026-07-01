@@ -188,7 +188,7 @@ $(document).ready(function () {
 
             allMenus.push({
                 menuId: menuId + "",
-                parentId: parentId+"",
+                parentId: parentId,
                 isSelected: $row.find('.row-main-check').is(':checked'),
                 canAdd: $row.find('.add-check').is(':checked'),
                 canEdit: $row.find('.edit-check').is(':checked'),

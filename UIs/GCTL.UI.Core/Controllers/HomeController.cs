@@ -6,7 +6,7 @@ using System.Diagnostics;
 
 namespace GCTL.UI.Core.Controllers
 {
-    [Route("HRM/Dashboard")]
+    [Route("Dashboard")]
     public class HomeController : BaseController
     {
         private readonly ILogger<HomeController> _logger;
@@ -23,9 +23,17 @@ namespace GCTL.UI.Core.Controllers
             _attendanceSvc = attendanceSvc;
         }
 
+        //[HttpGet("")]
+        //[HttpGet("Index")]
+        //public IActionResult Index() => View();
         [HttpGet("")]
         [HttpGet("Index")]
-        public IActionResult Index() => View();
+        public IActionResult Index()
+        {
+            ViewBag.LoginAccessCodeId = LoginInfo.AccessCode;
+            ViewBag.LoginEmployeeId = LoginInfo.EmployeeId;
+            return View();
+        }
 
         // ── Attendance DataTable ───────────────────────────────
         [HttpPost("attendance-datatable")]
@@ -46,6 +54,10 @@ namespace GCTL.UI.Core.Controllers
                 int page = (start / length) + 1;
                 int pageSize = length;
 
+                // ── Access control: logged-in user context ──────────
+                var loginEmployeeId = LoginInfo.EmployeeId;
+                var accessCodeId = LoginInfo.AccessCode;
+
                 var (summary, items, total) = await _attendanceSvc.GetAttendanceMovementAsync(
                     string.IsNullOrWhiteSpace(companyCode) ? null : companyCode.Trim(),
                     string.IsNullOrWhiteSpace(branchCode) ? null : branchCode.Trim(),
@@ -53,7 +65,9 @@ namespace GCTL.UI.Core.Controllers
                     DateTime.Today,
                     page,
                     pageSize,
-                    string.IsNullOrWhiteSpace(search) ? null : search.Trim());
+                    string.IsNullOrWhiteSpace(search) ? null : search.Trim(),
+                    loginEmployeeId,
+                    accessCodeId);
 
                 var rows = items.Select(x => new
                 {
@@ -64,10 +78,10 @@ namespace GCTL.UI.Core.Controllers
                     checkIn = x.CheckIn ?? "",
                     checkOut = x.CheckOut ?? "",
                     movement = x.Movement ?? "",
-                    remarks = x.Remarks ?? "",    // ← নতুন
+                    remarks = x.Remarks ?? "",
                     status = x.Status ?? "",
                     statusOrder = x.StatusOrder,
-                    lateByMinutes = x.LateByMinutes,          // ← নতুন
+                    lateByMinutes = x.LateByMinutes,
                     dataDate = x.DataDate.ToString("dd MMM yyyy"),
                     photoSrc = x.Photo != null && x.Photo.Length > 0
                                         ? $"data:{x.ImgType};base64,{Convert.ToBase64String(x.Photo)}"
@@ -118,12 +132,16 @@ namespace GCTL.UI.Core.Controllers
                 var branchCode = Request.Form["branchCode"].FirstOrDefault();
                 var departmentCode = Request.Form["departmentCode"].FirstOrDefault();
                 var yearStr = Request.Form["year"].FirstOrDefault();
-                var employeeId = Request.Form["employeeId"].FirstOrDefault();   // ← নতুন
+                var employeeId = Request.Form["employeeId"].FirstOrDefault();
 
                 if (length < 5) length = 5;
                 int page = (start / length) + 1;
                 int pageSize = length;
                 int year = int.TryParse(yearStr, out var y) ? y : DateTime.Now.Year;
+
+                // ── Access control: logged-in user context ──────────
+                var loginEmployeeId = LoginInfo.EmployeeId;
+                var accessCodeId = LoginInfo.AccessCode;
 
                 var result = await _attendanceSvc.GetLeaveDashboardAsync(
                     string.IsNullOrWhiteSpace(companyCode) ? null : companyCode.Trim(),
@@ -133,7 +151,9 @@ namespace GCTL.UI.Core.Controllers
                     page,
                     pageSize,
                     string.IsNullOrWhiteSpace(search) ? null : search.Trim(),
-                    string.IsNullOrWhiteSpace(employeeId) ? null : employeeId.Trim()  // ← নতুন
+                    string.IsNullOrWhiteSpace(employeeId) ? null : employeeId.Trim(),
+                    loginEmployeeId,
+                    accessCodeId
                 );
 
                 return Json(new

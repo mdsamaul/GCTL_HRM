@@ -1,0 +1,18 @@
+﻿@model GCTL.Core.ViewModels.AccessCodes.AccessCodeSetupViewModel
+@Html.AntiForgeryToken()
+
+    <div class="row">
+        <input type="hidden" name="lastCode" />
+        <div class="col-lg-6">
+            <label asp-for="AccessCodeId">Access Code Id</label>
+            <div class="input-group input-group-sm">
+                <input asp-for="AccessCodeId" class="form-control form-control-sm js-access-code"/>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <label asp-for="AccessCodeName">Access Code Name</label>
+            <div class="input-group input-group-sm">
+                <input asp-for="AccessCodeName" class="form-control form-control-sm js-access-code-name"/>
+            </div>
+        </div>
+    </div>

@@ -29,6 +29,7 @@ using GCTL.Service.CoreBranches;
 using GCTL.Service.Country;
 using GCTL.Service.CourseTitle;
 using GCTL.Service.Currencies;
+using GCTL.Service.DailyAttendanceDetailsReport;
 using GCTL.Service.DailyAttendanceSummaryReportService;
 using GCTL.Service.DashboardAttendance;
 using GCTL.Service.DeleteHistories;
@@ -159,6 +160,7 @@ using GCTL.Service.Surnames;
 using GCTL.Service.TransportExpenseStatementReportService;
 using GCTL.Service.Units;
 using GCTL.Service.UnitTypes;
+using GCTL.Service.UserEditEntry;
 using GCTL.Service.Users;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.EntityFrameworkCore;
@@ -432,6 +434,7 @@ namespace GCTL.UI.Core.Extensions
 
 
             services.AddScoped<ISeparationTypesService, SeparationTypesService>();
+            services.AddScoped<IUserEditService, UserEditService>();
 
 
 

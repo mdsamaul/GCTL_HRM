@@ -7,13 +7,14 @@ using System.Threading.Tasks;
 namespace GCTL.Core.ViewModels.DailyAttendanceSummaryReport
 {
 
-    public class DailyAttendanceSummaryFilterDto:BaseViewModel
+    public class DailyAttendanceSummaryFilterDto : BaseViewModel
     {
         public string? CompanyCode { get; set; }
-        public List<string>? DepartmentCodes { get; set; }  
+        public List<string>? DepartmentCodes { get; set; }
         public DateTime? FromDate { get; set; }
+        public string? LoginEmployeeId { get; set; }  
+        public string? AccessCodeId { get; set; }     
     }
-
     public class DailyAttendanceSummaryDto
     {
         public string DepartmentName { get; set; } = "";

@@ -22,6 +22,7 @@ namespace GCTL.UI.Core.Controllers
             {
                 return RedirectToAction("Login", "Accounts");
             }
+            ViewBag.AccessCode = LoginInfo.AccessCode;
             DailyAttendanceSummaryViewModel model = new DailyAttendanceSummaryViewModel()
             {
                 PageUrl = Url.Action(nameof(IndexAsync))
@@ -34,6 +35,9 @@ namespace GCTL.UI.Core.Controllers
         {
             try
             {
+                filter.LoginEmployeeId = LoginInfo.EmployeeId;   // NEW
+                filter.AccessCodeId = LoginInfo.AccessCode;       // NEW
+
                 var data = await _dailyAttendanceSummaryReportService.GetSummaryAsync(filter);
                 return Json(new { success = true, data });
             }
@@ -48,6 +52,9 @@ namespace GCTL.UI.Core.Controllers
         {
             try
             {
+                filter.LoginEmployeeId = LoginInfo.EmployeeId;  
+                filter.AccessCodeId = LoginInfo.AccessCode;       
+
                 var data = await _dailyAttendanceSummaryReportService.GetSummaryAsync(filter);
                 var fileBytes = _dailyAttendanceSummaryReportService.GenerateExcel(data);
 

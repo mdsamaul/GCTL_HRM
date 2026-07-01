@@ -79,30 +79,30 @@ app.MapHub<AttendanceHub>("/attendanceHub");
 // Custom Routes
 // =====================
 
-//app.MapControllerRoute(
-//    name: "preview",
-//    pattern: "Preview/{name}",
-//    defaults: new { controller = "Preview", action = "Viewer", name = "" });
-
-//app.MapControllerRoute(
-//    name: "default",
-//    pattern: "{controller=Home}/{action=Index}/{id?}");
-
-
-
-
-// Custom Routes
 app.MapControllerRoute(
     name: "preview",
     pattern: "Preview/{name}",
     defaults: new { controller = "Preview", action = "Viewer", name = "" });
 
 app.MapControllerRoute(
-    name: "hrm",
-    pattern: "HRM/{controller=Home}/{action=Index}/{id?}");
-
-app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+
+
+
+//// Custom Routes
+//app.MapControllerRoute(
+//    name: "preview",
+//    pattern: "Preview/{name}",
+//    defaults: new { controller = "Preview", action = "Viewer", name = "" });
+
+//app.MapControllerRoute(
+//    name: "hrm",
+//    pattern: "HRM/{controller=Home}/{action=Index}/{id?}");
+
+//app.MapControllerRoute(
+//    name: "default",
+//    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();

@@ -88,7 +88,7 @@
                 contentType: 'application/json',
                 data: JSON.stringify(getFilter()),
                 success: function (res) {
-                    hideLoading();
+                    hideLoading();                    
                     if (res.success && res.data) { callback(res.data); }
                     else { alert(res.message || 'No data found.'); }
                 },
@@ -220,8 +220,8 @@
         // After that, all fixed columns are scaled proportionally so
         // the table fills the usable page width exactly.
         function getReportConfig(rptType, data) {
-            var rows, headCols, bodyMapper, statusColIdx;
-
+            var rows, headCols, bodyMapper, statusColIdx;            
+            console.log(data);
             if (rptType === 'Present') {
                 rows = data.presentRows || [];
                 statusColIdx = 7;
@@ -300,43 +300,51 @@
                 };
 
             } else if (rptType === 'MissingCheckOut') {
-                rows = data.inOutRows || [];
-                statusColIdx = 7;
+                rows = data.missingCheckOutRows || [];
+                statusColIdx = 10;
                 headCols = [
-                    { content: 'SN', styles: { cellWidth: 22 } },
-                    { content: 'Emp. ID', styles: { cellWidth: 55 } },
+                    { content: 'SN', styles: { cellWidth: 20 } },
+                    { content: 'Emp. ID', styles: { cellWidth: 65 } },
                     { content: 'Name', styles: { cellWidth: 'auto' } },
-                    { content: 'Designation', styles: { cellWidth: 90 } },
-                    { content: 'Shift', styles: { cellWidth: 70 } },
-                    { content: 'In Time', styles: { cellWidth: 52 } },
-                    { content: 'W.Hour(s)', styles: { cellWidth: 46 } },
-                    { content: 'Status', styles: { cellWidth: 40 } },
+                    { content: 'Designation', styles: { cellWidth: 80 } },
+                    { content: 'Shift', styles: { cellWidth: 95 } },
+                    { content: 'In Time', styles: { cellWidth: 62 } },
+                    { content: 'Late', styles: { cellWidth: 55 } },
+                    { content: 'Out Time', styles: { cellWidth: 62 } },
+                    { content: 'Early Out', styles: { cellWidth: 50 } },
+                    { content: 'W.Hour(s)', styles: { cellWidth: 55 } },
+                    { content: 'Status', styles: { cellWidth: 34 } },
                     { content: 'Remarks', styles: { cellWidth: 50 } }
                 ];
                 bodyMapper = function (r, sn) {
                     return [sn, r.employeeId, r.employeeName, r.designation,
-                        r.shiftName, formatAmPm(r.inTime), r.workHours, abbrStatus(r.status), r.remarks];
+                        r.shiftName, formatAmPm(r.inTime), r.lateDisplay,
+                        formatAmPm(r.outTime), r.earlyOut, r.workHours,
+                        abbrStatus(r.status), r.remarks];
                 };
 
             } else { // EarlyLeave
-                rows = data.inOutRows || [];
-                statusColIdx = 8;
+                rows = data.earlyLeaveRows || [];
+                statusColIdx = 10;
                 headCols = [
-                    { content: 'SN', styles: { cellWidth: 22 } },
-                    { content: 'Emp. ID', styles: { cellWidth: 55 } },
+                    { content: 'SN', styles: { cellWidth: 20 } },
+                    { content: 'Emp. ID', styles: { cellWidth: 65 } },
                     { content: 'Name', styles: { cellWidth: 'auto' } },
-                    { content: 'Designation', styles: { cellWidth: 90 } },
-                    { content: 'Shift', styles: { cellWidth: 70 } },
-                    { content: 'In Time', styles: { cellWidth: 46 } },
-                    { content: 'Out Time', styles: { cellWidth: 46 } },
-                    { content: 'Early Out', styles: { cellWidth: 44 } },
-                    { content: 'Status', styles: { cellWidth: 40 } },
+                    { content: 'Designation', styles: { cellWidth: 80 } },
+                    { content: 'Shift', styles: { cellWidth: 95 } },
+                    { content: 'In Time', styles: { cellWidth: 62 } },
+                    { content: 'Late', styles: { cellWidth: 55 } },
+                    { content: 'Out Time', styles: { cellWidth: 62 } },
+                    { content: 'Early Out', styles: { cellWidth: 50 } },
+                    { content: 'W.Hour(s)', styles: { cellWidth: 55 } },
+                    { content: 'Status', styles: { cellWidth: 34 } },
                     { content: 'Remarks', styles: { cellWidth: 50 } }
                 ];
                 bodyMapper = function (r, sn) {
                     return [sn, r.employeeId, r.employeeName, r.designation,
-                        r.shiftName, formatAmPm(r.inTime), formatAmPm(r.outTime),
-                        r.earlyOut, abbrStatus(r.status), r.remarks];
+                        r.shiftName, formatAmPm(r.inTime), r.lateDisplay,
+                        formatAmPm(r.outTime), r.earlyOut, r.workHours,
+                        abbrStatus(r.status), r.remarks];
                 };
             }
 
@@ -392,6 +400,7 @@
 
         // ── PDF Builder ──────────────────────────────────────────────
         function buildPdf(data, forPreview) {
+            
             getImageBase64('/images/DP_logo.png', function (b64Logo, natW, natH) {
                 var LOGO_H = 25;
                 var logoW = natH > 0 ? (natW / natH) * LOGO_H : LOGO_H;
@@ -439,7 +448,7 @@
 
                 // ── Header — identical on every page ──────────────────
                 function drawHeader() {
-                    if (b64Logo) doc.addImage(b64Logo, 'PNG', LEFT_MARGIN, 10, logoW, LOGO_H);
+                    if (b64Logo) doc.addImage(b64Logo, 'PNG', LEFT_MARGIN, 15, logoW, LOGO_H);
                     doc.setFont("times", "bold");
                     doc.setFontSize(15);
                     doc.text(company, PW / 2, 28, { align: 'center' });

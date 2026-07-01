@@ -609,44 +609,151 @@
         // ════════════════════════════════════════════════════════
         // ── Filter setup ────────────────────────────────────────
         // ════════════════════════════════════════════════════════
+        // async function setupFilters() {
+        //     if (typeof s2_InitSingle === "function") {
+        //         // ── Access-scope params: server session থেকে view-এ inject করা ──
+        //         var accessParams = {
+        //             accessCodeId: window.LoginAccessCodeId || "",
+        //             loginEmployeeId: window.LoginEmployeeId || ""
+        //         };
+
+        //         s2_InitSingle("#companySelect", "/GcAccessFilter/companies", "Select Company", "company", ["#branchSelect", "#departmentSelect"], accessParams);
+        //         s2_InitSingle("#branchSelect", "/GcAccessFilter/branches", "Select Branch", "branch", ["#departmentSelect"], accessParams);
+        //         s2_InitSingle("#departmentSelect", "/GcAccessFilter/departments", "Select Department", "department", null, accessParams);
+
+        //         s2_InitSingle("#companySelectLeave", "/GcAccessFilter/companies", "Select Company", "company", ["#branchSelectLeave", "#departmentSelectLeave"], accessParams);
+        //         s2_InitSingle("#branchSelectLeave", "/GcAccessFilter/branches", "Select Branch", "branch", ["#departmentSelectLeave"], accessParams);
+        //         s2_InitSingle("#departmentSelectLeave", "/GcAccessFilter/departments", "Select Department", "department", null, accessParams);
+        //         s2_InitSingle("#employeeSelectLeave", "/GcAccessFilter/employees", "Select Employee", "employee", null, accessParams);
+        //     }
+
+        //     $("#companySelect, #branchSelect, #departmentSelect")
+        //         .off("change.atd")
+        //         .on("change.atd", function () {
+        //             if (dataTable) dataTable.ajax.reload(null, false);
+        //         });
+
+        //     $("#companySelectLeave, #branchSelectLeave, #departmentSelectLeave, #getYearLeave, #employeeSelectLeave")
+        //         .off("change.leave")
+        //         .on("change.leave", function () {
+        //             if (leaveTable) leaveTable.ajax.reload(null, false);
+        //         });
+
+        //     if (typeof s2_AutoSelectCompany === "function") {
+        //         await s2_AutoSelectCompany("001", "#companySelect");
+        //         await s2_AutoSelectCompany("001", "#companySelectLeave");
+        //     }
+        // }
         async function setupFilters() {
             if (typeof s2_InitSingle === "function") {
-                s2_InitSingle("#companySelect", "/GcFilters/company", "Select Company", "company", ["#branchSelect", "#departmentSelect"]);
-                s2_InitSingle("#branchSelect", "/GcFilters/branch", "Select Branch", "branch", ["#departmentSelect"]);
-                s2_InitSingle("#departmentSelect", "/GcFilters/department", "Select Department", "department");
+                var accessParams = {
+                    AccessCode: window.LoginAccessCodeId || "",
+                    EmployeeId: window.LoginEmployeeId || ""
+                };
 
-                s2_InitSingle("#companySelectLeave", "/GcFilters/company", "Select Company", "company", ["#branchSelectLeave", "#departmentSelectLeave"]);
-                s2_InitSingle("#branchSelectLeave", "/GcFilters/branch", "Select Branch", "branch", ["#departmentSelectLeave"]);
-                s2_InitSingle("#departmentSelectLeave", "/GcFilters/department", "Select Department", "department");
-                s2_InitSingle("#employeeSelectLeave", "/GcFilters/employee", "Select Employee", "employee");
+                s2_InitSingle("#companySelect", "/GcAccessFilter/companies", "Select Company", "company", ["#branchSelect", "#departmentSelect"], null, accessParams);
+                s2_InitSingle("#branchSelect", "/GcAccessFilter/branches", "Select Branch", "branch", ["#departmentSelect"], null, accessParams);
+                s2_InitSingle("#departmentSelect", "/GcAccessFilter/departments", "Select Department", "department", null, null, accessParams);
 
-                // Employee ID dropdown for Leave filter — /GcFilters/employee এ route থাকলে
-                // otherwise plain text input
-                //if (typeof s2_InitEmployee === "function") {
-                //    s2_InitEmployee("#employeeSelectLeave", "Select Employee");
-                //}
+                s2_InitSingle("#companySelectLeave", "/GcAccessFilter/companies", "Select Company", "company", ["#branchSelectLeave", "#departmentSelectLeave"], null, accessParams);
+                s2_InitSingle("#branchSelectLeave", "/GcAccessFilter/branches", "Select Branch", "branch", ["#departmentSelectLeave"], null, accessParams);
+                s2_InitSingle("#departmentSelectLeave", "/GcAccessFilter/departments", "Select Department", "department", null, null, accessParams);
+                s2_InitSingle("#employeeSelectLeave", "/GcAccessFilter/employees", "Select Employee", "employee", null, null, accessParams);
             }
 
-            // ── Attendance filter ──────────────────────────────
             $("#companySelect, #branchSelect, #departmentSelect")
                 .off("change.atd")
                 .on("change.atd", function () {
                     if (dataTable) dataTable.ajax.reload(null, false);
                 });
 
-            // ── Leave filter (company/branch/dept/year/employeeId) ──
             $("#companySelectLeave, #branchSelectLeave, #departmentSelectLeave, #getYearLeave, #employeeSelectLeave")
                 .off("change.leave")
                 .on("change.leave", function () {
                     if (leaveTable) leaveTable.ajax.reload(null, false);
                 });
 
-            // ── Default company ────────────────────────────────
-            if (typeof s2_AutoSelectCompany === "function") {
-                await s2_AutoSelectCompany("001", "#companySelect");
-                await s2_AutoSelectCompany("001", "#companySelectLeave");
+            // ── শুধু company auto-select (load হওয়া প্রথম/একমাত্র option) ──
+            async function autoSelectFirstCompany(selector) {
+                var $sel = $(selector);
+                var url = gcUrlMap.get(selector);
+                if (url && $sel.find('option:not([value=""])').length === 0) {
+                    await s2_LoadNext(selector, url);
+                }
+                var $first = $sel.find('option:not([value=""])').first();
+                if ($first.length) {
+                    $sel.val($first.val()).trigger('change');
+                }
             }
+
+            await autoSelectFirstCompany("#companySelect");
+            await autoSelectFirstCompany("#companySelectLeave");
+            if (accessParams.AccessCode === "0005") {
+                async function autoSelectOnlyOption(selector) {
+                    var $sel = $(selector);
+                    var url = gcUrlMap.get(selector);
+                    if (url && $sel.find('option:not([value=""])').length === 0) {
+                        await s2_LoadNext(selector, url);
+                    }
+                    var $opt = $sel.find('option:not([value=""])').first();
+                    if ($opt.length) $sel.val($opt.val()).trigger('change');
+                }
+               
+                await autoSelectOnlyOption("#companySelect");
+                await new Promise(r => setTimeout(r, 200));
+                await autoSelectOnlyOption("#branchSelect");
+                await new Promise(r => setTimeout(r, 200));
+                await autoSelectOnlyOption("#departmentSelect");
+
+                await autoSelectOnlyOption("#companySelectLeave");
+                await new Promise(r => setTimeout(r, 200));
+                await autoSelectOnlyOption("#branchSelectLeave");
+                await new Promise(r => setTimeout(r, 200));
+                await autoSelectOnlyOption("#departmentSelectLeave");
+                await new Promise(r => setTimeout(r, 200));
+                await autoSelectOnlyOption("#employeeSelectLeave");
+
+            }
+           
         }
+        // async function setupFilters() {
+        //     if (typeof s2_InitSingle === "function") {
+        //         s2_InitSingle("#companySelect", "/GcFilters/company", "Select Company", "company", ["#branchSelect", "#departmentSelect"]);
+        //         s2_InitSingle("#branchSelect", "/GcFilters/branch", "Select Branch", "branch", ["#departmentSelect"]);
+        //         s2_InitSingle("#departmentSelect", "/GcFilters/department", "Select Department", "department");
+
+        //         s2_InitSingle("#companySelectLeave", "/GcFilters/company", "Select Company", "company", ["#branchSelectLeave", "#departmentSelectLeave"]);
+        //         s2_InitSingle("#branchSelectLeave", "/GcFilters/branch", "Select Branch", "branch", ["#departmentSelectLeave"]);
+        //         s2_InitSingle("#departmentSelectLeave", "/GcFilters/department", "Select Department", "department");
+        //         s2_InitSingle("#employeeSelectLeave", "/GcFilters/employee", "Select Employee", "employee");
+
+        //         // Employee ID dropdown for Leave filter — /GcFilters/employee এ route থাকলে
+        //         // otherwise plain text input
+        //         //if (typeof s2_InitEmployee === "function") {
+        //         //    s2_InitEmployee("#employeeSelectLeave", "Select Employee");
+        //         //}
+        //     }
+
+        //     // ── Attendance filter ──────────────────────────────
+        //     $("#companySelect, #branchSelect, #departmentSelect")
+        //         .off("change.atd")
+        //         .on("change.atd", function () {
+        //             if (dataTable) dataTable.ajax.reload(null, false);
+        //         });
+
+        //     // ── Leave filter (company/branch/dept/year/employeeId) ──
+        //     $("#companySelectLeave, #branchSelectLeave, #departmentSelectLeave, #getYearLeave, #employeeSelectLeave")
+        //         .off("change.leave")
+        //         .on("change.leave", function () {
+        //             if (leaveTable) leaveTable.ajax.reload(null, false);
+        //         });
+
+        //     // ── Default company ────────────────────────────────
+        //     if (typeof s2_AutoSelectCompany === "function") {
+        //         await s2_AutoSelectCompany("001", "#companySelect");
+        //         await s2_AutoSelectCompany("001", "#companySelectLeave");
+        //     }
+        // }
 
         // ════════════════════════════════════════════════════════
         // ── Boot ────────────────────────────────────────────────

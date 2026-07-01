@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using GCTL.Core.Data;
+using GCTL.Core.ViewModels.FullEmployeeDetailsGetById;
 using GCTL.Core.ViewModels.HRLettersReportViewModel;
 using GCTL.Data.Models;
 using iText.IO.Font.Constants;

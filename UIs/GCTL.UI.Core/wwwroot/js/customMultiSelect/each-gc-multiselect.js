@@ -26,7 +26,33 @@ function gcRegisterSelector(selector, filterType) {
 }
 
 
-function buildReq(page, search) {
+// function buildReq(page, search) {
+//     function collect(type) {
+//         const selectors = gcFilterRegistry[type] || [];
+//         const vals = [];
+//         selectors.forEach(sel => {
+//             const v = $(sel).val();
+//             if (!v) return;
+//             const arr = Array.isArray(v) ? v : [v];
+//             arr.forEach(x => { if (x && !vals.includes(x)) vals.push(x); });
+//         });
+//         return vals;
+//     }
+//     return {
+//         CompanyCodes: collect('company'),
+//         BranchCodes: collect('branch'),
+//         DivisionCodes: collect('division'),
+//         DepartmentCodes: collect('department'),
+//         DesignationCodes: collect('designation'),
+//         EmployeeStatuses: collect('employeestatus'),
+//         Page: page || 1,
+//         PageSize: 10,
+//         Search: search || ""
+//     };
+// }
+
+
+function buildReq(page, search, extra) {
     function collect(type) {
         const selectors = gcFilterRegistry[type] || [];
         const vals = [];
@@ -38,7 +64,7 @@ function buildReq(page, search) {
         });
         return vals;
     }
-    return {
+    return Object.assign({
         CompanyCodes: collect('company'),
         BranchCodes: collect('branch'),
         DivisionCodes: collect('division'),
@@ -48,7 +74,7 @@ function buildReq(page, search) {
         Page: page || 1,
         PageSize: 10,
         Search: search || ""
-    };
+    }, extra || {});
 }
 
 function arrVal(selector) {
@@ -502,9 +528,56 @@ function _s2_injectIntoOpenDropdown(selector, items) {
 }
 
 // ── Load next page ────────────────────────────────────────────
+// async function s2_LoadNext(selector, url) {
+//     let st = gcState.get(selector);
+//     if (!st) { st = { page: 1, more: true, loading: false, search: "" }; gcState.set(selector, st); }
+//     if (st.loading || !st.more) return;
+//     st.loading = true;
+
+//     const $resultsList = $(document).find('.select2-results__options');
+//     if ($resultsList.length && !$resultsList.find('.gc-loading-item').length) {
+//         $resultsList.append('<li class="select2-results__option gc-loading-item" style="color:#999;font-style:italic">Loading...</li>');
+//     }
+
+//     const req = buildReq(st.page, st.search);
+//     try {
+//         const res = await $.ajax({ url, type: "POST", contentType: "application/json", data: JSON.stringify(req) });
+//         if (!res || !res.isSuccess) return;
+//         const items = res.data.items || res.data.Items || [];
+//         const more = res.data.more ?? res.data.More ?? false;
+//         st.page++; st.more = more;
+
+//         const $sel = $(selector);
+//         const newItems = [];
+//         items.forEach(x => {
+//             const code = x.code || x.Code;
+//             const name = x.name || x.Name;
+//             if (!code) return;
+//             if ($sel.find(`option[value="${code}"]`).length === 0) {
+//                 $sel.append(new Option(name, code, false, false));
+//                 newItems.push(x);
+//             }
+//         });
+
+//         const isDropdownOpen = $(document).find('.select2-results__options').length > 0;
+//         if (isDropdownOpen) {
+//             _s2_injectIntoOpenDropdown(selector, newItems);
+//         }
+//         $sel.trigger('change.select2');
+
+//     } catch (err) {
+//         console.error(`[S2 LOAD] ${selector}:`, err);
+//         $(document).find('.select2-results__options .gc-loading-item').remove();
+//     } finally {
+//         st.loading = false;
+//         $(document).find('.select2-results__options .gc-loading-item').remove();
+//     }
+// }
+
+
 async function s2_LoadNext(selector, url) {
     let st = gcState.get(selector);
-    if (!st) { st = { page: 1, more: true, loading: false, search: "" }; gcState.set(selector, st); }
+    if (!st) { st = { page: 1, more: true, loading: false, search: "", extra: {} }; gcState.set(selector, st); }
     if (st.loading || !st.more) return;
     st.loading = true;
 
@@ -513,7 +586,7 @@ async function s2_LoadNext(selector, url) {
         $resultsList.append('<li class="select2-results__option gc-loading-item" style="color:#999;font-style:italic">Loading...</li>');
     }
 
-    const req = buildReq(st.page, st.search);
+    const req = buildReq(st.page, st.search, st.extra);
     try {
         const res = await $.ajax({ url, type: "POST", contentType: "application/json", data: JSON.stringify(req) });
         if (!res || !res.isSuccess) return;
@@ -534,11 +607,8 @@ async function s2_LoadNext(selector, url) {
         });
 
         const isDropdownOpen = $(document).find('.select2-results__options').length > 0;
-        if (isDropdownOpen) {
-            _s2_injectIntoOpenDropdown(selector, newItems);
-        }
+        if (isDropdownOpen) _s2_injectIntoOpenDropdown(selector, newItems);
         $sel.trigger('change.select2');
-
     } catch (err) {
         console.error(`[S2 LOAD] ${selector}:`, err);
         $(document).find('.select2-results__options .gc-loading-item').remove();
@@ -659,8 +729,55 @@ async function _s2_cascadeFromParent(parentSelector) {
  * @param {object}   extraOptions   extra Select2 options  (optional)
  */
 
-function s2_InitSingle(selector, url, placeholder, filterType, cascadeTargets, extraOptions) {
-    gcState.set(selector, { page: 1, more: true, loading: false, search: "" });
+// function s2_InitSingle(selector, url, placeholder, filterType, cascadeTargets, extraOptions) {
+//     gcState.set(selector, { page: 1, more: true, loading: false, search: "" });
+//     gcUrlMap.set(selector, url);
+//     gcRegisterSelector(selector, filterType);
+
+//     if (cascadeTargets && cascadeTargets.length)
+//         s2_RegisterCascade(selector, cascadeTargets);
+
+//     const $sel = $(selector);
+//     if ($sel.hasClass('select2-hidden-accessible')) {
+//         try { $sel.select2('destroy'); } catch (e) { }
+//     }
+//     $sel.removeAttr('multiple');
+
+//     $sel.select2(Object.assign({
+//         placeholder: placeholder || "Select",
+//         allowClear: true,
+//         width: '100%',
+//         minimumResultsForSearch: 0,
+//         language: {
+//             searching: function () {
+//                 return "Loading...";
+//             },
+//             noResults: function () {
+//                 let st = gcState.get(selector);
+//                 if (st && st.loading) return "Loading...";
+//                 return "No data found";
+//             }
+//         }
+//     }, extraOptions || {}));
+
+//     $sel.on('select2:opening', function (e) {
+//         let st = gcState.get(selector);
+//         if (st && st.loading) {
+//             e.preventDefault();
+//         }
+//     });
+//     s2_BindOpen(selector, url);
+
+//     if (cascadeTargets && cascadeTargets.length) {
+//         $sel.off('change.gcCascade').on('change.gcCascade', function () {
+//             _s2_cascadeFromParent(selector);
+//         });
+//     }
+// }
+
+
+function s2_InitSingle(selector, url, placeholder, filterType, cascadeTargets, extraOptions, extraReqParams) {
+    gcState.set(selector, { page: 1, more: true, loading: false, search: "", extra: extraReqParams || {} });
     gcUrlMap.set(selector, url);
     gcRegisterSelector(selector, filterType);
 
@@ -679,9 +796,7 @@ function s2_InitSingle(selector, url, placeholder, filterType, cascadeTargets, e
         width: '100%',
         minimumResultsForSearch: 0,
         language: {
-            searching: function () {
-                return "Loading...";
-            },
+            searching: function () { return "Loading..."; },
             noResults: function () {
                 let st = gcState.get(selector);
                 if (st && st.loading) return "Loading...";
@@ -692,9 +807,7 @@ function s2_InitSingle(selector, url, placeholder, filterType, cascadeTargets, e
 
     $sel.on('select2:opening', function (e) {
         let st = gcState.get(selector);
-        if (st && st.loading) {
-            e.preventDefault();
-        }
+        if (st && st.loading) e.preventDefault();
     });
     s2_BindOpen(selector, url);
 
@@ -704,6 +817,7 @@ function s2_InitSingle(selector, url, placeholder, filterType, cascadeTargets, e
         });
     }
 }
+
 
 // ── MULTIPLE select init ──────────────────────────────────────
 /**

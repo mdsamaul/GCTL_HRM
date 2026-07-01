@@ -20,7 +20,8 @@ namespace GCTL.Service.DashboardAttendance
                            int TotalCount)>
             GetAttendanceMovementAsync(
                 string companyCode, string branchCode, string departmentCode,
-                DateTime forDate, int page, int pageSize, string search = null)
+                DateTime forDate, int page, int pageSize, string search,
+                string loginEmployeeId, string accessCodeId)   // ← নতুন
         {
             var list = new List<DashboardAttendanceMovementDto>();
             var summary = new DashboardAttendanceSummaryDto();
@@ -40,6 +41,8 @@ namespace GCTL.Service.DashboardAttendance
             cmd.Parameters.AddWithValue("@Page", page);
             cmd.Parameters.AddWithValue("@PageSize", pageSize);
             cmd.Parameters.AddWithValue("@Search", (object?)search ?? DBNull.Value);
+            cmd.Parameters.AddWithValue("@LoginEmployeeId", (object?)loginEmployeeId ?? DBNull.Value);   // ← নতুন
+            cmd.Parameters.AddWithValue("@AccessCodeId", (object?)accessCodeId ?? DBNull.Value);          // ← নতুন
 
             await conn.OpenAsync();
             using var rdr = await cmd.ExecuteReaderAsync();
@@ -79,10 +82,8 @@ namespace GCTL.Service.DashboardAttendance
                         CheckIn = SafeStr(rdr, "CheckIn"),
                         CheckOut = SafeStr(rdr, "CheckOut"),
                         Movement = SafeStr(rdr, "Movement"),
-                        // ── নতুন columns ──────────────────────────
                         Remarks = colNames.Contains("Remarks") ? SafeStr(rdr, "Remarks") : null,
                         LateByMinutes = colNames.Contains("LateByMinutes") ? SafeInt(rdr, "LateByMinutes") : 0,
-                        // ──────────────────────────────────────────
                         ImgType = SafeStr(rdr, "ImgType"),
                         Status = colNames.Contains("Status") ? SafeStr(rdr, "Status") : null,
                         StatusOrder = colNames.Contains("StatusOrder") ? SafeInt(rdr, "StatusOrder") : 4,
@@ -135,7 +136,9 @@ namespace GCTL.Service.DashboardAttendance
             int page,
             int pageSize,
             string search,
-            string employeeId = null)   // ← নতুন parameter
+            string employeeId,
+            string loginEmployeeId,   // ← নতুন
+            string accessCodeId)      // ← নতুন
         {
             using var con = new SqlConnection(_conn);
             await con.OpenAsync();
@@ -148,7 +151,9 @@ namespace GCTL.Service.DashboardAttendance
             param.Add("@Page", page, DbType.Int32);
             param.Add("@PageSize", pageSize, DbType.Int32);
             param.Add("@Search", string.IsNullOrEmpty(search) ? null : search, DbType.String);
-            param.Add("@EmployeeId", string.IsNullOrEmpty(employeeId) ? null : employeeId, DbType.String);  // ← নতুন
+            param.Add("@EmployeeId", string.IsNullOrEmpty(employeeId) ? null : employeeId, DbType.String);
+            param.Add("@LoginEmployeeId", string.IsNullOrEmpty(loginEmployeeId) ? null : loginEmployeeId, DbType.String);   // ← নতুন
+            param.Add("@AccessCodeId", string.IsNullOrEmpty(accessCodeId) ? null : accessCodeId, DbType.String);            // ← নতুন
 
             using var multi = await con.QueryMultipleAsync(
                 "usp_GetLeaveDashboard",
@@ -156,14 +161,11 @@ namespace GCTL.Service.DashboardAttendance
                 commandType: CommandType.StoredProcedure
             );
 
-            // RS1 — Summary
             var summary = await multi.ReadFirstOrDefaultAsync<LeaveSummaryCardDto>()
                           ?? new LeaveSummaryCardDto();
 
-            // RS2 — Leave types
             var leaveTypes = (await multi.ReadAsync<LeaveTypeDto>()).ToList();
 
-            // RS3 — Paged flat rows
             var employees = (await multi.ReadAsync<EmployeeLeaveRowDto>()).ToList();
 
             int totalCount = employees.FirstOrDefault()?.TotalCount ?? 0;

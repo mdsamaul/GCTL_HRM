@@ -66,7 +66,7 @@
 <div class="container-fluid">
     <partial name="_PageHeader" model="Model" />
 </div>
-
+<input type="hidden" id="hdnAccessCode" value="@(ViewBag.AccessCode ?? "")" />
 <section class="content consistent-look">
     <div class="container-fluid">
 
@@ -97,7 +97,7 @@
                             <div class="row align-items-center">
                                 <label class="col-3 text-right mb-0" style="padding-right:0;">Company</label>
                                 <div class="col-9 col-md-7" style="padding-left:5px;">
-                                    <select id="companySelect" class="form-control form-control-sm"></select>
+                                    <select id="companySelect" class="form-control form-control-sm gc-multiselect-load-data"></select>
                                 </div>
                             </div>
                         </div>
@@ -107,7 +107,7 @@
                             <div class="row align-items-center">
                                 <label class="col-3 text-right mb-0" style="padding-right:0;">Branch</label>
                                 <div class="col-9 col-md-7" style="padding-left:5px;">
-                                    <select id="branchSelect" class="form-control form-control-sm" multiple></select>
+                                    <select id="branchSelect" class="form-control form-control-sm gc-multiselect-load-data" multiple></select>
                                 </div>
                                 <div class="col-md-2 col-0"></div>
                             </div>
@@ -118,7 +118,7 @@
                             <div class="row align-items-center">
                                 <label class="col-3 text-right mb-0" style="padding-right:0;">Department</label>
                                 <div class="col-9 col-md-7" style="padding-left:5px;">
-                                    <select id="departmentSelect" class="form-control form-control-sm" multiple></select>
+                                    <select id="departmentSelect" class="form-control form-control-sm gc-multiselect-load-data" multiple></select>
                                 </div>
                                 <div class="col-md-2 col-0"></div>
                             </div>
@@ -129,7 +129,7 @@
                             <div class="row align-items-center">
                                 <label class="col-3 text-right mb-0" style="padding-right:0;">Employee</label>
                                 <div class="col-9 col-md-7" style="padding-left:5px;">
-                                    <select id="employeeSelect" class="form-control form-control-sm" multiple></select>
+                                    <select id="employeeSelect" class="form-control form-control-sm gc-multiselect-load-data" multiple></select>
                                 </div>
                                 <div class="col-md-2 col-0"></div>
                             </div>
@@ -228,7 +228,6 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/1.1.2/css/bootstrap-multiselect.min.css">
-
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
@@ -245,54 +244,27 @@
         $(function () {
         $.dailyAttendanceDetails({
         baseUrl: '@Url.Action("Index", "DailyAttendanceDetailsReport")',
-        load: function () {
-        // Company single
-        gcBindRemoteMultiselect("#companySelect", "/GcFilters/company", "Select Company");
+        load: async function () {
 
-        // Branch multiselect
-        gcBindRemoteMultiselect("#branchSelect", "/GcFilters/branch", "Select Branch");
-        $('#branchSelect').multiselect({
-        includeSelectAllOption: true,
-        enableFiltering: true,
-        filterPlaceholder: 'Search branch...',
-        nonSelectedText: 'All Branches',
-        nSelectedText: ' selected',
-        allSelectedText: 'All Branches',
-        maxHeight: 250,
-        buttonWidth: '100%'
-        });
+        bindRemoteMultiselect("#companySelect", "/GcAccessFilter/companies", "Select Company", "company");
+        bindRemoteMultiselect("#branchSelect", "/GcAccessFilter/branches", "Select Branch", "branch");
+        bindRemoteMultiselect("#departmentSelect", "/GcAccessFilter/departments", "Select Department", "department");
+        bindRemoteMultiselect("#employeeSelect", "/GcAccessFilter/employees", "Select Employee", null);
 
-        // Department multiselect
-        gcBindRemoteMultiselect("#departmentSelect", "/GcFilters/department", "Select Department");
-        $('#departmentSelect').multiselect({
-        includeSelectAllOption: true,
-        enableFiltering: true,
-        filterPlaceholder: 'Search department...',
-        nonSelectedText: 'All Departments',
-        nSelectedText: ' selected',
-        allSelectedText: 'All Departments',
-        maxHeight: 250,
-        buttonWidth: '100%'
-        });
+        var accessCode = $("#hdnAccessCode").val();
+        var isReadonly = accessCode === "0005";
 
-        // Employee multiselect
-        gcBindRemoteMultiselect("#employeeSelect", "/GcFilters/employee", "Select Employee");
-        $('#employeeSelect').multiselect({
-        includeSelectAllOption: false,
-        enableFiltering: true,
-        filterPlaceholder: 'Search employee...',
-        nonSelectedText: 'All Employees',
-        nSelectedText: ' selected',
-        maxHeight: 250,
-        buttonWidth: '100%'
-        });
+        ms_BindCascade();
 
-        bsms_InitializeMultiselects();
-        bsms_BindCascade();
-        bsms_Reset("#companySelect");
-        bsms_LoadNext("#companySelect", "/GcFilters/company").then(function () {
-        bsms_AutoSelectCompany("001");
-        });
+        if (isReadonly) {
+        ms_InitializeMultiselects(null, null, true);
+        await ms_ApplyAccessCodeToAll(accessCode);
+        } else {
+        ms_InitializeMultiselects();
+        ms_Reset("#companySelect");
+        await ms_LoadNext("#companySelect", "...");
+        await ms_AutoSelectCompany("001");
+        }
         }
         });
         });

@@ -2,7 +2,7 @@
 using GCTL.Core;
 using GCTL.Core.DataTables;
 using GCTL.Core.ViewModels.Accounts;
-using GCTL.Core.ViewModels.HRLettersReportViewModel;
+using GCTL.Core.ViewModels.FullEmployeeDetailsGetById;
 using GCTL.Data.Models;
 using GCTL.UI.Core.Extensions;
 using Microsoft.AspNetCore.Mvc;
@@ -27,20 +27,37 @@ namespace GCTL.UI.Core.Controllers
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            if (LoginInfo == null)
+            try
             {
-                context.Result = new RedirectToRouteResult(new RouteValueDictionary(new
+                if (LoginInfo == null)
                 {
-                    controller = "Accounts",
-                    action = "Login"
-                }));
+                    context.Result = new RedirectToRouteResult(new RouteValueDictionary(new
+                    {
+                        controller = "Accounts",
+                        action = "Login"
+                    }));
+                }
+                else
+                {
+                    ViewBag.LoginUser = LoginInfo.Username;
+                    ViewBag.LoginUserPhoto = null;
+                    var logUser = AllInfoEmployeeById(LoginInfo.EmployeeId);
+                    if (logUser.Result.Photo == null)
+                    {
+                        ViewBag.LoginUserPhoto = "/images/UserIcon.png";
+                    }
+                    else
+                    {
+                        ViewBag.LoginUserPhoto = logUser.Result.PhotoBase64;
+                    }
+                }
+                base.OnActionExecuting(context);
             }
-            else
+            catch (Exception)
             {
-                ViewBag.LoginUser = LoginInfo.Username;
-            }
 
-            base.OnActionExecuting(context);
+                throw;
+            }
         }
 
         protected OkObjectResult DataTablesResult<T>(PagedList<T> paginatedItems)

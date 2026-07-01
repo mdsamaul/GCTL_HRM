@@ -1021,8 +1021,6 @@ namespace GCTL.Data.Models
 
                 entity.ToTable("Core_AccessCode");
 
-                entity.HasIndex(e => e.TableName, "IX_Core_AccessCode_TableName");
-
                 entity.Property(e => e.AccessCodeId).HasMaxLength(50);
 
                 entity.Property(e => e.ControllerName).HasMaxLength(100);
@@ -1036,8 +1034,6 @@ namespace GCTL.Data.Models
                 entity.Property(e => e.OrderBy).HasDefaultValueSql("((1))");
 
                 entity.Property(e => e.ParentId).HasMaxLength(100);
-
-                entity.Property(e => e.TableName).HasMaxLength(200);
 
                 entity.Property(e => e.Title).HasMaxLength(250);
 
@@ -1453,6 +1449,8 @@ namespace GCTL.Data.Models
                 entity.Property(e => e.OrderBy).HasDefaultValueSql("((1))");
 
                 entity.Property(e => e.ParentId).HasMaxLength(100);
+
+                entity.Property(e => e.TableName).HasMaxLength(50);
 
                 entity.Property(e => e.Title)
                     .IsRequired()
@@ -4853,6 +4851,8 @@ namespace GCTL.Data.Models
 
                 entity.ToTable("HRM_ATD_MachineData");
 
+                entity.HasIndex(e => new { e.Date, e.FingerPrintId }, "IX_HRM_ATD_MachineData_Date_FP");
+
                 entity.Property(e => e.AutoId)
                     .HasColumnType("numeric(18, 0)")
                     .ValueGeneratedOnAdd()
@@ -4884,6 +4884,8 @@ namespace GCTL.Data.Models
                     .HasName("PK__HRM_ATD___385EFE486DF88245");
 
                 entity.ToTable("HRM_ATD_Manual");
+
+                entity.HasIndex(e => new { e.Date, e.EmployeeId }, "IX_HRM_ATD_Manual_Date_Emp");
 
                 entity.Property(e => e.AutoId)
                     .HasColumnType("numeric(18, 0)")
@@ -5072,7 +5074,7 @@ namespace GCTL.Data.Models
             modelBuilder.Entity<HrmAttendanceType>(entity =>
             {
                 entity.HasKey(e => e.AutoId)
-                    .HasName("PK__HRM_Atte__6B23290594C05823");
+                    .HasName("PK__HRM_Atte__6B232905BDCBB394");
 
                 entity.ToTable("HRM_AttendanceType");
 
@@ -7574,6 +7576,8 @@ namespace GCTL.Data.Models
 
                 entity.ToTable("HRM_EmployeeEducation");
 
+                entity.HasIndex(e => new { e.EmployeeId, e.YearofPasssing }, "IX_EmpEducation_EmployeeID");
+
                 entity.Property(e => e.EmpEduCode).HasMaxLength(50);
 
                 entity.Property(e => e.Achievment).IsRequired();
@@ -7950,6 +7954,8 @@ namespace GCTL.Data.Models
 
                 entity.ToTable("HRM_EmployeeOfficialInfo");
 
+                entity.HasIndex(e => new { e.EmployeeStatus, e.CompanyCode }, "IX_HRM_EmployeeOfficialInfo_Status_Company");
+
                 entity.Property(e => e.AutoId)
                     .HasColumnType("numeric(18, 0)")
                     .ValueGeneratedOnAdd()
@@ -7968,6 +7974,11 @@ namespace GCTL.Data.Models
                 entity.Property(e => e.BranchCode)
                     .IsRequired()
                     .HasMaxLength(50);
+
+                entity.Property(e => e.ClientId)
+                    .HasMaxLength(50)
+                    .HasColumnName("ClientID")
+                    .IsFixedLength();
 
                 entity.Property(e => e.CompanyCode)
                     .IsRequired()
@@ -8684,6 +8695,8 @@ namespace GCTL.Data.Models
 
                 entity.ToTable("HRM_LeaveApplicationDays");
 
+                entity.HasIndex(e => new { e.Days, e.LeaveAppEntryId }, "IX_HRM_LeaveApplicationDays_Days_Entry");
+
                 entity.Property(e => e.AutoId)
                     .HasColumnType("numeric(18, 0)")
                     .ValueGeneratedOnAdd()
@@ -8704,6 +8717,8 @@ namespace GCTL.Data.Models
                     .HasName("PK__HRM_Leav__6B232905A742958B");
 
                 entity.ToTable("HRM_LeaveApplicationEntry");
+
+                entity.HasIndex(e => new { e.EmployeeId, e.StartDate, e.EndDate }, "IX_HRM_LeaveApplicationEntry_Emp_Dates");
 
                 entity.Property(e => e.AutoId)
                     .HasColumnType("numeric(18, 0)")
@@ -10392,6 +10407,8 @@ namespace GCTL.Data.Models
                     .HasName("PK__HRM_Sepa__3850A09C7A85CA46");
 
                 entity.ToTable("HRM_Separation");
+
+                entity.HasIndex(e => new { e.EmployeeId, e.SeparationDate }, "IX_HRM_Separation_EmpId_Date");
 
                 entity.Property(e => e.SeparationId).HasMaxLength(50);
 

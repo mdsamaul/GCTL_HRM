@@ -126,10 +126,10 @@
                         @*<b>Version</b> 3.0.4*@
                     </div>
                 </div>
-                <div class="ml-auto">
+                <div class="ml-auto" style="padding-right: 20px;">
                     <img src="~/images/gctl_b_w.png" height="35" style="opacity:.50;" />
                 </div>
-                <div class="col-1"></div>
+                @* <div class="col-1"></div> *@
             </div>
             
         </footer>
@@ -262,42 +262,42 @@
     <script src="~/js/site-toolbars.js"></script>
     <script type="text/javascript">
 
-        // function getBaseUrl() {
-        // var base_url = window.location.origin;
-        // var host = window.location.host;
-        // var pathArray = window.location.pathname.split('/');
-        // if (pathArray.includes("@applicationSettings.VirtualPath")) {
-        // return base_url + "/@applicationSettings.VirtualPath";
-        // }
-
-        // return base_url;
-        // }
-
         function getBaseUrl() {
         var base_url = window.location.origin;
+        var host = window.location.host;
         var pathArray = window.location.pathname.split('/');
         if (pathArray.includes("@applicationSettings.VirtualPath")) {
         return base_url + "/@applicationSettings.VirtualPath";
         }
-        return base_url + "/HRM"; 
+
+        return base_url;
         }
 
-        function normalizeUrl(baseUrl) {
-        return baseUrl.replace(/\/$/, "");
-        }
-    </script>
-    <script>
-        // Auto HRM prefix for all AJAX calls
-        $.ajaxPrefilter(function (options) {
-        if (options.url
-        && options.url.startsWith('/')
-        && !options.url.startsWith('/HRM')
-        && !options.url.startsWith('/lib')
-        && !options.url.startsWith('/FrontEnd')) {
-        options.url = '/HRM' + options.url;
-        }
-        });
-    </script>
+    //     function getBaseUrl() {
+    //     var base_url = window.location.origin;
+    //     var pathArray = window.location.pathname.split('/');
+    //     if (pathArray.includes("@applicationSettings.VirtualPath")) {
+    //     return base_url + "/@applicationSettings.VirtualPath";
+    //     }
+    //     return base_url + "/HRM"; 
+    //     }
+
+    //     function normalizeUrl(baseUrl) {
+    //     return baseUrl.replace(/\/$/, "");
+    //     }
+    // </script>
+    // <script>
+       
+    //     $.ajaxPrefilter(function (options) {
+    //     if (options.url
+    //     && options.url.startsWith('/')
+    //     && !options.url.startsWith('/HRM')
+    //     && !options.url.startsWith('/lib')
+    //     && !options.url.startsWith('/FrontEnd')) {
+    //     options.url = '/HRM' + options.url;
+    //     }
+    //     });
+    // </script>
 
     <script>
         // Global header clock - works on all pages

@@ -1,121 +1,239 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "AccessMenu";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
 }
 
 <style>
+    .dataTables_scrollBody > table > thead > tr > th {
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+    }
+
+    .dataTables_filter { margin-right: 0px; }
+
     .form-check {
         position: relative;
         display: block;
         padding-left: 1.25rem;
         padding-bottom: 10%;
     }
+
+    #accessListTable_wrapper .dataTables_filter { float: none; text-align: left; }
+    .access-id-btn { text-decoration: underline !important; color: #0000e0 !important; }
 </style>
 
-<div class="bg-light">
-    <div class="container-fluid py-4">
-        <div class="row">
-            <div class="col-md-8">
-                <div class="card mb-4">
-                    <div class="card-header bg-white">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <h5 class="mb-0">Access Code</h5>
-                            <div>
-                                <button class="btn btn-primary" id="saveAccessMenuBtn">Save</button>
-                                <button class="btn btn-outline-danger mx-2" id="deleteSelectedBtn">Delete</button> 
-
-                                <button class="btn btn-outline-secondary">Clear</button>
+<section class="container-fluid col-md-12">
+    <partial name="_PageHeader" model='new BaseViewModel { PageUrl = "/MenuTab/AccessMenu", Breadcrumb = "Access Menu" }' />
+    <div class="row">
+        <div class="col-md-8 pr-1">
+            <div class="card p-0">
+                <div class="card-header p-2">
+                    <div class="row">
+                        <div class="col-md-5">
+                            <h6 class="page-title">Access Code</h6>
+                        </div>
+                        <div class="col-md-7">
+                            <div class="btn-toolbar d-flex justify-content-end">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-default success-btn js-emp-holiday-dec-save" id="saveAccessMenuBtn"
+                                            data-toggle="tooltip"
+                                            data-placement="top"
+                                            title="Save">
+                                        <i class="fa fa-save">&nbsp;</i> Save
+                                    </button>
+                                    <button type="button" class="btn btn-default danger-btn" id="deleteSelectedBtn"
+                                            data-toggle="tooltip"
+                                            data-placement="top"
+                                            title="Delete">
+                                        <i class="fa fa-trash">&nbsp;</i> Delete
+                                    </button>
+                                    <button type="button" class="btn btn-default primary-btn" id="clearBtn"
+                                            data-toggle="tooltip"
+                                            data-placement="top"
+                                            title="Clear">
+                                        <i class="fa fa-eraser">&nbsp;</i> Clear
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="card-body row">
-                        <div class="mb-3 col-6">
-                            <label for="access-code-id" class="form-label">Access Code Id <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="access-code-id" value="">
-                        </div>
-
-                        <div class="mb-4 col-6">
-                            <label for="access-code-name" class="form-label">Access Code Name <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="access-code-name" value="">
-                        </div>
-
-                        <div class="table-responsive">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th style="width: 80px;">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="selectAll">
-                                                <label class="form-check-label" for="selectAll">Select</label>
-                                            </div>
-                                        </th>
-                                        <th>Title</th>
-                                        <th class="text-center">Add</th>
-                                        <th class="text-center">Edit</th>
-                                        <th class="text-center">Delete</th>
-                                        <th class="text-center">Print</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="menuTabLoad">
-                                    
-                                   
-                                </tbody>
-                            </table>
                         </div>
                     </div>
                 </div>
+                <div class="card-body p-1 gc-inline-select2">
+    <table style="width:100%; table-layout:fixed; border-collapse:collapse;">
+        <colgroup>
+            <col style="width:16%;" />
+            <col style="width:32%;" />
+            <col style="width:4%;" />
+            <col style="width:16%;" />
+            <col style="width:32%;" />
+        </colgroup>
+
+        <!-- Row 1: Access Code Id | Access Code Name -->
+        <tr>
+            <td style="padding:4px 4px 4px 0; vertical-align:central;" class="text-right">
+                <label for="access-code-id" class="form-label mb-0">
+                    Access Code Id<span class="text-danger">*</span>
+                </label>
+            </td>
+            <td style="padding:4px 0; vertical-align:bottom;">
+                    <select class="form-control form-control-sm gc-select2 select2-sm" id="access-code-id">
+                        <option value="">-- Select --</option>
+                    </select>
+
+            </td>
+            <td style="padding:4px 0; vertical-align:bottom;" class="text-right">  
+                        <button class="btn" type="button"
+                                id="openAddAccessCodeModal"
+                                data-toggle="tooltip" title="Add New Access Code">
+                            <i class="fa fa-plus"></i>
+                        </button>
+            </td>
+            <td style="padding:4px 4px 4px 0; vertical-align:central;" class="text-right">
+                <label for="access-code-name" class="form-label mb-0">
+                    Access Code Name<span class="text-danger">*</span>
+                </label>
+            </td>
+            <td style="padding:4px 0; vertical-align:bottom;">
+                <input type="text" class="form-control form-control-sm bg-white" readonly
+                       id="access-code-name" value=""
+                       style="width:100%;" />
+            </td>
+        </tr>
+
+        <!-- Row 2: Module -->
+        <tr>
+            <td style="padding:4px 4px 4px 0; vertical-align:central;" class="text-right">
+                <label for="module-select" class="form-label mb-0">Module<span class="text-danger">*</span></label>
+            </td>
+            <td style="padding:4px 0; vertical-align:bottom;">
+                <select class="form-control form-control-sm gc-select2 select2-sm"
+                        id="module-select" style="width:100%;">
+                    <option value="">-- All --</option>
+                </select>
+            </td>
+            <td colspan="3"></td>
+        </tr>
+
+        <!-- Row 3: Data Table -->
+        <tr>
+            <td colspan="7" style="padding:8px 0 0 0;">
+                <div class="table-responsive menuTableWrapper px-2" style="display:none">
+                    <table class="table table-bordered mb-0">
+                        <thead>
+                            <tr>
+                                <th style="width:10%;" class="text-center align-middle p-0">
+                                    Select<br />
+                                    <input type="checkbox" id="selectAll" />
+                                </th>
+                                <th class="text-center align-middle">Title</th>
+                                <th class="text-center align-middle p-0" style="width:10%; white-space:nowrap;">
+                                    Add<br />
+                                    <input type="checkbox" id="addSelectAll" />
+                                </th>
+                                <th class="text-center align-middle p-0" style="width:10%; white-space:nowrap;">
+                                    Edit<br />
+                                    <input type="checkbox" id="editSelectAll" />
+                                </th>
+                                <th class="text-center align-middle p-0" style="width:10%; white-space:nowrap;">
+                                    Delete<br />
+                                    <input type="checkbox" id="deleteSelectAll" />
+                                </th>
+                                <th class="text-center align-middle p-0" style="width:10%; white-space:nowrap;">
+                                    Print<br />
+                                    <input type="checkbox" id="printSelectAll" />
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="menuTabLoad"></tbody>
+                    </table>
+                </div>
+            </td>
+        </tr>
+
+    </table>
+</div>
             </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="mb-3 d-flex justify-content-end">
-                            <div class="input-group" style="width: 250px;">
-                                <span class="input-group-text">Search:</span>
-                                <input id="searchInput" type="text" class="form-control">
-                            </div>
-                        </div>
-
-                        <div class="table-responsive">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th style="width: 40px;">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="selectAllAccess">
-                                            </div>
-                                        </th>
-
-                                        <th>ID</th>
-                                        <th>Name</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="accessListTable">
-                                    
-                                    
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <div class="d-flex justify-content-between align-items-center mt-3">
-                            <div>
-                                <span class="text-muted"></span>
-                            </div>
-                            <div>
-                                <nav aria-label="Page navigation">
-                                    <ul class="pagination mb-0" id="pagination"></ul>
-                                </nav>
-                            </div>
-                        </div>
+        </div>
+        <div class="col-md-4 pl-1">
+            <div class="card">
+                <div class="card-body px-1 pb-1">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover w-100" id="accessListTable">
+                            <thead>
+                                <tr>
+                                    <th style="width: 5%">
+                                        <input type="checkbox" id="selectAllAccess">
+                                    </th>
+                                    <th class="text-center align-middle">ID</th>
+                                    <th class="text-center align-middle">Name</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-  
-   
-</div>
+    <div class="modal fade" id="addAccessCodeModal" tabindex="-1" role="dialog" aria-labelledby="addAccessCodeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="addAccessCodeModalLabel">Add Access Code</h6>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="addAccessCodeContent"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @* <div class="modal fade" id="addAccessCodeModal" tabindex="-1" role="dialog" aria-labelledby="addAccessCodeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header py-2">
+                    <h6 class="modal-title" id="addAccessCodeModalLabel">Add Access Code</h6>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-2">
+                        <label for="modal-access-code-id" class="form-label">
+                            Access Code Id <span class="text-danger">*</span>
+                        </label>
+                        <input type="text" class="form-control" id="modal-access-code-id">
+                    </div>
+                    <div class="mb-2">
+                        <label for="modal-access-code-name" class="form-label">
+                            Access Code Name <span class="text-danger">*</span>
+                        </label>
+                        <input type="text" class="form-control" id="modal-access-code-name">
+                    </div>
+                </div>
+                <div class="modal-footer py-2">
+                    <button type="button" class="btn btn-default success-btn" id="saveNewAccessCodeBtn">
+                        <i class="fa fa-save"></i> Save
+                    </button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div> *@
+
+
+
+    <partial name="_BottomNavigation" />
+</section>
+
 
 
 @section Scripts {
@@ -123,5 +241,5 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
     <script src="~/js/pages/accessMenu.js"></script>
-    
+    <script src="~/js/pages//accessCodesEntry.js"></script>
 }

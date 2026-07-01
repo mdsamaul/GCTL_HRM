@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace GCTL.UI.Core.Controllers
 {
-    
     public class DailyAttendanceDetailsReportController : BaseController
     {
         private readonly IDailyAttendanceDetailsReportService _service;
@@ -25,7 +24,6 @@ namespace GCTL.UI.Core.Controllers
             _env = env;
         }
 
-        // ── GET: Index ───────────────────────────────────────────────
         [HttpGet]
         public async Task<IActionResult> Index()
         {
@@ -33,6 +31,7 @@ namespace GCTL.UI.Core.Controllers
             if (!hasPermission)
                 return RedirectToAction("Login", "Accounts");
             ViewBag.AttendanceTypeList = new SelectList(attendanceTypeRepo.All().Select(x => new { x.AttendanceTypeCode, x.AttendanceTypeName }), "AttendanceTypeCode", "AttendanceTypeName");
+            ViewBag.AccessCode = LoginInfo.AccessCode;
             var model = new DailyAttendanceDetailsReportViewModel
             {
                 PageUrl = Url.Action(nameof(Index))
@@ -40,13 +39,14 @@ namespace GCTL.UI.Core.Controllers
             return View(model);
         }
 
-        // ── POST: GetSummary ─────────────────────────────────────────
-        // Called by JS to get data → build PDF / preview
         [HttpPost]
         public async Task<IActionResult> GetSummary([FromBody] DailyAttendanceDetailsFilterDto filter)
         {
             try
             {
+                filter.LoginEmployeeId = LoginInfo.EmployeeId;
+                filter.AccessCodeId = LoginInfo.AccessCode;
+
                 var data = await _service.GetReportDataAsync(filter);
                 return Json(new { success = true, data });
             }
@@ -56,12 +56,14 @@ namespace GCTL.UI.Core.Controllers
             }
         }
 
-        // ── POST: DownloadExcel ──────────────────────────────────────
         [HttpPost]
         public async Task<IActionResult> DownloadExcel([FromBody] DailyAttendanceDetailsFilterDto filter)
         {
             try
             {
+                filter.LoginEmployeeId = LoginInfo.EmployeeId;
+                filter.AccessCodeId = LoginInfo.AccessCode;
+
                 var logoPath = Path.Combine(_env.WebRootPath, "images", "DP_logo.png");
                 var bytes = await _service.ExportExcelAsync(filter, logoPath);
                 var fileName = $"DailyAttendance_{filter.ReportType}_{DateTime.Now:yyyyMMdd_HHmmss}.xlsx";

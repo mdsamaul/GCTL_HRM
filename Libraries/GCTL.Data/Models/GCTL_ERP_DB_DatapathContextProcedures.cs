@@ -52,6 +52,7 @@ namespace GCTL.Data.Models
             modelBuilder.Entity<EmployeeGeneralInfoReportSPResult>().HasNoKey().ToView(null);
             modelBuilder.Entity<EmployeeLoanInformationReportResult>().HasNoKey().ToView(null);
             modelBuilder.Entity<EmployeeReferenceInformationReportSPResult>().HasNoKey().ToView(null);
+            modelBuilder.Entity<FullEmployeeDetailsGetByidResult>().HasNoKey().ToView(null);
             modelBuilder.Entity<GetAdvancePayPagedWithFilterResult>().HasNoKey().ToView(null);
             modelBuilder.Entity<GetCompanyNamesBySearchResult>().HasNoKey().ToView(null);
             modelBuilder.Entity<GetDiscountDetailsResult>().HasNoKey().ToView(null);
@@ -100,6 +101,7 @@ namespace GCTL.Data.Models
             modelBuilder.Entity<QualificationReportSPResult>().HasNoKey().ToView(null);
             modelBuilder.Entity<ReferenceCommissionReportResult>().HasNoKey().ToView(null);
             modelBuilder.Entity<ReferenceCommissionSummaryResult>().HasNoKey().ToView(null);
+            modelBuilder.Entity<RPT_GetDailyAttendanceDetailsReportResult>().HasNoKey().ToView(null);
             modelBuilder.Entity<RPT_GetDailyAttendanceSummaryReportResult>().HasNoKey().ToView(null);
             modelBuilder.Entity<Rpt_PatientInfoResult>().HasNoKey().ToView(null);
             modelBuilder.Entity<Rpt_proc_BankReceiptVoucherResult>().HasNoKey().ToView(null);
@@ -1170,6 +1172,33 @@ namespace GCTL.Data.Models
                 parameterreturnValue,
             };
             var _ = await _context.SqlQueryAsync<EmployeeReferenceInformationReportSPResult>("EXEC @returnValue = [dbo].[EmployeeReferenceInformationReportSP] @DepartmentCodes = @DepartmentCodes, @DesignationCodes = @DesignationCodes, @EmployeeCodes = @EmployeeCodes, @BranchCodes = @BranchCodes, @CompanyCodes = @CompanyCodes, @NationalIDNO = @NationalIDNO", sqlParameters, cancellationToken);
+
+            returnValue?.SetValue(parameterreturnValue.Value);
+
+            return _;
+        }
+
+        public virtual async Task<List<FullEmployeeDetailsGetByidResult>> FullEmployeeDetailsGetByidAsync(string EmployeeCode, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
+        {
+            var parameterreturnValue = new SqlParameter
+            {
+                ParameterName = "returnValue",
+                Direction = System.Data.ParameterDirection.Output,
+                SqlDbType = System.Data.SqlDbType.Int,
+            };
+
+            var sqlParameters = new []
+            {
+                new SqlParameter
+                {
+                    ParameterName = "EmployeeCode",
+                    Size = 100,
+                    Value = EmployeeCode ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.NVarChar,
+                },
+                parameterreturnValue,
+            };
+            var _ = await _context.SqlQueryAsync<FullEmployeeDetailsGetByidResult>("EXEC @returnValue = [dbo].[FullEmployeeDetailsGetByid] @EmployeeCode = @EmployeeCode", sqlParameters, cancellationToken);
 
             returnValue?.SetValue(parameterreturnValue.Value);
 
@@ -4037,6 +4066,67 @@ namespace GCTL.Data.Models
                 parameterreturnValue,
             };
             var _ = await _context.SqlQueryAsync<ReferenceCommissionSummaryResult>("EXEC @returnValue = [dbo].[ReferenceCommissionSummary] @CommissionReceiver = @CommissionReceiver, @CommissionReceiverId = @CommissionReceiverId, @FromDate = @FromDate, @ToDate = @ToDate", sqlParameters, cancellationToken);
+
+            returnValue?.SetValue(parameterreturnValue.Value);
+
+            return _;
+        }
+
+        public virtual async Task<List<RPT_GetDailyAttendanceDetailsReportResult>> RPT_GetDailyAttendanceDetailsReportAsync(string CompanyCode, string BranchCodes, string DepartmentCodes, string EmployeeIds, DateOnly? FromDate, string ReportType, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
+        {
+            var parameterreturnValue = new SqlParameter
+            {
+                ParameterName = "returnValue",
+                Direction = System.Data.ParameterDirection.Output,
+                SqlDbType = System.Data.SqlDbType.Int,
+            };
+
+            var sqlParameters = new []
+            {
+                new SqlParameter
+                {
+                    ParameterName = "CompanyCode",
+                    Size = 50,
+                    Value = CompanyCode ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.VarChar,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "BranchCodes",
+                    Size = -1,
+                    Value = BranchCodes ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.NVarChar,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "DepartmentCodes",
+                    Size = -1,
+                    Value = DepartmentCodes ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.NVarChar,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "EmployeeIds",
+                    Size = -1,
+                    Value = EmployeeIds ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.NVarChar,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "FromDate",
+                    Value = FromDate ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.Date,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "ReportType",
+                    Size = 40,
+                    Value = ReportType ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.NVarChar,
+                },
+                parameterreturnValue,
+            };
+            var _ = await _context.SqlQueryAsync<RPT_GetDailyAttendanceDetailsReportResult>("EXEC @returnValue = [dbo].[RPT_GetDailyAttendanceDetailsReport] @CompanyCode = @CompanyCode, @BranchCodes = @BranchCodes, @DepartmentCodes = @DepartmentCodes, @EmployeeIds = @EmployeeIds, @FromDate = @FromDate, @ReportType = @ReportType", sqlParameters, cancellationToken);
 
             returnValue?.SetValue(parameterreturnValue.Value);
 

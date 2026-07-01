@@ -61,6 +61,8 @@ namespace GCTL.Service.DailyAttendanceDetailsReport
             param.Add("@EmployeeIds", empCsv, DbType.String);
             param.Add("@FromDate", fromDate, DbType.Date);
             param.Add("@ReportType", filter.ReportType, DbType.String);
+            param.Add("@LoginEmployeeId", filter.LoginEmployeeId, DbType.String);
+            param.Add("@AccessCodeId", filter.AccessCodeId, DbType.String);
 
             using var multi = await conn.QueryMultipleAsync(
                 "RPT_GetDailyAttendanceDetailsReport",
@@ -79,13 +81,16 @@ namespace GCTL.Service.DailyAttendanceDetailsReport
                     result.LateRows = (await multi.ReadAsync<DailyAttendanceLateRowDto>()).ToList();
                     break;
                 case "InOut":
-                case "MissingCheckOut":   // ← এই দুটো SP থেকে InOut rows আনে
-                case "EarlyLeave":
                     result.InOutRows = (await multi.ReadAsync<DailyAttendanceInOutRowDto>()).ToList();
+                    break;
+                case "MissingCheckOut":
+                    result.MissingCheckOutRows = (await multi.ReadAsync<DailyAttendanceInOutRowDto>()).ToList();
+                    break;
+                case "EarlyLeave":
+                    result.EarlyLeaveRows = (await multi.ReadAsync<DailyAttendanceInOutRowDto>()).ToList();
                     break;
             }
 
-            // 2nd result set: header info
             var header = await multi.ReadFirstOrDefaultAsync<DailyAttendanceDetailsHeaderDto>();
             if (header != null) result.Header = header;
 
@@ -93,9 +98,6 @@ namespace GCTL.Service.DailyAttendanceDetailsReport
         }
 
         // ── Excel Export ─────────────────────────────────────────────
-        // logoPhysicalPath: full disk path to the logo file (e.g. {wwwroot}/images/DP_logo.png).
-        // Caller (controller) supplies this via IWebHostEnvironment.WebRootPath since the
-        // service project does not have access to web hosting types.
         public async Task<byte[]> ExportExcelAsync(DailyAttendanceDetailsFilterDto filter, string? logoPhysicalPath = null)
         {
             var data = await GetReportDataAsync(filter);
@@ -109,7 +111,7 @@ namespace GCTL.Service.DailyAttendanceDetailsReport
                 "Late" => "Daily Late Report",
                 "InOut" => "Daily In-Out Report",
                 "MissingCheckOut" => "Daily Missing Check-Out Report",
-                "EarlyLeave" => "Daily Early Leave Report",
+                "EarlyLeave" => "Daily Early Office Leave Report",
                 _ => "Daily Attendance Details"
             };
 
@@ -118,20 +120,17 @@ namespace GCTL.Service.DailyAttendanceDetailsReport
 
             int totalCols = GetTotalColumns(filter.ReportType);
 
-            // ── Row 1: Company Name (logo sits to the left of this row) ──
             ws.Cells[1, 1, 1, totalCols].Merge = true;
             ws.Cells[1, 1].Value = data.Header?.CompanyName ?? string.Empty;
             ws.Cells[1, 1].Style.Font.Bold = true;
             ws.Cells[1, 1].Style.Font.Size = 14;
             ws.Cells[1, 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
 
-            // ── Row 2: Report Name ───────────────────────────────────
             ws.Cells[2, 1, 2, totalCols].Merge = true;
             ws.Cells[2, 1].Value = reportName;
             ws.Cells[2, 1].Style.Font.Bold = true;
             ws.Cells[2, 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
 
-            // ── Row 3: Date (no time) ────────────────────────────────
             ws.Cells[3, 1, 3, totalCols].Merge = true;
             if (DateTime.TryParse(data.Header?.DataDate, out DateTime dt))
             {
@@ -144,7 +143,6 @@ namespace GCTL.Service.DailyAttendanceDetailsReport
             ws.Cells[3, 1].Style.Font.Bold = true;
             ws.Cells[3, 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
 
-            // ── Logo — top-left, same as PDF header ──────────────────
             AddLogo(ws, logoPhysicalPath);
 
             int startRow = 5;
@@ -166,10 +164,10 @@ namespace GCTL.Service.DailyAttendanceDetailsReport
                     BuildInOutSheet(ws, data.InOutRows ?? new(), startRow, ref currDept, ref sn);
                     break;
                 case "MissingCheckOut":
-                    BuildMissingCheckOutSheet(ws, data.InOutRows ?? new(), startRow, ref currDept, ref sn);
+                    BuildMissingCheckOutOrEarlyLeaveSheet(ws, data.MissingCheckOutRows ?? new(), startRow, ref currDept, ref sn);
                     break;
                 case "EarlyLeave":
-                    BuildEarlyLeaveSheet(ws, data.InOutRows ?? new(), startRow, ref currDept, ref sn);
+                    BuildMissingCheckOutOrEarlyLeaveSheet(ws, data.EarlyLeaveRows ?? new(), startRow, ref currDept, ref sn);
                     break;
             }
 
@@ -179,8 +177,6 @@ namespace GCTL.Service.DailyAttendanceDetailsReport
         }
 
         // ── Logo helper ──────────────────────────────────────────────
-        // Mirrors the PDF header: logo placed at the top-left corner,
-        // roughly over rows 1-3 where the company name block sits.
         private static void AddLogo(ExcelWorksheet ws, string? logoPhysicalPath)
         {
             try
@@ -190,8 +186,8 @@ namespace GCTL.Service.DailyAttendanceDetailsReport
 
                 var fileInfo = new FileInfo(logoPhysicalPath);
                 var pic = ws.Drawings.AddPicture("CompanyLogo", fileInfo);
-                pic.SetPosition(0, 2, 0, 2);   // row 0, rowOffset 2px, col 0, colOffset 2px
-                pic.SetSize(120, 60);          // px — adjust to taste, keeps aspect roughly like the PDF logo
+                pic.SetPosition(0, 2, 0, 2);
+                pic.SetSize(120, 60);
             }
             catch
             {
@@ -206,12 +202,12 @@ namespace GCTL.Service.DailyAttendanceDetailsReport
             "Absent" => 5,
             "Late" => 9,
             "InOut" => 13,
-            "MissingCheckOut" => 9,
-            "EarlyLeave" => 10,
+            "MissingCheckOut" => 12,
+            "EarlyLeave" => 12,
             _ => 9
         };
 
-        // ── Shared: department header + column headers (centered, bordered) ──
+        // ── Shared: department header + column headers ──
         private static void AddDeptHeader(ExcelWorksheet ws, string deptName, ref int row, string[] cols)
         {
             ws.Cells[row, 1, row, cols.Length].Merge = true;
@@ -237,8 +233,7 @@ namespace GCTL.Service.DailyAttendanceDetailsReport
             row++;
         }
 
-        // ── Shared: writes one body cell — bordered, vertical-centered,
-        // horizontally centered by default (Name/Designation are left-aligned) ──
+        // ── Shared: writes one body cell ──
         private static void SetCell(ExcelWorksheet ws, int row, int col, object? value, bool leftAlign = false)
         {
             var cell = ws.Cells[row, col];
@@ -251,7 +246,7 @@ namespace GCTL.Service.DailyAttendanceDetailsReport
             cell.Style.Border.Right.Style = ExcelBorderStyle.Thin;
         }
 
-        // ── Present (matches PDF: SN, Emp.ID, Name, Designation, Shift, In Time, Late, Status, Remarks) ──
+        // ── Present ──
         private static void BuildPresentSheet(ExcelWorksheet ws,
             List<DailyAttendancePresentRowDto> rows, int startRow,
             ref string currentDept, ref int sn)
@@ -279,7 +274,7 @@ namespace GCTL.Service.DailyAttendanceDetailsReport
             }
         }
 
-        // ── Absent (matches PDF: SN, Emp.ID, Name, Designation, Status) ──
+        // ── Absent ──
         private static void BuildAbsentSheet(ExcelWorksheet ws,
             List<DailyAttendanceAbsentRowDto> rows, int startRow,
             ref string currentDept, ref int sn)
@@ -303,7 +298,7 @@ namespace GCTL.Service.DailyAttendanceDetailsReport
             }
         }
 
-        // ── Late (matches PDF: SN, Emp.ID, Name, Designation, Shift, In Time, Late, Status, Remarks) ──
+        // ── Late ──
         private static void BuildLateSheet(ExcelWorksheet ws,
             List<DailyAttendanceLateRowDto> rows, int startRow,
             ref string currentDept, ref int sn)
@@ -331,7 +326,7 @@ namespace GCTL.Service.DailyAttendanceDetailsReport
             }
         }
 
-        // ── In-Out (matches PDF: SN, Emp.ID, Name, Designation, Shift, In Time, Late, Out Time, Early Out, W.Hour(s), OT(H), Status, Remarks) ──
+        // ── In-Out (has OT(H)) ──
         private static void BuildInOutSheet(ExcelWorksheet ws,
             List<DailyAttendanceInOutRowDto> rows, int startRow,
             ref string currentDept, ref int sn)
@@ -363,12 +358,12 @@ namespace GCTL.Service.DailyAttendanceDetailsReport
             }
         }
 
-        // ── Missing Check-Out (matches PDF: SN, Emp.ID, Name, Designation, Shift, In Time, W.Hour(s), Status, Remarks) ──
-        private static void BuildMissingCheckOutSheet(ExcelWorksheet ws,
+        // ── Missing Check-Out / Early Leave — no OT(H) column ──
+        private static void BuildMissingCheckOutOrEarlyLeaveSheet(ExcelWorksheet ws,
             List<DailyAttendanceInOutRowDto> rows, int startRow,
             ref string currentDept, ref int sn)
         {
-            string[] cols = { "SN", "Emp. ID", "Name", "Designation", "Shift", "In Time", "W.Hour(s)", "Status", "Remarks" };
+            string[] cols = { "SN", "Emp. ID", "Name", "Designation", "Shift", "In Time", "Late", "Out Time", "Early Out", "W.Hour(s)", "Status", "Remarks" };
             int row = startRow;
             foreach (var r in rows)
             {
@@ -384,38 +379,12 @@ namespace GCTL.Service.DailyAttendanceDetailsReport
                 SetCell(ws, row, 4, r.Designation, leftAlign: true);
                 SetCell(ws, row, 5, r.ShiftName);
                 SetCell(ws, row, 6, r.InTime);
-                SetCell(ws, row, 7, r.WorkHours);
-                SetCell(ws, row, 8, r.Status);
-                SetCell(ws, row, 9, r.Remarks);
-                row++;
-            }
-        }
-
-        // ── Early Leave (matches PDF: SN, Emp.ID, Name, Designation, Shift, In Time, Out Time, Early Out, Status, Remarks) ──
-        private static void BuildEarlyLeaveSheet(ExcelWorksheet ws,
-            List<DailyAttendanceInOutRowDto> rows, int startRow,
-            ref string currentDept, ref int sn)
-        {
-            string[] cols = { "SN", "Emp. ID", "Name", "Designation", "Shift", "In Time", "Out Time", "Early Out", "Status", "Remarks" };
-            int row = startRow;
-            foreach (var r in rows)
-            {
-                if (r.DepartmentName != currentDept)
-                {
-                    currentDept = r.DepartmentName;
-                    sn = 1;
-                    AddDeptHeader(ws, currentDept, ref row, cols);
-                }
-                SetCell(ws, row, 1, sn++);
-                SetCell(ws, row, 2, r.EmployeeId);
-                SetCell(ws, row, 3, r.EmployeeName, leftAlign: true);
-                SetCell(ws, row, 4, r.Designation, leftAlign: true);
-                SetCell(ws, row, 5, r.ShiftName);
-                SetCell(ws, row, 6, r.InTime);
-                SetCell(ws, row, 7, r.OutTime);
-                SetCell(ws, row, 8, r.EarlyOut);
-                SetCell(ws, row, 9, r.Status);
-                SetCell(ws, row, 10, r.Remarks);
+                SetCell(ws, row, 7, r.LateDisplay);
+                SetCell(ws, row, 8, r.OutTime);
+                SetCell(ws, row, 9, r.EarlyOut);
+                SetCell(ws, row, 10, r.WorkHours);
+                SetCell(ws, row, 11, r.Status);
+                SetCell(ws, row, 12, r.Remarks);
                 row++;
             }
         }

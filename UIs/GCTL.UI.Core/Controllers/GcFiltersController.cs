@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GCTL.UI.Core.Controllers
 {
-    [Route("HRM/GcFilters")]
+    [Route("GcFilters")]
     public class GcFiltersController : BaseController
     {
         private readonly IGcFilterService _svc;

@@ -64,5 +64,6 @@ namespace GCTL.Data.Models
         public string IsGovtHolidayEligible { get; set; }
         public string IsAttendanceBonusEligible { get; set; }
         public string PayId { get; set; }
+        public string ClientId { get; set; }
     }
 }

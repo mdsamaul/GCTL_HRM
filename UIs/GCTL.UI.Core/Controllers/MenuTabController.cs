@@ -1,13 +1,17 @@
-﻿using System.Runtime.InteropServices;
-using System.Text.Json;
-using DocumentFormat.OpenXml.Office2010.Drawing;
+﻿using DocumentFormat.OpenXml.Office2010.Drawing;
+using GCTL.Core.ViewModels.AccessCodes;
 using GCTL.Core.ViewModels.Common;
 using GCTL.Core.ViewModels.MenuTab;
 using GCTL.Data.Models;
 using GCTL.Service.MenuTab;
 using GCTL.Service.Users;
+using GCTL.UI.Core.ViewModels.AccessCodes;
+using Humanizer;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using NPOI.SS.Formula.Functions;
+using System.Runtime.InteropServices;
+using System.Text.Json;
 
 namespace GCTL.UI.Core.Controllers
 {
@@ -30,8 +34,56 @@ namespace GCTL.UI.Core.Controllers
 
         public IActionResult AccessMenu()
         {
+            var hasPermission = _accessCodeService.HasPermission(LoginInfo.AccessCode);
+            if(!hasPermission)
+                return RedirectToAction("Login", "Accounts");
+
             return View();
         }
+
+        public IActionResult AccessCodeIndex(bool child = false)
+        {
+            var hasPermission = _accessCodeService.HasPermission(LoginInfo.AccessCode);
+            if (!hasPermission && child)
+                return Json(new { message = "You have no permission" });
+            else if (!hasPermission)
+                return RedirectToAction("Login", "Accounts");
+
+            AccessCodePageViewModel model = new AccessCodePageViewModel()
+            {
+                PageUrl = Url.Action(nameof(Index))
+            };
+
+            if (child)
+                return PartialView(model);
+
+            return View(model);
+        }
+
+        [HttpPost("MenuTab/AccessCodeSetup")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AccessCodeSetup(AddAccessCodeDto model)
+        {
+            if (_accessCodeService.IsAccessCodeExist(model.AccessCodeName, model.AccessCodeId))
+                return Json(new { isSuccess = false, message = "Already Exists" });
+            
+            if (ModelState.IsValid)
+            {
+                if (_accessCodeService.IsAccessCodeExistByCode(model.AccessCodeId))
+                {
+                    var result = await _accessCodeService.EditAccessCode(model);
+                    return Json(new { isSuccess = result.success, message = result.message, lastCode = model.AccessCodeId });
+                }
+                else
+                {
+                    var result = await _accessCodeService.AddAccessCode(model);
+                    return Json(new { isSuccess = result.success, message = result.message, lastCode = model.AccessCodeId });
+                }
+            }
+
+            return Json(new { success = false, message = ModelState.Values.FirstOrDefault()?.Errors.FirstOrDefault()?.ErrorMessage });
+        }
+
 
         [HttpGet]
         [Route("MenuTab/AccessMenus")]
@@ -63,37 +115,54 @@ namespace GCTL.UI.Core.Controllers
         [Route("menuTab/DeleteAccessCodes")]
         public async Task<IActionResult> GetAccessCodeList([FromBody]  List<string> selectedIds)
         {
+            if (selectedIds == null || !selectedIds.Any())
+                return BadRequest("No IDs provided.");
 
-           // var accessCodes = await _menuTabService.GetAccessCodeList();
-            return Ok();
+            try
+            {
+                var result = await _menuTabService.DeleteAccessCodes(selectedIds);
+                return Ok(result);
+            } 
+            catch(Exception ex)
+            {
+                return StatusCode(500, new { success = false, message = ex.Message });
+            }
         }
 
 
-        //[HttpPost]
-        //[Route("menuTab/SaveAccessCode")]
-        //public  IActionResult Save([FromBody] MenuAccessDto dto)
-        //{
-        //    if (!ModelState.IsValid)
-        //        return BadRequest(ModelState);
-
-        //    var response = _menuTabService.SaveAccessMenu(dto);
-
-        //    return Ok(new { success = true });
-        //}
-
         [HttpPost]
         [Route("menuTab/SaveAccessCode")]
-        public IActionResult Save([FromBody] MenuAccessDto dto)
+        public  IActionResult Save([FromBody] MenuAccessDto dto)
         {
-            if (dto == null)
-                return BadRequest("DTO is null");
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
             var response = _menuTabService.SaveAccessMenu(dto);
 
             return Ok(new { success = true });
         }
 
+        [HttpGet]
+        [Route("MenuTab/GetParentMenus")]
+        public async Task<IActionResult> GetParentMenus()
+        {
+            var menus = await _accessCodeService.GetParentMenus();
+            return Ok(menus);
+        }
 
+        [HttpPost]
+        [Route("MenuTab/AddAccessCode")]
+        public async Task<IActionResult> AddAccessCode([FromBody] AddAccessCodeDto dto)
+        {
+            if (string.IsNullOrWhiteSpace(dto.AccessCodeId) || string.IsNullOrWhiteSpace(dto.AccessCodeName))
+                return BadRequest("Both fields are required.");
+
+            if (_accessCodeService.IsAccessCodeExistByCode(dto.AccessCodeId))
+                return BadRequest("Duplicate Access Code.");
+
+            await _accessCodeService.AddAccessCode(dto);
+            return Ok(new { success = true });
+        }
 
         #endregion
 
@@ -476,6 +545,7 @@ namespace GCTL.UI.Core.Controllers
                     ParentId = menu.ParentId,
                     OrderBy = menu.OrderBy,
                     ControllerName = menu.ControllerName,
+                    TableName = menu.TableName,
                     ViewName = menu.ViewName,
                     Icon = menu.Icon,
                     IsActive = menu.IsActive
@@ -503,8 +573,8 @@ namespace GCTL.UI.Core.Controllers
                     ControllerName = menuData.ControllerName,
                     ViewName = menuData.ViewName,
                     IsActive = menuData.IsActive,
-                    Icon = menuData.Icon
-
+                    Icon = menuData.Icon,
+                    TableName = menuData.TableName
                 });
 
                 return Ok(commonReturn);

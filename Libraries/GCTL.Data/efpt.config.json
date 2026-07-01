@@ -1411,6 +1411,10 @@
          "ObjectType": 1
       },
       {
+         "Name": "[dbo].[RPT_GetDailyAttendanceDetailsReport]",
+         "ObjectType": 1
+      },
+      {
          "Name": "[dbo].[RPT_GetDailyAttendanceSummaryReport]",
          "ObjectType": 1
       },

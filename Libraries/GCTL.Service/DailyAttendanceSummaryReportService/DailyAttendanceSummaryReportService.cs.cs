@@ -27,7 +27,7 @@ namespace GCTL.Service.DailyAttendanceSummaryReportService
 
         public async Task<bool> PagePermissionAsync(string accessCode)
         {
-            return await accessCodeRepository.All().AnyAsync(x => x.AccessCodeId == accessCode && x.Title == "Roster Schedule" && x.TitleCheck);
+            return await accessCodeRepository.All().AnyAsync(x => x.AccessCodeId == accessCode && x.Title == "Daily Attendance Summary" && x.TitleCheck);
         }
 
 
@@ -35,7 +35,6 @@ namespace GCTL.Service.DailyAttendanceSummaryReportService
         {
             var result = new DailyAttendanceSummaryResponseDto();
 
-            // Convert List<string> → comma-separated for SP
             var deptCodes = (filter.DepartmentCodes != null && filter.DepartmentCodes.Count > 0)
                 ? string.Join(",", filter.DepartmentCodes.Select(d => d.Trim()).Where(d => d != ""))
                 : null;
@@ -55,6 +54,12 @@ namespace GCTL.Service.DailyAttendanceSummaryReportService
 
             cmd.Parameters.AddWithValue("@FromDate",
                 filter.FromDate.HasValue ? filter.FromDate.Value.Date : DBNull.Value);
+
+            cmd.Parameters.AddWithValue("@LoginEmployeeId",                              // NEW
+                string.IsNullOrWhiteSpace(filter.LoginEmployeeId) ? DBNull.Value : filter.LoginEmployeeId);
+
+            cmd.Parameters.AddWithValue("@AccessCodeId",                                 // NEW
+                string.IsNullOrWhiteSpace(filter.AccessCodeId) ? DBNull.Value : filter.AccessCodeId);
 
             await con.OpenAsync();
             using var reader = await cmd.ExecuteReaderAsync();

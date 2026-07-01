@@ -11,6 +11,7 @@ namespace GCTL.Service.MenuTab
 {
     public interface IMenuTabService
     {
+        Task<CommonReturn> DeleteAccessCodes(List<string> selectedIds);
         CommonReturn DeleteMultipleMenu(List<int> ids);
         Task<CommonReturn> GetAccessCodeMenu(string accessCodeId);
         Task<CommonReturn> GetAccessListTable();

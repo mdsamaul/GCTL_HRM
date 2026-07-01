@@ -13,6 +13,7 @@ namespace GCTL.Core.ViewModels.MenuTab
         public string MenuId { get; set; } // Assumes values like "002"
         public string Title { get; set; }
         public string ControllerName { get; set; }
+        public string TableName { get; set; }
         public int OrderBy { get; set; } // Assumes an integer for ordering
         public string ViewName { get; set; }
         public bool IsActive { get; set; }

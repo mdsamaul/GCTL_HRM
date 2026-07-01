@@ -132,7 +132,7 @@
                 function drawHeader() {
                     if (base64Logo) {
                         // x=15, y=12 fixed; width=auto, height=LOGO_TARGET_HEIGHT
-                        doc.addImage(base64Logo, 'PNG', 25, 12, logoWidth, LOGO_TARGET_HEIGHT);
+                        doc.addImage(base64Logo, 'PNG', 30,25, logoWidth, LOGO_TARGET_HEIGHT);
                     }
 
                     doc.setFontSize(16);
