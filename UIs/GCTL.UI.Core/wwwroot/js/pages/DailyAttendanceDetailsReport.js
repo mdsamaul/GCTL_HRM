@@ -301,26 +301,23 @@
 
             } else if (rptType === 'MissingCheckOut') {
                 rows = data.missingCheckOutRows || [];
-                statusColIdx = 10;
+                statusColIdx = 8;
                 headCols = [
                     { content: 'SN', styles: { cellWidth: 20 } },
                     { content: 'Emp. ID', styles: { cellWidth: 65 } },
                     { content: 'Name', styles: { cellWidth: 'auto' } },
-                    { content: 'Designation', styles: { cellWidth: 80 } },
+                    { content: 'Designation', styles: { cellWidth: 90 } },
                     { content: 'Shift', styles: { cellWidth: 95 } },
                     { content: 'In Time', styles: { cellWidth: 62 } },
                     { content: 'Late', styles: { cellWidth: 55 } },
                     { content: 'Out Time', styles: { cellWidth: 62 } },
-                    { content: 'Early Out', styles: { cellWidth: 50 } },
-                    { content: 'W.Hour(s)', styles: { cellWidth: 55 } },
                     { content: 'Status', styles: { cellWidth: 34 } },
                     { content: 'Remarks', styles: { cellWidth: 50 } }
                 ];
                 bodyMapper = function (r, sn) {
                     return [sn, r.employeeId, r.employeeName, r.designation,
                         r.shiftName, formatAmPm(r.inTime), r.lateDisplay,
-                        formatAmPm(r.outTime), r.earlyOut, r.workHours,
-                        abbrStatus(r.status), r.remarks];
+                        formatAmPm(r.outTime), abbrStatus(r.status), r.remarks];
                 };
 
             } else { // EarlyLeave
@@ -467,23 +464,48 @@
                 }
 
                 // ── Footer — identical on every page ──────────────────
+               
+
                 function drawFooter(pageNumber) {
-                   
+
                     var actualRightX = tableRightX;
                     if (doc.lastAutoTable && doc.lastAutoTable.table) {
                         actualRightX = doc.lastAutoTable.table.startX + doc.lastAutoTable.table.width;
                     }
-                    // doc.setFont("times", "normal");
-                    doc.setFont("times", "normal");
+                    doc.setFont('times', 'normal');
                     doc.setFontSize(5.5);
-                    doc.setTextColor(26, 26, 26);
+                    doc.setTextColor(90, 90, 90);
                     doc.text('Print Datetime: ' + printDT, LEFT_MARGIN, PH - 15);
                     doc.text(legText, PW / 2, PH - 27, { align: 'center', maxWidth: PW * 0.50 });
-                    doc.text('Page ' + pageNumber + ' of {total_pages_count_string}', actualRightX+55, PH - 15, { align: 'right' });
-                    doc.setTextColor(26, 26, 26);
+                    doc.text("GCTL Infosys - HRM & Finance System", PW / 2, PH - 15, { align: 'center', maxWidth: PW * 0.50 });
+                    doc.text('Page ' + pageNumber + ' of {total_pages_count_string}', actualRightX + 55, PH - 15, { align: 'right' });
+                    doc.setTextColor(0, 0, 0);
                 }
 
-                
+                // ── Signature block — bottom of last page ──────────────
+                function drawSignatureBlock() {
+                    var sigY = PH - 60;          // line position from bottom
+                    var labelY = sigY + 5;      // label just below the line
+                    var lineWidth = 90;
+
+                    var col1Center = LEFT_MARGIN + (usableWidth * 0.05);
+                    var col2Center = LEFT_MARGIN + (usableWidth * 0.5);
+                    var col3Center = LEFT_MARGIN + (usableWidth * 0.95);
+
+                    doc.setDrawColor(0, 0, 0);
+                    doc.setLineWidth(0.5);
+
+                    [col1Center, col2Center, col3Center].forEach(function (cx) {
+                        doc.line(cx - lineWidth / 4, sigY, cx + lineWidth / 4, sigY);
+                    });
+
+                    doc.setFont('times', 'normal');
+                    doc.setFontSize(6);
+                    doc.setTextColor(0, 0, 0);
+                    doc.text('Prepared by', col1Center, labelY, { align: 'center' });
+                    doc.text('Checked by', col2Center, labelY, { align: 'center' });
+                    doc.text('Authorized by', col3Center, labelY, { align: 'center' });
+                }
 
                 drawHeader();
 
@@ -563,7 +585,8 @@
 
                     currentY = doc.lastAutoTable.finalY + 6;
                 });
-
+                // ── Signature block on the last page ───────────────────
+                drawSignatureBlock();
                 if (typeof doc.putTotalPages === 'function')
                     doc.putTotalPages('{total_pages_count_string}');
 

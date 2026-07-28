@@ -164,10 +164,10 @@ namespace GCTL.Service.DailyAttendanceDetailsReport
                     BuildInOutSheet(ws, data.InOutRows ?? new(), startRow, ref currDept, ref sn);
                     break;
                 case "MissingCheckOut":
-                    BuildMissingCheckOutOrEarlyLeaveSheet(ws, data.MissingCheckOutRows ?? new(), startRow, ref currDept, ref sn);
+                    BuildMissingCheckOutSheet(ws, data.MissingCheckOutRows ?? new(), startRow, ref currDept, ref sn);
                     break;
                 case "EarlyLeave":
-                    BuildMissingCheckOutOrEarlyLeaveSheet(ws, data.EarlyLeaveRows ?? new(), startRow, ref currDept, ref sn);
+                    BuildEarlyLeaveSheet(ws, data.EarlyLeaveRows ?? new(), startRow, ref currDept, ref sn);
                     break;
             }
 
@@ -202,7 +202,7 @@ namespace GCTL.Service.DailyAttendanceDetailsReport
             "Absent" => 5,
             "Late" => 9,
             "InOut" => 13,
-            "MissingCheckOut" => 12,
+            "MissingCheckOut" => 10,
             "EarlyLeave" => 12,
             _ => 9
         };
@@ -358,8 +358,37 @@ namespace GCTL.Service.DailyAttendanceDetailsReport
             }
         }
 
-        // ── Missing Check-Out / Early Leave — no OT(H) column ──
-        private static void BuildMissingCheckOutOrEarlyLeaveSheet(ExcelWorksheet ws,
+        // ── Missing Check-Out — SN, EmpID, Name, Designation, Shift, InTime, Late, OutTime, Status, Remarks ──
+        private static void BuildMissingCheckOutSheet(ExcelWorksheet ws,
+            List<DailyAttendanceInOutRowDto> rows, int startRow,
+            ref string currentDept, ref int sn)
+        {
+            string[] cols = { "SN", "Emp. ID", "Name", "Designation", "Shift", "In Time", "Late", "Out Time", "Status", "Remarks" };
+            int row = startRow;
+            foreach (var r in rows)
+            {
+                if (r.DepartmentName != currentDept)
+                {
+                    currentDept = r.DepartmentName;
+                    sn = 1;
+                    AddDeptHeader(ws, currentDept, ref row, cols);
+                }
+                SetCell(ws, row, 1, sn++);
+                SetCell(ws, row, 2, r.EmployeeId);
+                SetCell(ws, row, 3, r.EmployeeName, leftAlign: true);
+                SetCell(ws, row, 4, r.Designation, leftAlign: true);
+                SetCell(ws, row, 5, r.ShiftName);
+                SetCell(ws, row, 6, r.InTime);
+                SetCell(ws, row, 7, r.LateDisplay);
+                SetCell(ws, row, 8, r.OutTime);
+                SetCell(ws, row, 9, r.Status);
+                SetCell(ws, row, 10, r.Remarks);
+                row++;
+            }
+        }
+
+        // ── Early Leave — SN, EmpID, Name, Designation, Shift, InTime, Late, OutTime, EarlyOut, W.Hour(s), Status, Remarks ──
+        private static void BuildEarlyLeaveSheet(ExcelWorksheet ws,
             List<DailyAttendanceInOutRowDto> rows, int startRow,
             ref string currentDept, ref int sn)
         {

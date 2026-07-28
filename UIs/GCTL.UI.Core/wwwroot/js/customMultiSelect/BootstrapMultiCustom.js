@@ -55,6 +55,22 @@
             return options.length === 1 ? '1 item selected' : `${options.length} items selected`;
         };
 
+        // function forceInlineFocus($inline) {
+        //     try { $inline.trigger('focus'); } catch (e) { }
+        //     setTimeout(() => {
+        //         try { $inline.trigger('focus'); } catch (e) { }
+        //         requestAnimationFrame(() => {
+        //             try {
+        //                 const el = $inline.get(0);
+        //                 if (el) {
+        //                     el.focus();
+        //                     const len = el.value.length;
+        //                     if (el.setSelectionRange) el.setSelectionRange(len, len);
+        //                 }
+        //             } catch (e) { }
+        //         });
+        //     }, 0);
+        // }
         function forceInlineFocus($inline) {
             try { $inline.trigger('focus'); } catch (e) { }
             setTimeout(() => {
@@ -64,8 +80,9 @@
                         const el = $inline.get(0);
                         if (el) {
                             el.focus();
-                            const len = el.value.length;
-                            if (el.setSelectionRange) el.setSelectionRange(len, len);
+                            // setSelectionRange bad dewa hoyeche — mouse drag-select e
+                            // badha dichilo. focus() nijei cursor-ke shese boshiye dey,
+                            // alada kore force korar দরকার nei.
                         }
                     } catch (e) { }
                 });
@@ -355,14 +372,116 @@
         $el.removeData('gcSelect2Init');
     }
 
-    function initInlineSearchSelect2(selectorOrElements) {
+    // function initInlineSearchSelect2(selectorOrElements) {
        
+    //     const $targets = (selectorOrElements instanceof jQuery)
+    //         ? selectorOrElements
+    //         : $(selectorOrElements || '.gc-select2');
+
+    //     $targets.each(function () {
+
+    //         const $el = $(this);
+
+    //         if ($el.data('gcSelect2Init') === true && $el.data('select2')) return;
+
+    //         if ($el.data('select2') || $el.siblings('.select2-container').length || $el.nextAll('.select2-container').length) {
+    //             gcDestroySelect2($el);
+    //         }
+
+    //         const placeholder = $el.data('placeholder') || $el.attr('data-placeholder') || 'Search...';
+
+    //         const $wrap =
+    //             $el.closest('.dropdown-wrapper-select2').length ? $el.closest('.dropdown-wrapper-select2')
+    //                 : $el.closest('.gc-inline-select2').length ? $el.closest('.gc-inline-select2')
+    //                     : $el.closest('.input-group').length ? $el.closest('.input-group')
+    //                         : $(document.body);
+
+    //         $el.select2({
+    //             width: '100%',
+    //             dropdownParent: $wrap,
+    //             allowClear: true,
+    //             minimumResultsForSearch: 0,
+    //             placeholder: { id: '', text: placeholder }
+    //         });
+
+    //         $el.data('gcSelect2Init', true);
+
+    //         $el.off('.gcInline');
+
+    //         $el.on('select2:open.gcInline', function () {
+
+    //             const s2 = $el.data('select2');
+    //             if (!s2) return;
+
+    //             const $container = s2.$container;
+    //             const $dropdown = s2.$dropdown;
+    //             if (!$container || !$dropdown) return;
+
+    //             const $selection = $container.find('.select2-selection--single');
+    //             const $searchWrap = $dropdown.find('.select2-search--dropdown');
+    //             const $searchField = $searchWrap.find('.select2-search__field');
+
+    //             $selection.addClass('gc-inline-search-active');
+
+    //             $searchWrap
+    //                 .addClass('gc-inline-search')
+    //                 .appendTo($selection);
+
+
+    //             $searchField.attr('placeholder', placeholder);
+    //             //New from here
+    //             $searchField.off('keydown.gcSpace').on('keydown.gcSpace', function (e) {
+    //                 if (e.key === ' ' || e.keyCode === 32) {
+    //                     e.stopPropagation(); // prevent Select2 from eating it
+    //                     // manually insert a space at cursor position
+    //                     var el = this;
+    //                     var start = el.selectionStart;
+    //                     var end = el.selectionEnd;
+    //                     var val = el.value;
+    //                     el.value = val.substring(0, start) + ' ' + val.substring(end);
+    //                     el.selectionStart = el.selectionEnd = start + 1;
+    //                     $(el).trigger('input'); 
+    //                     e.preventDefault();
+    //                 }
+    //             });
+    //             //
+    //             $searchField.val('');
+    //             $searchField[0].style.Width = '100%';
+
+    //             setTimeout(function () {
+    //                 $searchField.trigger('focus');
+    //             }, 0);
+    //         });
+
+    //         $el.on('select2:close.gcInline', function () {
+
+    //             const s2 = $el.data('select2');
+    //             if (!s2) return;
+
+    //             const $container = s2.$container;
+    //             const $dropdown = s2.$dropdown;
+    //             if (!$container || !$dropdown) return;
+
+    //             const $selection = $container.find('.select2-selection--single');
+    //             const $searchWrap = $selection.find('.select2-search--dropdown.gc-inline-search');
+
+    //             $selection.removeClass('gc-inline-search-active');
+
+    //             if ($searchWrap.length) {
+    //                 $searchWrap
+    //                     .removeClass('gc-inline-search')
+    //                     .prependTo($dropdown);
+    //             }
+    //         });
+    //     });
+    // }
+
+    function initInlineSearchSelect2(selectorOrElements) {
         const $targets = (selectorOrElements instanceof jQuery)
             ? selectorOrElements
             : $(selectorOrElements || '.gc-select2');
 
         $targets.each(function () {
-
             const $el = $(this);
 
             if ($el.data('gcSelect2Init') === true && $el.data('select2')) return;
@@ -388,14 +507,11 @@
             });
 
             $el.data('gcSelect2Init', true);
-
             $el.off('.gcInline');
 
             $el.on('select2:open.gcInline', function () {
-
                 const s2 = $el.data('select2');
                 if (!s2) return;
-
                 const $container = s2.$container;
                 const $dropdown = s2.$dropdown;
                 if (!$container || !$dropdown) return;
@@ -405,42 +521,60 @@
                 const $searchField = $searchWrap.find('.select2-search__field');
 
                 $selection.addClass('gc-inline-search-active');
-
-                $searchWrap
-                    .addClass('gc-inline-search')
-                    .appendTo($selection);
-
-
+                $searchWrap.addClass('gc-inline-search').appendTo($selection);
                 $searchField.attr('placeholder', placeholder);
-                //New from here
+
+                // ── NEW: search field e click/mousedown korle dropdown toggle
+                //         hoye bondho hoye jachhilo — eta আটকে দেওয়া হলো ──
+                $searchWrap.off('mousedown.gcInlineClick click.gcInlineClick')
+                    .on('mousedown.gcInlineClick click.gcInlineClick', function (e) {
+                        e.stopPropagation();
+                    });
+
                 $searchField.off('keydown.gcSpace').on('keydown.gcSpace', function (e) {
                     if (e.key === ' ' || e.keyCode === 32) {
-                        e.stopPropagation(); // prevent Select2 from eating it
-                        // manually insert a space at cursor position
+                        e.stopPropagation();
                         var el = this;
                         var start = el.selectionStart;
                         var end = el.selectionEnd;
                         var val = el.value;
                         el.value = val.substring(0, start) + ' ' + val.substring(end);
                         el.selectionStart = el.selectionEnd = start + 1;
-                        $(el).trigger('input'); 
+                        $(el).trigger('input');
                         e.preventDefault();
                     }
                 });
-                //
-                $searchField.val('');
-                $searchField[0].style.Width = '100%';
 
-                setTimeout(function () {
-                    $searchField.trigger('focus');
-                }, 0);
+                const $selectedOption = $el.find('option:selected');
+                const selectedText = ($selectedOption.length && $selectedOption.val())
+                    ? $selectedOption.text().trim()
+                    : '';
+                $searchField.val(selectedText);
+
+                $searchField[0].style.width = '100%';
+                setTimeout(function () { $searchField.trigger('focus'); }, 0);
+            });
+
+            // ── NEW: item select korar sathe sathe search field e text set ──
+            $el.off('select2:select.gcInlineSync').on('select2:select.gcInlineSync', function (e) {
+                const s2 = $el.data('select2');
+                if (!s2) return;
+                const data = e.params && e.params.data;
+                const text = (data && data.text) ? data.text.trim() : '';
+
+                const $dropdown = s2.$dropdown;
+                const $container = s2.$container;
+                if (!$dropdown || !$container) return;
+
+                const $searchField = $container.find('.select2-search--dropdown.gc-inline-search .select2-search__field')
+                    .add($dropdown.find('.select2-search__field'));
+
+                $searchField.val(text);
             });
 
             $el.on('select2:close.gcInline', function () {
-
                 const s2 = $el.data('select2');
                 if (!s2) return;
-
                 const $container = s2.$container;
                 const $dropdown = s2.$dropdown;
                 if (!$container || !$dropdown) return;
@@ -449,17 +583,12 @@
                 const $searchWrap = $selection.find('.select2-search--dropdown.gc-inline-search');
 
                 $selection.removeClass('gc-inline-search-active');
-
                 if ($searchWrap.length) {
-                    $searchWrap
-                        .removeClass('gc-inline-search')
-                        .prependTo($dropdown);
+                    $searchWrap.removeClass('gc-inline-search').prependTo($dropdown);
                 }
             });
         });
     }
-
-   
 
     window.refreshMultiselect = function (selector) {
         const $sels = (selector instanceof jQuery) ? selector : $(selector);

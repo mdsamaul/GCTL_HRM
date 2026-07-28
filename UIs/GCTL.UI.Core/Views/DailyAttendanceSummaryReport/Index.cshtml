@@ -6,7 +6,7 @@
 
 <style>
     .headerToobar {
-        background: linear-gradient(to right, #1976d2, #fff);
+        background: linear-gradient(to right, #fff, #fff);
         /* background: linear-gradient(to right, rgba(34, 211, 238, .1), #fff); */
         box-shadow: 3px 0 6px rgba(0,0,0,0.2);
         border-radius: 0px 11px 11px 0px;
@@ -71,21 +71,19 @@
 </div>
 <input type="hidden" id="hdnAccessCode" value="@(ViewBag.AccessCode ?? "")" />
 <section class="content consistent-look">
-    <div class="container-fluid">
+    <div class="card border">
 
         <!-- Toolbar -->
-        <div class="row px-2 pr-3">
-            <div class="col-md-12 pr-0">
-                <div class="w-100 headerToobar">
+       
+                <div class="card-header">
                     <partial name="_Toolbars"
                              model="new ToobarModel() { Title = Model.Breadcrumb, Code = Model.Code, Name = Model.Setup.CompanyCode }" />
                 </div>
-            </div>
-        </div>
+         
 
         <!-- Filter Panel -->
-        <div class="col-md-12 col-12 mx-auto mt-3">
-            <div class="border bg-white rounded-lg px-2 pb-3">
+        <div class="card-body border">
+            <div class="">
 
                 <div class="col-12 col-md-5">
                     <h6 class="pt-3 px-3 pb-0 font-weight-bold fs-6 mb-0">Search By :</h6>
@@ -145,40 +143,43 @@
 
                 <div class="col-12 col-md-12 mx-auto">
                     <div class="row pb-3">
+                        <div class="col-12 col-md-11 mx-auto dropdown-wrapper">
+                            <div class="row pb-2">
 
-                       <div class="col-12 col-md-6 py-1">
-                            <div class="row align-items-center">
-                                <label class="col-4 text-right mb-0" style="padding-right:0;">Export Format</label>
-                                <div class="col-9 col-md-6">
-                                    <select id="reportText" class="form-control form-control-sm">
-                                        <option value="downloadPdf">PDF</option>
-                                        <option value="downloadExcel">Excel</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-12 col-md-6 py-1">
-                        </div>
-                        <div class="col-12 col-md-6 py-1">
-                        </div>                       
+                                <!-- Company (single) -->
+                                <div class="col-12 col-md-6 py-1">
+                                    <div class="row align-items-center">
+                                        <label class="col-3 text-right mb-0" style="padding-right:0;">Export Format</label>
+                                        <div class="col-9 col-md-7" style="padding-left:5px;">
+                                            <select id="reportText" class="form-control form-control-sm">
+                                                <option value="downloadPdf">PDF</option>
+                                                <option value="downloadExcel">Excel</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-2 col-0"></div>
+                                    </div>
+                                </div>                              
+                                                                
                         <div class="col-12 col-md-6 py-1">
                             <div class="row justify-content-end align-items-center">
-                                <div class="col-auto px-1">
+                                <div class="px-1">
                                     <button id="downloadReport" class="btn btn-sm common-btn btn-outline-secondary">
                                         <i class="fas fa-file-export"></i>
                                         <span>Export Report</span>
                                     </button>
                                 </div>
-                                <div class="col-auto pl-1 pr-0">
+                                <div class="pl-1 pr-0">
                                     <button id="btnPreviewPdf" class="btn btn-sm btn-outline-secondary common-btn px-4">
                                         <i class="fas fa-eye" title="Preview"></i>
                                         <span>Preview</span>
                                     </button>
                                 </div>
-                                <div class="col-md-3"></div>
+                                <div class="col-md-2"></div>
                             </div>
                         </div>
                     </div>
+                    </div>
+                </div>
                 </div>
             </div>
         </div>

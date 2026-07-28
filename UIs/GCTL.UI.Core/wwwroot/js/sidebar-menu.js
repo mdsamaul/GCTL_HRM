@@ -50,7 +50,7 @@ $("body").on("click", "#left_menu_open_close", function () {
     if ($("#left_menu").width() < 200) {
         $(".brand-text").fadeIn("fast");
         $("#left_menu").width(200)
-
+       
         $("#left_menu").addClass("menu_open_close")
         $("#main_area").css('margin-left', '200px');
         $(".sidebar-menu li a span,.sidebar-menu li a small,.sidebar-menu li a i:last-child").show()
@@ -59,6 +59,7 @@ $("body").on("click", "#left_menu_open_close", function () {
     } else {
         $(".brand-text").fadeOut("fast");
         $("#left_menu").width(120)
+       
         $("#main_area").css('margin-left', '120px');
         $(".sidebar-menu li a span,.sidebar-menu li a small,.sidebar-menu li a i:last-child").hide()
         $(".sidebar-menu li ul").addClass('mini_sidebar')

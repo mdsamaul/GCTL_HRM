@@ -361,7 +361,7 @@
                         _setValue("#passPoI", "");
                         _setValue("#passDoI", "");
                         _setValue("#passExp", res.passportExpiryDate);
-                        _empAddCopyIcon($(EMP_SELECTOR));
+                        // _empAddCopyIcon($(EMP_SELECTOR));
                     }
                 },
                 error: function () { toastr.error("Failed to load employee details."); }
@@ -544,7 +544,7 @@
                                 _setValue("#passExp", emp.passportExpiryDate);                               
 
                                 _lockEmployeeSelect();
-                                _empAddCopyIcon($(EMP_SELECTOR));
+                                // _empAddCopyIcon($(EMP_SELECTOR));
                             },
                             error: function () {
                                 _s2SetValue("#employeeSelect", res.employeeID, res.employeeID);

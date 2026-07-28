@@ -213,7 +213,11 @@
                     function drawHeader(doc) {
                         // Logo (if available)
                         if (base64Logo) {
-                            doc.addImage(base64Logo, 'PNG', 15, 10, 80, 50);
+                            var logoDrawWidth = 80;
+                            var logoDrawHeight = 25;
+                            var topMargin = 10;
+
+                            doc.addImage(base64Logo, 'PNG', 15, 10 + topMargin, logoDrawWidth, logoDrawHeight);
                         }
 
                         // Company Name
@@ -337,7 +341,7 @@
                                 doc.setFont("times", "normal");
 
                                 doc.text(leftText, 15, pageHeight - 10);
-                                doc.text(rightText, pageWidth - 15, pageHeight - 10, { align: 'right' });
+                                doc.text(rightText, pageWidth + 80, pageHeight - 10, { align: 'right' });
                             }
                         });
 
@@ -431,7 +435,11 @@
                     function drawHeader(doc) {
                         // Logo (if available)
                         if (base64Logo) {
-                            doc.addImage(base64Logo, 'PNG', 15, 10, 80, 50);
+                            var logoDrawWidth = 80;
+                            var logoDrawHeight = 25;
+                            var topMargin = 10;
+
+                            doc.addImage(base64Logo, 'PNG', 15, 10 + topMargin, logoDrawWidth, logoDrawHeight);
                         }
 
                         // Company Name
@@ -555,7 +563,7 @@
                                 doc.setFont("times", "normal");
 
                                 doc.text(leftText, 15, pageHeight - 10);
-                                doc.text(rightText, pageWidth - 15, pageHeight - 10, { align: 'right' });
+                                doc.text(rightText, pageWidth + 80, pageHeight - 10, { align: 'right' });
                             }
                         });
 

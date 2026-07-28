@@ -179,8 +179,10 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">Advance Adjustment Report</h3>
+                <div class="card-header p-2">
+                    @* <h3 class="card-title">Advance Adjustment Report</h3> *@
+                        <partial name="_Toolbars"
+                                 model="new ToobarModel() { Title = Model.Breadcrumb, Code = Model.Code, Name = Model.SetupViewModel.CompanyCode }" />
                 </div>
                 <div class="card-body py-0">
                     <div class="container-fluid mt-4">
@@ -379,7 +381,7 @@
                     <div class="row pb-4 ">
                         <div class="col-12 col-md-6 py-1">
                             <div class="row align-items-center">
-                                <label class="col-4 text-right mb-0" style="padding-right: 0px; margin-left: 30px;">Export Report Format</label>
+                                <label class="col-4 text-right mb-0" style="padding-right: 0px; margin-left: 40px;">Export Report Format</label>
                                 <div class="col-9 col-md-6">
                                     <select id="reportText" class="form-control form-control-sm">
                                         <option value="downloadPdf">Pdf</option>
@@ -392,7 +394,7 @@
                         </div>
                         <div class="col-12 col-md-6 py-1">
                             <div class="col-12 col-md-9 py-1 mx-auto">
-                                <div class="row justify-content-end align-items-center" style="padding-right: 22px;">
+                                <div class="row justify-content-end align-items-center" style="padding-right: 16px;">
                                     <div class="col-auto px-1 d-grid">
                                         <button id="downloadReport" class="btn btn-sm common-btn btn-outline-secondary">
                                             <i class="fas fa-file-export fa-export"></i> <span>Export Report</span>

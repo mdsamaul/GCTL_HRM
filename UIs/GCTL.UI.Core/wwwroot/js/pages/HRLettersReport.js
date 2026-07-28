@@ -116,7 +116,7 @@
                         setValue("#iDesig", res.designationName);
                         setValue("#iSrvValRight", res.serviceLength);
                         setValue("#iSrvValLeft", res.serviceLength);
-                        _empAddCopyIcon($empSelect); 
+                        // _empAddCopyIcon($empSelect); 
                     }
                     if (sourceId === "sCEmployeeSelect") {
                         setValue("#iDesigInput", res.designationName);

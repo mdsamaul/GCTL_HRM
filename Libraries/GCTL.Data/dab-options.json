@@ -4,7 +4,7 @@
    "DatabaseType": 3,
    "MergeDacpacs": false,
    "Optional": false,
-   "ProjectPath": "C:\\Users\\ThisUsers\\Downloads\\GCTL_ERP_HRM_24042026\\Libraries\\GCTL.Data",
+   "ProjectPath": "D:\\Project\\GCTL_ERP_HRM_010126\\Libraries\\GCTL.Data",
    "Tables": [
       {
          "Name": "[dbo].[Acc_CashFlowType]",
@@ -103,7 +103,11 @@
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[Core_Supplier]",
+         "Name": "[dbo].[Core_Notice]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Core_PeriodInfo]",
          "ObjectType": 0
       },
       {
@@ -115,7 +119,7 @@
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[Def_Inv_StockLevelManagement]",
+         "Name": "[dbo].[DeleteHistory]",
          "ObjectType": 0
       },
       {
@@ -367,6 +371,10 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[HRM_AppointedEmployeeEntry]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[HRM_ATD_AttendanceType]",
          "ObjectType": 0
       },
@@ -396,6 +404,10 @@
       },
       {
          "Name": "[dbo].[HRM_Att_WorkingDayDeclaration]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[HRM_AttendanceType]",
          "ObjectType": 0
       },
       {
@@ -471,7 +483,15 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[HRM_Def_HolidayDeclarationType]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[HRM_Def_HolidayType]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[HRM_Def_HRLetters]",
          "ObjectType": 0
       },
       {
@@ -480,10 +500,6 @@
       },
       {
          "Name": "[dbo].[HRM_Def_JobTitle]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[HRM_Def_Line]",
          "ObjectType": 0
       },
       {
@@ -507,6 +523,10 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[HRM_Def_ProbationPeriodExtension]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[HRM_Def_Relationship]",
          "ObjectType": 0
       },
@@ -523,11 +543,11 @@
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[HRM_Def_SurName]",
+         "Name": "[dbo].[HRM_Def_ShiftType]",
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[HRM_Def_Unit_Conversion]",
+         "Name": "[dbo].[HRM_Def_SurName]",
          "ObjectType": 0
       },
       {
@@ -583,6 +603,14 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[HRM_EmployeeHolidayDeclaration]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[HRM_EmployeeLetters]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[HRM_EmployeeOfficialInfo]",
          "ObjectType": 0
       },
@@ -599,7 +627,19 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[HRM_EmployeesNonLessInvestmentEntry]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[HRM_EmployeeWeekendDeclaration]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[HRM_HomeOfficeRequest]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[HRM_IncentiveType]",
          "ObjectType": 0
       },
       {
@@ -623,6 +663,10 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[HRM_NOCInfo]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[HRM_NomineePhoto]",
          "ObjectType": 0
       },
@@ -635,7 +679,51 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[HRM_Pay_Def_BenefitType]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[HRM_Pay_Def_DeductionType]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[HRM_Pay_Def_PayrollMasterFileType]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[HRM_PAY_EmployeesRequiredInvestmentDetails]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[HRM_PAY_EmployeesRequiredInvestmentDetailsTemp]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[HRM_PAY_EmployeesRequiredInvestmentEntry]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[HRM_PAY_ExcessTDSForLastIncomeYearEntry]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[HRM_PAY_FoodAllowance]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[HRM_PAY_IncentiveEntry]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[HRM_PAY_InvestmentHeadEntry]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[HRM_PAY_LoanTypeEntry]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[HRM_PAY_MobileBillEntry]",
          "ObjectType": 0
       },
       {
@@ -643,7 +731,23 @@
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[HRM_PAY_MonthlyTaxDepositEntry]",
+         "Name": "[dbo].[HRM_PAY_MonthlyIncentiveEntry]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[HRM_PAY_MonthlyOTEntry]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[HRM_PAY_NightWorkedDayEntry]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[HRM_PAY_NightWorkedDayRateEntry]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[HRM_PAY_OthersAdjustmentEntry]",
          "ObjectType": 0
       },
       {
@@ -651,7 +755,23 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[HRM_Pay_SalaryData]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[HRM_PAY_SalaryDeductionEntry]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[HRM_PAY_SalaryOnHold]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[HRM_PAY_TaxAdjustmentEntry]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[HRM_PAY_TDSForLessInvestmentEntry]",
          "ObjectType": 0
       },
       {
@@ -672,6 +792,10 @@
       },
       {
          "Name": "[dbo].[HRM_Separation]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[HRM_ServiceNotConfirmationEntry]",
          "ObjectType": 0
       },
       {
@@ -699,19 +823,11 @@
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[Inv_Def_BuyerDepartment]",
+         "Name": "[dbo].[Inv_Def_BookingItemType]",
          "ObjectType": 0
       },
       {
          "Name": "[dbo].[Inv_Def_Factory]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[Inv_Def_GarmentsTesing]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[Inv_Def_Item]",
          "ObjectType": 0
       },
       {
@@ -743,18 +859,6 @@
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[Inv_Def_WarehouseType]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[Inv_ItemBrand]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[Inv_ItemPhoto]",
-         "ObjectType": 0
-      },
-      {
          "Name": "[dbo].[INV_ProductIssueInformation]",
          "ObjectType": 0
       },
@@ -779,6 +883,10 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[NoticeDocumentFile]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[PaymentReceive]",
          "ObjectType": 0
       },
@@ -799,31 +907,7 @@
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[Prod_Def_Buyer]",
-         "ObjectType": 0
-      },
-      {
          "Name": "[dbo].[Prod_Def_Style]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[Prod_Def_Unit]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[RMG_BookingOrder]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[RMG_Def_FinalDestination]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[RMG_Def_LC_Type]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[RMG_Def_Product_Type]",
          "ObjectType": 0
       },
       {
@@ -831,43 +915,11 @@
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[RMG_Def_UDNo]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[RMG_Prod_Def_Brand]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[RMG_Prod_Def_Buyer]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[RMG_Prod_Def_Buyer_Photo]",
-         "ObjectType": 0
-      },
-      {
          "Name": "[dbo].[RMG_Prod_Def_Color]",
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[RMG_Prod_Def_DeliveryAddress]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[RMG_Prod_Def_DeliveryMethod]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[RMG_Prod_Def_Inv_SubItem2]",
-         "ObjectType": 0
-      },
-      {
          "Name": "[dbo].[RMG_Prod_Def_Package]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[RMG_Prod_Def_ProductionType]",
          "ObjectType": 0
       },
       {
@@ -883,7 +935,11 @@
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[RMG_Prod_Order]",
+         "Name": "[dbo].[RMG_Prod_Temp_ColorSizeBreakup]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[RMG_Prod_Temp_List_ColorSizeBreakup]",
          "ObjectType": 0
       },
       {
@@ -928,14 +984,6 @@
       },
       {
          "Name": "[dbo].[Sales_Def_DriverInformation]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[SALES_Def_Inv_MainItem]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[SALES_Def_Inv_SubItem]",
          "ObjectType": 0
       },
       {
@@ -988,10 +1036,6 @@
       },
       {
          "Name": "[dbo].[Sales_Supplier]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[Sales_SupplierBankAccount]",
          "ObjectType": 0
       },
       {
@@ -1087,6 +1131,10 @@
          "ObjectType": 1
       },
       {
+         "Name": "[dbo].[EmployeeBankAndNomineeInformationReportSP]",
+         "ObjectType": 1
+      },
+      {
          "Name": "[dbo].[EmployeeGeneralInfoReportSP]",
          "ObjectType": 1
       },
@@ -1099,7 +1147,7 @@
          "ObjectType": 1
       },
       {
-         "Name": "[dbo].[Get_ItemHierarchyData]",
+         "Name": "[dbo].[FullEmployeeDetailsGetByid]",
          "ObjectType": 1
       },
       {
@@ -1112,6 +1160,22 @@
       },
       {
          "Name": "[dbo].[GetDiscountDetails]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[GetEmployeeBankDetails]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[GetEmployeeEducationDetails]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[GetEmployeeQualificationDetails1]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[GetEmployeeReferenceDetails]",
          "ObjectType": 1
       },
       {
@@ -1131,7 +1195,19 @@
          "ObjectType": 1
       },
       {
+         "Name": "[dbo].[GetOfficialInfoDropdown]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[GetOfficialInfoFilter]",
+         "ObjectType": 1
+      },
+      {
          "Name": "[dbo].[GetTBDetailsData]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Gettermination2]",
          "ObjectType": 1
       },
       {
@@ -1315,15 +1391,15 @@
          "ObjectType": 1
       },
       {
-         "Name": "[dbo].[ProcGetEmpTaxChallanEntry]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[dbo].[ProcGetEployeeFilterDetails]",
-         "ObjectType": 1
-      },
-      {
          "Name": "[dbo].[PROCPrintingAndStationeryReport]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[ProcProbationPeriodExtensionEntry]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[QualificationReportSP]",
          "ObjectType": 1
       },
       {
@@ -1332,6 +1408,14 @@
       },
       {
          "Name": "[dbo].[ReferenceCommissionSummary]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[RPT_GetDailyAttendanceDetailsReport]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[RPT_GetDailyAttendanceSummaryReport]",
          "ObjectType": 1
       },
       {
@@ -1404,6 +1488,10 @@
       },
       {
          "Name": "[dbo].[Rpt_Proc_InvoiceReport]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Rpt_proc_NewAvgDataSelect]",
          "ObjectType": 1
       },
       {
@@ -1483,7 +1571,75 @@
          "ObjectType": 1
       },
       {
-         "Name": "[dbo].[SP_GetEmployeesByEmployeeIDs]",
+         "Name": "[dbo].[sp_gc_branch_list_by_access]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[sp_gc_branch_list]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[sp_gc_company_list_by_access]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[sp_gc_company_list]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[sp_gc_department_list_by_access]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[sp_gc_department_list]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[sp_gc_designation_list_by_access]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[sp_gc_designation_list]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[sp_gc_division_list_by_access]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[sp_gc_division_list_test]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[sp_gc_division_list]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[sp_gc_employee_list_by_access]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[sp_gc_employee_list]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[SP_GetAttendanceMachineData]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[SP_GetAttendanceMachineDataCount]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[SP_GetAttendanceMachineDataCountDetails]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[SP_GetAttendanceMachineDataFilters]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[sp_GetEmployeeNonInvestmentEntries]",
          "ObjectType": 1
       },
       {
@@ -1492,6 +1648,18 @@
       },
       {
          "Name": "[dbo].[SP_HRM_AdvancePayReport]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[usp_GetAttendanceMovement]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[usp_GetLeaveDashboard]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[usp_GetPayrollMasterFile_General]",
          "ObjectType": 1
       },
       {

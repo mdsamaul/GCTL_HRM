@@ -346,7 +346,7 @@
 
                     if (base64Logo) {
                       
-                        doc.addImage(base64Logo, 'PNG', leftMargin, y - 10, logoDrawWidth, logoDrawHeight);
+                        doc.addImage(base64Logo, 'PNG', leftMargin, y, logoDrawWidth, logoDrawHeight);
                     }
 
                     doc.setFontSize(14); doc.setFont("times", "bold");

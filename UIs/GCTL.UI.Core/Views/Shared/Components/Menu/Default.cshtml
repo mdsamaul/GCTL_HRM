@@ -18,6 +18,7 @@
         padding: 8px 5px 8px 15px;
         display: block;
         color: #b8c7ce;
+        text-decoration: none !important;
     }
 
         .sidebar-menu li > a > .fa-angle-left {
@@ -33,6 +34,12 @@
         transform: rotate(-90deg);
     }
 
+    .sidebar-menu li.sidebar-header {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        background: #1976d2 !important; /* tomar sidebar er background color diye replace koro */
+    }
     .sidebar-submenu {
         display: none;
         list-style: none;
@@ -56,9 +63,17 @@
         color: #8aa4af;
     }
 
+        /* .sidebar-menu .sidebar-submenu li > a:hover {
+            color: #fff;
+            background: linear-gradient(to right, #f7fcff, #ffffff) !important;
+        } */
         .sidebar-menu .sidebar-submenu li > a:hover {
             color: #fff;
-            background: #1e282c;
+            /* background: #1e282c;*/
+
+            background: var(--hover-color !important);
+            color: var(--primary-blue !important);
+            border-left: 4px solid var(--primary-blue !important);
         }
 
     .sidebar-menu .sidebar-submenu .third-level li > a {
@@ -66,10 +81,67 @@
         font-size: 13px;
     }
 
-    /* .sidebar-menu .sidebar-submenu li > a.active {
-        color: #fff;
-    } */
+    .sidebar-logo {
+        height: 27px;
+        width: 120px;
+        object-fit: contain;
+        transition: width .3s;
+    }
 
+    body.sidebar-collapse .sidebar-logo {
+        width: 105px;
+        height: 45px;
+    }
+    /* Hide the native scrollbar on the left menu but keep scrolling functional */
+    #left_menu {
+        max-height: 100vh;
+        overflow-y: auto;
+        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none; /* Firefox */
+        -webkit-overflow-scrolling: touch;
+        /* padding-right: 6px; */
+    }
+
+        #left_menu::-webkit-scrollbar {
+            width: 0;
+            height: 0;
+            background: transparent;
+        }
+
+    /* When the sidebar is collapsed, show submenus as hover overlays to the right */
+    body.sidebar-collapse #left_menu .sidebar-menu li {
+        position: relative;
+    }
+
+    body.sidebar-collapse #left_menu .sidebar-submenu {
+        position: absolute;
+        left: 100%;
+        top: 0;
+        min-width: 220px;
+        display: none;
+        z-index: 9999;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        border-left: 1px solid rgba(0,0,0,0.06);
+    }
+
+        body.sidebar-collapse #left_menu .sidebar-submenu.third-level {
+            left: 100%;
+            top: 0;
+        }
+
+    /* Keep the angle icon visible when sidebar is collapsed */
+    body.sidebar-collapse .sidebar-menu li > a > .fa-angle-left {
+        display: inline-block;
+        opacity: 0.9;
+        margin-left: 6px;
+    }
+
+    .sidebar-logo {
+        width: 120px;
+        height: 27px;
+        object-fit: contain;
+        transition: all .3s ease;
+    }
     /* Active link highlight — all levels */
     .sidebar-menu li > a.active,
     .sidebar-menu .sidebar-submenu li > a.active {
@@ -78,6 +150,22 @@
         border-radius: 4px;
         font-weight: 600;
     }
+
+     /* .sidebar-menu  > li:hover {
+        background: linear-gradient(to right, #f7fcff, #ffffff) !important;
+            color: #1a1f3c;            
+        } */
+
+    .sidebar-menu .sidebar-submenu > li:hover {
+        background: linear-gradient(to right, #f7fcff, #ffffff) !important;
+        color: #1a1f3c;
+    }
+
+    .sidebar-menu .sidebar-submenu .third-level > li:hover {
+        background: linear-gradient(to right, #f7fcff, #ffffff) !important;
+        color: #1a1f3c !important;
+    }
+
 </style>
 
 
@@ -85,15 +173,21 @@
     <section class="">
         <ul class="sidebar-menu">
 
-            <li class="sidebar-header" style="background:#1a1f3c;">
+
+            <li class="sidebar-header">
                 @* <img src="~/images/CoIcon.ico" alt="AdminLTE Logo"
                      class="brand-image img-circle elevation-3"
-                     style="opacity: .8" /> *@
-                <img src="~/images/DPL.png"
-                     alt="AdminLTE Logo"
-                     class="brand-image img-circle elevation-3"
-                     style="width:100%; height:100%; object-fit:cover; opacity:.8;">
-                <span class="brand-text font-weight-light">GCTL Software</span>
+                     style="opacity: .8" />
+                <span class="brand-text font-weight-light">GCTL Software</span> *@
+                <div>
+                    @*  <img src="/images/dp_logo_t_f.png" alt="AdminLTE Logo" class="brand-image elevation-3" style="width: 120px;height: 27px; object-fit: contain; box-shadow:none!important;"> *@
+                    @* <img src="/images/dp_logo.png" alt="AdminLTE Logo" class="brand-image elevation-3" style="width: 120px;height: 27px; object-fit: contain; box-shadow:none!important;"> *@
+                    <img src="/images/dp_logo.png"
+                         class="brand-image sidebar-logo">
+                </div>
+                <div class="brand-text font-weight-light" style="white-space: nowrap;">
+                    ERP HRM & Finance System
+                </div>
             </li>
 
             <li>
@@ -108,20 +202,20 @@
                 var parentHasChildren = parent.Children.Any();
 
                 var isParentActive = !parentHasChildren
-                    && currentController == parent.ControllerName?.ToLower();
+                && currentController == parent.ControllerName?.ToLower();
 
                 var isParentOpen = parentHasChildren && parent.Children.Any(c =>
-                    currentController == c.ControllerName?.ToLower() ||
-                    c.Children.Any(gc => currentController == gc.ControllerName?.ToLower())
+                currentController == c.ControllerName?.ToLower() ||
+                c.Children.Any(gc => currentController == gc.ControllerName?.ToLower())
                 );
 
                 <li class="@(isParentOpen ? "menu-open" : "")">
 
                     <a href="@(parentHasChildren
-                                                       ? "#"
-                                                       : $"{urlPath}" +
-                                                         $"{(!string.IsNullOrWhiteSpace(parent.ControllerName) ? "/" + parent.ControllerName : "")}" +
-                                                         $"{(!string.IsNullOrWhiteSpace(parent.ViewName) ? "/" + parent.ViewName : "")}")"
+                                                                                                     ? "#"
+                                                                                                     : $"{urlPath}" +
+                                                                                                       $"{(!string.IsNullOrWhiteSpace(parent.ControllerName) ? "/" + parent.ControllerName : "")}" +
+                                                                                                       $"{(!string.IsNullOrWhiteSpace(parent.ViewName) ? "/" + parent.ViewName : "")}")"
                        class="@(isParentActive ? "active" : "")">
                         <i class="@parent.Icon"></i>
                         <span>@parent.Title</span>
@@ -139,10 +233,10 @@
                                 var childHasChildren = child.Children.Any();
 
                                 var isChildActive = !childHasChildren
-                                    && currentController == child.ControllerName?.ToLower();
+                                && currentController == child.ControllerName?.ToLower();
 
                                 var isChildOpen = childHasChildren && child.Children.Any(gc =>
-                                    currentController == gc.ControllerName?.ToLower()
+                                currentController == gc.ControllerName?.ToLower()
                                 );
 
                                 <li id="@child.ControllerName?.ToLower()"
@@ -166,11 +260,11 @@
                                             @foreach (var grandChild in child.Children)
                                             {
                                                 var isGrandChildActive =
-                                                    currentController == grandChild.ControllerName?.ToLower();
+                                                currentController == grandChild.ControllerName?.ToLower();
 
                                                 var grandChildHref = grandChild.Children.Any()
-                                                    ? $"{urlPath}/Menu/GreatGrandChildrenView?grandchildId={grandChild.MenuId}"
-                                                    : $"{urlPath}/{grandChild.ControllerName}/{grandChild.ViewName}";
+                                                ? $"{urlPath}/Menu/GreatGrandChildrenView?grandchildId={grandChild.MenuId}"
+                                                : $"{urlPath}/{grandChild.ControllerName}/{grandChild.ViewName}";
 
                                                 <li id="@grandChild.ControllerName?.ToLower()">
                                                     <a href="@grandChildHref"
@@ -201,33 +295,240 @@
 <script>
     $(document).ready(function () {
 
+    // Remember which menu items were open on initial load (when expanded)
+    $('.sidebar-menu .menu-open').each(function () {
+    $(this).data('was-open', true);
+    $(this).data('userOpen', true);
+    });
+
+    // ===== EXPANDED SIDEBAR: click accordion (persists, no auto-close) =====
     $('.sidebar-menu').on('click', 'li > a', function (e) {
-    var $this   = $(this);
+    var $this = $(this);
     var $submenu = $this.next('.sidebar-submenu');
 
-    // Only intercept clicks that have a submenu to toggle.
-    // Leaf items (no submenu sibling) fall through and navigate normally.
-    if ($submenu.length) {
+    if (!$submenu.length) {
+    return; // normal navigation link
+    }
+
+    if ($('body').hasClass('sidebar-collapse')) {
+    e.preventDefault();
+    return;
+    }
+
     e.preventDefault();
 
     if ($submenu.is(':visible')) {
     $submenu.slideUp(300);
-    $this.parent().removeClass('menu-open');
+    $this.parent().removeClass('menu-open').data('was-open', false).data('userOpen', false);
     } else {
-    // Collapse any open sibling at the same level first (accordion)
     $this.closest('ul')
-    .find('.sidebar-submenu:visible')
-    .slideUp(300)
-    .parent()
-    .removeClass('menu-open');
+    .children('li')
+    .not($this.parent())
+    .each(function () {
+    var $sib = $(this);
+    var $sibSub = $sib.children('.sidebar-submenu');
+    if (!$sibSub.length) return;
+    if ($sibSub.find('a.active').length > 0) return;
+
+    if ($sibSub.is(':visible')) {
+    $sibSub.slideUp(300);
+    $sib.removeClass('menu-open').data('was-open', false).data('userOpen', false);
+    }
+    });
 
     $submenu.slideDown(300);
-    $this.parent().addClass('menu-open');
-    }
+    $this.parent().addClass('menu-open').data('was-open', true).data('userOpen', true);
     }
     });
 
-    });
-</script>
+    // ===== pushmenu (collapse/expand) toggle =====
+    $(document).on('click', '[data-widget="pushmenu"]', function () {
+    setTimeout(function () {
+    var isCollapsed = $('body').hasClass('sidebar-collapse');
 
- 
+    if (isCollapsed) {
+    $('.sidebar-menu .menu-open').each(function () {
+    $(this).data('was-open', true);
+    });
+    $('.sidebar-menu li').removeClass('menu-open hover-open').children('.sidebar-submenu').hide();
+    } else {
+    $('.sidebar-menu .menu-open').removeClass('menu-open hover-open').children('.sidebar-submenu').hide();
+
+    var $userOpened = $('.sidebar-menu li').filter(function () {
+    return $(this).data('userOpen') === true;
+    });
+
+    if ($userOpened.length) {
+    $userOpened.each(function () {
+    var $li = $(this);
+    $li.parents('li').each(function () {
+    var $p = $(this);
+    var $sub = $p.children('.sidebar-submenu');
+    if ($sub.length) {
+    $p.addClass('menu-open');
+    $sub.show();
+    }
+    });
+    $li.addClass('menu-open');
+    $li.children('.sidebar-submenu').show();
+    });
+    } else {
+    var $active = $('.sidebar-menu a.active').first();
+    if ($active.length) {
+    $active.parents('li').each(function () {
+    var $li = $(this);
+    var $submenu = $li.children('.sidebar-submenu');
+    if ($submenu.length) {
+    $li.addClass('menu-open');
+    $submenu.show();
+    $li.data('userOpen', true);
+    }
+    });
+    }
+    }
+
+    var $container = $('#left_menu');
+    var $activeLink = $container.find('a.active').first();
+    if ($activeLink.length) {
+    var scrollTop = $container.scrollTop();
+    var offset = $activeLink.offset().top - $container.offset().top + scrollTop - 60;
+    $container.animate({ scrollTop: offset }, 300);
+    }
+    }
+    }, 50);
+    });
+
+    // Initial page load state
+    if ($('body').hasClass('sidebar-collapse')) {
+    $('.sidebar-menu li').removeClass('menu-open hover-open').children('.sidebar-submenu').hide();
+    } else {
+    var $container = $('#left_menu');
+    var $active = $container.find('a.active').first();
+    if ($active.length) {
+    var scrollTop = $container.scrollTop();
+    var offset = $active.offset().top - $container.offset().top + scrollTop - 60;
+    $container.animate({ scrollTop: offset }, 0);
+    }
+    }
+
+    // ===== COLLAPSED SIDEBAR ONLY: hover-to-open, closes on mouse leave =====
+    // Every handler below bails out immediately in expanded mode, so it
+    // can never touch/close a menu that was opened by click in expanded mode.
+
+    $(document).on('mouseenter', '#left_menu .sidebar-menu li', function (e) {
+    if (!$('body').hasClass('sidebar-collapse')) return;
+
+    var $li = $(this);
+    var $submenu = $li.children('.sidebar-submenu');
+    if (!$submenu.length) return;
+
+    var hideTimer = $li.data('hideTimer');
+    if (hideTimer) {
+    clearTimeout(hideTimer);
+    $li.removeData('hideTimer');
+    }
+
+    $('#left_menu .sidebar-menu .hover-open').each(function () {
+    var $other = $(this);
+    if (!$other.is($li)) {
+    var t = $other.data('hideTimer');
+    if (t) clearTimeout(t);
+    $other.removeClass('hover-open menu-open').children('.sidebar-submenu').hide();
+    $other.removeData('hideTimer');
+    }
+    });
+
+    var $container = $('#left_menu');
+    var containerTop = $container.offset().top;
+    var containerHeight = $container.innerHeight();
+
+    var liTopInContainer = $li.offset().top - containerTop;
+    var submenuHeight = $submenu.outerHeight();
+    var allowedMaxTop = containerHeight - submenuHeight - 8;
+
+    var topForCss = 0;
+    if (liTopInContainer > allowedMaxTop) {
+    topForCss = Math.floor(allowedMaxTop - liTopInContainer);
+    }
+
+    $submenu.css({ top: topForCss + 'px' });
+
+    $li.addClass('menu-open hover-open');
+    $submenu.show();
+    });
+
+    $(document).on('mouseleave', '#left_menu .sidebar-menu li', function (e) {
+    if (!$('body').hasClass('sidebar-collapse')) return;
+
+    var $li = $(this);
+    if (!$li.hasClass('hover-open')) return; // never touch click-opened (expanded) menus
+
+    var t = setTimeout(function () {
+    $li.removeClass('hover-open menu-open').children('.sidebar-submenu').hide();
+    $li.removeData('hideTimer');
+    }, 350);
+    $li.data('hideTimer', t);
+    });
+
+    $(document).on('mouseenter', '#left_menu .sidebar-submenu', function () {
+    if (!$('body').hasClass('sidebar-collapse')) return;
+
+    var $submenu = $(this);
+    var $li = $submenu.parent();
+    var t = $li.data('hideTimer');
+    if (t) {
+    clearTimeout(t);
+    $li.removeData('hideTimer');
+    }
+    });
+
+    $(document).on('mouseleave', '#left_menu .sidebar-submenu', function () {
+    if (!$('body').hasClass('sidebar-collapse')) return;
+
+    var $submenu = $(this);
+    var $li = $submenu.parent();
+    if (!$li.hasClass('hover-open')) return;
+
+    var t = setTimeout(function () {
+    $li.removeClass('hover-open menu-open').children('.sidebar-submenu').hide();
+    $li.removeData('hideTimer');
+    }, 350);
+    $li.data('hideTimer', t);
+    });
+
+    $(document).on('mouseleave', '#left_menu', function () {
+    if (!$('body').hasClass('sidebar-collapse')) return;
+    $('#left_menu .sidebar-menu .hover-open').each(function () {
+    var $li = $(this);
+    var t = $li.data('hideTimer');
+    if (t) clearTimeout(t);
+    $li.removeClass('hover-open menu-open').children('.sidebar-submenu').hide();
+    $li.removeData('hideTimer');
+    });
+    });
+
+    // ===== Keep active-link menus open while EXPANDED (protect from external scripts) =====
+    if (window.MutationObserver) {
+    var container = document.querySelector('#left_menu .sidebar-menu');
+    if (container) {
+    var containerObserver = new MutationObserver(function (mutations) {
+    if ($('body').hasClass('sidebar-collapse')) return;
+
+    $('.sidebar-menu li').each(function () {
+    var $li = $(this);
+    var hasActiveChild = $li.children('.sidebar-submenu').find('a.active').length > 0;
+    var shouldStayOpen = $li.data('userOpen') === true || hasActiveChild;
+
+    if (shouldStayOpen && !$li.hasClass('menu-open')) {
+    $li.addClass('menu-open');
+    $li.children('.sidebar-submenu').show();
+    }
+    });
+    });
+
+    containerObserver.observe(container, { attributes: true, childList: true, subtree: true, attributeFilter: ['class'] });
+    }
+    }
+
+    });
+</script>  

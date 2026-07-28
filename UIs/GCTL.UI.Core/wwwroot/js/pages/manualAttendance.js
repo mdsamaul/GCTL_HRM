@@ -193,7 +193,9 @@
                                 $sel.append(new Option(name, code, true, true));
                                 $sel.val(code).trigger('change');
                                 $sel.select2('close');
-                                setTimeout(function () { _empAddCopyIcon($sel); }, 50);
+                                setTimeout(function () {
+                                    //_empAddCopyIcon($sel);
+                                }, 50);
                             });
                             $resultsList.append($li);
                         }
@@ -201,7 +203,9 @@
                 }
 
                 if ($sel.val()) {
-                    setTimeout(function () { _empAddCopyIcon($sel); }, 50);
+                    setTimeout(function () {
+                        //_empAddCopyIcon($sel);
+                    }, 50);
                 }
 
             } catch (err) {
@@ -289,7 +293,7 @@
             // ✅ select  selected box copy icon 
             $sel.on('select2:select', function () {
                 setTimeout(function () {
-                    _empAddCopyIcon($sel);
+                    // _empAddCopyIcon($sel);
                 }, 50);
             });
         }
@@ -307,7 +311,8 @@
 
                 if ($sel.find('option[value="' + selectedEmployeeId + '"]').length > 0) {
                     $sel.val(selectedEmployeeId).trigger('change');
-                    setTimeout(function () { _empAddCopyIcon($sel); }, 50);
+                    setTimeout(function () { // _empAddCopyIcon($sel); 
+                    }, 50);
                 } else {
                     try {
                         var res = await $.ajax({
@@ -322,7 +327,9 @@
 
                         $sel.append(new Option(name, selectedEmployeeId, true, true));
                         $sel.val(selectedEmployeeId).trigger('change');
-                        setTimeout(function () { _empAddCopyIcon($sel); }, 50);
+                        setTimeout(function () {
+                            // _empAddCopyIcon($sel);
+                        }, 50);
                     } catch (e) {
                         $sel.append(new Option(selectedEmployeeId, selectedEmployeeId, true, true));
                         $sel.val(selectedEmployeeId).trigger('change');

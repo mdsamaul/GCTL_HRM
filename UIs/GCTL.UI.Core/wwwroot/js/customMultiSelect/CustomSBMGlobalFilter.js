@@ -83,6 +83,22 @@
             return options.length === 1 ? '1 item selected' : `${options.length} items selected`;
         };
 
+        // function forceInlineFocus($inline) {
+        //     try { $inline.trigger('focus'); } catch (e) { }
+        //     setTimeout(() => {
+        //         try { $inline.trigger('focus'); } catch (e) { }
+        //         requestAnimationFrame(() => {
+        //             try {
+        //                 const el = $inline.get(0);
+        //                 if (el) {
+        //                     el.focus();
+        //                     const len = el.value.length;
+        //                     if (el.setSelectionRange) el.setSelectionRange(len, len);
+        //                 }
+        //             } catch (e) { }
+        //         });
+        //     }, 0);
+        // }
         function forceInlineFocus($inline) {
             try { $inline.trigger('focus'); } catch (e) { }
             setTimeout(() => {
@@ -92,8 +108,8 @@
                         const el = $inline.get(0);
                         if (el) {
                             el.focus();
-                            const len = el.value.length;
-                            if (el.setSelectionRange) el.setSelectionRange(len, len);
+                            // setSelectionRange bad dewa hoyeche — mouse drag-select e
+                            // badha dichilo.
                         }
                     } catch (e) { }
                 });
@@ -375,6 +391,47 @@
             $el.data('gcSelect2Init', true);
             $el.off('.gcInline');
 
+            // $el.on('select2:open.gcInline', function () {
+            //     const s2 = $el.data('select2');
+            //     if (!s2) return;
+            //     const $container = s2.$container;
+            //     const $dropdown = s2.$dropdown;
+            //     if (!$container || !$dropdown) return;
+
+            //     const $selection = $container.find('.select2-selection--single');
+            //     const $searchWrap = $dropdown.find('.select2-search--dropdown');
+            //     const $searchField = $searchWrap.find('.select2-search__field');
+
+            //     $selection.addClass('gc-inline-search-active');
+            //     $searchWrap.addClass('gc-inline-search').appendTo($selection);
+            //     $searchField.attr('placeholder', placeholder);
+
+            //     $searchField.off('keydown.gcSpace').on('keydown.gcSpace', function (e) {
+            //         if (e.key === ' ' || e.keyCode === 32) {
+            //             e.stopPropagation();
+            //             var el = this;
+            //             var start = el.selectionStart;
+            //             var end = el.selectionEnd;
+            //             var val = el.value;
+            //             el.value = val.substring(0, start) + ' ' + val.substring(end);
+            //             el.selectionStart = el.selectionEnd = start + 1;
+            //             $(el).trigger('input');
+            //             e.preventDefault();
+            //         }
+            //     });
+
+            //     // ── NEW: age select kora item-er text search field e pre-fill ──
+            //     const $selectedOption = $el.find('option:selected');
+            //     const selectedText = ($selectedOption.length && $selectedOption.val())
+            //         ? $selectedOption.text().trim()
+            //         : '';
+            //     $searchField.val(selectedText);
+            //     // setSelectionRange kora hocche na — mouse drag-select e badha
+            //     // dey na, ar user cheile shurute o click kore cursor boshate parbe
+
+            //     $searchField[0].style.width = '100%';
+            //     setTimeout(function () { $searchField.trigger('focus'); }, 0);
+            // });
             $el.on('select2:open.gcInline', function () {
                 const s2 = $el.data('select2');
                 if (!s2) return;
@@ -390,6 +447,13 @@
                 $searchWrap.addClass('gc-inline-search').appendTo($selection);
                 $searchField.attr('placeholder', placeholder);
 
+                // ── NEW: search field e click/mousedown korle dropdown toggle
+                //         hoye bondho hoye jachhilo — eta আটকে দেওয়া হলো ──
+                $searchWrap.off('mousedown.gcInlineClick click.gcInlineClick')
+                    .on('mousedown.gcInlineClick click.gcInlineClick', function (e) {
+                        e.stopPropagation();
+                    });
+
                 $searchField.off('keydown.gcSpace').on('keydown.gcSpace', function (e) {
                     if (e.key === ' ' || e.keyCode === 32) {
                         e.stopPropagation();
@@ -404,9 +468,31 @@
                     }
                 });
 
-                $searchField.val('');
+                const $selectedOption = $el.find('option:selected');
+                const selectedText = ($selectedOption.length && $selectedOption.val())
+                    ? $selectedOption.text().trim()
+                    : '';
+                $searchField.val(selectedText);
+
                 $searchField[0].style.width = '100%';
                 setTimeout(function () { $searchField.trigger('focus'); }, 0);
+            });
+
+            // ── NEW: item select korar sathe sathe search field e text set ──
+            $el.off('select2:select.gcInlineSync').on('select2:select.gcInlineSync', function (e) {
+                const s2 = $el.data('select2');
+                if (!s2) return;
+                const data = e.params && e.params.data;
+                const text = (data && data.text) ? data.text.trim() : '';
+
+                const $dropdown = s2.$dropdown;
+                const $container = s2.$container;
+                if (!$dropdown || !$container) return;
+
+                const $searchField = $container.find('.select2-search--dropdown.gc-inline-search .select2-search__field')
+                    .add($dropdown.find('.select2-search__field'));
+
+                $searchField.val(text);
             });
 
             $el.on('select2:close.gcInline', function () {

@@ -1,0 +1,208 @@
+﻿@model GCTL.UI.Core.ViewModels.HrmEmpSalaryInfoEntry.HrmEmpSalaryInfoEntryViewModel
+
+@{
+    Model.Breadcrumb = "HrmEmployeeSalaryInfoReport";
+    Model.PageTitle = "Employee Salary Info Report";
+}
+
+<style>
+    .multiselect-option input[type="radio"] {
+        display: none !important;
+    }
+
+    #downloadBtn:hover,
+    #previewBtn:hover {
+        background-color: #ffffe6 !important; /* Light green color */
+        border-color: #28a745 !important; /* Light green border */
+        color: green !important; /* Change text color to white for better contrast */
+    }
+</style>
+
+<section class="container-fluid col-md-12">
+    <partial name="_PageHeader" model="Model" />
+
+    <div class="card p-0">
+        <div class="card-header p-2">
+            <partial name="_Toolbars" model="new ToobarModel() { Title = Model.Breadcrumb, Code = Model.Code, }" />
+        </div>
+        <div class="card-body col-md-11 col-12 mx-auto">
+            <!-- Search By Section -->
+            <div class="row">
+                <div class="col-6">
+                    <h6 class="font-weight-bold fs-6 mb-2">Search By:</h6>
+                    <hr class="mt-0 mb-3">
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- Left Column -->
+                <div class="col-md-6  dropdown-wrapper">
+                    <!-- Company -->
+                    <div class="row align-items-center mb-3">
+                        <label class="col-5 text-right mb-0 pr-3">Company</label>
+                        <div class="col-6">
+                            <select id="companySelect" class="form-control form-control-sm" autofocus>
+                                <!-- Options will be populated -->
+                            </select>
+                        </div><div class="col-1"></div>
+                    </div>
+
+                    <!-- Department -->
+                    <div class="row align-items-center mb-3">
+                        <label class="col-5 text-right mb-0 pr-3">Department</label>
+                        <div class="col-6">
+                            <select id="departmentSelect" class="form-control form-control-sm" multiple>
+                                <!-- Options will be populated -->
+                            </select>
+                        </div><div class="col-1"></div>
+                    </div>
+
+                    <!-- Employee -->
+                    <div class="row align-items-center mb-3">
+                        <label class="col-5 text-right mb-0 pr-3">Employee</label>
+                        <div class="col-6">
+                            <select id="employeeSelect" class="form-control form-control-sm" multiple>
+                                <!-- Options will be populated -->
+                            </select>
+                        </div><div class="col-1"></div>
+                    </div>
+
+                    <!--EmpType-->
+                    <div class="row align-items-center mb-3">
+                        <label class="col-5 text-right mb-0 pr-3">Employee Type</label>
+                        <div class="col-6">
+                            <select id="empTypeSelect" class="form-control form-control-sm" multiple>
+                                <!-- Options will be populated -->
+                            </select>
+                        </div><div class="col-1"></div>
+                    </div>
+
+                    <!--Joining Date -->
+                    <div class="row align-items-center mb-3">
+                        <label class="col-5 text-right mb-0 pr-3">Joining Date From</label>
+                        <div class="col-6">
+                            <input type="text" id="joiningDateFromSelect" class="form-control form-control-sm" />
+                        </div><div class="col-1"></div>
+                    </div>
+                </div>
+
+                <!-- Right Column -->
+                <div class="col-md-6  dropdown-wrapper">
+                    <!-- Branch -->
+                    <div class="row align-items-center mb-3">
+                        <label class="col-5 text-right mb-0 pr-3">Branch</label>
+                        <div class="col-6">
+                            <select id="branchSelect" class="form-control form-control-sm" multiple>
+                                <!-- Options will be populated -->
+                            </select>
+                        </div>
+                        <div class="col-1"></div>
+                    </div>
+
+                    <!-- Designation -->
+                    <div class="row align-items-center mb-3">
+                        <label class="col-5 text-right mb-0 pr-3">Designation</label>
+                        <div class="col-6">
+                            <select id="designationSelect" class="form-control form-control-sm" multiple>
+                                <!-- Options will be populated -->
+                            </select>
+                        </div>
+                        <div class="col-1"></div>
+                    </div>
+
+                    <!--EmpNature-->
+                    <div class="row align-items-center mb-3">
+                        <label class="col-5 text-right mb-0 pr-3">Employee Nature</label>
+                        <div class="col-6">
+                            <select id="empNatureSelect" class="form-control form-control-sm" multiple>
+                            </select>
+                        </div><div class="col-1"></div>
+                    </div>
+
+                    <!--EmpStatus-->
+                    <div class="row align-items-center mb-3">
+                        <label class="col-5 text-right mb-0 pr-3">Activity Status</label>
+                        <div class="col-6">
+                            <select id="empStatusSelect" class="form-control form-control-sm" multiple>
+                                <!-- Options will be populated -->
+                            </select>
+                        </div><div class="col-1"></div>
+                    </div>
+
+                    <!--Joining Date To-->
+                    <div class="row align-items-center mb-3">
+                        <label class="col-5 text-right mb-0 pr-3">To</label>
+                        <div class="col-6">
+                            <input type="text" id="joiningDateToSelect" class="form-control form-control-sm" />
+                        </div><div class="col-1"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Report Option Section -->
+            <div class="row mt-4">
+                <div class="col-6">
+                    <h6 class="font-weight-bold fs-6 mb-2">Report Option:</h6>
+                    <hr class="mt-0 mb-3">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <!-- Export Report Format -->
+                    <div class="row align-items-center mb-3">
+                        <label class="col-5 text-right mb-0 pr-3">Export Report Format</label>
+                        <div class="col-6">
+                            <select id="exportFormatSelect" class="form-control form-control-sm">
+                                <option value="pdf">PDF</option>
+                                <option value="word">Word Document</option>
+                                <option value="excel">Excel Spreadsheet</option>
+                                <option value="download">Direct Download</option>
+                            </select>
+                        </div><div class="col-1"></div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <!-- Action Buttons -->
+                    <div class="row">
+                        <div class="col-11 d-flex justify-content-end">
+                            <button type="button" class="col-md-3 btn btn-default success-btn btn-sm mr-2" id="downloadBtn">
+                                <i class="fas fa-file-export"></i> Export
+                            </button>
+                            <button type="button" class="col-md-3 btn btn-default success-btn btn-sm" id="previewBtn">
+                                <i class="fas fa-eye"></i> Preview
+                            </button>
+                        </div><div class="col-1"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <partial name="_SalaryInfoReportPreview" />
+    </div>
+</section>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <link href="~/lib/bootstrap-multiselect-master/dist/css/bootstrap-multiselect.min.css" rel="stylesheet" />
+    <script src="~/lib/bootstrap-multiselect-master/dist/js/bootstrap-multiselect.min.js"></script>
+
+    <script src="~/js/pages/hrmEmpSalaryInfoReport.js"></script>
+    <script type="text/javascript">
+        $(function () {
+        $.empSalaryInfoReport({
+        baseUrl: '@Url.Action("Index", "HrmEmployeeSalaryInfoReport")',
+        accessCode: '@Model.AccessCode',
+        load: function () {
+        console.log("Custom load logic called from Razor view");
+        }
+        });
+        });
+    </script>
+}

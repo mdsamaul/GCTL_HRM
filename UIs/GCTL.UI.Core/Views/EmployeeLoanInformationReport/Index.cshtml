@@ -193,8 +193,9 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">Pay Head Balance Report</h3>
+                <div class="card-header p-2">
+                        <partial name="_Toolbars"
+                                 model="new ToobarModel() { Title = Model.Breadcrumb, Code = Model.Code, Name = Model.setupEmpLoan.EmployeeID}" />
                 </div>
                 <div class="card-body py-0">
                     <div class="container-fluid card bg-gradient-light py-2 border mt-4">  
@@ -416,7 +417,7 @@
                                 <div class="col-12 col-md-6 py-1">
                                     <div class="row align-items-center">
                                         <label class="col-3 col-md-4 text-right mb-0" style="padding-right: 0px;padding-left: 40px;margin-left: 20px;">Export Report Format</label>
-                                        <div class="col-9 col-md-6">
+                                        <div class="col-9 col-md-6 px-0">
                                             <select id="reportText" class="form-control form-control-sm">
                                                 <option value="downloadPdf">Pdf</option>
                                                 <option value="downloadExcel">Excel</option>
@@ -434,7 +435,7 @@
                                                     <i class="fas fa-file-export fa-export"></i> <span>Export Report</span>
                                                 </button>
                                             </div>
-                                            <div class="col-auto px-1 d-grid">
+                                                <div class="col-auto pl-1 pr-0 d-grid">
                                                 <button id="btnPreview" class="btn btn-sm btn-outline-secondary common-btn px-4">
                                                     <i class="fas fa-eye preview-icon" title="Preview"></i> <span>Preview</span>
                                                 </button>
@@ -483,14 +484,14 @@
 
     <!-- Initialize the plugin -->
     <script type="text/javascript">
-        $(function () {
+            $(function () {
             $.patientTypes({
-                baseUrl: '@Url.Action("Index", "EmployeeLoanInformationReport")',
-                load: function () {
-                    console.log("Custom load logic called from Razor view");
-                }
+            baseUrl: '@Url.Action("Index", "EmployeeLoanInformationReport")',
+            load: function () {
+            console.log("Custom load logic called from Razor view");
+            }
             });
-        });
+            });
             if (typeof pdfjsLib !== 'undefined') {
             pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
         }

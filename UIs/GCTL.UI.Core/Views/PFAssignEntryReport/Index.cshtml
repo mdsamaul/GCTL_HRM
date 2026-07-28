@@ -129,25 +129,7 @@
 						</div>
 						<div class="d-none d-md-block col-md-6">
 						</div>
-						@* <div class="col-12 col-md-6 py-1">
-							<div class="row align-items-center">
-								<label class="col-3 text-right mb-0" style="padding-right: 0px;">Date From</label>
-								<div class="col-9 col-md-7" style="padding-left: 5px;">
-									<input type="text" id="FromDateSelect" class="form-control form-control-sm flatDate" placeholder="--Date From--" />
-
-								</div>
-								<div class="col-md-2 col-0"></div>
-							</div>
-						</div>
-						<div class="col-12 col-md-6 py-1">
-							<div class="row align-items-center">
-								<label class="col-3 text-right mb-0" style="padding-right: 0px;">To</label>
-								<div class="col-9 col-md-7" style="padding-left: 5px;">
-									<input type="text" id="ToDateSelect" class="form-control form-control-sm flatDate" placeholder="--To--" />
-								</div>
-								<div class="col-md-2 col-0"></div>
-							</div>
-						</div> *@
+						
 
 					</div>
 
@@ -161,39 +143,36 @@
 				</div>
 				<div class="col-12 col-md-6">
 				</div>
-				<div class="col-12 col-md-12 mx-auto">
-					<div class="row pb-4 ">
-						<div class="col-12 col-md-6 py-1">
-							<div class="row align-items-center">
-								<label class="col-4 text-right mb-0" style="padding-right: 0px;">Export Report Format</label>
-								<div class="col-9 col-md-6">
-									<select id="reportText" class="form-control form-control-sm">
-										<option value="downloadPdf">Pdf</option>
-										<option value="downloadExcel">Excel</option>
-										<option value="downloadWord">Word</option>
-									</select>
+						<div class="col-12 col-md-11 mx-auto">
+							<div class="row pb-4  dropdown-wrapper ">
+								<div class="col-12 col-md-6 py-1">
+									<div class="row align-items-center">
+										<label class="col-3 text-right mb-0" style="padding-right: 0px;">Export Report Format</label>
+										<div class="col-9 col-md-7" style="padding-left: 5px;">
+											<select id="reportText" class="form-control form-control-sm">
+												<option value="downloadPdf">Pdf</option>
+												<option value="downloadExcel">Excel</option>
+												<option value="downloadWord">Word</option>
+											</select>
+										</div>
+										<div class="col-md-2 col-0"></div>
+									</div>
 								</div>
-								<div class="col-md-2 col-0"></div>
-							</div>
-						</div>
-						<div class="col-12 col-md-6 py-1">
-						</div>
-						<div class="col-12 col-md-6 py-1">
-						</div>
+				
 						<div class="col-12 col-md-6 py-1 mx-auto">
 							<div class="row justify-content-end align-items-center">
-								<div class="col-auto px-1 d-grid">
+								<div class="px-1 d-grid">
 									<button id="downloadReport" class="btn btn-sm common-btn btn-outline-secondary">
 										<i class="fas fa-file-export fa-export"></i> <span>Export Report</span>
 									</button>
 								</div>
-								<div class="col-auto px-1 d-grid">
+								<div class="px-1 d-grid">
 									<button id="btnPreviewPdf" class="btn btn-sm btn-outline-secondary common-btn px-4">
 										<i class="fas fa-eye preview-icon" title="Preview"></i> <span>Preview</span>
 									</button>
 								</div>
 
-								<div class="col-md-3"></div>
+								<div class="col-md-2"></div>
 							</div>
 						</div>
 

@@ -695,6 +695,10 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[HRM_Pay_Def_PayrollMasterFileType]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[HRM_PAY_EmployeesRequiredInvestmentDetails]",
          "ObjectType": 0
       },
@@ -756,6 +760,10 @@
       },
       {
          "Name": "[dbo].[HRM_PAY_PayHeadName]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[HRM_Pay_SalaryData]",
          "ObjectType": 0
       },
       {
@@ -1656,6 +1664,10 @@
       },
       {
          "Name": "[dbo].[usp_GetLeaveDashboard]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[usp_GetPayrollMasterFile_General]",
          "ObjectType": 1
       },
       {

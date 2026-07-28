@@ -1,11 +1,12 @@
 ﻿(function ($) {
     $.patientTypes = function (options) {
-        var commonName = $.extend({
+        var settings = $.extend({
             baseUrl: "/",
+            load: function () { }
         }, options);
 
-        var filterUrl = commonName.baseUrl + "/GetLoanDetails";
-        var GenerateExcelUrl = commonName.baseUrl + "/GenerateExcel";
+        var filterUrl = settings.baseUrl + "/GetLoanDetails";
+        var GenerateExcelUrl = settings.baseUrl + "/GenerateExcel";
         loadEmployeeLoanReport = function (companyId = null, laonTypeId = null, employeeId = null, loanId = null, dateFrom = null, dateTo = null) {
             $.ajax({
                 url: filterUrl,
@@ -66,17 +67,17 @@
         function setCompanySelection($container, name, code) {
             $container.find(".selected-items")
                 .text(name)
-                .attr("data-id", code); 
+                .attr("data-id", code);
             $container.find(".selected-items").text(name);
             $container.find(".placeholder-text").hide();
             $container.find(".multiselect-dropdown").hide();
             $container.find(".multiselect-arrow").removeClass("rotate");
             $container.find("#companyId").val(code);
             setTextClear();
-            const $containerLoan = $('[data-field="loanTypeId"]'); 
-            $containerLoan.find(".multiselect-options").empty(); 
-            $containerLoan.find(".selected-items").text('');     
-            $containerLoan.find(".placeholder-text").show();     
+            const $containerLoan = $('[data-field="loanTypeId"]');
+            $containerLoan.find(".multiselect-options").empty();
+            $containerLoan.find(".selected-items").text('');
+            $containerLoan.find(".placeholder-text").show();
 
             $containerLoan.find("#loanTypeId").val('');
             setTextClear();
@@ -84,7 +85,7 @@
             $containerEmployee.find(".multiselect-options").empty();
             $containerEmployee.find(".selected-items").text('');
             $containerEmployee.find(".placeholder-text").show();
-            $containerEmployee.find("#employeeId").val(''); 
+            $containerEmployee.find("#employeeId").val('');
 
             setTextClear();
             const $containerLoanType = $('[data-field="loanType"]');
@@ -148,7 +149,7 @@
             }
         });
 
-           
+
         //loan type id
         function setLoanIdSelection($container, value) {
             $container.find(".selected-items").text(value);
@@ -156,15 +157,15 @@
             $container.find(".multiselect-dropdown").hide();
             $container.find(".multiselect-arrow").removeClass("rotate");
 
-            let companyId = $('[data-field="companyId"] .selected-items').attr("data-id");            
+            let companyId = $('[data-field="companyId"] .selected-items').attr("data-id");
             const employeeId = $('[data-field="employeeId"] .selected-items').attr("data-value");
-            let LoanTypeId = $('[data-field="loanType"] .selected-items').attr("data-id");    
+            let LoanTypeId = $('[data-field="loanType"] .selected-items').attr("data-id");
             loadLoanDetailsByEmployeeIdAndCompanyIdReport(companyId, LoanTypeId, employeeId, value, null, null, null);
 
         }
 
         DropdownAppendLoanId = function (loanTypesArray) {
-            window.dropdownLoanTypes = loanTypesArray;           
+            window.dropdownLoanTypes = loanTypesArray;
             const $container = $('[data-field="loanTypeId"]');
             const $optionContainer = $container.find(".multiselect-options");
             $optionContainer.empty();
@@ -258,7 +259,7 @@
             $containerEmployee.find(".multiselect-options").empty();
             $containerEmployee.find(".selected-items").text('');
             $containerEmployee.find(".placeholder-text").show();
-            $containerEmployee.find("#employeeId").val(''); 
+            $containerEmployee.find("#employeeId").val('');
 
             loadEmployeeByLoanTypeIdAndCompanyIdReport(companyId, loanTypeId, null, null, null, null);
         }
@@ -302,7 +303,7 @@
                 $('[data-field="loanType"] .multiselect-arrow').removeClass("rotate");
             }
         });
-              
+
 
         $('[data-field="loanType"] .multiselect-search input').on("input", function () {
             const searchTerm = $(this).val().toLowerCase().trim();
@@ -359,12 +360,12 @@
         }
 
         function setEmployeeSelection($container, employee) {
-            const empText = `${employee.fullName} (${employee.employeeID})`; 
-            const empId = employee.employeeID; 
+            const empText = `${employee.fullName} (${employee.employeeID})`;
+            const empId = employee.employeeID;
 
             $container.find(".selected-items")
                 .text(empText)
-                .attr("data-value", empId); 
+                .attr("data-value", empId);
 
             $container.find(".placeholder-text").hide();
             $container.find(".multiselect-dropdown").hide();
@@ -378,7 +379,7 @@
             $containerLoan.find(".placeholder-text").show();
 
             $containerLoan.find("#loanTypeId").val('');
-            
+
             if (dateFromPicker) dateFromPicker.clear();
             if (toDatePicker) toDatePicker.clear();
             $("#showLoanDate").text("");
@@ -388,7 +389,7 @@
             $("#showNoOfInstallment").text("");
 
 
-            let LoanTypeId = $('[data-field="loanType"] .selected-items').attr("data-id");    
+            let LoanTypeId = $('[data-field="loanType"] .selected-items').attr("data-id");
             // Call the report loader
             loadEmployeeDetailsByEmployeeIdLoanIdAndCompanyIdReport(companyId, LoanTypeId, empId, null, null, null);
         }
@@ -471,7 +472,7 @@
         setTextClear = function () {
             $("#showEmployeeName").text('');
             $("#showDepartmentName").text('');
-            $("#showDesignationName").text(''); 
+            $("#showDesignationName").text('');
             if (dateFromPicker) dateFromPicker.clear();
             if (toDatePicker) toDatePicker.clear();
             $("#showLoanDate").text("");
@@ -500,21 +501,21 @@
                         $("#showDepartmentName").text(empData[0].departmentName ?? "");
                         $("#showDesignationName").text(empData[0].designationName ?? "");
                         DropdownAppendLoanId(data.loanIDs);
-                    }                  
+                    }
                 },
                 error: function () {
                     alert("Error fetching data");
                 }
             });
-        }      
-      
+        }
+
         let startDateStr = null;
         let endDateStr = null;
 
         let dateFromPicker = null;
         let toDatePicker = null;
 
-        function loadLoanDetailsByEmployeeIdAndCompanyIdReport(companyId = null,laonTypeId = null, employeeId = null, loanId = null, dateFrom = null, dateTo = null) {
+        function loadLoanDetailsByEmployeeIdAndCompanyIdReport(companyId = null, laonTypeId = null, employeeId = null, loanId = null, dateFrom = null, dateTo = null) {
             $.ajax({
                 url: filterUrl,
                 type: "GET",
@@ -527,7 +528,7 @@
                     DateTo: dateTo
                 },
                 success: function (data) {
-                    var loanData = data.loanIDs;                    
+                    var loanData = data.loanIDs;
                     if (loanData && loanData.length > 0) {
                         $("#showLoanDate").text(loanData[0].loanDate ?? "");
                         $("#showloanTypeName").text(loanData[0].loanType ?? "");
@@ -600,10 +601,11 @@
 
             let dateFrom = $("#dateFrom").val();
             let toDate = $("#toDate").val();
-            const loanTypeId = $('[data-field="loanType"] .selected-items').attr("data-id");  
+            const loanTypeId = $('[data-field="loanType"] .selected-items').attr("data-id");
             loadEmployeeDetailsDocumentReport(companyId, loanTypeId, employeeId, loanId, dateFrom, toDate);
         })
         $(document).on('click', "#downloadReport", function () {
+            
             let companyId = $('[data-field="companyId"] .selected-items').attr("data-id");
             const loanId = $('[data-field="loanTypeId"] .selected-items').text();
             const employeeId = $('[data-field="employeeId"] .selected-items').attr("data-value");
@@ -649,32 +651,19 @@
                     DateTo: dateTo
                 },
                 success: function (data) {
-
                     if (isDownloadPdf) {
-                        GeneratePdf(data.loanReports);
-                        isDownloadPdf = false;
-                        isDownloadExcel = false;
-                        isDownloadWord = false;
-                        isPreviewPdf = false;
+                        GeneratePdf(data.loanReports, false, true); // isPreview=false, isDownload=true
                     } else if (isDownloadExcel) {
                         GenerateExcel(data.loanReports);
-                        isDownloadPdf = false;
-                        isDownloadExcel = false;
-                        isDownloadWord = false;
-                        isPreviewPdf = false;
                     } else if (isDownloadWord) {
                         GenerateWordDocument(data.loanReports);
-                        isDownloadPdf = false;
-                        isDownloadExcel = false;
-                        isDownloadWord = false;
-                        isPreviewPdf = false;
-                    } else {
-                        GeneratePdf(data.loanReports);
-                        isDownloadPdf = false;
-                        isDownloadExcel = false;
-                        isDownloadWord = false;
-                        isPreviewPdf = false;
-                    }                   
+                    } else if (isPreviewPdf) {
+                        GeneratePdf(data.loanReports, true, false); // isPreview=true, isDownload=false
+                    }
+                    isDownloadPdf = false;
+                    isDownloadExcel = false;
+                    isDownloadWord = false;
+                    isPreviewPdf = false;
                 },
                 error: function () {
                     alert("Error fetching data");
@@ -683,7 +672,7 @@
         }
 
         // PDF Download button click handler
-        
+
         FormateAmountEN = function (amount) {
             if (amount >= 10000000) {
                 return (amount / 10000000).toFixed(1).replace(/\.0$/, '') + 'Cr';
@@ -719,12 +708,13 @@
         }
 
 
-        GeneratePdf = async function (installmentData) {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF('p', 'pt', 'a4');
+        GeneratePdf = async function (installmentData, previewMode, downloadMode) {
+            try {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF('p', 'pt', 'a4');
             const pageWidth = doc.internal.pageSize.getWidth();
             const marginLeft = 40;
-            let y = 35;
+            let y = 25;
 
             if (!installmentData || installmentData.length === 0) {
                 alert("No data available for PDF");
@@ -732,7 +722,7 @@
             }
 
             // ★ Logo load — aspect ratio auto
-            const LOGO_TARGET_HEIGHT = 40;  // ← এই height বাড়ান/কমান
+            const LOGO_TARGET_HEIGHT = 30;  // ← এই height বাড়ান/কমান
             let logoBase64 = null;
             let logoWidth = LOGO_TARGET_HEIGHT;
             try {
@@ -742,7 +732,7 @@
                     logoWidth = (logoData.natW / logoData.natH) * LOGO_TARGET_HEIGHT;
                 }
             } catch (e) { }
-     
+
 
             function drawSectionTitle(titleText) {
                 doc.setFontSize(14);
@@ -762,7 +752,7 @@
             installmentData.forEach(function (loan, index) {
                 if (index > 0) {
                     doc.addPage();
-                    y = 35;
+                    y = 20;
                 }
                 // Logo — left aligned,  y update
                 if (logoBase64) {
@@ -776,13 +766,13 @@
                 let textWidth = doc.getTextWidth(companyText);
 
                 // Logo height  center এ text align 
-                let textY = y + (LOGO_TARGET_HEIGHT / 2) + 5; // vertically center with logo
+                let textY = y + (LOGO_TARGET_HEIGHT / 2) ; // vertically center with logo
                 doc.text(companyText, (pageWidth - textWidth) / 2, textY);
 
-                y += LOGO_TARGET_HEIGHT + 10; 
+                y += LOGO_TARGET_HEIGHT + 35;
 
 
-               
+
 
                 // Installment Details Text
                 let installmentDetailsText = `Installments of ${FormateAmountEN(loan.monthlyDeduction)} tk per month to be deposited to designated account.`;
@@ -811,10 +801,10 @@
                         doc.text(":", colonX, yPos, { align: "center" });
 
                         // Draw wrapped value aligned to left
-                     
+
                         wrappedText.forEach((line, i) => {
-                            const lineX = colonX + 5;           
-                            const lineY = yPos + (i * 12);     
+                            const lineX = colonX + 5;
+                            const lineY = yPos + (i * 12);
                             doc.text(line, lineX, lineY, { align: "left" });
                         });
 
@@ -844,14 +834,14 @@
                 drawSectionTitle("Loan Installment Details");
 
                 let totalDeposit = 0;
-                let installmentRows = loan.installments.map(inst => {
+                let installmentRows = (loan.installments || []).map(inst => {
                     totalDeposit += inst.deposit || 0;
                     return [
                         inst.installmentNo,
                         inst.installmentDate || "",
                         inst.paymentMode || "",
                         inst.deposit ? `BDT ${inst.deposit.toFixed(2)}` : "",
-                        `BDT ${inst.outstandingBalance.toFixed(2)}`
+                        `BDT ${(inst.outstandingBalance || 0).toFixed(2)}`
                     ];
                 });
                 y -= 10;
@@ -891,28 +881,29 @@
                 });
 
                 // Total Deposit Summary
+                // Total Deposit Summary
                 let depositColumnIndex = 3;
                 let cellWidth = (pageWidth - marginLeft * 2) / 5;
                 let depositColumnX = marginLeft + depositColumnIndex * cellWidth;
 
                 let valueText = `BDT ${totalDeposit.toFixed(2)}`;
-                let textY = y + 5;
+                let summaryTextY = y + 5;   // ← renamed from textY
                 doc.setFontSize(11);
                 doc.setFont(undefined, 'bold');
 
                 doc.setLineWidth(0.5);
                 doc.line(
                     depositColumnX + (cellWidth - doc.getTextWidth(valueText)) / 2,
-                    textY - 6,
+                    summaryTextY - 6,
                     depositColumnX + (cellWidth + doc.getTextWidth(valueText)) / 2,
-                    textY - 6
+                    summaryTextY - 6
                 );
 
-                textY += 5;
-                doc.text(valueText, depositColumnX + cellWidth / 2, textY, { align: 'center' });
+                summaryTextY += 5;
+                doc.text(valueText, depositColumnX + cellWidth / 2, summaryTextY, { align: 'center' });
 
                 let textWidthValue = doc.getTextWidth(valueText);
-                let lineY1 = textY + 2;
+                let lineY1 = summaryTextY + 2;
                 doc.line(
                     depositColumnX + (cellWidth - textWidthValue) / 2,
                     lineY1,
@@ -920,7 +911,7 @@
                     lineY1
                 );
 
-                let lineY2 = textY + 4;
+                let lineY2 = summaryTextY + 4;
                 doc.line(
                     depositColumnX + (cellWidth - textWidthValue) / 2,
                     lineY2,
@@ -928,22 +919,26 @@
                     lineY2
                 );
 
-                y = textY + 15;
+                y = summaryTextY + 15;
             });
-
-            if (isPreviewPdf) {
-                const pdfBlob = doc.output('blob');
-                const pdfUrl = URL.createObjectURL(pdfBlob);
-                const container = document.getElementById("pdfContainer");
-                container.innerHTML = "";
-                const embed = document.createElement("embed");
-                embed.src = pdfUrl;
-                embed.type = "application/pdf";
-                embed.width = "100%";
-                embed.height = "100%";
-                container.appendChild(embed);
-            } else if (isDownloadPdf) {
-                doc.save("Loan_Report.pdf");
+            
+                if (previewMode) {
+                    const pdfBlob = doc.output('blob');
+                    const pdfUrl = URL.createObjectURL(pdfBlob);
+                    const container = document.getElementById("pdfContainer");
+                    container.innerHTML = "";
+                    const embed = document.createElement("embed");
+                    embed.src = pdfUrl;
+                    embed.type = "application/pdf";
+                    embed.width = "100%";
+                    embed.height = "100%";
+                    container.appendChild(embed);
+                } else if (downloadMode) {
+                    doc.save("Loan_Report.pdf");
+                }
+            } catch (err) {
+                console.error("PDF generation failed:", err);
+                alert("PDF generate করতে সমস্যা হয়েছে: " + err.message);
             }
         }
 
@@ -1159,7 +1154,7 @@
     </div>
     <div class="report-title">Loan Installment Details</div>
 `;
-                    
+
 
                     // Installments table
                     let totalDeposit = 0;
@@ -1220,7 +1215,7 @@
                 URL.revokeObjectURL(url);
 
             } catch (error) {
-                alert("Error generating Word document: " + error.message);                
+                alert("Error generating Word document: " + error.message);
             }
         }
 
@@ -1277,8 +1272,8 @@
         }
 
         init = function () {
-                loadEmployeeLoanReport();             
+            loadEmployeeLoanReport();
         }
         init();
-    }
+    };
 })(jQuery);

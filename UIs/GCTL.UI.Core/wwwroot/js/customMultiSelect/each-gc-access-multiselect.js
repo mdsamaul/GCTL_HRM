@@ -575,6 +575,22 @@ function ms_InitializeMultiselects(customConfigs, accessCode, readonly) {
             onChange: function () {
                 if (isReadonly) return;
                 ms_UpdateClearIcon($select);
+                const $container = $select.next('.btn-group');
+                const $btn = $container.find('button.multiselect');
+                const $inline = $btn.find('.multiselect-inline-search');
+                if ($btn.hasClass('is-inline-searching')) {
+                    const $selected = $select.find('option:selected');
+                    const count = $selected.length;
+                    let text = '';
+                    if (count === 0) {
+                        text = '';
+                    } else if (count <= 1) {
+                        text = $selected.map(function () { return $(this).text().trim(); }).get().join(', ');
+                    } else {
+                        text = `${count} items selected`;
+                    }
+                    $inline.val(text).attr('placeholder', placeholder);
+                }
             }
         });
     });

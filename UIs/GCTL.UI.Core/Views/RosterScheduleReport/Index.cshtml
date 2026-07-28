@@ -4,7 +4,7 @@
 }
 <style>
 	.headerToobar{
-		background: linear-gradient(to right, rgba(34, 211, 238, .1), #fff);
+		/* background: linear-gradient(to right, rgba(34, 211, 238, .1), #fff); */
 		box-shadow: 3px 0 6px rgba(0, 0, 0, 0.2);
 		border-radius:0px 11px 11px 0px;
 	}
@@ -125,7 +125,7 @@
 		display: none;
 		margin-left: 10px;
 		margin-right: 18px;
-		color: #dc3545;
+		color: #444;
 		cursor: pointer;
 		line-height: 1;
 		user-select: none;
@@ -162,19 +162,17 @@
 </div>
 
 <section class="content consistent-look">
-	<div class="container-fluid">	
-	<div class="row px-2 pr-3">
-		<div class="col-md-12 pr-0">
-				<div class="w-100 headerToobar ">
-					<partial name="_Toolbars" model="new ToobarModel() { Title = Model.Breadcrumb, Code = Model.Code, Name = Model.Setup.RosterScheduleId }"></partial>
-				</div>
-		</div>
-	</div>
+	<div class=" card">	
+			<div class="card-header">
+					
+						<partial name="_Toolbars" model="new ToobarModel() { Title = Model.Breadcrumb, Code = Model.Code, Name = Model.Setup.RosterScheduleId }"></partial>
+					
+			</div>
 
 
-		 <div class="col-md-12 col-12 mx-auto">
-			<div class="border bg-white rounded-lg mt-3 px-2 ">
-				<div class="col-12 col-md-5" style="padding-right: 0px;">
+		 <div class="card-body border">
+			<div class="">
+				<div class="col-12 col-md-5 p-0" style="padding-right: 0px;">
 					<h6 class="pt-3 px-3 pb-0 font-weight-bold fs-6 mb-0">Search By :</h6>
 
 					<div class="d-flex" style="padding-right: 0px; ">
@@ -277,43 +275,45 @@
 				</div>
 				<div class="col-12 col-md-6">
 				</div>
-				<div class="col-12 col-md-12 mx-auto">
-					<div class="row pb-4 ">
-					<div class="col-12 col-md-6 py-1">
-						<div class="row align-items-center">
-								<label class="col-4 text-right mb-0" style="padding-right: 0px;">Export Report Format</label>
-							<div class="col-9 col-md-6">
-								<select id="reportText" class="form-control form-control-sm">
+						<div class="col-12 col-md-11 mx-auto">
+							<div class="row pb-4  dropdown-wrapper">
+				<div class="col-12 col-md-6 py-1">
+
+							<div class="row align-items-center">
+								<label class="col-3 text-right mb-0" style="padding-right: 0px;">Export Report Format</label>
+								<div class="col-9 col-md-7" style="padding-left: 5px;">
+									<select id="reportText" class="form-control form-control-sm">
 										<option value="downloadPdf">Pdf</option>
 										<option value="downloadExcel">Excel</option>
 										<option value="downloadWord">Word</option>
-								</select>
+									</select>
+								</div>
+								<div class="col-md-2 col-0"></div>
 							</div>
-							<div class="col-md-2 col-0"></div>
-						</div>
-					</div>					
-					<div class="col-12 col-md-6 py-1">
-					</div>
-					<div class="col-12 col-md-6 py-1">
-					</div>
-						<div class="col-12 col-md-6 py-1 mx-auto">
-							<div class="row justify-content-end align-items-center">
-								<div class="col-auto px-1 d-grid">
-									<button id="downloadReport" class="btn btn-sm common-btn btn-outline-secondary">
-										<i class="fas fa-file-export fa-export"></i> <span>Export Report</span>
-									</button>
-								</div>
-								<div class="col-auto px-1 d-grid">
-									<button id="btnPreviewPdf" class="btn btn-sm btn-outline-secondary common-btn px-4">
-										<i class="fas fa-eye preview-icon" title="Preview"></i> <span>Preview</span>
-									</button>
-								</div>
 
-								<div class="col-md-3"></div>
-							</div>
 						</div>
+								
+					<div class="col-12 col-md-6 py-1">
+									<div class="row justify-content-end align-items-center">
+										<div class="px-1 d-grid">
+											<button id="downloadReport" class="btn btn-sm common-btn btn-outline-secondary">
+												<i class="fas fa-file-export fa-export"></i> <span>Export Report</span>
+											</button>
+										</div>
+										<div class="px-1 d-grid">
+											<button id="btnPreviewPdf" class="btn btn-sm btn-outline-secondary common-btn px-4">
+												<i class="fas fa-eye preview-icon" title="Preview"></i> <span>Preview</span>
+											</button>
+										</div>
+
+										<div class="col-md-2"></div>
+									</div>
+					</div>
+					
 
 				</div>
+			
+			
 				</div>
 			</div>
 		</div> 

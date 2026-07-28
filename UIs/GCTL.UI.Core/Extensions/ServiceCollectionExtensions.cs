@@ -91,6 +91,7 @@ using GCTL.Service.HrmDefSeparationTypes;
 //using GCTL.Service.LeaveAppDay;
 using GCTL.Service.HrmEmployeeOfficialInfoServe;
 using GCTL.Service.HrmEmployees2;
+using GCTL.Service.HrmEmployeeSalaryInfoReport;
 using GCTL.Service.HRMPayrollLoan;
 using GCTL.Service.HRMTransportAssignEntryService;
 using GCTL.Service.HRMTransportExpenseEntryService;
@@ -139,6 +140,7 @@ using GCTL.Service.RMG_Prod_Def_UnitType;
 using GCTL.Service.RosterScheduleApproval;
 using GCTL.Service.RosterScheduleEntry;
 using GCTL.Service.RosterScheduleReport;
+using GCTL.Service.SalaryInformationReport;
 using GCTL.Service.SalesDefTransportExpenseHeadService;
 using GCTL.Service.SalesDefVehicleService;
 using GCTL.Service.SalesDefVehicleTypeService;
@@ -200,6 +202,7 @@ namespace GCTL.UI.Core.Extensions
             services.AddScoped<IUnitTypeService, UnitTypeService>();
             services.AddScoped<ICurrencyService, CurrencyService>();
             services.AddScoped<IPaymentModeService, PaymentModeService>();
+            services.AddScoped<IHrmEmployeeSalaryInfoReportServices, HrmEmployeeSalaryInfoReportService>();
 
 
 
@@ -287,6 +290,7 @@ namespace GCTL.UI.Core.Extensions
             services.AddScoped<IManualEntryApprovalService, ManualEntryApprovalService>();
             services.AddScoped<IHolidayWeekendDateSetService, HolidayWeekendDateSetService>();
             services.AddScoped<IEmployeeOfficialInfoReportService, EmployeeOfficialInfoReportService>();
+            services.AddScoped<ISalaryInformationReportService, SalaryInformationReportService>();
 
 
             //services.AddScoped<IBuyerInfoService, BuyerInfoService>();

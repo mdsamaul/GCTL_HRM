@@ -186,7 +186,7 @@
 
                         function drawHeader(doc) {
                             if (base64Logo) {
-                                doc.addImage(base64Logo, 'PNG', 15, 12, logoDrawWidth, logoDrawHeight);
+                                doc.addImage(base64Logo, 'PNG', 15, 30, logoDrawWidth, logoDrawHeight);
                             }
                             doc.setFontSize(18);
                             doc.setFont("times", "bold");
@@ -297,7 +297,7 @@
                     if (base64Logo) {
                         var tempImg = new Image();
                         tempImg.onload = function () {
-                            var targetH = 42;
+                            var targetH = 25;
                             logoDrawWidth = (tempImg.naturalWidth / tempImg.naturalHeight) * targetH;
                             logoDrawHeight = targetH;
                             runPdf();
@@ -367,7 +367,7 @@
 
                         function drawHeader(doc) {
                             if (base64Logo) {
-                                doc.addImage(base64Logo, 'PNG', 15, 12, logoDrawWidth, logoDrawHeight);
+                                doc.addImage(base64Logo, 'PNG', 15, 30, logoDrawWidth, logoDrawHeight);
                             }
                             doc.setFontSize(18);
                             doc.setFont("times", "bold");
@@ -483,7 +483,7 @@
                     if (base64Logo) {
                         var tempImg = new Image();
                         tempImg.onload = function () {
-                            var targetH = 42;
+                            var targetH = 25;
                             logoDrawWidth = (tempImg.naturalWidth / tempImg.naturalHeight) * targetH;
                             logoDrawHeight = targetH;
                             runPdf();

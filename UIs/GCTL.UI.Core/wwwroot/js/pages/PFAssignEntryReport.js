@@ -187,7 +187,11 @@
                         function drawHeader(doc) {
                             // Logo (if available)
                             if (base64Logo) {
-                                doc.addImage(base64Logo, 'PNG', 15, 10, 80, 50);
+                                var logoDrawWidth = 80;
+                                var logoDrawHeight = 25;
+                                var topMargin = 10;
+
+                                doc.addImage(base64Logo, 'PNG', 15, 10 + topMargin, logoDrawWidth, logoDrawHeight);
                             }
 
                             // Company Name
@@ -408,7 +412,11 @@
                     function drawHeader(doc) {
                         // Logo (if available)
                         if (base64Logo) {
-                            doc.addImage(base64Logo, 'PNG', 15, 10, 80, 50);
+                            var logoDrawWidth = 80;
+                            var logoDrawHeight = 25;
+                            var topMargin = 25;
+
+                            doc.addImage(base64Logo, 'PNG', 15, 10 + topMargin, logoDrawWidth, logoDrawHeight);
                         }
 
                         // Company Name

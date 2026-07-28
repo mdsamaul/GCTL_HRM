@@ -782,7 +782,7 @@
             doc.setFont(undefined, 'bold');
 
             if (logoBase64) {
-                doc.addImage(logoBase64, 'PNG', 10, 4, logoWidth, LOGO_TARGET_HEIGHT);
+                doc.addImage(logoBase64, 'PNG', 10, 6, logoWidth, LOGO_TARGET_HEIGHT);
             }
 
             doc.text(companyName, pageWidth / 2, 10, { align: 'center' });

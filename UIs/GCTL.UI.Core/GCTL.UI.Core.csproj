@@ -570,6 +570,7 @@
     <PackageReference Include="AspNetCore.Reporting" Version="2.1.0" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
     <PackageReference Include="DocumentFormat.OpenXml" Version="3.2.0" />
+    <PackageReference Include="Google.GenAI" Version="1.15.0" />
     <PackageReference Include="itext7" Version="9.1.0" />
     <PackageReference Include="itext7.bouncy-castle-adapter" Version="9.1.0" />
     <PackageReference Include="itext7.bouncy-castle-fips-adapter" Version="9.1.0" />

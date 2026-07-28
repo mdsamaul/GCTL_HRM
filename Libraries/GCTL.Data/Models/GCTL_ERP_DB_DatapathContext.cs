@@ -188,6 +188,7 @@ namespace GCTL.Data.Models
         public virtual DbSet<HrmPayAdvancePay> HrmPayAdvancePay { get; set; }
         public virtual DbSet<HrmPayDefBenefitType> HrmPayDefBenefitType { get; set; }
         public virtual DbSet<HrmPayDefDeductionType> HrmPayDefDeductionType { get; set; }
+        public virtual DbSet<HrmPayDefPayrollMasterFileType> HrmPayDefPayrollMasterFileType { get; set; }
         public virtual DbSet<HrmPayEmployeesRequiredInvestmentDetails> HrmPayEmployeesRequiredInvestmentDetails { get; set; }
         public virtual DbSet<HrmPayEmployeesRequiredInvestmentDetailsTemp> HrmPayEmployeesRequiredInvestmentDetailsTemp { get; set; }
         public virtual DbSet<HrmPayEmployeesRequiredInvestmentEntry> HrmPayEmployeesRequiredInvestmentEntry { get; set; }
@@ -204,6 +205,7 @@ namespace GCTL.Data.Models
         public virtual DbSet<HrmPayNightWorkedDayRateEntry> HrmPayNightWorkedDayRateEntry { get; set; }
         public virtual DbSet<HrmPayOthersAdjustmentEntry> HrmPayOthersAdjustmentEntry { get; set; }
         public virtual DbSet<HrmPayPayHeadName> HrmPayPayHeadName { get; set; }
+        public virtual DbSet<HrmPaySalaryData> HrmPaySalaryData { get; set; }
         public virtual DbSet<HrmPaySalaryDeductionEntry> HrmPaySalaryDeductionEntry { get; set; }
         public virtual DbSet<HrmPaySalaryOnHold> HrmPaySalaryOnHold { get; set; }
         public virtual DbSet<HrmPayTaxAdjustmentEntry> HrmPayTaxAdjustmentEntry { get; set; }
@@ -1546,6 +1548,8 @@ namespace GCTL.Data.Models
             modelBuilder.Entity<CoreUserInfo>(entity =>
             {
                 entity.ToTable("Core_UserInfo");
+
+                entity.HasIndex(e => e.EmployeeId, "IX_Core_UserInfo_EmployeeID");
 
                 entity.Property(e => e.Id).HasColumnName("ID");
 
@@ -7034,6 +7038,8 @@ namespace GCTL.Data.Models
 
                 entity.ToTable("HRM_Employee");
 
+                entity.HasIndex(e => e.EmployeeId, "IX_HRM_Employee_EmployeeID");
+
                 entity.Property(e => e.EmployeeId)
                     .HasMaxLength(50)
                     .HasColumnName("EmployeeID");
@@ -7953,6 +7959,8 @@ namespace GCTL.Data.Models
                     .HasName("PK__HRM_Empl__385EFE4806EC0AE4");
 
                 entity.ToTable("HRM_EmployeeOfficialInfo");
+
+                entity.HasIndex(e => e.EmployeeId, "IX_HRM_EmployeeOfficialInfo_EmployeeID");
 
                 entity.HasIndex(e => new { e.EmployeeStatus, e.CompanyCode }, "IX_HRM_EmployeeOfficialInfo_Status_Company");
 
@@ -9154,6 +9162,51 @@ namespace GCTL.Data.Models
                     .HasMaxLength(50);
             });
 
+            modelBuilder.Entity<HrmPayDefPayrollMasterFileType>(entity =>
+            {
+                entity.HasKey(e => e.AutoId)
+                    .HasName("PK__HRM_Pay___6B23290591889C37");
+
+                entity.ToTable("HRM_Pay_Def_PayrollMasterFileType");
+
+                entity.Property(e => e.AutoId)
+                    .HasColumnType("numeric(18, 0)")
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.CompanyCode).HasMaxLength(50);
+
+                entity.Property(e => e.Ldate)
+                    .HasColumnType("smalldatetime")
+                    .HasColumnName("LDate");
+
+                entity.Property(e => e.Lip)
+                    .HasMaxLength(50)
+                    .HasColumnName("LIP");
+
+                entity.Property(e => e.Lmac)
+                    .HasMaxLength(50)
+                    .HasColumnName("LMAC");
+
+                entity.Property(e => e.Luser)
+                    .HasMaxLength(50)
+                    .HasColumnName("LUser");
+
+                entity.Property(e => e.ModifyDate).HasColumnType("smalldatetime");
+
+                entity.Property(e => e.PayrollMasterFileType)
+                    .IsRequired()
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.PmftId)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .HasColumnName("PMFT_Id");
+
+                entity.Property(e => e.ShortName)
+                    .IsRequired()
+                    .HasMaxLength(50);
+            });
+
             modelBuilder.Entity<HrmPayEmployeesRequiredInvestmentDetails>(entity =>
             {
                 entity.HasKey(e => e.Eridid)
@@ -9891,6 +9944,244 @@ namespace GCTL.Data.Models
                     .HasColumnName("WEF");
             });
 
+            modelBuilder.Entity<HrmPaySalaryData>(entity =>
+            {
+                entity.HasKey(e => e.Tc)
+                    .HasName("PK__HRM_Pay___3214E4689B286641");
+
+                entity.ToTable("HRM_Pay_SalaryData");
+
+                entity.HasIndex(e => new { e.CompanyCode, e.BranchCode, e.DepartmentCode, e.EmployeeId, e.MonthName, e.YearName, e.ModeOfPayment }, "IX_HRM_Pay_SalaryData_Filters");
+
+                entity.Property(e => e.Tc)
+                    .HasColumnType("numeric(18, 0)")
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.AdvanceDeduction).HasColumnType("numeric(18, 2)");
+
+                entity.Property(e => e.Allowance40PercentOfGross).HasColumnType("numeric(18, 2)");
+
+                entity.Property(e => e.ArrearSalary).HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.BankAcNameSibl)
+                    .HasMaxLength(100)
+                    .HasColumnName("BankAcNameSIBL");
+
+                entity.Property(e => e.BankAcNameUcbl)
+                    .HasMaxLength(100)
+                    .HasColumnName("BankAcNameUCBL");
+
+                entity.Property(e => e.BankAcNo)
+                    .HasMaxLength(50)
+                    .HasColumnName("BankAcNO");
+
+                entity.Property(e => e.BankAcNoSibl)
+                    .HasMaxLength(50)
+                    .HasColumnName("BankAcNoSIBL");
+
+                entity.Property(e => e.BankAcNoUcbl)
+                    .HasMaxLength(50)
+                    .HasColumnName("BankAcNoUCBL");
+
+                entity.Property(e => e.BankAcname)
+                    .HasMaxLength(100)
+                    .HasColumnName("BankACName");
+
+                entity.Property(e => e.BankBranchName).HasMaxLength(200);
+
+                entity.Property(e => e.BankName).HasMaxLength(150);
+
+                entity.Property(e => e.BankPayableAmount).HasColumnType("numeric(10, 2)");
+
+                entity.Property(e => e.BasicSalary).HasColumnType("numeric(18, 2)");
+
+                entity.Property(e => e.BranchCode).HasMaxLength(100);
+
+                entity.Property(e => e.CashOrChequePayableAmount).HasColumnType("numeric(10, 2)");
+
+                entity.Property(e => e.CashOrChequePayablePercentage).HasColumnType("numeric(10, 2)");
+
+                entity.Property(e => e.Cl).HasColumnName("CL");
+
+                entity.Property(e => e.CompanyCode).HasMaxLength(100);
+
+                entity.Property(e => e.CompanyName).HasMaxLength(50);
+
+                entity.Property(e => e.Conveyance).HasColumnType("numeric(18, 2)");
+
+                entity.Property(e => e.DaysOfTheMonth).HasMaxLength(50);
+
+                entity.Property(e => e.DepartmentCode).HasMaxLength(50);
+
+                entity.Property(e => e.Difference).HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.DisbursementMethod).HasMaxLength(50);
+
+                entity.Property(e => e.DivisionCode).HasMaxLength(100);
+
+                entity.Property(e => e.EidBonusDbbl)
+                    .HasColumnType("numeric(18, 2)")
+                    .HasColumnName("EidBonusDBBL");
+
+                entity.Property(e => e.EidBonusUcb)
+                    .HasColumnType("numeric(18, 2)")
+                    .HasColumnName("EidBonusUCB");
+
+                entity.Property(e => e.El).HasColumnName("EL");
+
+                entity.Property(e => e.EmployeeId)
+                    .HasMaxLength(50)
+                    .HasColumnName("EmployeeID");
+
+                entity.Property(e => e.EmploymentDuration).HasMaxLength(50);
+
+                entity.Property(e => e.EndDate).HasColumnType("datetime");
+
+                entity.Property(e => e.ExtraDutyAmount).HasColumnType("numeric(18, 2)");
+
+                entity.Property(e => e.ExtraDutyDay).HasColumnType("numeric(18, 2)");
+
+                entity.Property(e => e.ExtraDutyRate).HasColumnType("numeric(18, 2)");
+
+                entity.Property(e => e.ExtraGrossSalary).HasColumnType("numeric(18, 2)");
+
+                entity.Property(e => e.Food).HasColumnType("numeric(18, 2)");
+
+                entity.Property(e => e.GradeName).HasMaxLength(100);
+
+                entity.Property(e => e.Gratuity).HasColumnType("numeric(18, 2)");
+
+                entity.Property(e => e.GrossAfterIncrement).HasColumnType("numeric(18, 2)");
+
+                entity.Property(e => e.GrossSalary).HasColumnType("numeric(18, 2)");
+
+                entity.Property(e => e.HouseRent).HasColumnType("numeric(18, 2)");
+
+                entity.Property(e => e.Incentive).HasColumnType("numeric(18, 2)");
+
+                entity.Property(e => e.IncentiveTypeCode).HasMaxLength(50);
+
+                entity.Property(e => e.Increment).HasColumnType("numeric(18, 2)");
+
+                entity.Property(e => e.Insurance).HasColumnType("numeric(18, 2)");
+
+                entity.Property(e => e.IsSalApp).HasMaxLength(50);
+
+                entity.Property(e => e.JoiningDate).HasMaxLength(50);
+
+                entity.Property(e => e.LateDeduction).HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.Lunch).HasColumnType("numeric(18, 2)");
+
+                entity.Property(e => e.Medical).HasColumnType("numeric(18, 2)");
+
+                entity.Property(e => e.Ml).HasColumnName("ML");
+
+                entity.Property(e => e.MobAndInt).HasColumnType("numeric(18, 2)");
+
+                entity.Property(e => e.MobileBill).HasColumnType("numeric(18, 2)");
+
+                entity.Property(e => e.ModeOfPayment).HasMaxLength(50);
+
+                entity.Property(e => e.MonthName).HasMaxLength(50);
+
+                entity.Property(e => e.NetPaymentRoundUcbl)
+                    .HasColumnType("numeric(18, 0)")
+                    .HasColumnName("NetPaymentRoundUCBL");
+
+                entity.Property(e => e.NetPaymentUcbl)
+                    .HasColumnType("numeric(18, 2)")
+                    .HasColumnName("NetPaymentUCBL");
+
+                entity.Property(e => e.NetSalary).HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.NoOfHolidayWorked).HasColumnType("numeric(18, 2)");
+
+                entity.Property(e => e.NoOfNightWorked).HasColumnType("numeric(18, 2)");
+
+                entity.Property(e => e.Ot)
+                    .HasColumnType("numeric(18, 2)")
+                    .HasColumnName("OT");
+
+                entity.Property(e => e.OtEid)
+                    .HasColumnType("numeric(18, 2)")
+                    .HasColumnName("OT_Eid");
+
+                entity.Property(e => e.Otamount)
+                    .HasColumnType("numeric(18, 2)")
+                    .HasColumnName("OTAmount");
+
+                entity.Property(e => e.Other).HasColumnType("numeric(18, 2)");
+
+                entity.Property(e => e.Otrate)
+                    .HasColumnType("numeric(18, 2)")
+                    .HasColumnName("OTRate");
+
+                entity.Property(e => e.Penalty).HasColumnType("numeric(18, 2)");
+
+                entity.Property(e => e.Pf)
+                    .HasColumnType("numeric(18, 2)")
+                    .HasColumnName("PF");
+
+                entity.Property(e => e.PreviousMonth).HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.QuarterlyIncentive).HasColumnType("numeric(18, 2)");
+
+                entity.Property(e => e.RateOfAllowancesForNightShift).HasColumnType("numeric(18, 2)");
+
+                entity.Property(e => e.SalaryDbbl)
+                    .HasColumnType("numeric(18, 2)")
+                    .HasColumnName("SalaryDBBL");
+
+                entity.Property(e => e.SalaryEarned).HasColumnType("numeric(18, 2)");
+
+                entity.Property(e => e.Sl).HasColumnName("SL");
+
+                entity.Property(e => e.SpecialAllow).HasColumnType("numeric(18, 2)");
+
+                entity.Property(e => e.Spl).HasColumnName("SPL");
+
+                entity.Property(e => e.StartDate).HasColumnType("datetime");
+
+                entity.Property(e => e.Tds)
+                    .HasColumnType("numeric(18, 2)")
+                    .HasColumnName("TDS");
+
+                entity.Property(e => e.TotalAllowancesForNightShift).HasColumnType("numeric(18, 2)");
+
+                entity.Property(e => e.TotalAllowancesForOt)
+                    .HasColumnType("numeric(18, 2)")
+                    .HasColumnName("TotalAllowancesForOT");
+
+                entity.Property(e => e.TotalDeductionOpen)
+                    .HasColumnType("numeric(18, 0)")
+                    .HasColumnName("TotalDeduction_Open");
+
+                entity.Property(e => e.TotalEarned).HasColumnType("numeric(18, 2)");
+
+                entity.Property(e => e.TotalLeave).HasColumnType("numeric(18, 2)");
+
+                entity.Property(e => e.Transport).HasColumnType("numeric(18, 2)");
+
+                entity.Property(e => e.Usd)
+                    .HasColumnType("numeric(18, 2)")
+                    .HasColumnName("USD");
+
+                entity.Property(e => e.Wfhallowance)
+                    .HasColumnType("numeric(10, 2)")
+                    .HasColumnName("WFHAllowance");
+
+                entity.Property(e => e.Wfood)
+                    .HasColumnType("numeric(18, 2)")
+                    .HasColumnName("WFood");
+
+                entity.Property(e => e.WorkingDays).HasMaxLength(50);
+
+                entity.Property(e => e.YearlyBonus).HasColumnType("numeric(18, 2)");
+
+                entity.Property(e => e.YearsOfService).HasColumnType("numeric(10, 2)");
+            });
+
             modelBuilder.Entity<HrmPaySalaryDeductionEntry>(entity =>
             {
                 entity.HasKey(e => e.AutoId)
@@ -10409,6 +10700,8 @@ namespace GCTL.Data.Models
                 entity.ToTable("HRM_Separation");
 
                 entity.HasIndex(e => new { e.EmployeeId, e.SeparationDate }, "IX_HRM_Separation_EmpId_Date");
+
+                entity.HasIndex(e => new { e.EmployeeId, e.SeparationDate }, "IX_HRM_Separation_EmployeeID_SeparationDate");
 
                 entity.Property(e => e.SeparationId).HasMaxLength(50);
 

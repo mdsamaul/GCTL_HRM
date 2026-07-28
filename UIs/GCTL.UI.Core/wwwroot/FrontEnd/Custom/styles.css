@@ -437,3 +437,6 @@ p {
   color: #ffffff !important; /* ensure text is readable */
   border-bottom: 1px solid rgba(0,0,0,0.08) !important;
 }
+.emp-selected-copy{
+    display:none !important;
+}

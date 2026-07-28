@@ -371,7 +371,7 @@
                 // ✅ drawHeader — শুধু draw করে, কোনো async নেই
                 function drawHeader(doc) {
                     if (base64Logo) {
-                        doc.addImage(base64Logo, 'PNG', leftMargin, 8, logoDrawWidth, logoDrawHeight);
+                        doc.addImage(base64Logo, 'PNG', leftMargin, 20, logoDrawWidth, logoDrawHeight);
                         //                                          ↑y=8, height=25 → logo শেষ হয় y=33 এ
                     }
                     doc.setFontSize(16);

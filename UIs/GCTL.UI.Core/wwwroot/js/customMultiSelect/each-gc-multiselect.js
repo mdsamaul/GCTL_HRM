@@ -289,7 +289,6 @@ async function bsms_AutoSelectCompany(code) {
         $sel.trigger('change');
     }
 }
-
 function bsms_InitializeMultiselects(customConfigs) {
 
     const defaultConfigs = {
@@ -303,11 +302,12 @@ function bsms_InitializeMultiselects(customConfigs) {
         '#employeeSelect': 'Select Employee'
     };
     const configs = customConfigs || defaultConfigs;
-    const buttonTextFn = function (options, select) {
-        const placeholder = $(select).attr('data-placeholder') || 'Select';
-        if (options.length === 0) return placeholder;
-        return options.length === 1 ? $(options[0]).text().trim() : `${options.length} items selected`;
-    };
+ const buttonTextFn = function (options, select) {
+    const placeholder = $(select).attr('data-placeholder') || 'Select';
+    if (options.length === 0) return placeholder;
+    if (options.length === 1) return $(options[0]).text().trim();
+    return `${options.length} items selected`;
+};
 
     function forceInlineFocus($inline) {
         setTimeout(() => { requestAnimationFrame(() => { try { const el = $inline.get(0); if (el) el.focus(); } catch (e) { } }); }, 0);
@@ -424,7 +424,7 @@ function bsms_InitializeMultiselects(customConfigs) {
                 ensureClearAllRow($select, selector);
                 $btn.addClass('is-inline-searching');
                 $btn.removeClass('show-right-clear');
-                $text.hide();
+                $text.show().val('').attr('placeholder', placeholder);
                 $inline.show().val('').attr('placeholder', placeholder);
                 const st = gcState.get(selector);
                 if (st) st.search = "";
@@ -458,13 +458,29 @@ function bsms_InitializeMultiselects(customConfigs) {
                 if (url && st && st.more) bsms_LoadAllThenSelectAll(selector, url);
                 bsms_UpdateRightClearIcon($select);
             },
+            
             onChange: function () {
                 bsms_UpdateRightClearIcon($select);
+                const $container = $select.next('.btn-group');
+                const $btn = $container.find('button.multiselect');
+                const $inline = $btn.find('.multiselect-inline-search');
+                if ($btn.hasClass('is-inline-searching')) {
+                    const $selected = $select.find('option:selected');
+                    const count = $selected.length;
+                    let text = '';
+                    if (count === 0) {
+                        text = '';
+                    } else if (count <= 1) {
+                        text = $selected.map(function () { return $(this).text().trim(); }).get().join(', ');
+                    } else {
+                        text = `${count} items selected`;
+                    }
+                    $inline.val(text).attr('placeholder', placeholder);
+                }
             }
         });
     });
 }
-
 
 
 // ╔══════════════════════════════════════════════════════════════╗
@@ -653,6 +669,49 @@ function s2_BindSearch(selector, url) {
 }
 
 // ── Open / Clear ──────────────────────────────────────────────
+// function s2_BindOpen(selector, url) {
+//     if (!url) return;
+//     const $sel = $(selector);
+
+//     $sel.off('select2:open.gcRemote').on('select2:open.gcRemote', function () {
+//         setTimeout(() => {
+//             s2_BindScroll(selector, url);
+//             s2_BindSearch(selector, url);
+
+//             // ── No results message hide ──
+//             $(document).find('.select2-results__message').hide();
+
+//             const st = gcState.get(selector);
+//             if (!st || st.loading) return;
+
+//             const $resultsList = $(document).find('.select2-results__options');
+//             const visibleItems = $resultsList.find('li[data-s2-val]').length;
+
+//             if (visibleItems === 0 && st.more) {
+//                 if (st.page === 1) {
+//                     s2_LoadNext(selector, url);
+//                 } else {
+//                     const existingItems = [];
+//                     $sel.find('option:not([value=""])').each(function () {
+//                         existingItems.push({ code: $(this).val(), name: $(this).text() });
+//                     });
+//                     if (existingItems.length) {
+//                         _s2_injectIntoOpenDropdown(selector, existingItems);
+//                     } else {
+//                         s2_LoadNext(selector, url);
+//                     }
+//                 }
+//             }
+//         }, 150);
+//     });
+
+//     $sel.off('select2:clear.gcRemote').on('select2:clear.gcRemote', function () {
+//         const st = gcState.get(selector);
+//         if (st) { st.search = ""; st.page = 1; st.more = true; }
+//         $sel.find('option:not([value=""])').remove();
+//         $sel.trigger('change.select2');
+//     });
+// }
 function s2_BindOpen(selector, url) {
     if (!url) return;
     const $sel = $(selector);
@@ -662,8 +721,18 @@ function s2_BindOpen(selector, url) {
             s2_BindScroll(selector, url);
             s2_BindSearch(selector, url);
 
-            // ── No results message hide ──
             $(document).find('.select2-results__message').hide();
+
+            // ── search box e existing filter value bosano ──
+            const st0 = gcState.get(selector);
+            if (st0 && st0.search) {
+                const $searchInput = $(document).find('.select2-search__field');
+                if ($searchInput.length) {
+                    $searchInput.val(st0.search);
+                    // setSelectionRange kore cursor force kora hocchena ekhon —
+                    // eta age mouse drag-select e badha dichilo
+                }
+            }
 
             const st = gcState.get(selector);
             if (!st || st.loading) return;
@@ -696,7 +765,6 @@ function s2_BindOpen(selector, url) {
         $sel.trigger('change.select2');
     });
 }
-
 // ── Internal cascade ──────────────────────────────────────────
 async function _s2_cascadeFromParent(parentSelector) {
     if (gcCascadeLock) return;
@@ -776,6 +844,48 @@ async function _s2_cascadeFromParent(parentSelector) {
 // }
 
 
+// function s2_InitSingle(selector, url, placeholder, filterType, cascadeTargets, extraOptions, extraReqParams) {
+//     gcState.set(selector, { page: 1, more: true, loading: false, search: "", extra: extraReqParams || {} });
+//     gcUrlMap.set(selector, url);
+//     gcRegisterSelector(selector, filterType);
+
+//     if (cascadeTargets && cascadeTargets.length)
+//         s2_RegisterCascade(selector, cascadeTargets);
+
+//     const $sel = $(selector);
+//     if ($sel.hasClass('select2-hidden-accessible')) {
+//         try { $sel.select2('destroy'); } catch (e) { }
+//     }
+//     $sel.removeAttr('multiple');
+
+//     $sel.select2(Object.assign({
+//         placeholder: placeholder || "Select",
+//         allowClear: true,
+//         width: '100%',
+//         minimumResultsForSearch: 0,
+//         language: {
+//             searching: function () { return "Loading..."; },
+//             noResults: function () {
+//                 let st = gcState.get(selector);
+//                 if (st && st.loading) return "Loading...";
+//                 return "No data found";
+//             }
+//         }
+//     }, extraOptions || {}));
+
+//     $sel.on('select2:opening', function (e) {
+//         let st = gcState.get(selector);
+//         if (st && st.loading) e.preventDefault();
+//     });
+//     s2_BindOpen(selector, url);
+
+//     if (cascadeTargets && cascadeTargets.length) {
+//         $sel.off('change.gcCascade').on('change.gcCascade', function () {
+//             _s2_cascadeFromParent(selector);
+//         });
+//     }
+// }
+
 function s2_InitSingle(selector, url, placeholder, filterType, cascadeTargets, extraOptions, extraReqParams) {
     gcState.set(selector, { page: 1, more: true, loading: false, search: "", extra: extraReqParams || {} });
     gcUrlMap.set(selector, url);
@@ -809,6 +919,23 @@ function s2_InitSingle(selector, url, placeholder, filterType, cascadeTargets, e
         let st = gcState.get(selector);
         if (st && st.loading) e.preventDefault();
     });
+
+    // ── NEW: item select korle search filter e set hobe ──
+    $sel.off('select2:select.gcSearchSync').on('select2:select.gcSearchSync', function (e) {
+        const st = gcState.get(selector);
+        if (!st) return;
+        const data = e.params && e.params.data;
+        st.search = (data && data.text) ? data.text.trim() : "";
+        st.page = 1;
+        st.more = true;
+    });
+
+    // ── NEW: clear korle search filter o clear hobe ──
+    $sel.off('select2:clear.gcSearchSync').on('select2:clear.gcSearchSync', function () {
+        const st = gcState.get(selector);
+        if (st) { st.search = ""; st.page = 1; st.more = true; }
+    });
+
     s2_BindOpen(selector, url);
 
     if (cascadeTargets && cascadeTargets.length) {

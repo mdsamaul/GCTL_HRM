@@ -6,7 +6,7 @@
 
 <style>
     .headerToobar {
-        background: linear-gradient(to right, #0061ff4f, #fff);
+        background: linear-gradient(to right, #fff, #fff);
         box-shadow: 3px 0 6px rgba(0,0,0,0.2);
         border-radius: 0px 11px 11px 0px;
     }
@@ -68,21 +68,19 @@
 </div>
 <input type="hidden" id="hdnAccessCode" value="@(ViewBag.AccessCode ?? "")" />
 <section class="content consistent-look">
-    <div class="container-fluid">
+    <div class="card border">
 
         <!-- Toolbar -->
-        <div class="row px-2 pr-3">
-            <div class="col-md-12 pr-0">
-                <div class="w-100 headerToobar">
+        
+                <div class="card-header">
                     <partial name="_Toolbars"
                              model="new ToobarModel() { Title = Model.Breadcrumb, Code = Model.Code, Name = Model.Setup.CompanyCode }" />
                 </div>
-            </div>
-        </div>
+           
 
         <!-- Filter Panel -->
-        <div class="col-md-12 col-12 mx-auto mt-3">
-            <div class="border bg-white rounded-lg px-2 pb-3">
+        <div class="card-body border">
+            <div class="">
 
                 <div class="col-12 col-md-5">
                     <h6 class="pt-3 px-3 pb-0 font-weight-bold fs-6 mb-0">Search By:</h6>
@@ -188,7 +186,7 @@
                         </div>
 
                         <!-- Buttons -->
-                        <div class="col-12 col-md-12 py-1">
+                        <div class="col-12 col-md-6 py-1">
                             <div class="row justify-content-end align-items-center px-0 mx-0">
                                 <div class="pr-1">
                                     <button id="downloadReport"
@@ -204,7 +202,7 @@
                                         <span>Preview</span>
                                     </button>
                                 </div>
-                                <div class="col-md-1"></div>
+                                <div class="col-md-2"></div>
                             </div>
                         </div>
                     </div>
