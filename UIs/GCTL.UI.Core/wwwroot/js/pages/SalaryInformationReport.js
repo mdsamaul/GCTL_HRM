@@ -109,7 +109,7 @@
                     doc.setFont("times", "italic");
                     var periodText = filter.GenerateType === 'ByMonth'
                         ? 'For the month of ' + filter.MonthName + ', ' + filter.YearName
-                        : 'For the period ' + (filter.DateFrom || '') + ' to ' + (filter.DateTo || '');
+                        : 'For the period ' + (formatDateDMY(filter.DateFrom) || '') + ' to ' + (formatDateDMY(filter.DateTo) || '');
                     doc.text(periodText, pageWidth / 2, 52, { align: 'center' });
                 }
 
@@ -198,7 +198,7 @@
                         styles: { halign: 'left', fontStyle: 'bold', fontSize: 7 }
                     },
                     {
-                        content: totalSalary.toFixed(2),
+                        content: totalSalary.toFixed(),
                         styles: { halign: 'right', fontStyle: 'bold', fontSize: 7 }
                     }
                 ];
@@ -380,6 +380,298 @@
             });
         }
 
+        function exportExcelGratuity(filter) {
+            showLoading();
+            $.ajax({
+                url: settings.baseUrl + '/ExportToExcelGratuity',
+                type: 'POST',
+                data: JSON.stringify(filter),
+                contentType: 'application/json',
+                xhrFields: { responseType: 'blob' },
+                success: function (data, textStatus, jqXHR) {
+                    hideLoading();
+                    // same blob handling as your existing exportExcel
+                    var url = window.URL.createObjectURL(data);
+                    var a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'PayrollMasterFile_Gratuity_' + Date.now() + '.xlsx';
+                    document.body.appendChild(a);
+                    a.click();
+                    a.remove();
+                    window.URL.revokeObjectURL(url);
+                },
+                error: function () {
+                    hideLoading();
+                    alert('Failed to load data');
+                }
+            });
+        }
+
+        function exportPdfGratuity(filter) {
+            showLoading();
+            $.ajax({
+                url: settings.baseUrl + '/GetPayrollMasterFileGratuity',
+                type: 'POST',
+                data: JSON.stringify(filter),
+                contentType: 'application/json',
+                success: function (res) {
+                    hideLoading();
+                    if (!res.success) {
+                        alert(res.message || 'Failed to load data');
+                        return;
+                    }
+                    var rows = res.data || [];
+                    if (rows.length === 0) {
+                        alert('No data found to download');
+                        return;
+                    }
+
+                    buildPdfDocGratuity(filter, rows, function (doc) {
+                        doc.save('PayrollMasterFile_Gratuity_' + Date.now() + '.pdf');
+                    });
+                },
+                error: function () {
+                    hideLoading();
+                    alert('Failed to load data');
+                }
+            });
+        }
+        function previewPdfGratuity(filter) {
+            showLoading();
+            $.ajax({
+                url: settings.baseUrl + '/GetPayrollMasterFileGratuity',
+                type: 'POST',
+                data: JSON.stringify(filter),
+                contentType: 'application/json',
+                success: function (res) {
+                    hideLoading();
+                    if (!res.success) {
+                        alert(res.message || 'Failed to load data');
+                        return;
+                    }
+                    var rows = res.data || [];
+                    if (rows.length === 0) {
+                        alert('No data found to preview');
+                        return;
+                    }
+
+                    buildPdfDocGratuity(filter, rows, function (doc) {
+                        var blobUrl = doc.output('bloburl');
+                        var $container = $('#pdf-preview-container');
+                        $container.empty();
+                        var $iframe = $('<iframe>', {
+                            src: blobUrl,
+                            style: 'width:100%; height:100%; border:0;'
+                        });
+                        $container.append($iframe).show();
+                        $container[0].scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    });
+                },
+                error: function () {
+                    hideLoading();
+                    alert('Failed to load data');
+                }
+            });
+        }
+        function buildPdfDocGratuity(filter, rows, callback) {
+            getImageBase64FromUrl('/images/DP_logo.png', function (base64Logo, natW, natH) {
+
+                var LOGO_TARGET_HEIGHT = 26;
+                var logoWidth = (natH > 0) ? (natW / natH) * LOGO_TARGET_HEIGHT : LOGO_TARGET_HEIGHT;
+
+                var jsPDFCtor = window.jspdf ? window.jspdf.jsPDF : window.jsPDF;
+                var doc = new jsPDFCtor({
+                    orientation: 'portrait',
+                    unit: 'pt',
+                    format: 'a4'
+                });
+
+                var pageWidth = doc.internal.pageSize.getWidth();
+                var pageHeight = doc.internal.pageSize.getHeight();
+                var leftMargin = 18;
+                var rightMargin = 18;
+                var topMargin = 70;
+                var bottomMargin = 40;
+
+                // ===== Header =====
+                function drawHeader() {
+                    if (base64Logo) {
+                        doc.addImage(base64Logo, 'PNG', 18, 18, logoWidth, LOGO_TARGET_HEIGHT);
+                    }
+
+                    doc.setFont("times", "bold");
+                    doc.setFontSize(13);
+                    doc.text('DataPath Ltd.', pageWidth / 2, 22, { align: 'center' });
+
+                    doc.setFontSize(11);
+                    doc.text('Payroll Master File - Gratuity', pageWidth / 2, 38, { align: 'center' });
+
+                    doc.setFontSize(8);
+                    doc.setFont("times", "italic");
+                    var periodText = filter.GenerateType === 'ByMonth'
+                        ? 'For the month of ' + filter.MonthName + ', ' + filter.YearName
+                        : 'For the period ' + (formatDateDMY(filter.DateFrom) || '') + ' to ' + (formatDateDMY(filter.DateTo) || '');
+                    doc.text(periodText, pageWidth / 2, 52, { align: 'center' });
+                }
+
+                // ===== Footer =====
+                function drawFooter() {
+                    var pageCount = doc.internal.getNumberOfPages();
+                    var currentPage = doc.internal.getCurrentPageInfo().pageNumber;
+
+                    var now = new Date();
+                    var hours = now.getHours();
+                    var minutes = now.getMinutes().toString().padStart(2, '0');
+                    var ampm = hours >= 12 ? 'PM' : 'AM';
+                    hours = hours % 12 || 12;
+                    var day = now.getDate().toString().padStart(2, '0');
+                    var month = (now.getMonth() + 1).toString().padStart(2, '0');
+                    var year = now.getFullYear();
+                    var printDateTime = day + '/' + month + '/' + year + ' ' + hours + ':' + minutes + ' ' + ampm;
+
+                    doc.setFont("times", "normal");
+                    doc.setFontSize(8);
+                    doc.setTextColor(80);
+
+                    doc.text('Print Datetime: ' + printDateTime, leftMargin, pageHeight - 18);
+                    doc.text('GCTL Infosys - HRM & Finance System', pageWidth / 2, pageHeight - 18, { align: 'center' });
+                    doc.text('Page ' + currentPage + ' of ' + pageCount, pageWidth - rightMargin, pageHeight - 18, { align: 'right' });
+
+                    doc.setTextColor(0);
+                }
+
+                // ===== Table Headers =====
+                var head = [[
+                    'SL.', 'ID NO.', 'Pay ID', 'Name of the Employee', 'Status',
+                    'DEPARTMENT', 'DOH', 'DOT', 'Bank Account No',
+                    'Salary', 'Tenure', 'Gratuity', 'Note'
+                ]];
+
+                // ===== Table Body =====
+                var body = rows.map(function (row) {
+                    return [
+                        row.sl,
+                        row.idNo,
+                        row.payId,
+                        row.nameOfTheEmployee,
+                        row.status,
+                        row.department,
+                        row.dateOfHire,
+                        row.dot,
+                        row.bankAccountNo,
+                        row.salary != null ? parseFloat(row.salary).toFixed() : '',
+                        row.tenure != null ? parseInt(row.tenure) : '',                    
+                        row.gratuity != null ? parseFloat(row.gratuity).toFixed() : '', 
+                        row.note
+                    ];
+                });
+
+                // Total Salary
+                var totalSalary = rows.reduce(function (sum, row) {
+                    return sum + (parseFloat(row.salary) || 0);
+                }, 0);
+                var totalGratuity = rows.reduce(function (sum, row) {
+                    return sum + (parseFloat(row.gratuity) || 0);
+                }, 0);
+                // Column widths
+                var columnStyles = {
+                    0: { cellWidth: 22, halign: 'center' }, // SL.
+                    1: { cellWidth: 45, halign: 'center' }, // ID NO.
+                    2: { cellWidth: 20, halign: 'center' }, // Pay ID
+                    3: { cellWidth: 70 },                   // Name
+                    4: { cellWidth: 35, halign: 'center' }, // Status
+                    5: { cellWidth: 60 },                   // Department
+                    6: { cellWidth: 45, halign: 'center' }, // DOH
+                    7: { cellWidth: 40, halign: 'center' }, // DOT
+                    8: { cellWidth: 65 },                   // Bank Account
+                    9: { cellWidth: 45, halign: 'right' },  // Salary
+                    10: { cellWidth: 30, halign: 'center' }, // Tenure
+                    11: { cellWidth: 45, halign: 'right' },  // Gratuity
+                    12: { cellWidth: 40 }                    // Note
+                };
+
+                // Footer Total row
+                var footRow = [
+                    {
+                        content: 'Total',
+                        colSpan: 9,                                   // SL থেকে Bank Account No পর্যন্ত
+                        styles: { halign: 'left', fontStyle: 'bold', fontSize: 8 }
+                    },
+                    {
+                        content: totalSalary.toFixed(),              // Salary Total
+                        styles: { halign: 'right', fontStyle: 'bold', fontSize: 8 }
+                    },
+                    {
+                        content: '',                                  // Tenure খালি
+                        styles: { halign: 'center', fontStyle: 'bold', fontSize: 8 }
+                    },
+                    {
+                        content: totalGratuity.toFixed(),            // ★ Gratuity Total
+                        styles: { halign: 'right', fontStyle: 'bold', fontSize: 8 }
+                    },
+                    {
+                        content: '',                                  // Note খালি
+                        styles: {}
+                    }
+                ];
+
+                // ===== autoTable =====
+                doc.autoTable({
+                    head: head,
+                    body: body,
+                    startY: topMargin,
+                    styles: {
+                        font: "times",
+                        fontSize: 7.5,
+                        textColor: 0,
+                        cellPadding: 2,
+                        valign: 'middle',
+                        overflow: 'linebreak',
+                        lineWidth: 0.3,
+                        lineColor: [0, 0, 0]
+                    },
+                    headStyles: {
+                        font: "times",
+                        fillColor: false,
+                        textColor: 0,
+                        fontStyle: "bold",
+                        fontSize: 8,
+                        halign: 'center',
+                        valign: 'middle',
+                        lineWidth: 0.3,
+                        lineColor: [0, 0, 0]
+                    },
+                    columnStyles: columnStyles,
+                    tableWidth: 'auto',
+                    foot: [footRow],
+                    footStyles: {
+                        font: "times",
+                        fillColor: false,
+                        fontStyle: "bold",
+                        fontSize: 8,
+                        lineWidth: 0.3,
+                        lineColor: [0, 0, 0]
+                    },
+                    margin: {
+                        top: topMargin,
+                        bottom: bottomMargin,
+                        left: leftMargin,
+                        right: rightMargin
+                    },
+                    didDrawPage: function () {
+                        drawHeader();
+                        drawFooter();
+                    }
+                });
+
+                if (typeof callback === 'function') {
+                    callback(doc);
+                }
+            });
+        }
+
+
+
         // // ---------- CSV export ----------
         // function exportCsv(filter) {
         //     console.log(filter);
@@ -424,30 +716,386 @@
         //     });
         // }
 
+        // $('#btnExportReport').off('click').on('click', function () {
+        //     var filter = buildFilter();
+        //     var format = filter.ExportFormat;
+        //     var masterVal = $("#masterFileTypeSelect").val();
+
+        //     if (!masterVal || masterVal === "" || (Array.isArray(masterVal) && masterVal.length === 0)) {
+        //         alert("Select Master File Type");
+        //         $("#masterFileTypeSelect").select2('open');
+        //         return;
+        //     }
+        //     // if (format === 'Excel') {
+        //     //     exportExcel(filter);
+        //     // } else if (format === 'PDF') {
+        //     //     exportPdf(filter);
+        //     // } else if (format === 'CSV') {
+        //     //     exportCsv(filter);
+        //     // }
+        //     // Inside your existing $('#btnExportReport').click handler
+
+        //     if (format === 'Excel') {
+        //         if (masterVal === "01") {               // General
+        //             exportExcel(filter);                // existing → /ExportToExcel
+        //         } else if (masterVal === "02") {        // Gratuity (adjust ID as per your master table)
+        //             exportExcelGratuity(filter);
+        //         }
+        //     } else if (format === 'PDF') {
+        //         if (masterVal === "01") {
+        //             exportPdf(filter);                  // existing
+        //         } else if (masterVal === "02") {
+        //             exportPdfGratuity(filter);
+        //         }
+        //     }
+        // });
+
+        // $('#btnPreviewPdf').off('click').on('click', function () {
+        //     var filter = buildFilter();
+        //     previewPdf(filter);
+        // });
+
+        // ===================== YEARLY BONUS - Excel =====================
+        function exportExcelYearlyBonus(filter) {
+            showLoading();
+            $.ajax({
+                url: settings.baseUrl + '/ExportToExcelYearlyBonus',
+                type: 'POST',
+                data: JSON.stringify(filter),
+                contentType: 'application/json',
+                xhrFields: { responseType: 'blob' },
+                success: function (data) {
+                    hideLoading();
+                    if (!data || data.size === 0) {
+                        alert('No data found to download');
+                        return;
+                    }
+                    var url = window.URL.createObjectURL(data);
+                    var a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'YearlyBonus_Report_' + Date.now() + '.xlsx';
+                    document.body.appendChild(a);
+                    a.click();
+                    a.remove();
+                    window.URL.revokeObjectURL(url);
+                },
+                error: function () {
+                    hideLoading();
+                    alert('Failed to load data');
+                }
+            });
+        }
+
+        function formatDateDMY(dateStr) {
+            if (!dateStr) return '';
+            var d = new Date(dateStr);
+            if (isNaN(d.getTime())) return dateStr;   // যদি parse না হয় তাহলে আগের মতো রাখো
+
+            var day = String(d.getDate()).padStart(2, '0');
+            var month = String(d.getMonth() + 1).padStart(2, '0');
+            var year = d.getFullYear();
+            return day + '/' + month + '/' + year;
+        }
+
+        // ===================== YEARLY BONUS - PDF Builder =====================
+        function buildPdfDocYearlyBonus(filter, rows, callback) {
+            getImageBase64FromUrl('/images/DP_logo.png', function (base64Logo, natW, natH) {
+
+                var LOGO_TARGET_HEIGHT = 26;
+                var logoWidth = (natH > 0) ? (natW / natH) * LOGO_TARGET_HEIGHT : LOGO_TARGET_HEIGHT;
+
+                var jsPDFCtor = window.jspdf ? window.jspdf.jsPDF : window.jsPDF;
+                var doc = new jsPDFCtor({
+                    orientation: 'portrait',
+                    unit: 'pt',
+                    format: 'a4'
+                });
+
+                var pageWidth = doc.internal.pageSize.getWidth();
+                var pageHeight = doc.internal.pageSize.getHeight();
+                var leftMargin = 15;
+                var rightMargin = 15;
+                var topMargin = 70;
+                var bottomMargin = 40;
+
+                function drawHeader() {
+                    if (base64Logo) {
+                        doc.addImage(base64Logo, 'PNG', 18, 18, logoWidth, LOGO_TARGET_HEIGHT);
+                    }
+                    doc.setFont("times", "bold");
+                    doc.setFontSize(13);
+                    doc.text('DataPath Ltd.', pageWidth / 2, 22, { align: 'center' });
+                    doc.setFontSize(11);
+                    doc.setFont("times", "normal");
+                    doc.text('Yearly Bonus Report', pageWidth / 2, 38, { align: 'center' });
+                    doc.setFontSize(8);
+                    doc.setFont("times", "italic");
+                    var periodText = filter.GenerateType === 'ByMonth'
+                        ? 'For the month of ' + filter.MonthName + ', ' + filter.YearName
+                        : 'For the period ' + (formatDateDMY(filter.DateFrom) || '') + ' to ' + (formatDateDMY(filter.DateTo) || '');
+                    doc.text(periodText, pageWidth / 2, 52, { align: 'center' });
+                }
+
+                function drawFooter() {
+                    var pageCount = doc.internal.getNumberOfPages();
+                    var currentPage = doc.internal.getCurrentPageInfo().pageNumber;
+                    var now = new Date();
+                    var hours = now.getHours();
+                    var minutes = now.getMinutes().toString().padStart(2, '0');
+                    var ampm = hours >= 12 ? 'PM' : 'AM';
+                    hours = hours % 12 || 12;
+                    var day = now.getDate().toString().padStart(2, '0');
+                    var month = (now.getMonth() + 1).toString().padStart(2, '0');
+                    var year = now.getFullYear();
+                    var printDateTime = day + '/' + month + '/' + year + ' ' + hours + ':' + minutes + ' ' + ampm;
+
+                    doc.setFont("times", "normal");
+                    doc.setFontSize(8);
+                    doc.setTextColor(80);
+                    doc.text('Print Datetime: ' + printDateTime, leftMargin, pageHeight - 18);
+                    doc.text('GCTL Infosys - HRM & Finance System', pageWidth / 2, pageHeight - 18, { align: 'center' });
+                    doc.text('Page ' + currentPage + ' of ' + pageCount, pageWidth - rightMargin, pageHeight - 18, { align: 'right' });
+                    doc.setTextColor(0);
+                }
+
+                var head = [[
+                    'SL.', 'ID NO.', 'Pay ID', 'Name of the Employee', 'Status',
+                    'DEPARTMENT', 'DOH', 'DOT', 'Bank Account No',
+                    'Salary', 'Yearly Bonus', 'Note'
+                ]];
+
+                var body = rows.map(function (row) {
+                    return [
+                        row.sl,
+                        row.idNo,
+                        row.payId,
+                        row.nameOfTheEmployee,
+                        row.status,
+                        row.department,
+                        row.dateOfHire,
+                        row.dot,
+                        row.bankAccountNo,
+                        row.salary != null ? parseFloat(row.salary).toFixed() : '',
+                        row.yearlyBonus != null ? parseFloat(row.yearlyBonus).toFixed() : '',
+                        row.note
+                    ];
+                });
+
+                var totalSalary = rows.reduce(function (sum, row) {
+                    return sum + (parseFloat(row.salary) || 0);
+                }, 0);
+
+                var totalBonus = rows.reduce(function (sum, row) {
+                    return sum + (parseFloat(row.yearlyBonus) || 0);
+                }, 0);
+
+                var columnStyles = {
+                    0: { cellWidth: 15, halign: 'center' },
+                    1: { cellWidth: 45, halign: 'center' },
+                    2: { cellWidth: 25, halign: 'center' },
+                    3: { cellWidth: 85 },
+                    4: { cellWidth: 35, halign: 'center' },
+                    5: { cellWidth: 60 },
+                    6: { cellWidth: 45, halign: 'center' },
+                    7: { cellWidth: 42, halign: 'center' },
+                    8: { cellWidth: 65, halign: 'center' },
+                    9: { cellWidth: 50, halign: 'right' },
+                    10: { cellWidth: 50, halign: 'right' },
+                    11: { cellWidth: 50 }
+                };
+
+                var footRow = [
+                    { content: 'Total', colSpan: 9, styles: { halign: 'left', fontStyle: 'bold', fontSize: 8 } },
+                    { content: totalSalary.toFixed(), styles: { halign: 'right', fontStyle: 'bold', fontSize: 8 } },
+                    { content: totalBonus.toFixed(), styles: { halign: 'right', fontStyle: 'bold', fontSize: 8 } },
+                    { content: '', styles: {} }
+                ];
+
+                doc.autoTable({
+                    head: head,
+                    body: body,
+                    startY: topMargin,
+                    styles: {
+                        font: "times",
+                        fontSize: 7.5,
+                        textColor: 0,
+                        cellPadding: 2,
+                        valign: 'middle',
+                        overflow: 'linebreak',
+                        lineWidth: 0.3,
+                        lineColor: [0, 0, 0]
+                    },
+                    headStyles: {
+                        font: "times",
+                        fillColor: false,
+                        textColor: 0,
+                        fontStyle: "bold",
+                        fontSize: 8,
+                        halign: 'center',
+                        valign: 'middle',
+                        lineWidth: 0.3,
+                        lineColor: [0, 0, 0]
+                    },
+                    columnStyles: columnStyles,
+                    tableWidth: 'auto',
+                    foot: [footRow],
+                    footStyles: {
+                        font: "times",
+                        fillColor: false,
+                        fontStyle: "bold",
+                        fontSize: 8,
+                        lineWidth: 0.3,
+                        lineColor: [0, 0, 0]
+                    },
+                    margin: { top: topMargin, bottom: bottomMargin, left: leftMargin, right: rightMargin },
+                    didDrawPage: function () {
+                        drawHeader();
+                        drawFooter();
+                    }
+                });
+
+                if (typeof callback === 'function') {
+                    callback(doc);
+                }
+            });
+        }
+
+        // ===================== YEARLY BONUS - PDF Export =====================
+        function exportPdfYearlyBonus(filter) {
+            showLoading();
+            $.ajax({
+                url: settings.baseUrl + '/GetPayrollMasterFileYearlyBonus',
+                type: 'POST',
+                data: JSON.stringify(filter),
+                contentType: 'application/json',
+                success: function (res) {
+                    hideLoading();
+                    if (!res.success) {
+                        alert(res.message || 'Failed to load data');
+                        return;
+                    }
+                    var rows = res.data || [];
+                    if (rows.length === 0) {
+                        alert('No data found to download');
+                        return;
+                    }
+                    buildPdfDocYearlyBonus(filter, rows, function (doc) {
+                        doc.save('YearlyBonus_Report_' + Date.now() + '.pdf');
+                    });
+                },
+                error: function () {
+                    hideLoading();
+                    alert('Failed to load data');
+                }
+            });
+        }
+
+        // ===================== YEARLY BONUS - PDF Preview =====================
+        function previewPdfYearlyBonus(filter) {
+            showLoading();
+            $.ajax({
+                url: settings.baseUrl + '/GetPayrollMasterFileYearlyBonus',
+                type: 'POST',
+                data: JSON.stringify(filter),
+                contentType: 'application/json',
+                success: function (res) {
+                    hideLoading();
+                    if (!res.success) {
+                        alert(res.message || 'Failed to load data');
+                        return;
+                    }
+                    var rows = res.data || [];
+                    if (rows.length === 0) {
+                        alert('No data found to preview');
+                        return;
+                    }
+                    buildPdfDocYearlyBonus(filter, rows, function (doc) {
+                        var blobUrl = doc.output('bloburl');
+                        var $container = $('#pdf-preview-container');
+                        $container.empty();
+                        var $iframe = $('<iframe>', {
+                            src: blobUrl,
+                            style: 'width:100%; height:100%; border:0;'
+                        });
+                        $container.append($iframe).show();
+                        $container[0].scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    });
+                },
+                error: function () {
+                    hideLoading();
+                    alert('Failed to load data');
+                }
+            });
+        }
+
+        // ===================== YEARLY BONUS - PDF Preview =====================
+        function previewPdfYearlyBonus(filter) {
+            showLoading();
+            $.ajax({
+                url: settings.baseUrl + '/GetPayrollMasterFileYearlyBonus',
+                type: 'POST',
+                data: JSON.stringify(filter),
+                contentType: 'application/json',
+                success: function (res) {
+                    hideLoading();
+                    if (!res.success) {
+                        alert(res.message || 'Failed to load data');
+                        return;
+                    }
+                    var rows = res.data || [];
+                    if (rows.length === 0) {
+                        alert('No data found to preview');
+                        return;
+                    }
+                    buildPdfDocYearlyBonus(filter, rows, function (doc) {
+                        var blobUrl = doc.output('bloburl');
+                        var $container = $('#pdf-preview-container');
+                        $container.empty();
+                        var $iframe = $('<iframe>', {
+                            src: blobUrl,
+                            style: 'width:100%; height:100%; border:0;'
+                        });
+                        $container.append($iframe).show();
+                        $container[0].scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    });
+                },
+                error: function () {
+                    hideLoading();
+                    alert('Failed to load data');
+                }
+            });
+        }
         $('#btnExportReport').off('click').on('click', function () {
             var filter = buildFilter();
             var format = filter.ExportFormat;
             var masterVal = $("#masterFileTypeSelect").val();
 
-            if (!masterVal || masterVal === "" || (Array.isArray(masterVal) && masterVal.length === 0)) {
+            if (!masterVal) {
                 alert("Select Master File Type");
                 $("#masterFileTypeSelect").select2('open');
                 return;
             }
+
             if (format === 'Excel') {
-                exportExcel(filter);
-            } else if (format === 'PDF') {
-                exportPdf(filter);
-            } else if (format === 'CSV') {
-                // exportCsv(filter);
+                if (masterVal === "01") exportExcel(filter);                  // General
+                else if (masterVal === "02") exportExcelGratuity(filter);     // Gratuity
+                else if (masterVal === "03") exportExcelYearlyBonus(filter);  // Yearly Bonus
+            }
+            else if (format === 'PDF') {
+                if (masterVal === "01") exportPdf(filter);
+                else if (masterVal === "02") exportPdfGratuity(filter);
+                else if (masterVal === "03") exportPdfYearlyBonus(filter);
             }
         });
 
         $('#btnPreviewPdf').off('click').on('click', function () {
             var filter = buildFilter();
-            previewPdf(filter);
-        });
+            var masterVal = $("#masterFileTypeSelect").val();
 
+            if (masterVal === "01") previewPdf(filter);
+            else if (masterVal === "02") previewPdfGratuity(filter);
+            else if (masterVal === "03") previewPdfYearlyBonus(filter);
+        });
         // toggle date-vs-month sections based on radio selection
         function toggleGenerateSections() {
             var mode = $('input[name="salaryGenerate"]:checked').val();

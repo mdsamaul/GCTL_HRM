@@ -115,7 +115,7 @@ namespace GCTL.Service.SalaryInformationReport
                 reportCell.Value = "Payroll Master File - General";
                 reportCell.Style.Font.Name = "Times New Roman";
                 reportCell.Style.Font.Size = 13;
-                reportCell.Style.Font.Bold = true;
+                reportCell.Style.Font.Bold = false;
                 reportCell.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                 reportCell.Style.VerticalAlignment = ExcelVerticalAlignment.Center;
 
@@ -304,13 +304,590 @@ namespace GCTL.Service.SalaryInformationReport
         // Dynamic row (bracketed SP column names) -> DTO mapping
         private static SalaryInformationReportDto MapDynamicToDto(IDictionary<string, object> r)
         {
-            T Get<T>(string key)
+            try
             {
-                if (!r.TryGetValue(key, out var val) || val == null || val == DBNull.Value)
-                    return default;
-                return (T)Convert.ChangeType(val, typeof(T));
+                T Get<T>(string key)
+                {
+                    if (!r.TryGetValue(key, out var val) || val == null || val == DBNull.Value)
+                        return default;
+                    return (T)Convert.ChangeType(val, typeof(T));
+                }
+
+                string GetStr(string key)
+                {
+                    if (!r.TryGetValue(key, out var val) || val == null || val == DBNull.Value)
+                        return null;
+                    return val.ToString();
+                }
+
+                decimal? GetDec(string key)
+                {
+                    if (!r.TryGetValue(key, out var val) || val == null || val == DBNull.Value)
+                        return null;
+                    return Convert.ToDecimal(val);
+                }
+
+                return new SalaryInformationReportDto
+                {
+                    SL = Get<int>("SL."),
+                    IdNo = GetStr("ID NO."),
+                    PayId = GetStr("Pay ID"),
+                    DpUserId = GetStr("DP User ID"),
+                    DbblEmployeesName = GetStr("DBBL Employees Name"),
+                    UcblEmployeesName = GetStr("UCBL Employees Name"),
+                    Status = GetStr("Status"),
+                    Department = GetStr("DEPARTMENT"),
+                    Designation = GetStr("DESIGNATION"),
+                    Doh = GetStr("DOH"),
+                    Dot = GetStr("DOT"),
+                    Duration = GetDec("Duration"),
+                    Dbbl = GetStr("DBBL"),
+                    Ucbl = GetStr("UCBL"),
+                    Salary = GetDec("Salary"),
+                    YearlyBonusEligibility = GetStr("Yearly Bonus Eligibility"),
+                    GratuityEligibility = GetStr("Gratuity Eligibility"),
+                    EidBonusEligibility = GetDec("Eid Bonus Eligibility"),
+                    PfEligiblity = GetDec("PF Eligiblity"),
+                    Gender = GetStr("Gender"),
+                    CellPhone = GetStr("Cell Phone"),
+                    SpecialNotes = GetStr("Special Notes"),
+                    EndOfProbation = GetStr("End of Probation")
+                };
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        // Add these two methods inside SalaryInformationReportService class
+
+        public async Task<List<SalaryInformationReportGratuityDto>> GetPayrollMasterFileGratuityAsync(SalaryInformationReportFilterDto filter)
+        {
+            try
+            {
+                using IDbConnection db = new SqlConnection(_connectionString);
+
+                var parameters = new DynamicParameters();
+                parameters.Add("@CompanyCode", NullIfEmpty(filter.CompanyCode));
+                parameters.Add("@BranchCode", NullIfEmpty(filter.BranchCode));
+                parameters.Add("@DepartmentCode", NullIfEmpty(filter.DepartmentCode));
+                parameters.Add("@EmployeeID", NullIfEmpty(filter.EmployeeID));
+                parameters.Add("@ModeOfPayment", NullIfEmpty(filter.ModeOfPayment));
+                parameters.Add("@EmploymentNature", NullIfEmpty(filter.EmploymentNature));
+                parameters.Add("@GenerateType", NullIfEmpty(filter.GenerateType));
+                parameters.Add("@DateFrom", filter.DateFrom);
+                parameters.Add("@DateTo", filter.DateTo);
+                parameters.Add("@MonthName", NullIfEmpty(filter.MonthName));
+                parameters.Add("@YearName", filter.YearName);
+                parameters.Add("@AsOnDate", filter.AsOnDate);
+
+                var rows = await db.QueryAsync(
+                    "dbo.usp_GetPayrollMasterFile_Gratuity",
+                    parameters,
+                    commandType: CommandType.StoredProcedure,
+                    commandTimeout: 120);
+
+                return rows.Select(r => MapDynamicToGratuityDto((IDictionary<string, object>)r)).ToList();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        public async Task<byte[]> ExportToExcelGratuityAsync(SalaryInformationReportFilterDto filter)
+        {
+            try
+            {
+                var data = await GetPayrollMasterFileGratuityAsync(filter);
+
+                using var package = new ExcelPackage();
+                var ws = package.Workbook.Worksheets.Add("PayrollMasterFile_Gratuity");
+
+                const int logoColSpan = 3;
+                const int firstDataCol = 1;
+
+                var headers = new[]
+                {
+            "SL.", "ID NO.", "Pay ID", "Name of the Employee", "Status",
+            "DEPARTMENT", "DOH", "DOT", "Bank Account No",
+            "Salary", "Tenure", "Gratuity", "Note"
+        };
+
+                int totalCols = headers.Length;
+                int headerRow = 5;
+
+                // ===== Logo =====
+                var logoPath = Path.Combine(_env.WebRootPath ?? "wwwroot", "images", "DPL.jpeg");
+                ws.Cells[1, 1, 3, logoColSpan].Merge = true;
+                ws.Cells[1, 1, 3, logoColSpan].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                ws.Cells[1, 1, 3, logoColSpan].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+
+                if (File.Exists(logoPath))
+                {
+                    var picture = ws.Drawings.AddPicture("CompanyLogo", new FileInfo(logoPath));
+                    picture.SetSize(110, 40);
+                    picture.SetPosition(0, 10, 0, 15);
+                }
+
+                string periodText = BuildPeriodText(filter);
+
+                ws.Cells[1, logoColSpan + 1, 1, totalCols].Merge = true;
+                ws.Cells[2, logoColSpan + 1, 2, totalCols].Merge = true;
+                ws.Cells[3, logoColSpan + 1, 3, totalCols].Merge = true;
+
+                var companyCell = ws.Cells[1, logoColSpan + 1];
+                companyCell.Value = "DataPath Ltd.";
+                companyCell.Style.Font.Name = "Times New Roman";
+                companyCell.Style.Font.Size = 16;
+                companyCell.Style.Font.Bold = true;
+                companyCell.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+
+                var reportCell = ws.Cells[2, logoColSpan + 1];
+                reportCell.Value = "Payroll Master File - Gratuity";
+                reportCell.Style.Font.Name = "Times New Roman";
+                reportCell.Style.Font.Size = 13;
+                reportCell.Style.Font.Bold = false;
+                reportCell.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+
+                var periodCell = ws.Cells[3, logoColSpan + 1];
+                periodCell.Value = periodText;
+                periodCell.Style.Font.Name = "Times New Roman";
+                periodCell.Style.Font.Size = 10;
+                periodCell.Style.Font.Italic = true;
+                periodCell.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+
+                // ===== Headers =====
+                for (int i = 0; i < headers.Length; i++)
+                {
+                    var cell = ws.Cells[headerRow, firstDataCol + i];
+                    cell.Value = headers[i];
+                    cell.Style.Font.Bold = true;
+                    cell.Style.Font.Name = "Times New Roman";
+                    cell.Style.Font.Size = 10;
+                    cell.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    cell.Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                    cell.Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                    cell.Style.WrapText = true;
+                }
+
+                var centerAlignColumns = new HashSet<string>
+        {
+            "SL.", "ID NO.", "Pay ID", "Status", "DOH", "DOT",
+            "Bank Account No", "Tenure" 
+        };
+
+                var colCenterFlags = new bool[headers.Length];
+                for (int i = 0; i < headers.Length; i++)
+                    colCenterFlags[i] = centerAlignColumns.Contains(headers[i]);
+
+                // ===== Data Rows =====
+                int r = headerRow + 1;
+                foreach (var row in data)
+                {
+                    int c = firstDataCol;
+
+                    ws.Cells[r, c].Value = row.SL; c++;
+                    ws.Cells[r, c].Value = row.IdNo; c++;
+                    ws.Cells[r, c].Value = row.PayId; c++;
+                    ws.Cells[r, c].Value = row.NameOfTheEmployee; c++;
+                    ws.Cells[r, c].Value = row.Status; c++;
+                    ws.Cells[r, c].Value = row.Department; c++;
+                    ws.Cells[r, c].Value = row.DateOfHire; c++;
+                    ws.Cells[r, c].Value = row.Dot; c++;
+                    ws.Cells[r, c].Value = row.BankAccountNo; c++;
+
+                    // Salary (number)
+                    ws.Cells[r, c].Value = row.Salary ?? 0;
+                    ws.Cells[r, c].Style.Numberformat.Format = "#,##0.00";
+                    c++;
+
+                    // Tenure (number)
+                    ws.Cells[r, c].Value = row.Tenure ?? 0;
+                    ws.Cells[r, c].Style.Numberformat.Format = "0";
+                    c++;
+
+                    // Gratuity (number) ★★★ এখানেই আগের ভুল ছিল
+                    decimal gratuityValue = 0;
+                    if (!string.IsNullOrWhiteSpace(row.Gratuity))
+                        decimal.TryParse(row.Gratuity.Replace(",", ""), out gratuityValue);
+
+                    ws.Cells[r, c].Value = gratuityValue;
+                    ws.Cells[r, c].Style.Numberformat.Format = "#,##0.00";
+                    c++;
+
+                    // Note
+                    ws.Cells[r, c].Value = row.Note; c++;
+
+                    // Style
+                    for (int cc = firstDataCol; cc < firstDataCol + totalCols; cc++)
+                    {
+                        var dataCell = ws.Cells[r, cc];
+                        dataCell.Style.Font.Name = "Times New Roman";
+                        dataCell.Style.Font.Size = 9;
+                        dataCell.Style.Border.BorderAround(ExcelBorderStyle.Thin);
+
+                        int headerIdx = cc - firstDataCol;
+                        if (headerIdx >= 0 && headerIdx < colCenterFlags.Length && colCenterFlags[headerIdx])
+                        {
+                            dataCell.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                            dataCell.Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                        }
+                    }
+                    r++;
+                }
+
+                // ===== Total Row =====
+                int totalRow = r;
+
+                ws.Cells[totalRow, firstDataCol].Value = "Total";
+                ws.Cells[totalRow, firstDataCol].Style.Font.Bold = true;
+                ws.Cells[totalRow, firstDataCol, totalRow, firstDataCol + 8].Merge = true;
+                ws.Cells[totalRow, firstDataCol].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                ws.Cells[totalRow, firstDataCol].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+
+                // Salary Total
+                int salaryColIndex = Array.IndexOf(headers, "Salary") + firstDataCol;
+                if (data.Count > 0)
+                {
+                    var salaryColLetter = ExcelCellAddress.GetColumnLetter(salaryColIndex);
+                    ws.Cells[totalRow, salaryColIndex].Formula =
+                        $"SUM({salaryColLetter}{headerRow + 1}:{salaryColLetter}{r - 1})";
+                }
+                ws.Cells[totalRow, salaryColIndex].Style.Numberformat.Format = "#,##0.00";
+                ws.Cells[totalRow, salaryColIndex].Style.Font.Bold = true;
+                ws.Cells[totalRow, salaryColIndex].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+
+                // Gratuity Total
+                int gratuityColIndex = Array.IndexOf(headers, "Gratuity") + firstDataCol;
+                if (data.Count > 0)
+                {
+                    var gratuityColLetter = ExcelCellAddress.GetColumnLetter(gratuityColIndex);
+                    ws.Cells[totalRow, gratuityColIndex].Formula =
+                        $"SUM({gratuityColLetter}{headerRow + 1}:{gratuityColLetter}{r - 1})";
+                }
+                ws.Cells[totalRow, gratuityColIndex].Style.Numberformat.Format = "#,##0.00";
+                ws.Cells[totalRow, gratuityColIndex].Style.Font.Bold = true;
+                ws.Cells[totalRow, gratuityColIndex].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+
+                // বাকি সেলগুলোতে বর্ডার + Bold
+                for (int cc = firstDataCol; cc < firstDataCol + totalCols; cc++)
+                {
+                    ws.Cells[totalRow, cc].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                    ws.Cells[totalRow, cc].Style.Font.Bold = true;
+                    ws.Cells[totalRow, cc].Style.Font.Name = "Times New Roman";
+                    ws.Cells[totalRow, cc].Style.Font.Size = 9;
+                }
+
+                // ===== Auto Width (######## যাতে না আসে) =====
+                ws.Column(1).Width = 6;   // SL.
+                ws.Column(2).Width = 14;  // ID NO.
+                ws.Column(3).Width = 10;  // Pay ID
+                ws.Column(4).Width = 22;  // Name
+                ws.Column(5).Width = 10;  // Status
+                ws.Column(6).Width = 16;  // Department
+                ws.Column(7).Width = 12;  // DOH
+                ws.Column(8).Width = 12;  // DOT
+                ws.Column(9).Width = 16;  // Bank Account No
+                ws.Column(10).Width = 14; // Salary
+                ws.Column(11).Width = 9;  // Tenure
+                ws.Column(12).Width = 15; // Gratuity
+                ws.Column(13).Width = 18; // Note
+
+                // ===== Page Setup =====
+                ws.PrinterSettings.Orientation = eOrientation.Landscape;
+                ws.PrinterSettings.PaperSize = ePaperSize.A4;
+                ws.PrinterSettings.FitToPage = true;
+                ws.PrinterSettings.FitToWidth = 1;
+                ws.PrinterSettings.FitToHeight = 0;
+                ws.PrinterSettings.HorizontalCentered = true;
+                ws.PrinterSettings.LeftMargin = 0.25m;
+                ws.PrinterSettings.RightMargin = 0.25m;
+                ws.PrinterSettings.TopMargin = 0.4m;
+                ws.PrinterSettings.BottomMargin = 0.4m;
+
+                ws.View.FreezePanes(headerRow + 1, firstDataCol + 2);
+
+                return await package.GetAsByteArrayAsync();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        // Helper mapper for Gratuity
+        private static SalaryInformationReportGratuityDto MapDynamicToGratuityDto(IDictionary<string, object> r)
+        {
+            try
+            {
+                T Get<T>(string key)
+                {
+                    if (!r.TryGetValue(key, out var val) || val == null || val == DBNull.Value)
+                        return default;
+                    return (T)Convert.ChangeType(val, typeof(T));
+                }
+
+                string GetStr(string key)
+                {
+                    if (!r.TryGetValue(key, out var val) || val == null || val == DBNull.Value)
+                        return null;
+                    return val.ToString();
+                }
+
+                decimal? GetDec(string key)
+                {
+                    if (!r.TryGetValue(key, out var val) || val == null || val == DBNull.Value)
+                        return null;
+                    return Convert.ToDecimal(val);
+                }
+                int? GetInt(string key)
+                {
+                    if (!r.TryGetValue(key, out var val) || val == null || val == DBNull.Value)
+                        return null;
+
+                    return Convert.ToInt32(val);
+                }
+
+                return new SalaryInformationReportGratuityDto
+                {
+                    SL = Get<int>("SL."),
+                    IdNo = GetStr("ID NO."),
+                    PayId = GetStr("Pay ID"),
+                    NameOfTheEmployee = GetStr("Name of the Employee"),
+                    Status = GetStr("Status"),
+                    Department = GetStr("DEPARTMENT"),
+                    DateOfHire = GetStr("DOH"),
+                    Dot = GetStr("DOT"),
+                    BankAccountNo = GetStr("Bank Account No"),
+                    Salary = GetDec("Salary"),
+                    Tenure = GetInt("Tenure"),
+                    Gratuity = GetStr("Gratuity"),
+                    Note = GetStr("Note")
+                };
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        // ===================== YEARLY BONUS =====================
+
+        public async Task<List<SalaryInformationReportYearlyBonusDto>> GetPayrollMasterFileYearlyBonusAsync(SalaryInformationReportFilterDto filter)
+        {
+            using IDbConnection db = new SqlConnection(_connectionString);
+
+            var parameters = new DynamicParameters();
+            parameters.Add("@CompanyCode", NullIfEmpty(filter.CompanyCode));
+            parameters.Add("@BranchCode", NullIfEmpty(filter.BranchCode));
+            parameters.Add("@DepartmentCode", NullIfEmpty(filter.DepartmentCode));
+            parameters.Add("@EmployeeID", NullIfEmpty(filter.EmployeeID));
+            parameters.Add("@ModeOfPayment", NullIfEmpty(filter.ModeOfPayment));
+            parameters.Add("@EmploymentNature", NullIfEmpty(filter.EmploymentNature));
+            parameters.Add("@GenerateType", NullIfEmpty(filter.GenerateType));
+            parameters.Add("@DateFrom", filter.DateFrom);
+            parameters.Add("@DateTo", filter.DateTo);
+            parameters.Add("@MonthName", NullIfEmpty(filter.MonthName));
+            parameters.Add("@YearName", filter.YearName);
+            parameters.Add("@AsOnDate", filter.AsOnDate);
+
+            var rows = await db.QueryAsync(
+                "dbo.usp_GetPayrollMasterFile_YearlyBonus",
+                parameters,
+                commandType: CommandType.StoredProcedure,
+                commandTimeout: 120);
+
+            return rows.Select(r => MapDynamicToYearlyBonusDto((IDictionary<string, object>)r)).ToList();
+        }
+
+        public async Task<byte[]> ExportToExcelYearlyBonusAsync(SalaryInformationReportFilterDto filter)
+        {
+            var data = await GetPayrollMasterFileYearlyBonusAsync(filter);
+
+            using var package = new ExcelPackage();
+            var ws = package.Workbook.Worksheets.Add("PayrollMasterFile_YearlyBonus");
+
+            const int logoColSpan = 3;
+            const int firstDataCol = 1;
+
+            var headers = new[]
+            {
+        "SL.", "ID NO.", "Pay ID", "Name of the Employee", "Status",
+        "DEPARTMENT", "DOH", "DOT", "Bank Account No",
+        "Salary", "Yearly Bonus", "Note"
+    };
+
+            int totalCols = headers.Length;
+            int headerRow = 5;
+
+            // Logo
+            var logoPath = Path.Combine(_env.WebRootPath ?? "wwwroot", "images", "DPL.jpeg");
+            ws.Cells[1, 1, 3, logoColSpan].Merge = true;
+            ws.Cells[1, 1, 3, logoColSpan].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+            ws.Cells[1, 1, 3, logoColSpan].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+
+            if (File.Exists(logoPath))
+            {
+                var picture = ws.Drawings.AddPicture("CompanyLogo", new FileInfo(logoPath));
+                picture.SetSize(110, 40);
+                picture.SetPosition(0, 10, 0, 15);
             }
 
+            string periodText = BuildPeriodText(filter);
+
+            ws.Cells[1, logoColSpan + 1, 1, totalCols].Merge = true;
+            ws.Cells[2, logoColSpan + 1, 2, totalCols].Merge = true;
+            ws.Cells[3, logoColSpan + 1, 3, totalCols].Merge = true;
+
+            ws.Cells[1, logoColSpan + 1].Value = "DataPath Ltd.";
+            ws.Cells[1, logoColSpan + 1].Style.Font.Name = "Times New Roman";
+            ws.Cells[1, logoColSpan + 1].Style.Font.Size = 16;
+            ws.Cells[1, logoColSpan + 1].Style.Font.Bold = true;
+            ws.Cells[1, logoColSpan + 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+
+            ws.Cells[2, logoColSpan + 1].Value = "Yearly Bonus Report";
+            ws.Cells[2, logoColSpan + 1].Style.Font.Name = "Times New Roman";
+            ws.Cells[2, logoColSpan + 1].Style.Font.Size = 13;
+            ws.Cells[2, logoColSpan + 1].Style.Font.Bold = false;
+            ws.Cells[2, logoColSpan + 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+
+            ws.Cells[3, logoColSpan + 1].Value = periodText;
+            ws.Cells[3, logoColSpan + 1].Style.Font.Name = "Times New Roman";
+            ws.Cells[3, logoColSpan + 1].Style.Font.Size = 10;
+            ws.Cells[3, logoColSpan + 1].Style.Font.Italic = true;
+            ws.Cells[3, logoColSpan + 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+
+            // Headers
+            for (int i = 0; i < headers.Length; i++)
+            {
+                var cell = ws.Cells[headerRow, firstDataCol + i];
+                cell.Value = headers[i];
+                cell.Style.Font.Bold = true;
+                cell.Style.Font.Name = "Times New Roman";
+                cell.Style.Font.Size = 10;
+                cell.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                cell.Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                cell.Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                cell.Style.WrapText = true;
+            }
+
+            var centerAlignColumns = new HashSet<string>
+    {
+        "SL.", "ID NO.", "Pay ID", "Status", "DOH", "DOT", "Bank Account No"
+    };
+
+            int r = headerRow + 1;
+            foreach (var row in data)
+            {
+                int c = firstDataCol;
+
+                ws.Cells[r, c].Value = row.SL; c++;
+                ws.Cells[r, c].Value = row.IdNo; c++;
+                ws.Cells[r, c].Value = row.PayId; c++;
+                ws.Cells[r, c].Value = row.NameOfTheEmployee; c++;
+                ws.Cells[r, c].Value = row.Status; c++;
+                ws.Cells[r, c].Value = row.Department; c++;
+                ws.Cells[r, c].Value = row.DateOfHire; c++;
+                ws.Cells[r, c].Value = row.Dot; c++;
+                ws.Cells[r, c].Value = row.BankAccountNo; c++;
+
+                ws.Cells[r, c].Value = row.Salary ?? 0;
+                ws.Cells[r, c].Style.Numberformat.Format = "#,##0.00";
+                c++;
+
+                ws.Cells[r, c].Value = row.YearlyBonus ?? 0;
+                ws.Cells[r, c].Style.Numberformat.Format = "#,##0.00";
+                c++;
+
+                ws.Cells[r, c].Value = row.Note; c++;
+
+                for (int cc = firstDataCol; cc < firstDataCol + totalCols; cc++)
+                {
+                    var dataCell = ws.Cells[r, cc];
+                    dataCell.Style.Font.Name = "Times New Roman";
+                    dataCell.Style.Font.Size = 9;
+                    dataCell.Style.Border.BorderAround(ExcelBorderStyle.Thin);
+
+                    int headerIdx = cc - firstDataCol;
+                    if (headerIdx >= 0 && centerAlignColumns.Contains(headers[headerIdx]))
+                    {
+                        dataCell.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    }
+                }
+                r++;
+            }
+
+            // ===== Total Row =====
+            int totalRow = r;
+            ws.Cells[totalRow, firstDataCol].Value = "Total";
+            ws.Cells[totalRow, firstDataCol].Style.Font.Bold = true;
+            ws.Cells[totalRow, firstDataCol, totalRow, firstDataCol + 8].Merge = true;
+            ws.Cells[totalRow, firstDataCol].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+
+            // Salary Total
+            int salaryColIndex = 10;
+            if (data.Count > 0)
+            {
+                ws.Cells[totalRow, salaryColIndex].Formula =
+                    $"SUM({ExcelCellAddress.GetColumnLetter(salaryColIndex)}{headerRow + 1}:{ExcelCellAddress.GetColumnLetter(salaryColIndex)}{r - 1})";
+            }
+            ws.Cells[totalRow, salaryColIndex].Style.Numberformat.Format = "#,##0.00";
+            ws.Cells[totalRow, salaryColIndex].Style.Font.Bold = true;
+            ws.Cells[totalRow, salaryColIndex].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+
+            // Yearly Bonus Total
+            int bonusColIndex = 11;
+            if (data.Count > 0)
+            {
+                ws.Cells[totalRow, bonusColIndex].Formula =
+                    $"SUM({ExcelCellAddress.GetColumnLetter(bonusColIndex)}{headerRow + 1}:{ExcelCellAddress.GetColumnLetter(bonusColIndex)}{r - 1})";
+            }
+            ws.Cells[totalRow, bonusColIndex].Style.Numberformat.Format = "#,##0.00";
+            ws.Cells[totalRow, bonusColIndex].Style.Font.Bold = true;
+            ws.Cells[totalRow, bonusColIndex].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+
+            for (int cc = firstDataCol; cc < firstDataCol + totalCols; cc++)
+            {
+                ws.Cells[totalRow, cc].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                ws.Cells[totalRow, cc].Style.Font.Bold = true;
+            }
+
+            // Column Widths
+            ws.Column(1).Width = 6;
+            ws.Column(2).Width = 14;
+            ws.Column(3).Width = 10;
+            ws.Column(4).Width = 22;
+            ws.Column(5).Width = 10;
+            ws.Column(6).Width = 18;
+            ws.Column(7).Width = 12;
+            ws.Column(8).Width = 12;
+            ws.Column(9).Width = 16;
+            ws.Column(10).Width = 14;
+            ws.Column(11).Width = 14;
+            ws.Column(12).Width = 18;
+
+            // Page Setup
+            ws.PrinterSettings.Orientation = eOrientation.Landscape;
+            ws.PrinterSettings.PaperSize = ePaperSize.A4;
+            ws.PrinterSettings.FitToPage = true;
+            ws.PrinterSettings.FitToWidth = 1;
+            ws.PrinterSettings.FitToHeight = 0;
+            ws.PrinterSettings.HorizontalCentered = true;
+            ws.PrinterSettings.LeftMargin = 0.25m;
+            ws.PrinterSettings.RightMargin = 0.25m;
+            ws.PrinterSettings.TopMargin = 0.4m;
+            ws.PrinterSettings.BottomMargin = 0.4m;
+
+            ws.View.FreezePanes(headerRow + 1, 3);
+
+            return await package.GetAsByteArrayAsync();
+        }
+
+        private static SalaryInformationReportYearlyBonusDto MapDynamicToYearlyBonusDto(IDictionary<string, object> r)
+        {
             string GetStr(string key)
             {
                 if (!r.TryGetValue(key, out var val) || val == null || val == DBNull.Value)
@@ -325,32 +902,29 @@ namespace GCTL.Service.SalaryInformationReport
                 return Convert.ToDecimal(val);
             }
 
-            return new SalaryInformationReportDto
+            int GetInt(string key)
             {
-                SL = Get<int>("SL."),
+                if (!r.TryGetValue(key, out var val) || val == null || val == DBNull.Value)
+                    return 0;
+                return Convert.ToInt32(val);
+            }
+
+            return new SalaryInformationReportYearlyBonusDto
+            {
+                SL = GetInt("SL."),
                 IdNo = GetStr("ID NO."),
                 PayId = GetStr("Pay ID"),
-                DpUserId = GetStr("DP User ID"),
-                DbblEmployeesName = GetStr("DBBL Employees Name"),
-                UcblEmployeesName = GetStr("UCBL Employees Name"),
+                NameOfTheEmployee = GetStr("Name of the Employee"),
                 Status = GetStr("Status"),
                 Department = GetStr("DEPARTMENT"),
-                Designation = GetStr("DESIGNATION"),
-                Doh = GetStr("DOH"),
+                DateOfHire = GetStr("DOH"),
                 Dot = GetStr("DOT"),
-                Duration = GetDec("Duration"),
-                Dbbl = GetStr("DBBL"),
-                Ucbl = GetStr("UCBL"),
+                BankAccountNo = GetStr("Bank Account No"),
                 Salary = GetDec("Salary"),
-                YearlyBonusEligibility = GetStr("Yearly Bonus Eligibility"),
-                GratuityEligibility = GetStr("Gratuity Eligibility"),
-                EidBonusEligibility = GetDec("Eid Bonus Eligibility"),
-                PfEligiblity = GetDec("PF Eligiblity"),
-                Gender = GetStr("Gender"),
-                CellPhone = GetStr("Cell Phone"),
-                SpecialNotes = GetStr("Special Notes"),
-                EndOfProbation = GetStr("End of Probation")
+                YearlyBonus = GetDec("Yearly Bonus"),
+                Note = GetStr("Note")
             };
         }
+
     }
 }
