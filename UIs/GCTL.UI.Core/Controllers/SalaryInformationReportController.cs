@@ -35,6 +35,7 @@ namespace GCTL.UI.Core.Controllers
             this.mopRepo = mopRepo;
             this.masterRepo = masterRepo;
             this.employmentNatureRepo = employmentNatureRepo;
+
         }
 
         public IActionResult Index()
